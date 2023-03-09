@@ -1,40 +1,31 @@
 package travelAgency.service;
 
 import travelAgency.domain.BookingInformation;
-import travelAgency.domain.Flight;
 import travelAgency.repository.TravelAgencyRepository;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class TravelAgencyServiceImpl implements TravelAgencyService {
 
-    private final List<Flight> flights = new LinkedList<>();
-    private final TravelAgencyRepository repository;
+    private final TravelAgencyRepository travelAgencyRepository;
+    private final FlightService flightService;
 
-    public TravelAgencyServiceImpl(TravelAgencyRepository repository) {
-        this.repository = repository;
+    public TravelAgencyServiceImpl(TravelAgencyRepository travelAgencyRepository, FlightService flightService) {
+        this.travelAgencyRepository = travelAgencyRepository;
+        this.flightService = flightService;
     }
 
-    @Override
-    public List<Flight> findFlights(Flight flight) {
-        return repository.findFlights(flight);
-    }
-
-    public void book(BookingInformation bookingInformation) {
+    public void book(BookingInformation bf) {
         // check information
-        bookingInformation.check();
+        checkBookingInformation(bf);
 
         // find flight
-        findFlight(bookingInformation);
+        flightService.checkingTheExistenceThisFlight(bf.flight());
 
         // booking
-        repository.book(bookingInformation);
+        travelAgencyRepository.book(bf);
     }
 
-    private void findFlight(BookingInformation bf) {
-        for (Flight flight : flights) {
-            flight.isTheSame(bf.flight());
-        }
+    private void checkBookingInformation(BookingInformation bf) {
+        bf.check();
     }
+
 }

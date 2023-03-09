@@ -27,9 +27,17 @@ public class Flight {
         return price;
     }
 
-    public void check() {
-        if (isNull(transfer.from()) || isNull(transfer.to()) || isNull(flightSchedule))
-            throw new FlightInfoNotNullException();
+    public String getName() {
+        return name;
+    }
+
+    public void check(Flight flight) {
+        if (isNotEqual(flight))
+            throw new NotFindAnyFlightException();
+    }
+
+    private boolean isNotEqual(Flight flight) {
+        return !this.equals(flight);
     }
 
     private boolean isNull(Object object) {
@@ -68,14 +76,5 @@ public class Flight {
                 ", transfer=" + transfer +
                 ", flightSchedule=" + flightSchedule +
                 '}';
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void isTheSame(Flight flight) {
-        if (!this.equals(flight))
-            throw new NotFindAnyFlightException();
     }
 }
