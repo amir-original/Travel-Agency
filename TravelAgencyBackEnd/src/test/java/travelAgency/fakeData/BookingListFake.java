@@ -17,9 +17,9 @@ public class BookingListFake {
     }
 
     public Flight getFlight() {
-        LocalDate departure = LocalDate.of(2023, 3, 7);
+        LocalDate departure = LocalDate.of(2023, 3, 3);
         final LocalDate arrival = departure.plusDays(3);
-        return flight("0321", departure, arrival, "Tehran", "Paris", 545);
+        return flight("0321", departure, arrival, "Iran", "Paris", 545);
     }
 
     public Flight getNotFoundFlight(){
@@ -33,10 +33,10 @@ public class BookingListFake {
     }
 
     public List<BookingInformation> getFakeBookingTickets() {
-        return List.of(getBookingTicket());
+        return List.of(getExistTicket());
     }
 
-    public BookingInformation getBookingTicket() {
+    public BookingInformation getExistTicket() {
         return new BookingInformation(getFlight(), getPassenger(), 2);
     }
 

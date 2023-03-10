@@ -9,22 +9,21 @@ import java.util.List;
 
 import static java.util.List.of;
 
-public class TravelAgencyFake {
-    private List<Flight> flights;
+public class FlightsFake {
+    private final List<Flight> flights;
+    private final LocalDate departure = LocalDate.of(2023, 3, 3);;
+    private final LocalDate arrival = departure.plusDays(3);
+    private final FlightSchedule flightSchedule = new FlightSchedule(departure, arrival);
 
-    public TravelAgencyFake() {
-        init();
-    }
-
-    public void init() {
-        LocalDate departure = LocalDate.of(2023, 3, 3);
-        final LocalDate arrival = departure.plusDays(3);
-        FlightSchedule flightSchedule = new FlightSchedule(departure, arrival);
-
+    {
         flights = of(new Flight("0321",new FlightTransit("Iran","Paris"), flightSchedule, 145),
                 new Flight("4256",new FlightTransit("Iran","Paris"), flightSchedule, 560),
                 new Flight("0214",new FlightTransit("Iran","Paris"), flightSchedule, 450),
-                new Flight("4578", new FlightTransit("Iran","Paris"), flightSchedule, 478));
+                new Flight("4578", new FlightTransit("Iran","Paris"), flightSchedule, 545));
+    }
+
+    public List<Flight> getFlights() {
+        return flights;
     }
 
     public Flight getFakeFlightFromIranToParis(){
@@ -36,10 +35,6 @@ public class TravelAgencyFake {
 
     private Flight getFakeFlight(String flightName, FlightTransit transfer, FlightSchedule flightSchedule, double price){
         return new Flight(flightName, transfer, flightSchedule, price);
-    }
-
-    public List<Flight> getFakeFlights() {
-        return flights;
     }
 
 

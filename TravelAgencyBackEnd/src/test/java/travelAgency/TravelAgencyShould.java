@@ -3,19 +3,14 @@ package travelAgency;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.BookingInformation;
-import travelAgency.domain.Flight;
 import travelAgency.domain.exceptions.FlightInfoNotNullException;
 import travelAgency.domain.exceptions.NotFindAnyFlightException;
 import travelAgency.domain.exceptions.PassengerNotNullException;
 import travelAgency.domain.exceptions.TicketNumberNotZeroException;
 import travelAgency.fakeData.BookingListFake;
-import travelAgency.fakeData.TravelAgencyFake;
-import travelAgency.repository.FlightRepository;
 import travelAgency.repository.TravelAgencyRepository;
 import travelAgency.service.FlightServiceImpl;
 import travelAgency.service.TravelAgencyServiceImpl;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
@@ -33,7 +28,7 @@ public class TravelAgencyShould {
 
     @Test
     void book_a_flight_without_throw_any_exception() {
-        BookingInformation bookingInformation = bookingListFake.getBookingTicket();
+        BookingInformation bookingInformation = bookingListFake.getExistTicket();
 
         assertThatNoException().isThrownBy(() -> app.book(bookingInformation));
     }
@@ -79,17 +74,4 @@ public class TravelAgencyShould {
         }
     }
 
-    private static class FlightRepositoryDouble implements FlightRepository {
-        private final TravelAgencyFake travelAgencyFake = new TravelAgencyFake();
-
-        @Override
-        public List<Flight> getFlights() {
-            return null;
-        }
-
-        @Override
-        public List<Flight> findFlights(Flight flight) {
-            return travelAgencyFake.getFakeFlights().stream().filter(f -> f.like(flight)).toList();
-        }
-    }
 }

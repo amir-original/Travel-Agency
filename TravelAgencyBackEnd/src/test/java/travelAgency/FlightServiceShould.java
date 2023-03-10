@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import travelAgency.domain.Flight;
 import travelAgency.domain.FlightSchedule;
 import travelAgency.domain.FlightTransit;
-import travelAgency.fakeData.TravelAgencyFake;
-import travelAgency.repository.FlightRepository;
 import travelAgency.service.FlightService;
 import travelAgency.service.FlightServiceImpl;
 
@@ -35,23 +33,38 @@ public class FlightServiceShould {
     void find_flights_with_entered_flight_information() {
         Flight flight = new Flight(transfer, flightSchedule);
         final List<Flight> flights = app.findFlights(flight);
+
         assertAll(
                 () -> assertThat(flights).isNotEmpty(),
                 () -> assertThat(flights.get(0).like(flight)).isTrue()
         );
     }
 
-    private static class FlightRepositoryDouble implements FlightRepository {
-        private final TravelAgencyFake travelAgencyFake = new TravelAgencyFake();
+    @Test
+    void return_empty_list_when_entered_wrong_information() {
+        Flight flight = new Flight(new FlightTransit("England", "Ukraine"), flightSchedule);
 
-        @Override
-        public List<Flight> getFlights() {
-            return null;
-        }
+        assertAll(
+                () -> assertThat(app.findFlights(flight)).isEmpty(),
+                () -> assertThat(app.isExistThisFlight(flight)).isFalse()
+        );
 
-        @Override
-        public List<Flight> findFlights(Flight flightInfo) {
-            return travelAgencyFake.getFakeFlights().stream().filter(f -> f.like(flightInfo)).toList();
-        }
+    }
+
+    @Test
+    void find_flight_information() {
+        Flight flight = new Flight(transfer, flightSchedule);
+
+        assertAll(
+                ()->assertThat(app.isExistThisFlight(flight)).isTrue(),
+                ()->assertThat(app.findFlight(flight).get())
+                        .isEqualTo(new Flight("0321",new FlightTransit("Iran","Paris"), flightSchedule, 145))
+
+        );
+    }
+
+    @Test
+    void get_all_flights() {
+        assertThat(app.getFlights()).isNotEmpty();
     }
 }

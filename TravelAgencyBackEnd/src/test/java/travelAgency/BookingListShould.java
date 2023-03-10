@@ -18,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class BookingListShould {
 
+    private static final String SARA = "Sara";
+    private static final LocalDate SARA_BIRTHDAY = of(1999, 4, 5);
     private BookingListServiceImpl bookingList;
     private final BookingListFake bookingListFake = new BookingListFake();
 
@@ -28,8 +30,7 @@ public class BookingListShould {
 
     @Test
     void search_in_booking_list() {
-        final LocalDate birthday =  of(1999, 4, 5);
-        var result = bookingList.search("0321", "Sara", birthday);
+        var result = bookingList.search("0321", SARA, SARA_BIRTHDAY);
 
         assertAll(
                 () -> assertThat(result.flight().getName()).isEqualTo(bookingListFake.getFlight().getName()),
@@ -40,10 +41,9 @@ public class BookingListShould {
 
     @Test
     void throw_NotFoundAnyBookingFlightException_when_there_is_not_any_flight_with_enter_information() {
-        final LocalDate birthday =  of(1999, 4, 5);
 
         assertThatExceptionOfType(NotFoundAnyBookingFlightException.class)
-                .isThrownBy(()-> bookingList.search("023", "Sara", birthday));
+                .isThrownBy(()-> bookingList.search("023", SARA, SARA_BIRTHDAY));
     }
 
     private  class BookingListDouble implements BookingListRepository {

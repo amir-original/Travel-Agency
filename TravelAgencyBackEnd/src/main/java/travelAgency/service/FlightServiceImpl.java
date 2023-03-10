@@ -5,6 +5,7 @@ import travelAgency.domain.exceptions.NotFindAnyFlightException;
 import travelAgency.repository.FlightRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class FlightServiceImpl implements FlightService {
 
@@ -20,13 +21,13 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public Flight findFlight(Flight flightInfo) {
-        return null;
+    public List<Flight> findFlights(Flight flightInfo) {
+        return flightRepository.findFlights(flightInfo);
     }
 
     @Override
-    public List<Flight> findFlights(Flight flightInfo) {
-        return flightRepository.findFlights(flightInfo);
+    public Optional<Flight> findFlight(Flight flightInfo) {
+        return flightRepository.findFlight(flightInfo);
     }
 
     @Override
@@ -36,10 +37,14 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public boolean isExistThisFlight(Flight flight) {
-        return findFlights(flight).isEmpty();
+        return isNotEmpty(findFlights(flight));
     }
 
     private boolean isNotExistThisFlight(Flight flight) {
         return !isExistThisFlight(flight);
+    }
+
+    private boolean isNotEmpty(List<Flight> objects) {
+        return !objects.isEmpty();
     }
 }
