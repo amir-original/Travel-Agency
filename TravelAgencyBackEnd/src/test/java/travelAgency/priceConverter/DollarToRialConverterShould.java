@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import travelAgency.priceConverter.exception.AmountNotNegativeException;
 import travelAgency.service.priceConverter.CurrencyConverterService;
 import travelAgency.service.priceConverter.CurrencyConverterServiceImpl;
+import travelAgency.service.priceConverter.currencyApi.CurrencyConverterApiService;
 import travelAgency.service.priceConverter.currencyApi.DollarToRialConverterApi;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -16,7 +17,7 @@ public class DollarToRialConverterShould {
 
     @BeforeEach
     void setUp() {
-        dollarToRialConverter = new CurrencyConverterServiceImpl(new DollarToRialConverterApi());
+        dollarToRialConverter = new CurrencyConverterServiceImpl(new DollarToRialConverterApiDouble());
     }
 
     @Test
@@ -31,5 +32,13 @@ public class DollarToRialConverterShould {
     void throw_AmountMustBePositiveException_when_enter_negative_amount() {
         assertThatExceptionOfType(AmountNotNegativeException.class)
                 .isThrownBy(()-> dollarToRialConverter.convert(-1));
+    }
+
+    private static class DollarToRialConverterApiDouble implements CurrencyConverterApiService {
+
+        @Override
+        public double diffAmount() {
+            return 427000;
+        }
     }
 }

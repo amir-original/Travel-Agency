@@ -1,4 +1,6 @@
 package travelAgency.domain;
 
-public record FlightTransit(String from, String to) {
+import travelAgency.domain.country.City;
+
+public record FlightTransit(City from, City to) {
 }

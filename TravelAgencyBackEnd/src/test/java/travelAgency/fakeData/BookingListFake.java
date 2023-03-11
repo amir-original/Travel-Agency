@@ -1,6 +1,10 @@
 package travelAgency.fakeData;
 
 import travelAgency.domain.*;
+import travelAgency.domain.country.City;
+import travelAgency.domain.country.France;
+import travelAgency.domain.country.Iran;
+import travelAgency.domain.country.UnitedStates;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,23 +16,23 @@ public class BookingListFake {
     public Passenger getPassenger() {
         return new Passenger("fly78478", "Sara", "Baiati",
                 of(1999, 4, 5),
-                "Tehran","Iran,Tehran",
+                Iran.TEHRAN,"Iran,TEHRAN",
                 "1145789", "989907994339");
     }
 
     public Flight getFlight() {
         LocalDate departure = LocalDate.of(2023, 3, 3);
         final LocalDate arrival = departure.plusDays(3);
-        return flight("0321", departure, arrival, "Iran", "Paris", 545);
+        return flight("0321", departure, arrival, Iran.TEHRAN, France.PARIS, 545);
     }
 
     public Flight getNotFoundFlight(){
         LocalDate departure = LocalDate.of(2024, 3, 7);
         final LocalDate arrival = departure.plusDays(2);
-        return flight("4578", departure, arrival, "Iran", "USA", 123);
+        return flight("4578", departure, arrival, Iran.TEHRAN, UnitedStates.LOS_ANGELES, 123);
     }
 
-    private Flight flight(String name, LocalDate departure, LocalDate arrival, String from, String to, double price) {
+    private Flight flight(String name, LocalDate departure, LocalDate arrival, City from, City to, double price) {
         return new Flight(name, new FlightTransit(from, to), new FlightSchedule(departure, arrival), price);
     }
 
