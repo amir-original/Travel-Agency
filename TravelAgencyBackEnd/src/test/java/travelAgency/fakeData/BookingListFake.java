@@ -33,7 +33,7 @@ public class BookingListFake {
     }
 
     private Flight flight(String name, LocalDate departure, LocalDate arrival, City from, City to, double price) {
-        return new Flight(name, new FlightTransit(from, to), new FlightSchedule(departure, arrival), price);
+        return new Flight(name, price,new FlightInformation(new FlightLocation(from, to), new FlightSchedule(departure, arrival)));
     }
 
     public List<BookingInformation> getFakeBookingTickets() {

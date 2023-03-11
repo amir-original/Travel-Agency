@@ -1,34 +1,34 @@
 package travelAgency.domain;
 
-import travelAgency.domain.exceptions.FlightInfoNotNullException;
 import travelAgency.domain.exceptions.NotFindAnyFlightException;
 
 import java.util.Objects;
 
 public class Flight {
-    private  String name;
-    private double price;
-    private final FlightTransit transfer;
-    private final FlightSchedule flightSchedule;
+    private final String serialNumber;
+    private final double price;
+    private final FlightInformation info;
 
-    public Flight(FlightTransit transfer, FlightSchedule flightSchedule) {
-        this.transfer = transfer;
-        this.flightSchedule = flightSchedule;
-    }
-
-    public Flight(String name, FlightTransit transfer, FlightSchedule flightSchedule, double price) {
-        this.name = name;
-        this.transfer = transfer;
+    public Flight(String serialNumber, double price, FlightInformation info) {
+        this.serialNumber = serialNumber;
         this.price = price;
-        this.flightSchedule = flightSchedule;
+        this.info = info;
     }
 
     public double getPrice() {
         return price;
     }
 
-    public String getName() {
-        return name;
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public FlightInformation getInfo() {
+        return info;
+    }
+
+    public boolean isTheSameSpec(FlightInformation flightSpec) {
+        return info.equals(flightSpec);
     }
 
     public void check(Flight flight) {
@@ -37,7 +37,7 @@ public class Flight {
     }
 
     private boolean isNotEqual(Flight flight) {
-        return !this.equals(flight);
+        return !isNull(flight);
     }
 
     private boolean isNull(Object object) {
@@ -50,31 +50,20 @@ public class Flight {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Flight flight = (Flight) o;
-        return Double.compare(flight.price, price) == 0 && Objects.equals(name, flight.name) &&
-                Objects.equals(flightSchedule, flight.flightSchedule) &&
-                Objects.equals(transfer, flight.transfer);
+        return Double.compare(flight.price, price) == 0 && Objects.equals(serialNumber, flight.serialNumber) && Objects.equals(info, flight.info);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, flightSchedule, price, transfer);
-    }
-
-    public boolean like(Flight o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Flight flight = (Flight) o;
-        return  Objects.equals(transfer, flight.transfer) &&
-                 Objects.equals(flightSchedule, flight.flightSchedule);
+        return Objects.hash(serialNumber, price, info);
     }
 
     @Override
     public String toString() {
         return "Flight{" +
-                "name='" + name + '\'' +
+                "name='" + serialNumber + '\'' +
                 ", price=" + price +
-                ", transfer=" + transfer +
-                ", flightSchedule=" + flightSchedule +
+                ", spec=" + info +
                 '}';
     }
 }

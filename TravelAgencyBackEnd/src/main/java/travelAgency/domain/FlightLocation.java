@@ -2,5 +2,5 @@ package travelAgency.domain;
 
 import travelAgency.domain.country.City;
 
-public record FlightTransit(City from, City to) {
+public record FlightLocation(City from, City to) {
 }

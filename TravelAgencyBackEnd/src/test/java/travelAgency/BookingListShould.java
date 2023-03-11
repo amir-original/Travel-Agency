@@ -33,7 +33,7 @@ public class BookingListShould {
         var result = bookingList.search("0321", SARA, SARA_BIRTHDAY);
 
         assertAll(
-                () -> assertThat(result.flight().getName()).isEqualTo(bookingListFake.getFlight().getName()),
+                () -> assertThat(result.flight().getSerialNumber()).isEqualTo(bookingListFake.getFlight().getSerialNumber()),
                 () -> assertThat(result.passenger()).isEqualTo(bookingListFake.getPassenger()),
                 () -> assertThat(result.flight()).isEqualTo(bookingListFake.getFlight())
         );

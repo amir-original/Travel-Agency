@@ -1,6 +1,7 @@
 package travelAgency.service;
 
 import travelAgency.domain.Flight;
+import travelAgency.domain.FlightInformation;
 import travelAgency.domain.exceptions.NotFindAnyFlightException;
 import travelAgency.repository.FlightRepository;
 
@@ -21,27 +22,27 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public List<Flight> findFlights(Flight flightInfo) {
-        return flightRepository.findFlights(flightInfo);
+    public List<Flight> findFlights(FlightInformation flightSpec) {
+        return flightRepository.findFlights(flightSpec);
     }
 
     @Override
-    public Optional<Flight> findFlight(Flight flightInfo) {
-        return flightRepository.findFlight(flightInfo);
+    public Optional<Flight> findFlight(FlightInformation flightSpec) {
+        return flightRepository.findFlight(flightSpec);
     }
 
     @Override
-    public void checkingTheExistenceThisFlight(Flight flight) {
-        if (isNotExistThisFlight(flight)) throw new NotFindAnyFlightException();
+    public void checkingTheExistenceThisFlight(FlightInformation flightSpec) {
+        if (isNotExistThisFlight(flightSpec)) throw new NotFindAnyFlightException();
     }
 
     @Override
-    public boolean isExistThisFlight(Flight flight) {
-        return isNotEmpty(findFlights(flight));
+    public boolean isExistThisFlight(FlightInformation flightSpec) {
+        return isNotEmpty(findFlights(flightSpec));
     }
 
-    private boolean isNotExistThisFlight(Flight flight) {
-        return !isExistThisFlight(flight);
+    private boolean isNotExistThisFlight(FlightInformation flightSpec) {
+        return !isExistThisFlight(flightSpec);
     }
 
     private boolean isNotEmpty(List<Flight> objects) {

@@ -15,5 +15,9 @@ public record BookingInformation(Flight flight, Passenger passenger, int numberO
             throw new TicketNumberNotZeroException();
     }
 
+    public FlightInformation flightInfo(){
+        return flight.getInfo();
+    }
+
 
 }

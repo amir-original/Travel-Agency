@@ -18,7 +18,7 @@ public class TravelAgencyServiceImpl implements TravelAgencyService {
         checkBookingInformation(bf);
 
         // find flight
-        flightService.checkingTheExistenceThisFlight(bf.flight());
+        flightService.checkingTheExistenceThisFlight(bf.flightInfo());
 
         // booking
         travelAgencyRepository.book(bf);

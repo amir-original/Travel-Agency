@@ -1,6 +1,7 @@
 package travelAgency;
 
 import travelAgency.domain.Flight;
+import travelAgency.domain.FlightInformation;
 import travelAgency.fakeData.FlightsFake;
 import travelAgency.repository.FlightRepository;
 
@@ -17,12 +18,13 @@ class FlightRepositoryDouble implements FlightRepository {
     }
 
     @Override
-    public List<Flight> findFlights(Flight flight) {
-        return flightsFake.getFlights().stream().filter(f -> f.like(flight)).toList();
+    public List<Flight> findFlights(FlightInformation flightSpec) {
+        return flightsFake.getFlights().stream().filter(f -> f.isTheSameSpec(flightSpec)).toList();
     }
 
     @Override
-    public Optional<Flight> findFlight(Flight flightInfo) {
-        return flightsFake.getFlights().stream().filter(f -> f.like(flightInfo)).findFirst();
+    public Optional<Flight> findFlight(FlightInformation flightSpec) {
+        return flightsFake.getFlights().stream().filter(f -> f.isTheSameSpec(flightSpec)).findFirst();
     }
+
 }

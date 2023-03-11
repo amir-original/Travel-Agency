@@ -1,6 +1,6 @@
 package travelAgency.service.priceConverter;
 
-import travelAgency.priceConverter.exception.AmountNotNegativeException;
+import travelAgency.service.priceConverter.exception.AmountNotNegativeException;
 
 public interface CurrencyConverterService {
 

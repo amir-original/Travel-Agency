@@ -67,7 +67,7 @@ public class TravelAgencyShould {
 
         @Override
         public void book(BookingInformation bookingInformation) {
-            if (!bookingInformation.flight().getName().equals("0321"))
+            if (!bookingInformation.flight().getSerialNumber().equals("0321"))
                 throw new NotFindAnyFlightException();
 
             bookingInformation.check();

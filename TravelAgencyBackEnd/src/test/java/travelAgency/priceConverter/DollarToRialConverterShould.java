@@ -2,11 +2,10 @@ package travelAgency.priceConverter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.priceConverter.exception.AmountNotNegativeException;
+import travelAgency.service.priceConverter.exception.AmountNotNegativeException;
 import travelAgency.service.priceConverter.CurrencyConverterService;
 import travelAgency.service.priceConverter.CurrencyConverterServiceImpl;
 import travelAgency.service.priceConverter.currencyApi.CurrencyConverterApiService;
-import travelAgency.service.priceConverter.currencyApi.DollarToRialConverterApi;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;

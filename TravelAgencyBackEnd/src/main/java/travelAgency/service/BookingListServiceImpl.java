@@ -36,7 +36,7 @@ public class BookingListServiceImpl implements BookingListService {
     private boolean isFindTicketBy(String flightName, String passengerFirstName,
                                    LocalDate PassengerBirthday, BookingInformation booking) {
 
-        return booking.flight().getName().equals(flightName) &&
+        return booking.flight().getSerialNumber().equals(flightName) &&
                 booking.passenger().fName().equals(passengerFirstName) &&
                 booking.passenger().birthday().equals(PassengerBirthday);
     }
