@@ -7,12 +7,12 @@ import java.util.Objects;
 public class Flight {
     private final String serialNumber;
     private final double price;
-    private final FlightInformation info;
+    private final FlightPlan plan;
 
-    public Flight(String serialNumber, double price, FlightInformation info) {
+    public Flight(String serialNumber, double price, FlightPlan plan) {
         this.serialNumber = serialNumber;
         this.price = price;
-        this.info = info;
+        this.plan = plan;
     }
 
     public double getPrice() {
@@ -23,12 +23,12 @@ public class Flight {
         return serialNumber;
     }
 
-    public FlightInformation getInfo() {
-        return info;
+    public FlightPlan getPlan() {
+        return plan;
     }
 
-    public boolean isTheSameSpec(FlightInformation flightSpec) {
-        return info.equals(flightSpec);
+    public boolean matches(FlightPlan flightPlan) {
+        return plan.equals(flightPlan);
     }
 
     public void check(Flight flight) {
@@ -50,12 +50,12 @@ public class Flight {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Flight flight = (Flight) o;
-        return Double.compare(flight.price, price) == 0 && Objects.equals(serialNumber, flight.serialNumber) && Objects.equals(info, flight.info);
+        return Double.compare(flight.price, price) == 0 && Objects.equals(serialNumber, flight.serialNumber) && Objects.equals(plan, flight.plan);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(serialNumber, price, info);
+        return Objects.hash(serialNumber, price, plan);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class Flight {
         return "Flight{" +
                 "name='" + serialNumber + '\'' +
                 ", price=" + price +
-                ", spec=" + info +
+                ", spec=" + plan +
                 '}';
     }
 }
