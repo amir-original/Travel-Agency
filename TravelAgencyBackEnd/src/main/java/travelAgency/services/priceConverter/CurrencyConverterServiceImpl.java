@@ -4,16 +4,16 @@ import travelAgency.services.priceConverter.currencyApi.CurrencyConverterApiServ
 
 public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 
-    private final CurrencyConverterApiService currencyApi;
+    private final CurrencyConverterApiService currencyConverterService;
 
-    public CurrencyConverterServiceImpl(CurrencyConverterApiService currencyApi) {
-        this.currencyApi = currencyApi;
+    public CurrencyConverterServiceImpl(CurrencyConverterApiService currencyConverterService) {
+        this.currencyConverterService = currencyConverterService;
     }
 
     @Override
     public double convert(double amount) {
         check(amount);
 
-        return amount * currencyApi.diffAmount();
+        return amount * currencyConverterService.diffAmount();
     }
 }

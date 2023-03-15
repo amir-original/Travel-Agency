@@ -5,11 +5,12 @@ import travelAgency.repository.BookingListRepository;
 
 import java.util.List;
 
+import static travelAgency.fakeData.FakeFlightTicketBuilder.flightTicket;
+
 public class FakeBookingList implements BookingListRepository {
-    private final FakeTicketsData bookingListFake = new FakeTicketsData();
 
     @Override
     public List<FlightTicket> getAllTickets() {
-        return bookingListFake.getFakeBookingTickets();
+        return List.of(flightTicket().build());
     }
 }

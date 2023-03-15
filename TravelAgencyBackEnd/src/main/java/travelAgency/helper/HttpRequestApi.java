@@ -1,6 +1,6 @@
 package travelAgency.helper;
 
-public interface HttpApi {
+public interface HttpRequestApi {
 
     HttpRequestHandler target(String baseUri);
     HttpRequestHandler path(String endpoint);

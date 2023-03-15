@@ -2,6 +2,7 @@ package travelAgency.priceConverter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import travelAgency.services.priceConverter.currencyApi.RialToDollarConverterApi;
 import travelAgency.services.priceConverter.exception.AmountNotNegativeException;
 import travelAgency.services.priceConverter.CurrencyConverterService;
 import travelAgency.services.priceConverter.CurrencyConverterServiceImpl;
@@ -20,7 +21,7 @@ public class RialToDollarConverterShould {
 
     @BeforeEach
     void setUp() {
-        converterApiService = mock(CurrencyConverterApiService.class);
+        converterApiService = mock(RialToDollarConverterApi.class);
         rialToDollarService = new CurrencyConverterServiceImpl(converterApiService);
     }
 

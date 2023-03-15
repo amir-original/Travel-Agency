@@ -1,7 +1,10 @@
 package travelAgency.domain;
 
-import travelAgency.domain.exceptions.NotFindAnyFlightException;
+import travelAgency.domain.city.City;
+import travelAgency.services.priceConverter.CurrencyConverterService;
 
+import java.net.ProtocolFamily;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Flight {
@@ -13,6 +16,10 @@ public class Flight {
         this.serialNumber = serialNumber;
         this.price = price;
         this.plan = plan;
+    }
+
+    public double getPrice(CurrencyConverterService currencyConverter) {
+        return currencyConverter.convert(price);
     }
 
     public double getPrice() {
@@ -31,26 +38,30 @@ public class Flight {
         return plan.equals(flightPlan);
     }
 
-    public void check(Flight flight) {
-        if (isNotEqual(flight))
-            throw new NotFindAnyFlightException();
+    public City to() {
+        return plan.to();
     }
 
-    private boolean isNotEqual(Flight flight) {
-        return !isNull(flight);
+    public City from() {
+        return plan.from();
     }
 
-    private boolean isNull(Object object) {
-        return object == null;
+    public LocalDate departure() {
+        return plan.departure();
     }
 
+    public LocalDate arrival() {
+        return   plan.arrival();
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Flight flight = (Flight) o;
-        return Double.compare(flight.price, price) == 0 && Objects.equals(serialNumber, flight.serialNumber) && Objects.equals(plan, flight.plan);
+        return Double.compare(flight.price, price) == 0 &&
+                Objects.equals(serialNumber, flight.serialNumber) &&
+                Objects.equals(plan, flight.plan);
     }
 
     @Override
@@ -66,4 +77,5 @@ public class Flight {
                 ", spec=" + plan +
                 '}';
     }
+
 }

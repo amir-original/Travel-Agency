@@ -1,6 +1,6 @@
 package travelAgency.domain;
 
-import travelAgency.domain.country.City;
+import travelAgency.domain.city.City;
 
 public record FlightLocation(City from, City to) {
 }
