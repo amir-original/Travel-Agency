@@ -1,7 +1,7 @@
 package travelAgency.services.bookingList;
 
 import travelAgency.domain.FlightTicket;
-import travelAgency.repository.BookingListRepository;
+import travelAgency.repository.booking.BookingListRepository;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class BookingListServiceImpl implements BookingListService {
 
     @Override
     public List<FlightTicket> getAllTickets() {
-        return bookingListRepository.getAllTickets();
+        return bookingListRepository.tickets();
     }
 
 }

@@ -1,6 +1,7 @@
 package travelAgency.domain;
 
+import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.city.City;
 
-public record FlightLocation(City from, City to) {
+public record FlightLocation(@NotNull City from, @NotNull City to) {
 }

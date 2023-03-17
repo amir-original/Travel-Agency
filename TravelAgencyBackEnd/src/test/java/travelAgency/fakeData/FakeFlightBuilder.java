@@ -8,7 +8,8 @@ import java.time.LocalDate;
 import static java.time.LocalDate.of;
 
 public class FakeFlightBuilder {
-    private String serialNumber = "0321";
+
+    private String flightNumber = "0321";
     private double price = 145;
     private City from = City.TEHRAN;
     private City to = City.PARIS;
@@ -19,8 +20,8 @@ public class FakeFlightBuilder {
         return new FakeFlightBuilder();
     }
 
-    public FakeFlightBuilder withSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
+    public FakeFlightBuilder withFlightNumber(String serialNumber) {
+        this.flightNumber = serialNumber;
         return this;
     }
 
@@ -50,7 +51,7 @@ public class FakeFlightBuilder {
     }
 
     public Flight build() {
-        return new Flight(serialNumber, price,
+        return new Flight(flightNumber, price,
                 new FlightPlan(new FlightLocation(from, to), new FlightSchedule(departure, arrival)));
     }
 }

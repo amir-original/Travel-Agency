@@ -1,10 +1,11 @@
 package travelAgency.domain;
 
+import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.city.City;
 
 import java.time.LocalDate;
 
-public record FlightPlan(FlightLocation location, FlightSchedule schedule) {
+public record FlightPlan(@NotNull FlightLocation location,@NotNull FlightSchedule schedule) {
 
     public City from() {
         return location.from();
@@ -19,6 +20,7 @@ public record FlightPlan(FlightLocation location, FlightSchedule schedule) {
     }
 
     public LocalDate arrival() {
-       return schedule.arrival();
+        return schedule.arrival();
     }
+
 }

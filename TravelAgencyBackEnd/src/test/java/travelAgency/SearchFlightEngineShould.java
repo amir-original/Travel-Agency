@@ -3,8 +3,8 @@ package travelAgency;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.Flight;
-import travelAgency.fakeData.FakeFlight;
-import travelAgency.fakeData.FakeFlightPlanBuilder;
+import travelAgency.domain.exceptions.NotFindAnyFlightException;
+import travelAgency.fakeData.FakeFindFlight;
 import travelAgency.services.flights.FindFlights;
 import travelAgency.services.flights.SearchFlightEngine;
 import travelAgency.services.priceConverter.CurrencyConverterServiceImpl;
@@ -14,20 +14,20 @@ import travelAgency.services.priceConverter.currencyApi.DollarToRialConverterApi
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static travelAgency.fakeData.FakeFlightPlanBuilder.flightPlan;
+import static travelAgency.fakeData.FakeFlightTicketBuilder.flightTicket;
 
 public class SearchFlightEngineShould {
 
     private SearchFlightEngine engine;
-    private FakeFlightPlanBuilder fakeFlight;
 
     @BeforeEach
     void setUp() {
-        engine = new SearchFlightEngine(new FindFlights(new FakeFlight()));
-        fakeFlight = new FakeFlightPlanBuilder();
+        engine = new SearchFlightEngine(new FindFlights(new FakeFindFlight()));
     }
 
     @Test
@@ -50,6 +50,17 @@ public class SearchFlightEngineShould {
     }
 
     @Test
+    void throw_IllegalArgumentException_when_enter_flight_location_null() {
+        assertAll(
+                () -> assertThatExceptionOfType(IllegalArgumentException.class)
+                        .isThrownBy(() -> engine.search(flightPlan().departureAt(null).build())),
+                () -> assertThatExceptionOfType(IllegalArgumentException.class)
+                        .isThrownBy(() -> engine.search(flightPlan().arrivalAt(null).build()))
+                );
+
+    }
+
+    @Test
     void converted_search_flight_price_from_dollar_to_rial() {
         final List<Flight> flights = engine.search(flightPlan().build());
 
@@ -57,10 +68,10 @@ public class SearchFlightEngineShould {
         when(mock.diffAmount()).thenReturn(42700D);
 
         final CurrencyConverterServiceImpl dollarConverter = new CurrencyConverterServiceImpl(mock);
-        
+
         assertAll(
-                ()->assertThat(flights.get(0).getPrice()).isEqualTo(145),
-                () -> assertThat(flights.get(0).getPrice(dollarConverter)).isEqualTo(6191500.0)
+                () -> assertThat(flights.get(0).price()).isEqualTo(145),
+                () -> assertThat(flights.get(0).price(dollarConverter)).isEqualTo(6191500.0)
         );
     }
 }

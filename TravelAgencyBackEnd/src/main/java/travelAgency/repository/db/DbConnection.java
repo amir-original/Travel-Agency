@@ -1,9 +1,8 @@
-package travelAgency.repository;
+package travelAgency.repository.db;
 
 import java.sql.Connection;
 
 public interface DbConnection {
-
     Connection getConnection();
-    void close();
+    void truncate(String tableName);
 }

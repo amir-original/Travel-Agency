@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
 import travelAgency.fakeData.FakeBookingList;
-import travelAgency.fakeData.FakePassengerBuilder;
 import travelAgency.services.bookingList.BookingListServiceImpl;
 import travelAgency.services.bookingList.SearchTicketEngine;
 
@@ -21,7 +20,7 @@ public class SearchTicketEngineShould {
 
     private static final String SARA = "Sara";
     private static final LocalDate SARA_BIRTHDAY = of(1999, 4, 5);
-    private static final String EXIST_FLIGHT_SERIAL_NUMBER = "0321";
+    private static final String EXIST_FLIGHT_NUMBER = "0321";
     private SearchTicketEngine searchTicketEngine;
 
     @BeforeEach
@@ -32,10 +31,10 @@ public class SearchTicketEngineShould {
 
     @Test
     void search_in_booking_list() {
-        var result = searchTicketEngine.search(EXIST_FLIGHT_SERIAL_NUMBER, SARA, SARA_BIRTHDAY);
+        var result = searchTicketEngine.search(EXIST_FLIGHT_NUMBER, SARA, SARA_BIRTHDAY);
 
         assertAll(
-                () -> assertThat(result.flight().getSerialNumber()).isEqualTo(EXIST_FLIGHT_SERIAL_NUMBER),
+                () -> assertThat(result.flightNumber()).isEqualTo(EXIST_FLIGHT_NUMBER),
                 () -> assertThat(result.passenger()).isEqualTo(passenger().build()),
                 () -> assertThat(result.flight()).isEqualTo(flight().build())
         );

@@ -1,22 +1,42 @@
 package travelAgency.domain;
 
-import travelAgency.domain.exceptions.FlightInfoNotNullException;
-import travelAgency.domain.exceptions.FlightNotNullException;
-import travelAgency.domain.exceptions.PassengerNotNullException;
-import travelAgency.domain.exceptions.TicketNumberNotZeroException;
+import org.jetbrains.annotations.NotNull;
 
-public record FlightTicket(Flight flight, Passenger passenger, int numberOfTickets) {
+import java.time.LocalDate;
+
+public record FlightTicket(@NotNull String ticketNumber,
+                           @NotNull FlightTicketInfo flightTicketInfo) {
 
     public void check() {
-        if (flight == null)
-            throw new FlightNotNullException();
-        if (passenger == null)
-            throw new PassengerNotNullException();
-        if (numberOfTickets <= 0)
-            throw new TicketNumberNotZeroException();
+        flightTicketInfo.check();
     }
 
-    public FlightPlan flightPlan(){
-        return flight.getPlan();
+
+    public Flight flight() {
+        return flightTicketInfo.flight();
+    }
+
+    public String flightNumber() {
+       return flightTicketInfo.flightNumber();
+    }
+
+    public String passenger_id() {
+        return flightTicketInfo.passenger_id();
+    }
+
+    public int numberOfTickets() {
+        return flightTicketInfo.numberOfTickets();
+    }
+
+    public boolean canMatchWith(String flightName, String passengerFirstName, LocalDate passengerBirthday) {
+        return flightTicketInfo.canMatchWith(flightName,passengerFirstName,passengerBirthday);
+    }
+
+    public FlightPlan flightPlan() {
+        return flightTicketInfo.flightPlan();
+    }
+
+    public Passenger passenger() {
+        return flightTicketInfo.passenger();
     }
 }

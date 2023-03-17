@@ -1,6 +1,8 @@
 package travelAgency.domain;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDate;
 
-public record FlightSchedule(LocalDate departure,LocalDate arrival) {
+public record FlightSchedule(@NotNull LocalDate departure, @NotNull LocalDate arrival) {
 }

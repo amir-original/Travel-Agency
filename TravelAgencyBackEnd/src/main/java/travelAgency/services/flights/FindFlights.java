@@ -3,7 +3,7 @@ package travelAgency.services.flights;
 import travelAgency.domain.Flight;
 import travelAgency.domain.FlightPlan;
 import travelAgency.domain.exceptions.NotFindAnyFlightException;
-import travelAgency.repository.FindFlightRepository;
+import travelAgency.repository.flight.FindFlightRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,9 +26,10 @@ public class FindFlights implements FindFlightsService {
         return flightRepository.findFlights(flightPlan);
     }
 
+
     @Override
-    public Optional<Flight> findFlight(FlightPlan flightPlan) {
-        return flightRepository.findFlight(flightPlan);
+    public Optional<Flight> findFlight(String flightNumber) {
+        return flightRepository.findFlight(flightNumber);
     }
 
     @Override

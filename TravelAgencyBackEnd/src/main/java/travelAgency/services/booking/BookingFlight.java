@@ -1,23 +1,28 @@
 package travelAgency.services.booking;
 
 import travelAgency.domain.FlightTicket;
-import travelAgency.repository.BookingFlightRepository;
-import travelAgency.services.flights.FindFlightsService;
+import travelAgency.repository.booking.BookingFlightRepository;
+import travelAgency.repository.flight.FindFlightRepository;
+import travelAgency.repository.passenger.PassengerRepository;
 
-public class BookingFlight implements BookingFlightService {
+public class BookingFlight {
 
     private final BookingFlightRepository bookingRepository;
-    private final ValidateTicket validateTicket;
+    private final PassengerRepository passengerRepository;
+    private final FindFlightRepository findFlightRepository;
 
-    public BookingFlight(BookingFlightRepository bookingRepository, FindFlightsService flightService) {
+    public BookingFlight(BookingFlightRepository bookingRepository,
+                         FindFlightRepository findFlightRepository, PassengerRepository passengerRepository) {
         this.bookingRepository = bookingRepository;
-        validateTicket = new ValidateTicket(flightService);
+        this.passengerRepository = passengerRepository;
+        this.findFlightRepository = findFlightRepository;
     }
 
     public void book(FlightTicket flightTicket) {
-        validateTicket.validate(flightTicket);
+        flightTicket.check();
+        findFlightRepository.checkExistenceFlightWith(flightTicket.flightPlan());
 
-        // booking
+        passengerRepository.save(flightTicket.passenger());
         bookingRepository.book(flightTicket);
     }
 

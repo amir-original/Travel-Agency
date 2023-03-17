@@ -1,41 +1,30 @@
 package travelAgency.domain;
 
+import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.city.City;
+import travelAgency.domain.exceptions.FlightNumberNotEmptyException;
 import travelAgency.services.priceConverter.CurrencyConverterService;
 
-import java.net.ProtocolFamily;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Flight {
-    private final String serialNumber;
-    private final double price;
-    private final FlightPlan plan;
-
-    public Flight(String serialNumber, double price, FlightPlan plan) {
-        this.serialNumber = serialNumber;
-        this.price = price;
-        this.plan = plan;
-    }
-
-    public double getPrice(CurrencyConverterService currencyConverter) {
-        return currencyConverter.convert(price);
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
-    public FlightPlan getPlan() {
-        return plan;
-    }
+public record Flight(@NotNull String flightNumber, double price, @NotNull FlightPlan plan) {
 
     public boolean matches(FlightPlan flightPlan) {
         return plan.equals(flightPlan);
+    }
+
+    public boolean matches(String flightNumber) {
+        return flightNumber().equals(flightNumber);
+    }
+
+    public void check() {
+        if (flightNumber.isBlank())
+            throw new FlightNumberNotEmptyException();
+    }
+
+    public double price(CurrencyConverterService currencyConverter) {
+        return currencyConverter.convert(price);
     }
 
     public City to() {
@@ -51,7 +40,7 @@ public class Flight {
     }
 
     public LocalDate arrival() {
-        return   plan.arrival();
+        return plan.arrival();
     }
 
     @Override
@@ -60,22 +49,21 @@ public class Flight {
         if (o == null || getClass() != o.getClass()) return false;
         Flight flight = (Flight) o;
         return Double.compare(flight.price, price) == 0 &&
-                Objects.equals(serialNumber, flight.serialNumber) &&
+                Objects.equals(flightNumber, flight.flightNumber) &&
                 Objects.equals(plan, flight.plan);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(serialNumber, price, plan);
+        return Objects.hash(flightNumber, price, plan);
     }
 
     @Override
     public String toString() {
         return "Flight{" +
-                "name='" + serialNumber + '\'' +
+                "name='" + flightNumber + '\'' +
                 ", price=" + price +
                 ", spec=" + plan +
                 '}';
     }
-
 }

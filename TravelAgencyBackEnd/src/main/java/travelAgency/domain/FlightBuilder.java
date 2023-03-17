@@ -6,15 +6,19 @@ import java.time.LocalDate;
 
 public class FlightBuilder {
 
-    private String serialNumber;
+    private String flightNumber;
     private double price;
     private City from;
     private City to;
     private LocalDate departure;
     private LocalDate arrival;
 
-    public FlightBuilder withSerialNumber(String serialNumber){
-        this.serialNumber = serialNumber;
+    public static FlightBuilder flight(){
+        return new FlightBuilder();
+    }
+
+    public FlightBuilder withFlightNumber(String flightNumber){
+        this.flightNumber = flightNumber;
         return this;
     }
 
@@ -44,7 +48,7 @@ public class FlightBuilder {
     }
 
     public Flight build(){
-        return new Flight(serialNumber,price,
+        return new Flight(flightNumber,price,
                 new FlightPlan(new FlightLocation(from,to),new FlightSchedule(departure,arrival)));
     }
 }
