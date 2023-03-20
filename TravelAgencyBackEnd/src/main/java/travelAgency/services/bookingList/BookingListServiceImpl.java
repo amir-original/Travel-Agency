@@ -4,6 +4,7 @@ import travelAgency.domain.FlightTicket;
 import travelAgency.repository.booking.BookingListRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BookingListServiceImpl implements BookingListService {
 
@@ -16,6 +17,11 @@ public class BookingListServiceImpl implements BookingListService {
     @Override
     public List<FlightTicket> getAllTickets() {
         return bookingListRepository.tickets();
+    }
+
+    @Override
+    public Optional<FlightTicket> getTicket(String ticketNumber) {
+        return bookingListRepository.ticket(ticketNumber);
     }
 
 }

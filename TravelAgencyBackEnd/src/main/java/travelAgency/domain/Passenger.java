@@ -6,27 +6,12 @@ import travelAgency.domain.exceptions.*;
 
 import java.time.LocalDate;
 
-public record Passenger(@NotNull String id, @NotNull String fName, @NotNull String lName, @NotNull LocalDate birthday,
-                        @NotNull City city, @NotNull String address, @NotNull String zipcode,
-                        @NotNull String phoneNumber) {
+public record Passenger(@NotNull String id, @NotNull String fName, @NotNull String lName,
+                        @NotNull LocalDate birthday, @NotNull City city, @NotNull String address,
+                        @NotNull String zipcode, @NotNull String phoneNumber) {
 
-    public Passenger(@NotNull String id, @NotNull String fName, @NotNull String lName, @NotNull LocalDate birthday,
-                     @NotNull City city, @NotNull String address,
-                     @NotNull String zipcode, @NotNull String phoneNumber) {
-        this.id = id;
-        this.fName = fName;
-        this.lName = lName;
-        this.birthday = birthday;
-        this.city = city;
-        this.address = address;
-        this.zipcode = zipcode;
-        this.phoneNumber = phoneNumber;
-
-        validate();
-    }
-
-    private void validate() {
-        if (isNameBlank())
+    public void check() {
+        if (isNameBlank(fName,lName))
             throw new PassengerNameException();
         if (zipcode.isBlank())
             throw new PassengerZipCodeNotNullException();
@@ -35,10 +20,10 @@ public record Passenger(@NotNull String id, @NotNull String fName, @NotNull Stri
         if (phoneNumber.isBlank())
             throw new PassengerPhoneNumbersNotEmptyException();
         if (phoneNumber.length() != 12)
-            throw new PhoneNumberLengthSizeException();
+            throw new PhoneNumberLengthException();
     }
 
-    private boolean isNameBlank() {
+    private boolean isNameBlank(String fName,String lName) {
         return fName.isBlank() || lName.isBlank();
     }
 

@@ -1,16 +1,20 @@
 package travelAgency.domain;
 
 import org.jetbrains.annotations.NotNull;
+import travelAgency.domain.exceptions.FlightTicketNumberNotNullException;
 
 import java.time.LocalDate;
 
 public record FlightTicket(@NotNull String ticketNumber,
                            @NotNull FlightTicketInfo flightTicketInfo) {
 
-    public void check() {
-        flightTicketInfo.check();
+    public boolean canMatchWith(String flightName, String passengerFirstName, LocalDate passengerBirthday) {
+        return flightTicketInfo.canMatchWith(flightName,passengerFirstName,passengerBirthday);
     }
 
+    public void check(){
+        if (ticketNumber.isBlank()) throw new FlightTicketNumberNotNullException();
+    }
 
     public Flight flight() {
         return flightTicketInfo.flight();
@@ -26,10 +30,6 @@ public record FlightTicket(@NotNull String ticketNumber,
 
     public int numberOfTickets() {
         return flightTicketInfo.numberOfTickets();
-    }
-
-    public boolean canMatchWith(String flightName, String passengerFirstName, LocalDate passengerBirthday) {
-        return flightTicketInfo.canMatchWith(flightName,passengerFirstName,passengerBirthday);
     }
 
     public FlightPlan flightPlan() {

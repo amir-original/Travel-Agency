@@ -1,7 +1,6 @@
 package travelAgency.repository.flight;
 
 import travelAgency.domain.Flight;
-import travelAgency.domain.FlightBuilder;
 import travelAgency.domain.FlightPlan;
 import travelAgency.domain.city.City;
 import travelAgency.domain.exceptions.NotFindAnyFlightException;
@@ -82,20 +81,8 @@ public class FindFlightRepositoryImpl implements FindFlightRepository{
     }
 
     @Override
-    public void checkExistenceFlightWith(FlightPlan flightPlan) {
-        if (isNotExistThisFlight(flightPlan)) throw new NotFindAnyFlightException();
-    }
-
-    private boolean isNotExistThisFlight(FlightPlan flightPlan) {
-        return !isExistThisFlight(flightPlan);
-    }
-
-    private boolean isExistThisFlight(FlightPlan flightPlan) {
-        return isNotEmpty(findFlights(flightPlan));
-    }
-
-    private boolean isNotEmpty(List<Flight> objects) {
-        return !objects.isEmpty();
+    public void checkExistenceFlightWith(String flightNumber) {
+        if (findFlight(flightNumber).isEmpty()) throw new NotFindAnyFlightException();
     }
 
     private PreparedStatement createQuery(String sql) throws SQLException {

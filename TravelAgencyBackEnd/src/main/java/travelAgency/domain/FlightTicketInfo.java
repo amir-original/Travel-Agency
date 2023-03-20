@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.LocalDate;
 
 public record FlightTicketInfo(@NotNull Flight flight,
-                               @NotNull BookingInformation bookingInformation) {
+                           @NotNull BookingInformation bookingInformation) {
 
     public boolean canMatchWith(String flightName, String passengerFirstName,
                                 LocalDate PassengerBirthday) {
@@ -39,4 +39,5 @@ public record FlightTicketInfo(@NotNull Flight flight,
     public String passenger_id() {
         return passenger().id();
     }
+
 }

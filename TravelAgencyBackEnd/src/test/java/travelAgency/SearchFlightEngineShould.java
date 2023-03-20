@@ -3,7 +3,6 @@ package travelAgency;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.Flight;
-import travelAgency.domain.exceptions.NotFindAnyFlightException;
 import travelAgency.fakeData.FakeFindFlight;
 import travelAgency.services.flights.FindFlights;
 import travelAgency.services.flights.SearchFlightEngine;
@@ -19,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static travelAgency.fakeData.FakeFlightPlanBuilder.flightPlan;
-import static travelAgency.fakeData.FakeFlightTicketBuilder.flightTicket;
 
 public class SearchFlightEngineShould {
 
+    private static final double ONE_DOLLAR_TO_RIAL = 42700D;
     private SearchFlightEngine engine;
 
     @BeforeEach
@@ -65,7 +64,7 @@ public class SearchFlightEngineShould {
         final List<Flight> flights = engine.search(flightPlan().build());
 
         final CurrencyConverterApiService mock = mock(DollarToRialConverterApi.class);
-        when(mock.diffAmount()).thenReturn(42700D);
+        when(mock.diffAmount()).thenReturn(ONE_DOLLAR_TO_RIAL);
 
         final CurrencyConverterServiceImpl dollarConverter = new CurrencyConverterServiceImpl(mock);
 

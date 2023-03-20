@@ -2,23 +2,24 @@ package travelAgency.services.flights;
 
 import travelAgency.domain.Flight;
 import travelAgency.domain.FlightPlan;
-import travelAgency.domain.exceptions.NotFindAnyFlightException;
+import travelAgency.domain.exceptions.FlightNumberNotFoundException;
 import travelAgency.repository.flight.FindFlightRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public class FindFlights implements FindFlightsService {
 
     private final FindFlightRepository flightRepository;
+    private final List<Flight> flights;
 
     public FindFlights(FindFlightRepository flightRepository) {
         this.flightRepository = flightRepository;
+        flights = flightRepository.getFlights();
     }
 
     @Override
     public List<Flight> getFlights() {
-        return flightRepository.getFlights();
+        return flights;
     }
 
     @Override
@@ -28,25 +29,19 @@ public class FindFlights implements FindFlightsService {
 
 
     @Override
-    public Optional<Flight> findFlight(String flightNumber) {
-        return flightRepository.findFlight(flightNumber);
+    public Flight findFlight(String flightNumber) {
+        return flightRepository.findFlight(flightNumber)
+                .orElseThrow(FlightNumberNotFoundException::new);
     }
 
     @Override
-    public void checkingTheExistenceFlight(FlightPlan flightPlan) {
-        if (isNotExistThisFlight(flightPlan)) throw new NotFindAnyFlightException();
-    }
-
-    private boolean isNotExistThisFlight(FlightPlan flightPlan) {
-        return !isExistThisFlight(flightPlan);
+    public void checkExistenceFlightWith(String flightNumber) {
+        flightRepository.checkExistenceFlightWith(flightNumber);
     }
 
     @Override
     public boolean isExistThisFlight(FlightPlan flightPlan) {
-        return isNotEmpty(findFlights(flightPlan));
+        return flights.stream().anyMatch(flight -> flight.matches(flightPlan));
     }
 
-    private boolean isNotEmpty(List<Flight> objects) {
-        return !objects.isEmpty();
-    }
 }

@@ -44,7 +44,7 @@ public class FakePassengerBuilder {
         return this;
     }
 
-    public FakePassengerBuilder address(String address) {
+    public FakePassengerBuilder withAddress(String address) {
         this.address = address;
         return this;
     }

@@ -49,7 +49,6 @@ public class FindFlightRepositoryShould {
         final Flight flight = flight().build();
         final List<Flight> flights = api.findFlights(flight.plan());
 
-        System.out.println(flights);
         assertThat(flights).isNotEmpty();
         assertThat(flights.size()).isEqualTo(4);
     }

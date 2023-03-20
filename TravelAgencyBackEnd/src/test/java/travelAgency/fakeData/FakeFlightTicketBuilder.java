@@ -1,70 +1,32 @@
 package travelAgency.fakeData;
 
-import travelAgency.domain.*;
+import travelAgency.domain.FlightTicket;
+import travelAgency.domain.FlightTicketInfo;
+import travelAgency.helper.UniqueIdGenerator;
 
-import java.util.Random;
-
-import static java.time.LocalDate.of;
-import static travelAgency.domain.city.City.PARIS;
-import static travelAgency.domain.city.City.TEHRAN;
-import static travelAgency.fakeData.FakeFlightBuilder.flight;
-import static travelAgency.fakeData.FakePassengerBuilder.passenger;
+import static travelAgency.fakeData.FakeFlightTicketInfoBuilder.flightTicketInfo;
 
 public class FakeFlightTicketBuilder {
-
-    private static final String EXIST_FLIGHT_NUMBER = "0321";
-    private static final String NOT_EXIST_FLIGHT_NUMBER = "not_exist_serial_number";
-
-    private Flight flight = getFlightWith(EXIST_FLIGHT_NUMBER);
-
-    private Passenger passenger = passenger().build();
-
-    private int numberOfTickets = 2;
+    private String flightTicketNumber = UniqueIdGenerator.generate(8);
+    private FlightTicketInfo flightTicketInfo = flightTicketInfo().build();
 
     public static FakeFlightTicketBuilder flightTicket() {
         return new FakeFlightTicketBuilder();
     }
 
-    public FakeFlightTicketBuilder withFlight(Flight flight) {
-        this.flight = flight;
+    public FakeFlightTicketBuilder withFlightTicketNumber(String ticketNumber){
+        this.flightTicketNumber = ticketNumber;
         return this;
     }
 
-    public FakeFlightTicketBuilder withNotFoundFlight() {
-        this.flight = getFlightWith(NOT_EXIST_FLIGHT_NUMBER);
+    public FakeFlightTicketBuilder withFlightTicketInfo(FlightTicketInfo flightTicketInfo){
+        this.flightTicketInfo = flightTicketInfo;
         return this;
     }
 
-    public FakeFlightTicketBuilder withPassenger(Passenger passenger) {
-        this.passenger = passenger;
-        return this;
-    }
-
-    public FakeFlightTicketBuilder withNumbers(int numberOfTickets) {
-        this.numberOfTickets = numberOfTickets;
-        return this;
-    }
 
     public FlightTicket build() {
-        final BookingInformation bookingInformation = new BookingInformation(passenger, numberOfTickets);
-        final FlightTicketInfo flightTicketInfo = new FlightTicketInfo(flight, bookingInformation);
-        return new FlightTicket(generateTicketId(), flightTicketInfo);
+        return new FlightTicket(flightTicketNumber,flightTicketInfo);
     }
 
-    private String generateTicketId() {
-        final Random random = new Random();
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < 8; i++) {
-            result.append(random.nextInt(10));
-        }
-        return result.toString();
-    }
-
-    private Flight getFlightWith(String serialNumber) {
-        return flight().withFlightNumber(serialNumber)
-                .from(TEHRAN)
-                .to(PARIS)
-                .departureAt(of(2023, 3, 3))
-                .arrivalAt(of(2023, 3, 6)).build();
-    }
 }

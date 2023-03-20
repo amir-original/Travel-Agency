@@ -4,9 +4,6 @@ import travelAgency.domain.city.City;
 
 import java.time.LocalDate;
 
-import static java.time.LocalDate.of;
-import static travelAgency.domain.city.City.TEHRAN;
-
 public class PassengerBuilder {
 
     private String id ;

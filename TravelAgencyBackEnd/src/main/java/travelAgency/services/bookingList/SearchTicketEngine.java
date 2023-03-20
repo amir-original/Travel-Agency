@@ -8,7 +8,6 @@ import java.time.LocalDate;
 public class SearchTicketEngine {
     private final BookingListService bookingListService;
 
-
     public SearchTicketEngine(BookingListService bookingListService) {
         this.bookingListService = bookingListService;
     }

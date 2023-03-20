@@ -14,5 +14,5 @@ public interface FindFlightRepository {
 
     Optional<Flight> findFlight(String flightNumber);
 
-    void checkExistenceFlightWith(FlightPlan flightPlan);
+    void checkExistenceFlightWith(String flightNumber);
 }

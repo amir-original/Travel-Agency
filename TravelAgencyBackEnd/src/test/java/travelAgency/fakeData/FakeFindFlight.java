@@ -44,8 +44,8 @@ public class FakeFindFlight implements FindFlightRepository {
     }
 
     @Override
-    public void checkExistenceFlightWith(FlightPlan flightPlan) {
-        final boolean isPresent = flights.stream().anyMatch(flight -> flight.matches(flightPlan));
+    public void checkExistenceFlightWith(String flightNumber) {
+        final boolean isPresent = flights.stream().anyMatch(flight -> flight.matches(flightNumber));
         if (!isPresent)
             throw new NotFindAnyFlightException();
     }
