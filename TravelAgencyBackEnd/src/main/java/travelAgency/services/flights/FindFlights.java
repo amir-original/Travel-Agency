@@ -9,16 +9,16 @@ import java.util.List;
 
 public class FindFlights implements FindFlightsService {
 
-    private final FindFlightRepository flightRepository;
+    private final FindFlightRepository findFlightRepository;
     private List<Flight> flights;
 
-    public FindFlights(FindFlightRepository flightRepository) {
-        this.flightRepository = flightRepository;
+    public FindFlights(FindFlightRepository findFlightRepository) {
+        this.findFlightRepository = findFlightRepository;
         initFlights();
     }
 
     private void initFlights() {
-       flights = flightRepository.getFlights();
+       flights = findFlightRepository.getFlights();
     }
 
     @Override
@@ -28,19 +28,19 @@ public class FindFlights implements FindFlightsService {
 
     @Override
     public List<Flight> findFlights(FlightPlan flightPlan) {
-        return flightRepository.findFlights(flightPlan);
+        return findFlightRepository.findFlights(flightPlan);
     }
 
 
     @Override
     public Flight findFlight(String flightNumber) {
-        return flightRepository.findFlight(flightNumber)
+        return findFlightRepository.findFlight(flightNumber)
                 .orElseThrow(FlightNumberNotFoundException::new);
     }
 
     @Override
     public void checkExistenceFlightWith(String flightNumber) {
-        flightRepository.checkExistenceFlightWith(flightNumber);
+        findFlightRepository.checkExistenceFlightWith(flightNumber);
     }
 
     @Override

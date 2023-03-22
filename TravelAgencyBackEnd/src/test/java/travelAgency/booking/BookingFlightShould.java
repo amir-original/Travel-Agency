@@ -110,7 +110,7 @@ public class BookingFlightShould {
                                 withPassenger(passenger().withZipcode(null).build())
                                 .build())),
 
-                () -> assertThatExceptionOfType(PassengerZipCodeNotNullException.class)
+                () -> assertThatExceptionOfType(PassengerZipCodeException.class)
                         .isThrownBy(() -> app.book(flightTicketInfo()
                                 .withPassenger(passenger().withZipcode("").build())
                                 .build()))
@@ -126,7 +126,7 @@ public class BookingFlightShould {
                                 .withPassenger(passenger().withAddress(null).build())
                                 .build())),
 
-                () -> assertThatExceptionOfType(PassengerAddressNotNullException.class)
+                () -> assertThatExceptionOfType(PassengerAddressException.class)
                         .isThrownBy(() -> app.book(flightTicketInfo()
                                 .withPassenger(passenger().withAddress("").build())
                                 .build()))

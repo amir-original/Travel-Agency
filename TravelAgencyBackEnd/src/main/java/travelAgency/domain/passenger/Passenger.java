@@ -14,9 +14,9 @@ public record Passenger(@NotNull String id, @NotNull String fName, @NotNull Stri
         if (isNameBlank(fName,lName))
             throw new PassengerNameException();
         if (zipcode.isBlank())
-            throw new PassengerZipCodeNotNullException();
+            throw new PassengerZipCodeException();
         if (address.isBlank())
-            throw new PassengerAddressNotNullException();
+            throw new PassengerAddressException();
         if (phoneNumber.isBlank())
             throw new PassengerPhoneNumbersNotEmptyException();
         if (phoneNumber.length() != 12)

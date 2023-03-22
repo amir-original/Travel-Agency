@@ -6,6 +6,7 @@ import travelAgency.repository.db.DbConnection;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static travelAgency.repository.flight.FlightSQL.*;
 
@@ -13,13 +14,14 @@ import static travelAgency.repository.flight.FlightSQL.*;
 public class FlightRepositoryImpl implements FlightRepository {
     private static final String TABLE_NAME = "flights";
 
-
     private final DbConnection db;
     private final Connection connection;
+    private FindFlightRepository findFlightRepository;
 
     public FlightRepositoryImpl(DbConnection db) {
         this.db = db;
         this.connection = db.getConnection();
+        this.findFlightRepository = new FindFlightRepositoryImpl(db);
     }
 
     @Override
@@ -58,6 +60,21 @@ public class FlightRepositoryImpl implements FlightRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Optional<Flight> flight(String flightNumber) {
+        return findFlightRepository.findFlight(flightNumber);
+    }
+
+    @Override
+    public List<Flight> flights() {
+        return findFlightRepository.getFlights();
+    }
+
+    @Override
+    public void checkExistenceFlightWith(String flightNumber) {
+        findFlightRepository.checkExistenceFlightWith(flightNumber);
     }
 
     @Override

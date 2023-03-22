@@ -32,6 +32,9 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public void delete(String flightNumber) {
+        flightRepository.checkExistenceFlightWith(flightNumber);
         flightRepository.deleteFlight(flightNumber);
     }
+
+
 }
