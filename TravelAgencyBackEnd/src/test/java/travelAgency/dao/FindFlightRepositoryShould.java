@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import travelAgency.domain.Flight;
 import travelAgency.domain.FlightBuilder;
 import travelAgency.domain.city.City;
-import travelAgency.fakeData.FakeFlightBuilder;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
 import travelAgency.repository.flight.FindFlightRepository;
 import travelAgency.repository.flight.FindFlightRepositoryImpl;
@@ -55,6 +54,19 @@ public class FindFlightRepositoryShould {
 
     @Test
     void name() {
+        String[] checks = {"ws","cu","mu"};
+        System.out.println(check(checks));
+    }
+
+    private boolean check(String[] checks) {
+        boolean result = true;
+        for (String check : checks) {
+            result = check.startsWith("cu");
+            if (result) {
+                break;
+            }
+        }
+        return result;
     }
 
     private Flight insertSingleFlight() {
@@ -67,7 +79,7 @@ public class FindFlightRepositoryShould {
                 .withPrice(47500)
                 .build();
 
-        flightApi.createFlight(flight);
+        flightApi.addFlight(flight);
         return flight;
     }
 

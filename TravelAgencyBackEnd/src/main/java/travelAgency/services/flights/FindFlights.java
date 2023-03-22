@@ -10,11 +10,15 @@ import java.util.List;
 public class FindFlights implements FindFlightsService {
 
     private final FindFlightRepository flightRepository;
-    private final List<Flight> flights;
+    private List<Flight> flights;
 
     public FindFlights(FindFlightRepository flightRepository) {
         this.flightRepository = flightRepository;
-        flights = flightRepository.getFlights();
+        initFlights();
+    }
+
+    private void initFlights() {
+       flights = flightRepository.getFlights();
     }
 
     @Override

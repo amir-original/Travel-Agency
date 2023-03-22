@@ -17,13 +17,13 @@ import static travelAgency.domain.FlightBuilder.flight;
 import static travelAgency.domain.PassengerBuilder.passenger;
 
 public class BookingListRepositoryImpl implements BookingListRepository {
-    private static final String SELECT_ALL = """
+    private static final String SELECT_ALL_JOIN = """
             SELECT t.ticket_number,t.number_of_tickets,f.*,p.* FROM tickets as t\s
                 join flights as f on t.flight_number = f.flight_number
                 join passengers as p on t.passenger_id = p.passenger_id
             """;
 
-    private static final String SELECT_QUERY = SELECT_ALL + " where t.ticket_number = ?";
+    private static final String SELECT_JOIN_WHERE = SELECT_ALL_JOIN + " where t.ticket_number = ?";
 
     private final DbConnection db;
     private final Connection connection;
@@ -36,7 +36,7 @@ public class BookingListRepositoryImpl implements BookingListRepository {
     @Override
     public Optional<FlightTicket> ticket(String serialNumber) {
         FlightTicket flightTicket = null;
-        try (final PreparedStatement sql = createQuery(SELECT_QUERY)) {
+        try (final PreparedStatement sql = createQuery(SELECT_JOIN_WHERE)) {
             sql.setString(1, serialNumber);
             final ResultSet resultSet = sql.executeQuery();
             while (resultSet.next()) {
@@ -51,7 +51,7 @@ public class BookingListRepositoryImpl implements BookingListRepository {
     @Override
     public List<FlightTicket> tickets() {
         List<FlightTicket> result = new LinkedList<>();
-        try (final PreparedStatement query = createQuery(SELECT_ALL)) {
+        try (final PreparedStatement query = createQuery(SELECT_ALL_JOIN)) {
             final ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
                 result.add(getFlightTicket(resultSet));

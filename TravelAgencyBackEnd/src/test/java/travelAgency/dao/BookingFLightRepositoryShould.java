@@ -60,7 +60,7 @@ public class BookingFLightRepositoryShould {
 
     private void insertSingleFlight() {
         final Flight flight = flight().build();
-        flightApi.createFlight(flight);
+        flightApi.addFlight(flight);
     }
 
     private void insertSingleTicket() {

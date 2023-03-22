@@ -10,15 +10,10 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-
+import static travelAgency.repository.flight.FlightSQL.*;
 import static travelAgency.domain.FlightBuilder.flight;
 
 public class FindFlightRepositoryImpl implements FindFlightRepository{
-
-    private static final String SELECT_QUERY = "SELECT * FROM flights WHERE flight_number = ?";
-    private static final String SELECT_ALL_FIND_FLIGHTS =
-            "SELECT * FROM flights where from_city = ? and to_city = ? and departure = ? and arrival=?";
-
     private DbConnection db;
     private Connection connection;
 
@@ -27,9 +22,19 @@ public class FindFlightRepositoryImpl implements FindFlightRepository{
         this.connection = db.getConnection();
     }
 
+
     @Override
     public List<Flight> getFlights() {
-        return null;
+        List<Flight> flights = new LinkedList<>();
+        try (final PreparedStatement query = createQuery(SELECT_ALL)) {
+            final ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                flights.add(buildFlight(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return flights;
     }
 
     @Override
@@ -57,7 +62,7 @@ public class FindFlightRepositoryImpl implements FindFlightRepository{
     @Override
     public Optional<Flight> findFlight(String flightNumber) {
         Flight flight = null;
-        try (final PreparedStatement query = createQuery(SELECT_QUERY)) {
+        try (final PreparedStatement query = createQuery(SELECT_WHERE)) {
             query.setString(1, flightNumber);
             final ResultSet resultSet = query.executeQuery();
             if (resultSet.next()) {

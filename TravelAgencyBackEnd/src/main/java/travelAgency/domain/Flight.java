@@ -2,7 +2,8 @@ package travelAgency.domain;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.city.City;
-import travelAgency.domain.exceptions.FlightNumberNotEmptyException;
+import travelAgency.domain.exceptions.FlightNumberException;
+import travelAgency.domain.exceptions.FlightPriceException;
 import travelAgency.services.priceConverter.CurrencyConverterService;
 
 import java.time.LocalDate;
@@ -20,7 +21,9 @@ public record Flight(@NotNull String flightNumber, double price, @NotNull Flight
 
     public void check() {
         if (flightNumber.isBlank())
-            throw new FlightNumberNotEmptyException();
+            throw new FlightNumberException();
+
+        if (price <= 0) throw new FlightPriceException();
     }
 
     public double price(CurrencyConverterService currencyConverter) {

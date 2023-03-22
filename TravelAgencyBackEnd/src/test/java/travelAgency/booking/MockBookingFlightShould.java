@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 import travelAgency.domain.FlightTicket;
 import travelAgency.domain.FlightTicketInfo;
+import travelAgency.domain.Passenger;
 import travelAgency.domain.exceptions.NotFindAnyFlightException;
 import travelAgency.repository.booking.BookingFlightRepository;
 import travelAgency.repository.flight.FindFlightRepository;
@@ -64,7 +65,7 @@ public class MockBookingFlightShould {
 
     private PassengerRepository createPassengerRepository() {
         final PassengerRepository mock = mock(PassengerRepository.class);
-        doNothing().when(mock).save(any());
+        doNothing().when(mock).save(any(Passenger.class));
         return mock;
     }
 

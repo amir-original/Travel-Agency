@@ -10,6 +10,5 @@ public interface FindFlightsService {
     List<Flight> findFlights(FlightPlan flightPlan);
     Flight findFlight(String flightNumber);
     void checkExistenceFlightWith(String flightNumber);
-
     boolean isExistThisFlight(FlightPlan flightPlan);
 }

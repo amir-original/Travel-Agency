@@ -1,0 +1,37 @@
+package travelAgency.services.flights;
+
+import travelAgency.domain.Flight;
+import travelAgency.repository.flight.FlightRepository;
+
+import java.util.List;
+
+public class FlightServiceImpl implements FlightService {
+    private final FlightRepository flightRepository;
+
+    public FlightServiceImpl(FlightRepository flightRepository) {
+        this.flightRepository = flightRepository;
+    }
+
+    @Override
+    public void add(Flight flight) {
+        flight.check();
+        flightRepository.addFlight(flight);
+    }
+
+    @Override
+    public void add(List<Flight> flights) {
+        checkFlights(flights);
+        flightRepository.createFlights(flights);
+    }
+
+    private void checkFlights(List<Flight> flights) {
+        for (Flight flight : flights) {
+            flight.check();
+        }
+    }
+
+    @Override
+    public void delete(String flightNumber) {
+        flightRepository.deleteFlight(flightNumber);
+    }
+}
