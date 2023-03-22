@@ -13,13 +13,18 @@ public class MySQLDbConnection implements DbConnection {
     private String user;
     private String pass;
     private Connection connection;
+    private String configFileName = "db-config";
 
     public MySQLDbConnection() {
         loadConfig();
     }
 
+    public MySQLDbConnection(String configFileName) {
+        this.configFileName = configFileName;
+    }
+
     private void loadConfig() {
-        final PropertiesReader propertiesReader = new PropertiesReader("db-config");
+        final PropertiesReader propertiesReader = new PropertiesReader(configFileName);
         host = propertiesReader.getProperty("host");
         user = propertiesReader.getProperty("username");
         pass = propertiesReader.getProperty("password");

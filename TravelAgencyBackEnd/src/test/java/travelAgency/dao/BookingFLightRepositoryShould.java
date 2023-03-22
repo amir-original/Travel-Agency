@@ -34,7 +34,6 @@ public class BookingFLightRepositoryShould {
         findBooking = new BookingListRepositoryImpl(mysql);
         flightApi = new FlightRepositoryImpl(mysql);
         passengerApi = new PassengerRepositoryImpl(mysql);
-        clearTables();
     }
 
     @Test
