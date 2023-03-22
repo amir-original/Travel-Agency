@@ -1,6 +1,6 @@
 package travelAgency.repository.passenger;
 
-import travelAgency.domain.Passenger;
+import travelAgency.domain.passenger.Passenger;
 
 import java.util.List;
 import java.util.Optional;

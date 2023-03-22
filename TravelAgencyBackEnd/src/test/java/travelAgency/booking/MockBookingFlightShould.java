@@ -4,14 +4,14 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
-import travelAgency.domain.FlightTicket;
-import travelAgency.domain.FlightTicketInfo;
-import travelAgency.domain.Passenger;
+import travelAgency.domain.booking.FlightTicket;
+import travelAgency.domain.booking.FlightTicketInfo;
+import travelAgency.domain.passenger.Passenger;
 import travelAgency.domain.exceptions.NotFindAnyFlightException;
 import travelAgency.repository.booking.BookingFlightRepository;
 import travelAgency.repository.flight.FindFlightRepository;
 import travelAgency.repository.passenger.PassengerRepository;
-import travelAgency.services.booking.BookingFlightTicket;
+import travelAgency.services.BookingFlightTicket;
 import travelAgency.services.booking.BookingTicketServiceImpl;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

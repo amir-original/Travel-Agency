@@ -2,8 +2,8 @@ package travelAgency;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.Flight;
-import travelAgency.domain.FlightPlan;
+import travelAgency.domain.flight.Flight;
+import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.exceptions.FlightNumberNotFoundException;
 import travelAgency.fakeData.FakeFindFlight;
 import travelAgency.services.flights.FindFlights;

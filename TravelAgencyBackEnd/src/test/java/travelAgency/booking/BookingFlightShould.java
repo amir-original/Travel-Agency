@@ -2,12 +2,12 @@ package travelAgency.booking;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.FlightTicket;
+import travelAgency.domain.booking.FlightTicket;
 import travelAgency.domain.exceptions.*;
 import travelAgency.fakeData.FakeFindFlight;
 import travelAgency.fakeData.FakePassenger;
 import travelAgency.repository.booking.BookingFlightRepository;
-import travelAgency.services.booking.BookingFlightTicket;
+import travelAgency.services.BookingFlightTicket;
 import travelAgency.services.booking.BookingTicketServiceImpl;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

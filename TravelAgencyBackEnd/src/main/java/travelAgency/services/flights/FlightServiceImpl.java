@@ -1,6 +1,6 @@
 package travelAgency.services.flights;
 
-import travelAgency.domain.Flight;
+import travelAgency.domain.flight.Flight;
 import travelAgency.repository.flight.FlightRepository;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public void add(List<Flight> flights) {
         checkFlights(flights);
-        flightRepository.createFlights(flights);
+        flightRepository.addFlights(flights);
     }
 
     private void checkFlights(List<Flight> flights) {

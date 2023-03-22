@@ -1,7 +1,8 @@
-package travelAgency.domain;
+package travelAgency.domain.booking;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.exceptions.NumberOfTicketsException;
+import travelAgency.domain.passenger.Passenger;
 
 public record BookingInformation(@NotNull Passenger passenger, int numberOfTickets) {
 

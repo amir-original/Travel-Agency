@@ -1,8 +1,8 @@
 package travelAgency.services.booking;
 
-import travelAgency.domain.FlightTicket;
-import travelAgency.domain.FlightTicketInfo;
-import travelAgency.domain.TicketNumberGenerator;
+import travelAgency.domain.booking.FlightTicket;
+import travelAgency.domain.booking.FlightTicketInfo;
+import travelAgency.domain.booking.TicketNumberGenerator;
 import travelAgency.repository.booking.BookingFlightRepository;
 
 public class BookingTicketServiceImpl implements BookingTicketService {

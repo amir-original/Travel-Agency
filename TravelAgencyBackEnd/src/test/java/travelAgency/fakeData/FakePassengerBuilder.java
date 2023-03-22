@@ -1,10 +1,9 @@
 package travelAgency.fakeData;
 
-import travelAgency.domain.Passenger;
+import travelAgency.domain.passenger.Passenger;
 import travelAgency.domain.city.City;
 
 import java.time.LocalDate;
-import java.util.Random;
 
 import static java.time.LocalDate.of;
 import static travelAgency.domain.city.City.TEHRAN;

@@ -1,6 +1,6 @@
 package travelAgency.services.bookingList;
 
-import travelAgency.domain.FlightTicket;
+import travelAgency.domain.booking.FlightTicket;
 
 import java.util.List;
 import java.util.Optional;

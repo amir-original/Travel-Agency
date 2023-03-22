@@ -1,6 +1,6 @@
 package travelAgency.services.flights;
 
-import travelAgency.domain.Flight;
+import travelAgency.domain.flight.Flight;
 
 import java.util.List;
 

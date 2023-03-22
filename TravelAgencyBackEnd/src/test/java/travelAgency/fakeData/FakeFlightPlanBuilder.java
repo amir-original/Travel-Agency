@@ -1,8 +1,8 @@
 package travelAgency.fakeData;
 
-import travelAgency.domain.FlightLocation;
-import travelAgency.domain.FlightPlan;
-import travelAgency.domain.FlightSchedule;
+import travelAgency.domain.flight.FlightLocation;
+import travelAgency.domain.flight.FlightPlan;
+import travelAgency.domain.flight.FlightSchedule;
 import travelAgency.domain.city.City;
 
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package travelAgency.domain;
+package travelAgency.domain.flight;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.city.City;

@@ -4,7 +4,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.*;
+import travelAgency.domain.flight.Flight;
+import travelAgency.domain.flight.FlightBuilder;
 import travelAgency.repository.flight.FindFlightRepository;
 import travelAgency.repository.flight.FindFlightRepositoryImpl;
 import travelAgency.repository.flight.FlightRepository;
@@ -85,7 +86,7 @@ public class FlightRepositoryShould {
                 flight().withFlightNumber("748").withPrice(700).build(),
                 flight().withFlightNumber("887").withPrice(500).build());
 
-        api.createFlights(flights);
+        api.addFlights(flights);
     }
 
     private Flight insertSingleFlight() {

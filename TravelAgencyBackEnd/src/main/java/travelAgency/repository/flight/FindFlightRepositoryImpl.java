@@ -1,7 +1,7 @@
 package travelAgency.repository.flight;
 
-import travelAgency.domain.Flight;
-import travelAgency.domain.FlightPlan;
+import travelAgency.domain.flight.Flight;
+import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.city.City;
 import travelAgency.domain.exceptions.NotFindAnyFlightException;
 import travelAgency.repository.db.DbConnection;
@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import static travelAgency.repository.flight.FlightSQL.*;
-import static travelAgency.domain.FlightBuilder.flight;
+import static travelAgency.domain.flight.FlightBuilder.flight;
 
 public class FindFlightRepositoryImpl implements FindFlightRepository{
     private DbConnection db;

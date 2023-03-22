@@ -1,6 +1,6 @@
 package travelAgency.fakeData;
 
-import travelAgency.domain.Passenger;
+import travelAgency.domain.passenger.Passenger;
 import travelAgency.repository.passenger.PassengerRepository;
 
 import java.util.List;

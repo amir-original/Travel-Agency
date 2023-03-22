@@ -1,6 +1,6 @@
 package travelAgency.services.bookingList;
 
-import travelAgency.domain.FlightTicket;
+import travelAgency.domain.booking.FlightTicket;
 import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
 
 import java.time.LocalDate;

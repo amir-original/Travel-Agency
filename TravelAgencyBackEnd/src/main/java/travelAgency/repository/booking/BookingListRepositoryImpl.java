@@ -1,8 +1,12 @@
 package travelAgency.repository.booking;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.*;
+import travelAgency.domain.booking.BookingInformation;
+import travelAgency.domain.booking.FlightTicket;
+import travelAgency.domain.booking.FlightTicketInfo;
 import travelAgency.domain.city.City;
+import travelAgency.domain.flight.Flight;
+import travelAgency.domain.passenger.Passenger;
 import travelAgency.repository.db.DbConnection;
 
 import java.sql.Connection;
@@ -13,8 +17,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import static travelAgency.domain.FlightBuilder.flight;
-import static travelAgency.domain.PassengerBuilder.passenger;
+import static travelAgency.domain.flight.FlightBuilder.flight;
+import static travelAgency.domain.passenger.PassengerBuilder.passenger;
 
 public class BookingListRepositoryImpl implements BookingListRepository {
     private static final String SELECT_ALL_JOIN = """

@@ -1,7 +1,7 @@
 package travelAgency.services.flights;
 
-import travelAgency.domain.Flight;
-import travelAgency.domain.FlightPlan;
+import travelAgency.domain.flight.Flight;
+import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.exceptions.FlightNumberNotFoundException;
 import travelAgency.repository.flight.FindFlightRepository;
 

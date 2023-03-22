@@ -1,10 +1,10 @@
-package travelAgency.services.booking;
+package travelAgency.services;
 
-import travelAgency.domain.FlightTicket;
-import travelAgency.domain.FlightTicketInfo;
+import travelAgency.domain.booking.FlightTicket;
+import travelAgency.domain.booking.FlightTicketInfo;
 import travelAgency.repository.flight.FindFlightRepository;
 import travelAgency.repository.passenger.PassengerRepository;
-import travelAgency.services.flights.FindFlightsService;
+import travelAgency.services.booking.BookingTicketService;
 
 public class BookingFlightTicket {
 

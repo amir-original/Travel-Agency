@@ -1,7 +1,7 @@
 package travelAgency.fakeData;
 
-import travelAgency.domain.FlightTicket;
-import travelAgency.domain.FlightTicketInfo;
+import travelAgency.domain.booking.FlightTicket;
+import travelAgency.domain.booking.FlightTicketInfo;
 import travelAgency.helper.UniqueIdGenerator;
 
 import static travelAgency.fakeData.FakeFlightTicketInfoBuilder.flightTicketInfo;

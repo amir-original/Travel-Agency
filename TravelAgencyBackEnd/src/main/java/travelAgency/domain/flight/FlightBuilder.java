@@ -1,4 +1,4 @@
-package travelAgency.domain;
+package travelAgency.domain.flight;
 
 import travelAgency.domain.city.City;
 

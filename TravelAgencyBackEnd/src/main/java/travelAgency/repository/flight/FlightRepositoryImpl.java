@@ -1,6 +1,6 @@
 package travelAgency.repository.flight;
 
-import travelAgency.domain.Flight;
+import travelAgency.domain.flight.Flight;
 import travelAgency.repository.db.DbConnection;
 
 import java.sql.*;
@@ -23,7 +23,7 @@ public class FlightRepositoryImpl implements FlightRepository {
     }
 
     @Override
-    public void createFlights(List<Flight> flights) {
+    public void addFlights(List<Flight> flights) {
         flights.forEach(this::addFlight);
     }
 

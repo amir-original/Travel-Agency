@@ -1,4 +1,4 @@
-package travelAgency.domain;
+package travelAgency.domain.booking;
 
 import travelAgency.helper.UniqueIdGenerator;
 

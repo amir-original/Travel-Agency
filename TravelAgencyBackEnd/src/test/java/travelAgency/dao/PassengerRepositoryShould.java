@@ -3,7 +3,7 @@ package travelAgency.dao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.Passenger;
+import travelAgency.domain.passenger.Passenger;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
 import travelAgency.repository.passenger.PassengerRepositoryImpl;
 

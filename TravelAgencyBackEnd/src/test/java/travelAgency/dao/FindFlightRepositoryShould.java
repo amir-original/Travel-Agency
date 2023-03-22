@@ -2,8 +2,8 @@ package travelAgency.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.Flight;
-import travelAgency.domain.FlightBuilder;
+import travelAgency.domain.flight.Flight;
+import travelAgency.domain.flight.FlightBuilder;
 import travelAgency.domain.city.City;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
 import travelAgency.repository.flight.FindFlightRepository;
@@ -91,6 +91,6 @@ public class FindFlightRepositoryShould {
                 flight().withFlightNumber("887").withPrice(500).build(),
                 flight().withFlightNumber("874").from(City.AHVAZ).to(City.NEW_YORK_CITY).build());
 
-        flightApi.createFlights(flights);
+        flightApi.addFlights(flights);
     }
 }

@@ -1,7 +1,7 @@
 package travelAgency.services.booking;
 
-import travelAgency.domain.FlightTicket;
-import travelAgency.domain.FlightTicketInfo;
+import travelAgency.domain.booking.FlightTicket;
+import travelAgency.domain.booking.FlightTicketInfo;
 
 public interface BookingTicketService {
 

@@ -1,6 +1,6 @@
 package travelAgency.fakeData;
 
-import travelAgency.domain.FlightTicket;
+import travelAgency.domain.booking.FlightTicket;
 import travelAgency.repository.booking.BookingListRepository;
 
 import java.util.List;

@@ -1,7 +1,10 @@
-package travelAgency.domain;
+package travelAgency.domain.booking;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.exceptions.FlightTicketNumberNotNullException;
+import travelAgency.domain.flight.Flight;
+import travelAgency.domain.flight.FlightPlan;
+import travelAgency.domain.passenger.Passenger;
 
 import java.time.LocalDate;
 

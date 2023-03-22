@@ -2,17 +2,12 @@ package travelAgency;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.Flight;
+import travelAgency.domain.flight.Flight;
 import travelAgency.domain.exceptions.FlightNumberException;
 import travelAgency.domain.exceptions.FlightPriceException;
-import travelAgency.fakeData.FakeFindFlight;
 import travelAgency.repository.flight.FlightRepository;
-import travelAgency.services.flights.FindFlights;
-import travelAgency.services.flights.FindFlightsService;
 import travelAgency.services.flights.FlightService;
 import travelAgency.services.flights.FlightServiceImpl;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;

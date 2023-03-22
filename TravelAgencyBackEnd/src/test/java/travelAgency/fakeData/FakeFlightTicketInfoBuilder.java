@@ -1,7 +1,9 @@
 package travelAgency.fakeData;
 
-import travelAgency.domain.*;
-import travelAgency.helper.UniqueIdGenerator;
+import travelAgency.domain.booking.BookingInformation;
+import travelAgency.domain.booking.FlightTicketInfo;
+import travelAgency.domain.flight.Flight;
+import travelAgency.domain.passenger.Passenger;
 
 import static java.time.LocalDate.of;
 import static travelAgency.domain.city.City.PARIS;
