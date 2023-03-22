@@ -6,6 +6,7 @@ import travelAgency.repository.flight.FlightRepository;
 import java.util.List;
 
 public class FlightServiceImpl implements FlightService {
+
     private final FlightRepository flightRepository;
 
     public FlightServiceImpl(FlightRepository flightRepository) {

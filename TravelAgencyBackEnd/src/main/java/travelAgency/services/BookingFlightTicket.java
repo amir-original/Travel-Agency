@@ -24,8 +24,7 @@ public class BookingFlightTicket {
         check(flightTicketInfo);
         findFlightRepository.checkExistenceFlightWith(flightTicketInfo.flightNumber());
         passengerRepository.save(flightTicketInfo.passenger());
-        final FlightTicket flightTicket = ticketService.book(flightTicketInfo);
-        return flightTicket;
+        return ticketService.book(flightTicketInfo);
     }
 
     private void check(FlightTicketInfo flightTicketInfo) {
