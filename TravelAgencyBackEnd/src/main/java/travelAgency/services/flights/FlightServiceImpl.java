@@ -10,20 +10,23 @@ import java.util.List;
 public class FlightServiceImpl implements FlightService {
 
     private final FindFlightRepository findFlightRepository;
+    private final SearchFlightEngine searchFlightEngine;
     private List<Flight> flights;
 
     public FlightServiceImpl(FindFlightRepository findFlightRepository) {
         this.findFlightRepository = findFlightRepository;
-        initFlights();
+        getFlights();
+        this.searchFlightEngine = new SearchFlightEngine(flights);
     }
 
-    private void initFlights() {
-       flights = findFlightRepository.getFlights();
+    private void getFlights() {
+        this.flights = findFlightRepository.getFlights();
     }
+
 
     @Override
-    public List<Flight> getFlights() {
-        return flights;
+    public List<Flight> search(FlightPlan searchFlightPlan) {
+        return searchFlightEngine.search(searchFlightPlan);
     }
 
     @Override
@@ -43,7 +46,6 @@ public class FlightServiceImpl implements FlightService {
         findFlightRepository.checkExistenceFlightWith(flightNumber);
     }
 
-    @Override
     public boolean isExistThisFlight(FlightPlan flightPlan) {
         return flights.stream().anyMatch(flight -> flight.matches(flightPlan));
     }

@@ -20,7 +20,7 @@ public record Flight(@NotNull String flightNumber, double price, @NotNull Flight
     }
 
     public void check() {
-        if (flightNumber.isBlank())
+        if (flightNumber.isBlank() || flightNumber.length() < 3)
             throw new FlightNumberException();
 
         if (price <= 0) throw new FlightPriceException();

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.flight.Flight;
 import travelAgency.fakeData.FakeFindFlight;
+import travelAgency.services.flights.FlightService;
 import travelAgency.services.flights.FlightServiceImpl;
 import travelAgency.services.flights.SearchFlightEngine;
 import travelAgency.services.priceConverter.CurrencyConverterServiceImpl;
@@ -22,11 +23,11 @@ import static travelAgency.fakeData.FakeFlightPlanBuilder.flightPlan;
 public class SearchFlightEngineShould {
 
     private static final double ONE_DOLLAR_TO_RIAL = 42700D;
-    private SearchFlightEngine engine;
+    private FlightService engine;
 
     @BeforeEach
     void setUp() {
-        engine = new SearchFlightEngine(new FlightServiceImpl(new FakeFindFlight()));
+        engine = new FlightServiceImpl(new FakeFindFlight());
     }
 
     @Test

@@ -2,9 +2,12 @@ package travelAgency.booking;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import travelAgency.domain.booking.FlightTicket;
+import travelAgency.domain.booking.TicketNumberGenerator;
 import travelAgency.domain.exceptions.*;
 import travelAgency.fakeData.FakeFindFlight;
+import travelAgency.fakeData.FakeFlightBuilder;
 import travelAgency.fakeData.FakePassenger;
 import travelAgency.repository.booking.BookingFlightRepository;
 import travelAgency.services.BookingFlightTicket;
@@ -13,6 +16,9 @@ import travelAgency.services.booking.BookingTicketServiceImpl;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static travelAgency.fakeData.FakeFlightBuilder.flight;
 import static travelAgency.fakeData.FakeFlightTicketInfoBuilder.flightTicketInfo;
 import static travelAgency.fakeData.FakePassengerBuilder.passenger;
 
@@ -22,8 +28,10 @@ public class BookingFlightShould {
 
     @BeforeEach
     void setUp() {
+        TicketNumberGenerator ticketNumberGenerator = mock(TicketNumberGenerator.class);
+        when(ticketNumberGenerator.generate()).thenReturn("56472514");
         app = new BookingFlightTicket(
-                new BookingTicketServiceImpl(new FakeBookingFlight()),
+                new BookingTicketServiceImpl(new FakeBookingFlight(), ticketNumberGenerator),
                 new FakeFindFlight(),
                 new FakePassenger()
         );
@@ -145,6 +153,7 @@ public class BookingFlightShould {
                                 .withPassenger(passenger().withPhoneNumber("").build())
                                 .build()))
         );
+
     }
 
     @Test
@@ -163,6 +172,20 @@ public class BookingFlightShould {
                                         .withPhoneNumber("0911145235675").build())
                                 .build()))
         );
+    }
+
+
+    @Test
+    void throw_FlightNumberException_when_entered_empty_or_less_than_3_length() {
+        assertThatExceptionOfType(FlightNumberException.class)
+                .isThrownBy(() -> app.book(flightTicketInfo()
+                        .withFlight(flight().withFlightNumber("").build())
+                        .build()));
+
+        assertThatExceptionOfType(FlightNumberException.class)
+                .isThrownBy(() -> app.book(flightTicketInfo()
+                        .withFlight(flight().withFlightNumber("45").build())
+                        .build()));
     }
 
     private static class FakeBookingFlight implements BookingFlightRepository {

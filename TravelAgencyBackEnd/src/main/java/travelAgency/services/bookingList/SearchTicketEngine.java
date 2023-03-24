@@ -7,7 +7,7 @@ import travelAgency.repository.booking.BookingListRepository;
 import java.time.LocalDate;
 import java.util.List;
 
-public class SearchTicketEngine implements SearchTicketService {
+public class SearchTicketEngine {
     private final BookingListRepository bookingListRepository;
 
     private List<FlightTicket> tickets;

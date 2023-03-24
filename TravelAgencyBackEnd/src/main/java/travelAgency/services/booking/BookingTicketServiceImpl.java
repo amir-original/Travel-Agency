@@ -7,10 +7,12 @@ import travelAgency.repository.booking.BookingFlightRepository;
 
 public class BookingTicketServiceImpl implements BookingTicketService {
     private final BookingFlightRepository bookingFlightRepository;
-    private final TicketNumberGenerator ticketNumberGenerator = new TicketNumberGenerator();
+    private final TicketNumberGenerator ticketNumberGenerator;
 
-    public BookingTicketServiceImpl(BookingFlightRepository bookingFlightRepository) {
+    public BookingTicketServiceImpl(BookingFlightRepository bookingFlightRepository,
+                                    TicketNumberGenerator ticketNumberGenerator) {
         this.bookingFlightRepository = bookingFlightRepository;
+        this.ticketNumberGenerator = ticketNumberGenerator;
     }
 
     @Override
@@ -18,6 +20,7 @@ public class BookingTicketServiceImpl implements BookingTicketService {
         final String ticketNumber = ticketNumberGenerator.generate();
 
         final FlightTicket flightTicket = new FlightTicket(ticketNumber, flightTicketInfo);
+        flightTicket.check();
 
         bookingFlightRepository.book(flightTicket);
 

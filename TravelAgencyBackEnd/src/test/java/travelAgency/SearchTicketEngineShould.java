@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
 import travelAgency.fakeData.FakeBookingList;
+import travelAgency.services.bookingList.BookingListService;
+import travelAgency.services.bookingList.BookingListServiceImpl;
 import travelAgency.services.bookingList.SearchTicketEngine;
 
 import java.time.LocalDate;
@@ -20,11 +22,11 @@ public class SearchTicketEngineShould {
     private static final String SARA = "Sara";
     private static final LocalDate SARA_BIRTHDAY = of(1999, 4, 5);
     private static final String EXIST_FLIGHT_NUMBER = "0321";
-    private SearchTicketEngine searchTicketEngine;
+    private BookingListService searchTicketEngine;
 
     @BeforeEach
     void setUp() {
-        searchTicketEngine = new SearchTicketEngine(new FakeBookingList());
+        searchTicketEngine = new BookingListServiceImpl(new FakeBookingList());
     }
 
     @Test

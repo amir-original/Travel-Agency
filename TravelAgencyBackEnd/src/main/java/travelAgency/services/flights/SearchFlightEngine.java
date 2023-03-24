@@ -5,20 +5,7 @@ import travelAgency.domain.flight.FlightPlan;
 
 import java.util.List;
 
-public class SearchFlightEngine {
-
-    private final FlightService findFlightsService;
-
-    private List<Flight> flights;
-
-    public SearchFlightEngine(FlightService findFlightsService) {
-        this.findFlightsService = findFlightsService;
-        getFlights();
-    }
-
-    private void getFlights() {
-        this.flights = findFlightsService.getFlights();
-    }
+public record SearchFlightEngine(List<Flight> flights) {
 
     public List<Flight> search(FlightPlan searchFlightPlan){
        return flights.stream()

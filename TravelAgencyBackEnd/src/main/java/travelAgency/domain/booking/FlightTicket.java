@@ -1,7 +1,7 @@
 package travelAgency.domain.booking;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.exceptions.FlightTicketNumberNotNullException;
+import travelAgency.domain.exceptions.FlightTicketNumberException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.passenger.Passenger;
@@ -16,7 +16,7 @@ public record FlightTicket(@NotNull String ticketNumber,
     }
 
     public void check(){
-        if (ticketNumber.isBlank()) throw new FlightTicketNumberNotNullException();
+        if (ticketNumber.isBlank()) throw new FlightTicketNumberException();
     }
 
     public Flight flight() {
@@ -33,10 +33,6 @@ public record FlightTicket(@NotNull String ticketNumber,
 
     public int numberOfTickets() {
         return flightTicketInfo.numberOfTickets();
-    }
-
-    public FlightPlan flightPlan() {
-        return flightTicketInfo.flightPlan();
     }
 
     public Passenger passenger() {

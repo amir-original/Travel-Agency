@@ -63,9 +63,4 @@ public class FindFlightServiceShould {
                 .isThrownBy(() -> app.findFlight(NOT_EXIST_FLIGHT_NUMBER));
     }
 
-    @Test
-    void get_all_flights() {
-        assertThat(app.getFlights()).isNotEmpty();
-        assertThat(app.getFlights().size()).isEqualTo(5);
-    }
 }
