@@ -6,8 +6,8 @@ import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.exceptions.FlightNumberNotFoundException;
 import travelAgency.fakeData.FakeFindFlight;
-import travelAgency.services.flights.FindFlights;
-import travelAgency.services.flights.FindFlightsService;
+import travelAgency.services.flights.FlightServiceImpl;
+import travelAgency.services.flights.FlightService;
 
 import java.util.List;
 
@@ -22,11 +22,11 @@ import static travelAgency.fakeData.FakeFlightPlanBuilder.flightPlan;
 public class FindFlightServiceShould {
 
     private static final String NOT_EXIST_FLIGHT_NUMBER = "fwefefef";
-    private FindFlightsService app;
+    private FlightService app;
 
     @BeforeEach
     void setUp() {
-        app = new FindFlights(new FakeFindFlight());
+        app = new FlightServiceImpl(new FakeFindFlight());
     }
 
     @Test

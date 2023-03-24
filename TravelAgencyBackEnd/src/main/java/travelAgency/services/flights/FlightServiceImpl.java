@@ -1,41 +1,51 @@
 package travelAgency.services.flights;
 
 import travelAgency.domain.flight.Flight;
-import travelAgency.repository.flight.FlightRepository;
+import travelAgency.domain.flight.FlightPlan;
+import travelAgency.domain.exceptions.FlightNumberNotFoundException;
+import travelAgency.repository.flight.FindFlightRepository;
 
 import java.util.List;
 
 public class FlightServiceImpl implements FlightService {
 
-    private final FlightRepository flightRepository;
+    private final FindFlightRepository findFlightRepository;
+    private List<Flight> flights;
 
-    public FlightServiceImpl(FlightRepository flightRepository) {
-        this.flightRepository = flightRepository;
+    public FlightServiceImpl(FindFlightRepository findFlightRepository) {
+        this.findFlightRepository = findFlightRepository;
+        initFlights();
+    }
+
+    private void initFlights() {
+       flights = findFlightRepository.getFlights();
     }
 
     @Override
-    public void add(Flight flight) {
-        flight.check();
-        flightRepository.addFlight(flight);
+    public List<Flight> getFlights() {
+        return flights;
     }
 
     @Override
-    public void add(List<Flight> flights) {
-        checkFlights(flights);
-        flightRepository.addFlights(flights);
+    public List<Flight> findFlights(FlightPlan flightPlan) {
+        return findFlightRepository.findFlights(flightPlan);
     }
 
-    private void checkFlights(List<Flight> flights) {
-        for (Flight flight : flights) {
-            flight.check();
-        }
+
+    @Override
+    public Flight findFlight(String flightNumber) {
+        return findFlightRepository.findFlight(flightNumber)
+                .orElseThrow(FlightNumberNotFoundException::new);
     }
 
     @Override
-    public void delete(String flightNumber) {
-        flightRepository.checkExistenceFlightWith(flightNumber);
-        flightRepository.deleteFlight(flightNumber);
+    public void checkExistenceFlightWith(String flightNumber) {
+        findFlightRepository.checkExistenceFlightWith(flightNumber);
     }
 
+    @Override
+    public boolean isExistThisFlight(FlightPlan flightPlan) {
+        return flights.stream().anyMatch(flight -> flight.matches(flightPlan));
+    }
 
 }

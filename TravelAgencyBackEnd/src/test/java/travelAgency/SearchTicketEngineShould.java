@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
 import travelAgency.fakeData.FakeBookingList;
-import travelAgency.services.bookingList.BookingListServiceImpl;
 import travelAgency.services.bookingList.SearchTicketEngine;
 
 import java.time.LocalDate;
@@ -25,8 +24,7 @@ public class SearchTicketEngineShould {
 
     @BeforeEach
     void setUp() {
-        BookingListServiceImpl bookingList = new BookingListServiceImpl(new FakeBookingList());
-        searchTicketEngine = new SearchTicketEngine(bookingList);
+        searchTicketEngine = new SearchTicketEngine(new FakeBookingList());
     }
 
     @Test

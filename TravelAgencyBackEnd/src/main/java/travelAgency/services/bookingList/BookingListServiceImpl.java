@@ -1,27 +1,27 @@
 package travelAgency.services.bookingList;
 
 import travelAgency.domain.booking.FlightTicket;
-import travelAgency.repository.booking.BookingListRepository;
+import travelAgency.repository.booking.BookingListRepositoryImpl;
+import travelAgency.repository.db.mysq.MySQLDbConnection;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
 
 public class BookingListServiceImpl implements BookingListService {
 
-    private final BookingListRepository bookingListRepository;
+    private final SearchTicketService searchEngine;
 
-    public BookingListServiceImpl(BookingListRepository bookingListRepository) {
-        this.bookingListRepository = bookingListRepository;
+    public BookingListServiceImpl() {
+        final BookingListRepositoryImpl bookingListRepository = new BookingListRepositoryImpl(new MySQLDbConnection());
+        this.searchEngine = new SearchTicketEngine(bookingListRepository);
     }
 
     @Override
-    public List<FlightTicket> getAllTickets() {
-        return bookingListRepository.tickets();
+    public FlightTicket search(String flightNumber, String passengerFirstName, LocalDate PassengerBirthday) {
+        return searchEngine.search(flightNumber,passengerFirstName,PassengerBirthday);
     }
 
     @Override
-    public Optional<FlightTicket> getTicket(String ticketNumber) {
-        return bookingListRepository.ticket(ticketNumber);
-    }
+    public void cancel(String ticketNumber) {
 
+    }
 }

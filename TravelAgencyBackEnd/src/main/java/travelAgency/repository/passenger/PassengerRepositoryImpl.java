@@ -37,11 +37,6 @@ public class PassengerRepositoryImpl implements PassengerRepository {
         }
     }
 
-    @Override
-    public void save(List<Passenger> passengers) {
-        passengers.forEach(this::save);
-    }
-
     private void fillPassengerField(Passenger passenger, PreparedStatement sql) throws SQLException {
         sql.setString(1, passenger.id());
         sql.setString(2, passenger.fName());
@@ -55,6 +50,11 @@ public class PassengerRepositoryImpl implements PassengerRepository {
 
     private Date convertToSQLDate(LocalDate localDate) {
         return Date.valueOf(localDate);
+    }
+
+    @Override
+    public void save(List<Passenger> passengers) {
+        passengers.forEach(this::save);
     }
 
     private void activeDeletedTrigger() {

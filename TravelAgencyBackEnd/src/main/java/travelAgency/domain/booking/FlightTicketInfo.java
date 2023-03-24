@@ -10,10 +10,10 @@ import java.time.LocalDate;
 public record FlightTicketInfo(@NotNull Flight flight,
                            @NotNull BookingInformation bookingInformation) {
 
-    public boolean canMatchWith(String flightName, String passengerFirstName,
+    public boolean canMatchWith(String flightNumber, String passengerFirstName,
                                 LocalDate PassengerBirthday) {
 
-        return flight.flightNumber().equals(flightName) &&
+        return flight.flightNumber().equals(flightNumber) &&
                 passenger().fName().equals(passengerFirstName) &&
                 passenger().birthday().equals(PassengerBirthday);
     }

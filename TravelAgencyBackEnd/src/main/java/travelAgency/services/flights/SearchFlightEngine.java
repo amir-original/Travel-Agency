@@ -7,15 +7,23 @@ import java.util.List;
 
 public class SearchFlightEngine {
 
-    private final FindFlightsService findFlightsService;
+    private final FlightService findFlightsService;
 
-    public SearchFlightEngine(FindFlightsService findFlightsService) {
+    private List<Flight> flights;
+
+    public SearchFlightEngine(FlightService findFlightsService) {
         this.findFlightsService = findFlightsService;
+        getFlights();
+    }
+
+    private void getFlights() {
+        this.flights = findFlightsService.getFlights();
     }
 
     public List<Flight> search(FlightPlan searchFlightPlan){
-       return findFlightsService.getFlights().stream()
-               .filter(flight -> flight.matches(searchFlightPlan)).toList();
+       return flights.stream()
+               .filter(flight -> flight.matches(searchFlightPlan))
+               .toList();
     }
 
 }
