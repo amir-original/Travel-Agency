@@ -41,11 +41,6 @@ public class FlightServiceImpl implements FlightService {
                 .orElseThrow(FlightNumberNotFoundException::new);
     }
 
-    @Override
-    public void checkExistenceFlightWith(String flightNumber) {
-        findFlightRepository.checkExistenceFlightWith(flightNumber);
-    }
-
     public boolean isExistThisFlight(FlightPlan flightPlan) {
         return flights.stream().anyMatch(flight -> flight.matches(flightPlan));
     }

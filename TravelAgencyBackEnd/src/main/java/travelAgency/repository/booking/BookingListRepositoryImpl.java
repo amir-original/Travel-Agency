@@ -66,6 +66,11 @@ public class BookingListRepositoryImpl implements BookingListRepository {
         return result;
     }
 
+    @Override
+    public void remove(FlightTicket flightTicket) {
+
+    }
+
     @NotNull
     private FlightTicket getFlightTicket(ResultSet rs) throws SQLException {
         final String ticket_number = rs.getString("ticket_number");

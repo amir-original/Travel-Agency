@@ -23,4 +23,9 @@ public class FakeBookingList implements BookingListRepository {
                 new FlightTicket("64125521", flightTicketInfo().build())
         );
     }
+
+    @Override
+    public void remove(FlightTicket flightTicket) {
+
+    }
 }
