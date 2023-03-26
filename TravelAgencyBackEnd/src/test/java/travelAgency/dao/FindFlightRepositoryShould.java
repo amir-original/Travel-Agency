@@ -52,23 +52,6 @@ public class FindFlightRepositoryShould {
         assertThat(flights.size()).isEqualTo(4);
     }
 
-    @Test
-    void name() {
-        String[] checks = {"ws","cu","mu"};
-        System.out.println(check(checks));
-    }
-
-    private boolean check(String[] checks) {
-        boolean result = true;
-        for (String check : checks) {
-            result = check.startsWith("cu");
-            if (result) {
-                break;
-            }
-        }
-        return result;
-    }
-
     private Flight insertSingleFlight() {
         final Flight flight = new FlightBuilder()
                 .withFlightNumber("fly580")
