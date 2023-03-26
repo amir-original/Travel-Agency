@@ -12,17 +12,13 @@ public class BookingListServiceImpl implements BookingListService {
 
     private final SearchTicketEngine searchEngine;
     private final BookingListRepository bookingListRepository;
-    private List<FlightTicket> tickets;
+
 
     public BookingListServiceImpl(BookingListRepository bookingListRepository) {
         this.bookingListRepository = bookingListRepository;
-        getTickets();
-        this.searchEngine = new SearchTicketEngine(tickets);
+        this.searchEngine = new SearchTicketEngine(getTickets());
     }
 
-    private void getTickets() {
-        tickets = new LinkedList<>(bookingListRepository.tickets());
-    }
 
     @Override
     public FlightTicket search(String flightNumber, String passengerFirstName, LocalDate passengerBirthday) {
@@ -36,7 +32,11 @@ public class BookingListServiceImpl implements BookingListService {
 
     @Override
     public boolean isExistFlightTicket(FlightTicket ticket) {
-        return tickets.stream().anyMatch(flightTicket -> flightTicket.equals(ticket));
+        return bookingListRepository.ticket(ticket.ticketNumber()).isPresent();
+    }
+
+    private List<FlightTicket> getTickets() {
+        return bookingListRepository.tickets();
     }
 
 }

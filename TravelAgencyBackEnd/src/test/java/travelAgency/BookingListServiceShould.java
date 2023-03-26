@@ -52,8 +52,5 @@ public class BookingListServiceShould {
         assertThatNoException().isThrownBy(()->service.cancel(ticket));
 
         assertThat(service.isExistFlightTicket(ticket)).isFalse();
-
-       // assertThat(service.tickets().size()).isEqualTo(2);
-
     }
 }
