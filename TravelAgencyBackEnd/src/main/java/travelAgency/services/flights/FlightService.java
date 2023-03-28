@@ -11,5 +11,5 @@ public interface FlightService {
     Flight findFlight(String flightNumber);
     boolean isExistThisFlight(FlightPlan flightPlan);
 
-    // TODO (flight capacity, seats number)
+    // TODO (findFlight capacity, seats number)
 }

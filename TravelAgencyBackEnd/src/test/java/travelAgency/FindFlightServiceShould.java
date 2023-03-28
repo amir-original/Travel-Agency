@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.exceptions.FlightNumberNotFoundException;
-import travelAgency.fakeData.FakeFindFlight;
+import travelAgency.fakeData.FakeFlight;
 import travelAgency.services.flights.FlightServiceImpl;
 import travelAgency.services.flights.FlightService;
 
@@ -26,7 +26,7 @@ public class FindFlightServiceShould {
 
     @BeforeEach
     void setUp() {
-        app = new FlightServiceImpl(new FakeFindFlight());
+        app = new FlightServiceImpl(new FakeFlight());
     }
 
     @Test

@@ -1,6 +1,7 @@
 package travelAgency.repository.flight;
 
 import travelAgency.domain.flight.Flight;
+import travelAgency.domain.flight.FlightPlan;
 import travelAgency.repository.db.DbConnection;
 
 import java.sql.*;
@@ -63,13 +64,18 @@ public class FlightRepositoryImpl implements FlightRepository {
     }
 
     @Override
-    public Optional<Flight> flight(String flightNumber) {
+    public Optional<Flight> findFlight(String flightNumber) {
         return findFlightRepository.findFlight(flightNumber);
     }
 
     @Override
     public List<Flight> flights() {
         return findFlightRepository.getFlights();
+    }
+
+    @Override
+    public List<Flight> findFlights(FlightPlan flightPlan) {
+        return findFlightRepository.findFlights(flightPlan);
     }
 
     @Override

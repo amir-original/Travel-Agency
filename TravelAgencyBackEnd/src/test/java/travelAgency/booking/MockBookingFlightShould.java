@@ -8,11 +8,11 @@ import travelAgency.domain.booking.FlightTicket;
 import travelAgency.domain.booking.FlightTicketInfo;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.domain.exceptions.NotFindAnyFlightException;
-import travelAgency.repository.booking.BookingFlightRepository;
-import travelAgency.repository.flight.FindFlightRepository;
+import travelAgency.repository.booking.BookingListRepository;
+import travelAgency.repository.flight.FlightRepository;
 import travelAgency.repository.passenger.PassengerRepository;
 import travelAgency.services.BookingFlightTicket;
-import travelAgency.services.booking.BookingTicketServiceImpl;
+import travelAgency.services.booking.BookingFlightServiceImpl;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
@@ -23,9 +23,9 @@ public class MockBookingFlightShould {
 
     private static final String TICKET_NUMBER = "56472514";
     private BookingFlightTicket app;
-    private FindFlightRepository findFlights;
+    private FlightRepository findFlights;
     private PassengerRepository passengers;
-    private BookingTicketServiceImpl ticketService;
+    private BookingFlightServiceImpl ticketService;
 
     @BeforeEach
     void setUp() {
@@ -36,8 +36,8 @@ public class MockBookingFlightShould {
     }
 
     @NotNull
-    private BookingTicketServiceImpl createTicketService() {
-        final BookingTicketServiceImpl ticketService = mock(BookingTicketServiceImpl.class);
+    private BookingFlightServiceImpl createTicketService() {
+        final BookingFlightServiceImpl ticketService = mock(BookingFlightServiceImpl.class);
         final FlightTicket flightTicket = flightTicket().withFlightTicketNumber(TICKET_NUMBER).build();
         when(ticketService.book(any())).thenReturn(flightTicket);
         return ticketService;
@@ -57,8 +57,8 @@ public class MockBookingFlightShould {
         inOrder.verify(ticketService).book(flightTicketInfo);
     }
 
-    private BookingFlightRepository createBookingFlightRepository() {
-        final BookingFlightRepository mock = mock(BookingFlightRepository.class);
+    private BookingListRepository createBookingFlightRepository() {
+        final BookingListRepository mock = mock(BookingListRepository.class);
         doNothing().when(mock).book(any());
         return mock;
     }
@@ -69,8 +69,8 @@ public class MockBookingFlightShould {
         return mock;
     }
 
-    private FindFlightRepository createFindFlightsRepository() {
-        final FindFlightRepository mock = mock(FindFlightRepository.class);
+    private FlightRepository createFindFlightsRepository() {
+        final FlightRepository mock = mock(FlightRepository.class);
         final String notFoundFlightNumber = "Not Found Flight Number";
         doThrow(NotFindAnyFlightException.class).when(mock).checkExistenceFlightWith(notFoundFlightNumber);
         return mock;

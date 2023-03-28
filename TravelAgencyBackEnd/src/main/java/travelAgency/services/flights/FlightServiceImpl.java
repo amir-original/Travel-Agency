@@ -3,24 +3,24 @@ package travelAgency.services.flights;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.exceptions.FlightNumberNotFoundException;
-import travelAgency.repository.flight.FindFlightRepository;
+import travelAgency.repository.flight.FlightRepository;
 
 import java.util.List;
 
 public class FlightServiceImpl implements FlightService {
 
-    private final FindFlightRepository findFlightRepository;
+    private final FlightRepository flightRepository;
     private final SearchFlightEngine searchFlightEngine;
     private List<Flight> flights;
 
-    public FlightServiceImpl(FindFlightRepository findFlightRepository) {
-        this.findFlightRepository = findFlightRepository;
+    public FlightServiceImpl(FlightRepository flightRepository) {
+        this.flightRepository = flightRepository;
         getFlights();
         this.searchFlightEngine = new SearchFlightEngine(flights);
     }
 
     private void getFlights() {
-        this.flights = findFlightRepository.getFlights();
+        this.flights = flightRepository.flights();
     }
 
 
@@ -31,13 +31,13 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<Flight> findFlights(FlightPlan flightPlan) {
-        return findFlightRepository.findFlights(flightPlan);
+        return flightRepository.findFlights(flightPlan);
     }
 
 
     @Override
     public Flight findFlight(String flightNumber) {
-        return findFlightRepository.findFlight(flightNumber)
+        return flightRepository.findFlight(flightNumber)
                 .orElseThrow(FlightNumberNotFoundException::new);
     }
 

@@ -19,22 +19,32 @@ import java.util.Optional;
 
 import static travelAgency.domain.flight.FlightBuilder.flight;
 import static travelAgency.domain.passenger.PassengerBuilder.passenger;
+import static travelAgency.repository.booking.BookingSQL.*;
 
 public class BookingListRepositoryImpl implements BookingListRepository {
-    private static final String SELECT_ALL_JOIN = """
-            SELECT t.ticket_number,t.number_of_tickets,f.*,p.* FROM tickets as t\s
-                join flights as f on t.flight_number = f.flight_number
-                join passengers as p on t.passenger_id = p.passenger_id
-            """;
-
-    private static final String SELECT_JOIN_WHERE = SELECT_ALL_JOIN + " where t.ticket_number = ?";
-
     private final DbConnection db;
     private final Connection connection;
 
     public BookingListRepositoryImpl(DbConnection db) {
         this.db = db;
         this.connection = db.getConnection();
+    }
+
+    @Override
+    public void book(FlightTicket flightTicket) {
+        try (final PreparedStatement query = createQuery(INSERT_QUERY)) {
+            fillFlightTicket(flightTicket, query);
+            query.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void fillFlightTicket(FlightTicket flightTicket, PreparedStatement query) throws SQLException {
+        query.setString(1, flightTicket.ticketNumber());
+        query.setString(2, flightTicket.flightNumber());
+        query.setString(3, flightTicket.passenger_id());
+        query.setInt(4, flightTicket.numberOfTickets());
     }
 
     @Override
@@ -69,6 +79,21 @@ public class BookingListRepositoryImpl implements BookingListRepository {
     @Override
     public void remove(FlightTicket flightTicket) {
 
+    }
+
+    @Override
+    public int numberOfBookedFlight(String flightNumber) {
+        return 0;
+    }
+
+    @Override
+    public int numberOfSeatsAvailable(String flightNumber) {
+        return 0;
+    }
+
+    @Override
+    public void truncate() {
+        db.truncate(TABLE_NAME);
     }
 
     @NotNull

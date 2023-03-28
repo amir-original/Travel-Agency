@@ -2,19 +2,15 @@ package travelAgency.booking;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import travelAgency.domain.booking.FlightTicket;
 import travelAgency.domain.booking.TicketNumberGenerator;
 import travelAgency.domain.exceptions.*;
-import travelAgency.fakeData.FakeFindFlight;
-import travelAgency.fakeData.FakeFlightBuilder;
+import travelAgency.fakeData.FakeBookingList;
+import travelAgency.fakeData.FakeFlight;
 import travelAgency.fakeData.FakePassenger;
-import travelAgency.repository.booking.BookingFlightRepository;
 import travelAgency.services.BookingFlightTicket;
-import travelAgency.services.booking.BookingTicketServiceImpl;
+import travelAgency.services.booking.BookingFlightServiceImpl;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -31,8 +27,8 @@ public class BookingFlightShould {
         TicketNumberGenerator ticketNumberGenerator = mock(TicketNumberGenerator.class);
         when(ticketNumberGenerator.generate()).thenReturn("56472514");
         app = new BookingFlightTicket(
-                new BookingTicketServiceImpl(new FakeBookingFlight(), ticketNumberGenerator),
-                new FakeFindFlight(),
+                new BookingFlightServiceImpl(new FakeBookingList(), ticketNumberGenerator),
+                new FakeFlight(),
                 new FakePassenger()
         );
     }
@@ -50,7 +46,6 @@ public class BookingFlightShould {
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(flightTicketInfo().withFlight(null).build()))
         );
-
     }
 
     @Test
@@ -188,18 +183,7 @@ public class BookingFlightShould {
                         .build()));
     }
 
-    private static class FakeBookingFlight implements BookingFlightRepository {
 
-        @Override
-        public void book(FlightTicket flightTicket) {
 
-        }
-
-        @Override
-        public void truncate() {
-
-        }
-
-    }
 
 }
