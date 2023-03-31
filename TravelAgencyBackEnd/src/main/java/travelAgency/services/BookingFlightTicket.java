@@ -1,39 +1,38 @@
 package travelAgency.services;
 
+import travelAgency.domain.booking.BookingInformation;
 import travelAgency.domain.booking.FlightTicket;
-import travelAgency.domain.booking.FlightTicketInfo;
-import travelAgency.repository.booking.BookingListRepositoryImpl;
-import travelAgency.repository.db.mysq.MySQLDbConnection;
-import travelAgency.repository.flight.FlightRepository;
 import travelAgency.repository.passenger.PassengerRepository;
-import travelAgency.services.booking.BookingFlightService;
 import travelAgency.services.bookingList.BookingListService;
-import travelAgency.services.bookingList.BookingListServiceImpl;
+import travelAgency.services.flights.FlightAvailabilityImpl;
 
 public class BookingFlightTicket {
 
-    private final BookingFlightService ticketService;
-    private final PassengerRepository passengerRepository;
-    private final FlightRepository flightRepository;
+    private final BookingListService bookingLists;
+    private final PassengerRepository passengers;
+    private final FlightAvailabilityImpl flightAvailability;
 
-    public BookingFlightTicket(BookingFlightService ticketService,
-                               FlightRepository FlightRepository,
-                               PassengerRepository passengerRepository) {
-        this.ticketService = ticketService;
-        this.passengerRepository = passengerRepository;
-        this.flightRepository = FlightRepository;
+    public BookingFlightTicket(BookingListService bookingLists,
+                               FlightAvailabilityImpl flightAvailability,
+                               PassengerRepository passengers) {
+        this.bookingLists = bookingLists;
+        this.passengers = passengers;
+        this.flightAvailability = flightAvailability;
     }
 
-    public FlightTicket book(FlightTicketInfo flightTicketInfo) {
-        check(flightTicketInfo);
-        flightRepository.checkExistenceFlightWith(flightTicketInfo.flightNumber());
-        // check availibilty
-        passengerRepository.save(flightTicketInfo.passenger());
-        return ticketService.book(flightTicketInfo);
+    public FlightTicket book(BookingInformation bookingInfo) {
+        check(bookingInfo);
+        final String flightNumber = bookingInfo.flightNumber();
+
+        flightAvailability.checkingFlight(flightNumber, bookingInfo.numberOfTickets());
+
+        passengers.save(bookingInfo.passenger());
+        return bookingLists.book(bookingInfo);
     }
 
-    private void check(FlightTicketInfo flightTicketInfo) {
-        flightTicketInfo.check();
+    private void check(BookingInformation bookingInformation) {
+        bookingInformation.check();
     }
+
 
 }

@@ -6,13 +6,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightBuilder;
-import travelAgency.repository.flight.FindFlightRepository;
-import travelAgency.repository.flight.FindFlightRepositoryImpl;
+import travelAgency.repository.db.mysq.MySQLDbConnection;
 import travelAgency.repository.flight.FlightRepository;
 import travelAgency.repository.flight.FlightRepositoryImpl;
-import travelAgency.repository.db.mysq.MySQLDbConnection;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ import static java.time.LocalDate.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static travelAgency.domain.city.City.PARIS;
 import static travelAgency.domain.city.City.TEHRAN;
-import static travelAgency.fakeData.FakeFlightBuilder.flight;
+import static travelAgency.fake.FakeFlightBuilder.flight;
 
 public class FlightRepositoryShould {
 
@@ -30,12 +31,10 @@ public class FlightRepositoryShould {
     private static final String PASS = "";
     private static final String DELETE_SQL = "delete from flights order by id desc limit 1";
     private FlightRepository api;
-    private FindFlightRepository findApi;
 
     @BeforeEach
     void setUp() {
         api = new FlightRepositoryImpl(new MySQLDbConnection());
-        findApi = new FindFlightRepositoryImpl(new MySQLDbConnection());
         api.truncate();
     }
 
@@ -44,7 +43,7 @@ public class FlightRepositoryShould {
     void create_new_flight() {
         final Flight flight = insertSingleFlight();
 
-        final Optional<Flight> fetchedFlight = findApi.findFlight(flight.flightNumber());
+        final Optional<Flight> fetchedFlight = api.findFlight(flight.flightNumber());
 
         assertThat(fetchedFlight.get()).isEqualTo(flight);
     }
@@ -55,7 +54,7 @@ public class FlightRepositoryShould {
 
         api.deleteFlight(flight.flightNumber());
 
-        final Optional<Flight> fetchedFlight = findApi.findFlight(flight.flightNumber());
+        final Optional<Flight> fetchedFlight = api.findFlight(flight.flightNumber());
 
         assertThat(fetchedFlight.isPresent()).isFalse();
     }
@@ -64,7 +63,7 @@ public class FlightRepositoryShould {
     void create_multiple_flights() {
         insertFlights();
 
-        final List<Flight> fetchedFlights = findApi.getFlights();
+        final List<Flight> fetchedFlights = api.flights();
 
         assertThat(fetchedFlights).isNotEmpty();
         assertThat(fetchedFlights.size()).isEqualTo(4);
@@ -76,7 +75,7 @@ public class FlightRepositoryShould {
 
         api.truncate();
 
-        final List<Flight> fetchedFlights = findApi.getFlights();
+        final List<Flight> fetchedFlights = api.flights();
         assertThat(fetchedFlights).isEmpty();
     }
 

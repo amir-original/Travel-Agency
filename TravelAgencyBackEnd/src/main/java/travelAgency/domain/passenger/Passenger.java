@@ -30,7 +30,7 @@ public record Passenger(@NotNull String id, @NotNull String fName, @NotNull Stri
     @Override
     public String toString() {
         return "Passenger{" +
-                "passenger_id='" + id + '\'' +
+                "passengerId='" + id + '\'' +
                 ", fName='" + fName + '\'' +
                 ", lName='" + lName + '\'' +
                 ", birthday=" + birthday +
@@ -39,5 +39,10 @@ public record Passenger(@NotNull String id, @NotNull String fName, @NotNull Stri
                 ", zipcode='" + zipcode + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
+    }
+
+    public boolean canMatchWith(String passengerFirstName, LocalDate PassengerBirthday) {
+        return fName().equals(passengerFirstName) &&
+                birthday().equals(PassengerBirthday);
     }
 }

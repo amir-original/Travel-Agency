@@ -1,14 +1,14 @@
-package travelAgency.fakeData;
+package travelAgency.fake;
 
+import travelAgency.domain.booking.BookingInformation;
 import travelAgency.domain.booking.FlightTicket;
-import travelAgency.domain.booking.FlightTicketInfo;
 import travelAgency.helper.UniqueIdGenerator;
 
-import static travelAgency.fakeData.FakeFlightTicketInfoBuilder.flightTicketInfo;
+import static travelAgency.fake.FakeBookingInformationBuilder.bookingInformation;
 
 public class FakeFlightTicketBuilder {
     private String flightTicketNumber = UniqueIdGenerator.generate(8);
-    private FlightTicketInfo flightTicketInfo = flightTicketInfo().build();
+    private BookingInformation bookingInformation = bookingInformation().build();
 
     public static FakeFlightTicketBuilder flightTicket() {
         return new FakeFlightTicketBuilder();
@@ -19,14 +19,14 @@ public class FakeFlightTicketBuilder {
         return this;
     }
 
-    public FakeFlightTicketBuilder withFlightTicketInfo(FlightTicketInfo flightTicketInfo){
-        this.flightTicketInfo = flightTicketInfo;
+    public FakeFlightTicketBuilder withBookingInfo(BookingInformation bookingInformation){
+        this.bookingInformation = bookingInformation;
         return this;
     }
 
 
     public FlightTicket build() {
-        return new FlightTicket(flightTicketNumber,flightTicketInfo);
+        return new FlightTicket(flightTicketNumber,bookingInformation);
     }
 
 }

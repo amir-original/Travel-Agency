@@ -9,7 +9,4 @@ public interface FlightService {
     List<Flight> search(FlightPlan searchFlightPlan);
     List<Flight> findFlights(FlightPlan flightPlan);
     Flight findFlight(String flightNumber);
-    boolean isExistThisFlight(FlightPlan flightPlan);
-
-    // TODO (findFlight capacity, seats number)
 }

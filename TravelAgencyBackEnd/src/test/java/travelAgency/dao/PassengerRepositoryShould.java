@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-import static travelAgency.fakeData.FakePassengerBuilder.passenger;
+import static travelAgency.fake.FakePassengerBuilder.passenger;
 
 public class PassengerRepositoryShould {
 

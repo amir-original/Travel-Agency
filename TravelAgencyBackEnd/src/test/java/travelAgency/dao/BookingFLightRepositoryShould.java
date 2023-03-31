@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static travelAgency.fakeData.FakeFlightBuilder.flight;
-import static travelAgency.fakeData.FakeFlightTicketBuilder.flightTicket;
+import static travelAgency.fake.FakeFlightBuilder.flight;
+import static travelAgency.fake.FakeFlightTicketBuilder.flightTicket;
 
 public class BookingFLightRepositoryShould {
 

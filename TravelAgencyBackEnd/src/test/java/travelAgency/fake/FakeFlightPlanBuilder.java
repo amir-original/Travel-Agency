@@ -1,13 +1,12 @@
-package travelAgency.fakeData;
+package travelAgency.fake;
 
+import travelAgency.domain.city.City;
 import travelAgency.domain.flight.FlightLocation;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.flight.FlightSchedule;
-import travelAgency.domain.city.City;
 
 import java.time.LocalDate;
 
-import static java.time.LocalDate.of;
 import static travelAgency.domain.city.City.PARIS;
 import static travelAgency.domain.city.City.TEHRAN;
 
@@ -15,8 +14,8 @@ public class FakeFlightPlanBuilder  {
 
     private City from = TEHRAN;
     private City to = PARIS;
-    private LocalDate departure = of(2023, 3, 3);
-    private LocalDate arrival = departure.plusDays(3);
+    private LocalDate departure = LocalDate.now();
+    private LocalDate arrival = LocalDate.now().plusDays(1);
 
     public static FakeFlightPlanBuilder flightPlan(){
         return new FakeFlightPlanBuilder();

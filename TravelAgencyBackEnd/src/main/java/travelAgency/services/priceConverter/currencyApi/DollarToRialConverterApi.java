@@ -4,6 +4,6 @@ public class DollarToRialConverterApi implements CurrencyConverterApiService {
 
     @Override
     public double diffAmount() {
-        return converter().oneDollarToRail();
+        return service().oneDollarToRail();
     }
 }

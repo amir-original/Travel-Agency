@@ -6,8 +6,6 @@ import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightBuilder;
 import travelAgency.domain.city.City;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
-import travelAgency.repository.flight.FindFlightRepository;
-import travelAgency.repository.flight.FindFlightRepositoryImpl;
 import travelAgency.repository.flight.FlightRepository;
 import travelAgency.repository.flight.FlightRepositoryImpl;
 
@@ -18,18 +16,16 @@ import static java.time.LocalDate.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static travelAgency.domain.city.City.PARIS;
 import static travelAgency.domain.city.City.TEHRAN;
-import static travelAgency.fakeData.FakeFlightBuilder.flight;
+import static travelAgency.fake.FakeFlightBuilder.flight;
 
 public class FindFlightRepositoryShould {
 
-    private FindFlightRepository api;
-    private FlightRepository flightApi;
+    private FlightRepository api;
 
     @BeforeEach
     void setUp() {
-        api = new FindFlightRepositoryImpl(new MySQLDbConnection());
-        flightApi = new FlightRepositoryImpl(new MySQLDbConnection());
-        flightApi.truncate();
+        api = new FlightRepositoryImpl(new MySQLDbConnection());
+        api.truncate();
     }
 
     @Test
@@ -49,7 +45,7 @@ public class FindFlightRepositoryShould {
         final List<Flight> flights = api.findFlights(flight.plan());
 
         assertThat(flights).isNotEmpty();
-        assertThat(flights.size()).isEqualTo(4);
+        assertThat(flights.size()).isEqualTo(5);
     }
 
     private Flight insertSingleFlight() {
@@ -62,7 +58,7 @@ public class FindFlightRepositoryShould {
                 .withPrice(47500)
                 .build();
 
-        flightApi.addFlight(flight);
+        api.addFlight(flight);
         return flight;
     }
 
@@ -72,8 +68,8 @@ public class FindFlightRepositoryShould {
                 flight().withFlightNumber("478").withPrice(100).build(),
                 flight().withFlightNumber("748").withPrice(700).build(),
                 flight().withFlightNumber("887").withPrice(500).build(),
-                flight().withFlightNumber("874").from(City.AHVAZ).to(City.NEW_YORK_CITY).build());
+                flight().withFlightNumber("874").withPrice(700).build());
 
-        flightApi.addFlights(flights);
+        api.addFlights(flights);
     }
 }

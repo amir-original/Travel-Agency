@@ -1,4 +1,4 @@
-package travelAgency.fakeData;
+package travelAgency.fake;
 
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.domain.city.City;

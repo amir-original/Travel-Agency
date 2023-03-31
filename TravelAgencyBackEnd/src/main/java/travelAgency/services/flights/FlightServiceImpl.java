@@ -41,8 +41,4 @@ public class FlightServiceImpl implements FlightService {
                 .orElseThrow(FlightNumberNotFoundException::new);
     }
 
-    public boolean isExistThisFlight(FlightPlan flightPlan) {
-        return flights.stream().anyMatch(flight -> flight.matches(flightPlan));
-    }
-
 }

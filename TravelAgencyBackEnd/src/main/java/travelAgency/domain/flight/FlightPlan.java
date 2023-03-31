@@ -5,7 +5,8 @@ import travelAgency.domain.city.City;
 
 import java.time.LocalDate;
 
-public record FlightPlan(@NotNull FlightLocation location,@NotNull FlightSchedule schedule) {
+public record FlightPlan(@NotNull FlightLocation location,
+                         @NotNull FlightSchedule schedule) {
 
     public City from() {
         return location.from();
@@ -23,4 +24,8 @@ public record FlightPlan(@NotNull FlightLocation location,@NotNull FlightSchedul
         return schedule.arrival();
     }
 
+    public void check() {
+        location.check();
+        schedule.check();
+    }
 }

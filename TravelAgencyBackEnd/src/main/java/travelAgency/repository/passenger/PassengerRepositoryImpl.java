@@ -15,8 +15,8 @@ import static travelAgency.repository.passenger.PassengerSQL.*;
 
 public class PassengerRepositoryImpl implements PassengerRepository {
 
-
     private static final String TABLE_NAME = "passengers";
+
     private final DbConnection db;
     private final Connection connection;
 
@@ -67,8 +67,8 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     }
 
     private void dropTrigger() {
-        try (final PreparedStatement statement = createQuery(DROP_TRIGGER)) {
-            statement.executeUpdate();
+        try (final PreparedStatement query = createQuery(DROP_TRIGGER)) {
+            query.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -2,8 +2,8 @@ package travelAgency.repository.flight;
 
 public class FlightSQL {
     public static final String INSERT_QUERY = """
-            INSERT INTO flights (flight_number,from_city,to_city,departure,arrival,price)
-             VALUES (?,?,?,?,?,?)
+            INSERT INTO flights (flight_number,from_city,to_city,departure,arrival,total_capacity,price)
+             VALUES (?,?,?,?,?,?,?)
             """;
     public static final String DELETE_QUERY = "DELETE FROM flights WHERE flight_number = ?";
 

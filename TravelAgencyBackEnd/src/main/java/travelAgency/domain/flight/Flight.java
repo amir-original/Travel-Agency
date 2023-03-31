@@ -9,7 +9,10 @@ import travelAgency.services.priceConverter.CurrencyConverterService;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public record Flight(@NotNull String flightNumber, double price, @NotNull FlightPlan plan) {
+public record Flight(@NotNull String flightNumber,
+                     int totalCapacity,
+                     double price,
+                     @NotNull FlightPlan plan) {
 
     public boolean matches(FlightPlan flightPlan) {
         return plan.equals(flightPlan);
@@ -20,9 +23,9 @@ public record Flight(@NotNull String flightNumber, double price, @NotNull Flight
     }
 
     public void check() {
+        plan.check();
         if (flightNumber.isBlank() || flightNumber.length() < 3)
             throw new FlightNumberException();
-
         if (price <= 0) throw new FlightPriceException();
     }
 

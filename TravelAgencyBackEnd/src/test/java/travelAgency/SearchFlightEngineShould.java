@@ -3,7 +3,7 @@ package travelAgency;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.flight.Flight;
-import travelAgency.fakeData.FakeFlight;
+import travelAgency.fake.FakeFlight;
 import travelAgency.services.flights.FlightService;
 import travelAgency.services.flights.FlightServiceImpl;
 import travelAgency.services.priceConverter.CurrencyConverterServiceImpl;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static travelAgency.fakeData.FakeFlightPlanBuilder.flightPlan;
+import static travelAgency.fake.FakeFlightPlanBuilder.flightPlan;
 
 public class SearchFlightEngineShould {
 
@@ -34,9 +34,8 @@ public class SearchFlightEngineShould {
         final List<Flight> flights = engine.search(flightPlan().build());
         assertAll(
                 () -> assertThat(flights).isNotEmpty(),
-                () -> assertThat(flights.size()).isEqualTo(2)
+                () -> assertThat(flights.size()).isEqualTo(5)
         );
-
     }
 
     @Test
@@ -55,7 +54,7 @@ public class SearchFlightEngineShould {
                         .isThrownBy(() -> engine.search(flightPlan().departureAt(null).build())),
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> engine.search(flightPlan().arrivalAt(null).build()))
-                );
+        );
 
     }
 

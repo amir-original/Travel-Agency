@@ -1,14 +1,13 @@
 package travelAgency.services.bookingList;
 
+import travelAgency.domain.booking.BookingInformation;
 import travelAgency.domain.booking.FlightTicket;
-import travelAgency.domain.booking.FlightTicketInfo;
-import travelAgency.services.booking.BookingFlightService;
 
 import java.time.LocalDate;
 
 public interface BookingListService {
 
-    FlightTicket book(FlightTicketInfo flightTicketInfo);
+    FlightTicket book(BookingInformation bookingInformation);
 
     FlightTicket search(String flightNumber,
                         String passengerFirstName,
@@ -16,8 +15,8 @@ public interface BookingListService {
 
     void cancel(FlightTicket flightTicket);
 
-    boolean isExistFlightTicket(String ticketNumber);
+    int getBookedSeats(String flightNumber);
 
-    int numberOfBookedFlight(String flightNumber);
-    int numberOfSeatsAvailable(String flightNumber);
+    FlightTicket ticket(String ticketNumber);
+
 }

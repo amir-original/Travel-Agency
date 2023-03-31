@@ -1,22 +1,30 @@
 package travelAgency.booking;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.booking.TicketNumberGenerator;
 import travelAgency.domain.exceptions.*;
-import travelAgency.fakeData.FakeBookingList;
-import travelAgency.fakeData.FakeFlight;
-import travelAgency.fakeData.FakePassenger;
+import travelAgency.domain.flight.FlightPlan;
+import travelAgency.fake.FakeBookingList;
+import travelAgency.fake.FakeFlight;
+import travelAgency.fake.FakePassenger;
 import travelAgency.services.BookingFlightTicket;
-import travelAgency.services.booking.BookingFlightServiceImpl;
+import travelAgency.services.bookingList.BookingListServiceImpl;
+import travelAgency.services.bookingList.TicketNumberGenerator;
+import travelAgency.services.flights.FlightAvailabilityImpl;
 
-import static org.assertj.core.api.Assertions.*;
+import java.time.LocalDate;
+
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static travelAgency.fakeData.FakeFlightBuilder.flight;
-import static travelAgency.fakeData.FakeFlightTicketInfoBuilder.flightTicketInfo;
-import static travelAgency.fakeData.FakePassengerBuilder.passenger;
+import static travelAgency.domain.city.City.TEHRAN;
+import static travelAgency.fake.FakeBookingInformationBuilder.bookingInformation;
+import static travelAgency.fake.FakeFlightBuilder.flight;
+import static travelAgency.fake.FakeFlightPlanBuilder.flightPlan;
+import static travelAgency.fake.FakePassengerBuilder.passenger;
 
 public class BookingFlightShould {
 
@@ -24,59 +32,68 @@ public class BookingFlightShould {
 
     @BeforeEach
     void setUp() {
-        TicketNumberGenerator ticketNumberGenerator = mock(TicketNumberGenerator.class);
-        when(ticketNumberGenerator.generate()).thenReturn("56472514");
-        app = new BookingFlightTicket(
-                new BookingFlightServiceImpl(new FakeBookingList(), ticketNumberGenerator),
-                new FakeFlight(),
+        TicketNumberGenerator ticketNumberGenerator = createMockTicketGenerator();
+        FakeBookingList fakeBookingList = new FakeBookingList();
+        final BookingListServiceImpl bookingLists =
+                new BookingListServiceImpl(fakeBookingList, ticketNumberGenerator);
+
+        app = new BookingFlightTicket(bookingLists,
+                new FlightAvailabilityImpl(new FakeFlight(), bookingLists),
                 new FakePassenger()
         );
     }
 
+    @NotNull
+    private TicketNumberGenerator createMockTicketGenerator() {
+        TicketNumberGenerator ticketNumberGenerator = mock(TicketNumberGenerator.class);
+        when(ticketNumberGenerator.generate()).thenReturn("56472514");
+        return ticketNumberGenerator;
+    }
+
     @Test
     void book_a_flight_without_throw_any_exception() {
-        assertThatNoException().isThrownBy(() -> app.book(flightTicketInfo().build()));
+        assertThatNoException().isThrownBy(() -> app.book(bookingInformation().build()));
     }
 
     @Test
     void throw_IllegalArgumentException_when_book_flight_without_passenger() {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
-                        .isThrownBy(() -> app.book(flightTicketInfo().withPassenger(null).build())),
+                        .isThrownBy(() -> app.book(bookingInformation().withPassenger(null).build())),
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
-                        .isThrownBy(() -> app.book(flightTicketInfo().withFlight(null).build()))
+                        .isThrownBy(() -> app.book(bookingInformation().withFlight(null).build()))
         );
     }
 
     @Test
-    void throw_NumberOfTicketsException_when_book_flight_with_number_of_ticket_zero_or_less() {
-        assertThatExceptionOfType(NumberOfTicketsException.class)
-                .isThrownBy(() -> app.book(flightTicketInfo().withNumbers(0).build()));
+    void the_number_of_travelers_must_be_valid_and_greeter_than_zero() {
+        assertThatExceptionOfType(NumberOfTravelersException.class)
+                .isThrownBy(() -> app.book(bookingInformation().withTravelers(0).build()));
     }
 
     @Test
     void throw_NotFindAnyFlightException_when_there_is_not_find_flight_with_entered_information() {
         assertThatExceptionOfType(NotFindAnyFlightException.class)
-                .isThrownBy(() -> app.book(flightTicketInfo().withNotFoundFlight().build()));
+                .isThrownBy(() -> app.book(bookingInformation().withNotFoundFlight().build()));
     }
 
     @Test
     void throw_PassengerNameException_when_enter_passenger_name_empty_or_blank() {
         assertAll(
                 () -> assertThatExceptionOfType(PassengerNameException.class)
-                        .isThrownBy(() -> app.book(flightTicketInfo()
+                        .isThrownBy(() -> app.book(bookingInformation()
                                 .withPassenger(passenger().firstName("").build())
                                 .build())),
                 () -> assertThatExceptionOfType(PassengerNameException.class)
-                        .isThrownBy(() -> app.book(flightTicketInfo()
+                        .isThrownBy(() -> app.book(bookingInformation()
                                 .withPassenger(passenger().firstName("   ").build())
                                 .build())),
                 () -> assertThatExceptionOfType(PassengerNameException.class)
-                        .isThrownBy(() -> app.book(flightTicketInfo()
+                        .isThrownBy(() -> app.book(bookingInformation()
                                 .withPassenger(passenger().lastName("").build())
                                 .build())),
                 () -> assertThatExceptionOfType(PassengerNameException.class)
-                        .isThrownBy(() -> app.book(flightTicketInfo()
+                        .isThrownBy(() -> app.book(bookingInformation()
                                 .withPassenger(passenger().lastName("   ").build())
                                 .build()))
         );
@@ -86,12 +103,12 @@ public class BookingFlightShould {
     void throw_IllegalArgumentException_when_enter_passenger_name_null() {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
-                        .isThrownBy(() -> app.book(flightTicketInfo()
+                        .isThrownBy(() -> app.book(bookingInformation()
                                 .withPassenger(passenger().lastName(null).build())
                                 .build())),
 
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
-                        .isThrownBy(() -> app.book(flightTicketInfo()
+                        .isThrownBy(() -> app.book(bookingInformation()
                                 .withPassenger(passenger().firstName(null).build())
                                 .build()))
         );
@@ -100,7 +117,7 @@ public class BookingFlightShould {
     @Test
     void throw_PassengerBirthdayNotNullException_when_enter_birthday_null() {
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> app.book(flightTicketInfo()
+                .isThrownBy(() -> app.book(bookingInformation()
                         .withPassenger(passenger().withBirthday(null).build())
                         .build()));
     }
@@ -109,12 +126,12 @@ public class BookingFlightShould {
     void throw_PassengerZipCodeNotNullException_when_enter_passenger_null_or_empty() {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
-                        .isThrownBy(() -> app.book(flightTicketInfo().
+                        .isThrownBy(() -> app.book(bookingInformation().
                                 withPassenger(passenger().withZipcode(null).build())
                                 .build())),
 
                 () -> assertThatExceptionOfType(PassengerZipCodeException.class)
-                        .isThrownBy(() -> app.book(flightTicketInfo()
+                        .isThrownBy(() -> app.book(bookingInformation()
                                 .withPassenger(passenger().withZipcode("").build())
                                 .build()))
         );
@@ -125,12 +142,12 @@ public class BookingFlightShould {
 
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
-                        .isThrownBy(() -> app.book(flightTicketInfo()
+                        .isThrownBy(() -> app.book(bookingInformation()
                                 .withPassenger(passenger().withAddress(null).build())
                                 .build())),
 
                 () -> assertThatExceptionOfType(PassengerAddressException.class)
-                        .isThrownBy(() -> app.book(flightTicketInfo()
+                        .isThrownBy(() -> app.book(bookingInformation()
                                 .withPassenger(passenger().withAddress("").build())
                                 .build()))
         );
@@ -140,11 +157,11 @@ public class BookingFlightShould {
     void throw_PassengerPhoneNumbersNotNullException_when_enter_null_or_empty() {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
-                        .isThrownBy(() -> app.book(flightTicketInfo()
+                        .isThrownBy(() -> app.book(bookingInformation()
                                 .withPassenger(passenger().withPhoneNumber(null).build())
                                 .build())),
                 () -> assertThatExceptionOfType(PassengerPhoneNumbersNotEmptyException.class)
-                        .isThrownBy(() -> app.book(flightTicketInfo()
+                        .isThrownBy(() -> app.book(bookingInformation()
                                 .withPassenger(passenger().withPhoneNumber("").build())
                                 .build()))
         );
@@ -155,14 +172,14 @@ public class BookingFlightShould {
     void throw_PhoneNumberLengthException_when_enter_phone_number_less_or_more_than_12() {
         assertAll(
                 () -> assertThatExceptionOfType(PhoneNumberLengthException.class)
-                        .isThrownBy(() -> app.book(flightTicketInfo()
+                        .isThrownBy(() -> app.book(bookingInformation()
                                 .withPassenger(passenger()
                                         .withPhoneNumber("09124568")
                                         .build())
                                 .build())
                         ),
                 () -> assertThatExceptionOfType(PhoneNumberLengthException.class)
-                        .isThrownBy(() -> app.book(flightTicketInfo()
+                        .isThrownBy(() -> app.book(bookingInformation()
                                 .withPassenger(passenger()
                                         .withPhoneNumber("0911145235675").build())
                                 .build()))
@@ -173,17 +190,77 @@ public class BookingFlightShould {
     @Test
     void throw_FlightNumberException_when_entered_empty_or_less_than_3_length() {
         assertThatExceptionOfType(FlightNumberException.class)
-                .isThrownBy(() -> app.book(flightTicketInfo()
+                .isThrownBy(() -> app.book(bookingInformation()
                         .withFlight(flight().withFlightNumber("").build())
                         .build()));
 
         assertThatExceptionOfType(FlightNumberException.class)
-                .isThrownBy(() -> app.book(flightTicketInfo()
+                .isThrownBy(() -> app.book(bookingInformation()
                         .withFlight(flight().withFlightNumber("45").build())
                         .build()));
     }
 
+    @Test
+    void throw_FlightScheduleException_when_book_flight_with_past_departure_and_arrival() {
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        assertThatExceptionOfType(FlightScheduleException.class)
+                .isThrownBy(() -> {
+                    final FlightPlan flightPlan = flightPlan().departureAt(yesterday).build();
+                    app.book(bookingInformation().withFlight(flight().withPlan(flightPlan).build()).build());
+                });
 
+        assertThatExceptionOfType(FlightScheduleException.class)
+                .isThrownBy(() -> {
+                    final FlightPlan flightPlan = flightPlan().arrivalAt(yesterday).build();
+                    app.book(bookingInformation().withFlight(flight().withPlan(flightPlan).build())
+                            .build());
+                });
+    }
 
+    @Test
+    void throw_FlightLocationException_when_enter_origin_and_destination_the_same() {
+        assertThatExceptionOfType(FlightLocationException.class)
+                .isThrownBy(() -> {
+                    final FlightPlan flightPlan = flightPlan().from(TEHRAN).to(TEHRAN).build();
+                    app.book(bookingInformation()
+                            .withFlight(flight().withPlan(flightPlan).build())
+                            .build());
+                });
+    }
 
+    @Test
+    void check_the_availability_of_flight_for_booking() {
+        BookedAllSeatsOfFlight();
+
+        assertThatExceptionOfType(FullyBookedException.class)
+                .isThrownBy(() -> app.book(bookingInformation().build()));
+    }
+
+    @Test
+    void throw_an_exception_when_there_are_not_enough_seats_available_on_the_flight() {
+        insertTenBookingFlight();
+        insertTenBookingFlight();
+        insertTenBookingFlight();
+
+        assertThatExceptionOfType(NotEnoughCapacityException.class)
+                .isThrownBy(() -> app.book(bookingInformation().withTravelers(5).build()));
+    }
+
+    private void BookedAllSeatsOfFlight() {
+        insertTenBookingFlight();
+        insertTenBookingFlight();
+        insertTenBookingFlight();
+        app.book(bookingInformation().withTravelers(4).build());
+    }
+
+    private void insertTenBookingFlight() {
+        app.book(bookingInformation().withTravelers(4).build());
+        app.book(bookingInformation().withPassenger(passenger().withId("oi").firstName("ali").build())
+                .withTravelers(2).build());
+        app.book(bookingInformation().withPassenger(passenger().withId("srs").firstName("hasan").build())
+                .withTravelers(1).build());
+        app.book(bookingInformation().withPassenger(passenger().withId("mona").firstName("mona").build())
+                .withTravelers(3).build());
+
+    }
 }

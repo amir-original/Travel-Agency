@@ -2,12 +2,9 @@ package travelAgency;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.booking.TicketNumberGenerator;
+import travelAgency.services.bookingList.TicketNumberGenerator;
 import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
-import travelAgency.domain.exceptions.OverBookedFlightException;
-import travelAgency.fakeData.FakeBookingList;
-import travelAgency.services.booking.BookingFlightService;
-import travelAgency.services.booking.BookingFlightServiceImpl;
+import travelAgency.fake.FakeBookingList;
 import travelAgency.services.bookingList.BookingListService;
 import travelAgency.services.bookingList.BookingListServiceImpl;
 
@@ -18,9 +15,9 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static travelAgency.fakeData.FakeFlightBuilder.flight;
-import static travelAgency.fakeData.FakeFlightTicketInfoBuilder.flightTicketInfo;
-import static travelAgency.fakeData.FakePassengerBuilder.passenger;
+import static travelAgency.fake.FakeFlightBuilder.flight;
+import static travelAgency.fake.FakeBookingInformationBuilder.bookingInformation;
+import static travelAgency.fake.FakePassengerBuilder.passenger;
 
 public class BookingListServiceShould {
 
@@ -57,33 +54,32 @@ public class BookingListServiceShould {
     @Test
     void cancel_a_book_flight_with_ticket_number() {
         var ticket = app.search(EXIST_FLIGHT_NUMBER, SARA, SARA_BIRTHDAY);
+        final int travelers = ticket.travelers();
+        final int bookingsBeforeCancel = 6;
+        final int bookingsAfterCancel = bookingsBeforeCancel - travelers;
 
-        assertThatNoException().isThrownBy(() -> app.cancel(ticket));
-
-        assertThat(app.isExistFlightTicket(ticket.ticketNumber())).isFalse();
+        assertAll(
+                () -> assertThat(app.getBookedSeats(EXIST_FLIGHT_NUMBER)).isEqualTo(bookingsBeforeCancel),
+                () -> assertThatNoException().isThrownBy(() -> app.cancel(ticket)),
+                () -> assertThatExceptionOfType(NotFoundAnyBookingFlightException.class)
+                        .isThrownBy(() -> app.ticket(ticket.ticketNumber())),
+                () -> assertThat(app.getBookedSeats(EXIST_FLIGHT_NUMBER)).isEqualTo(bookingsAfterCancel)
+                );
     }
 
     @Test
-    void get_number_of_booked_blight() {
+    void get_number_of_booked_flight() {
         insertMultipleBooking();
-        assertThat(app.numberOfBookedFlight("0321")).isEqualTo(19);
+        assertThat(app.getBookedSeats("0321")).isEqualTo(19);
     }
 
-    //TODO implement
-   /* @Test
-    void throw_OverBookedFlightException_when_book_flight_that_all_flight_seats_is_sold() {
-        insertMultipleBooking();
-        assertThatExceptionOfType(OverBookedFlightException.class)
-                .isThrownBy(() -> app.book(flightTicketInfo().build()));
-    }*/
-
     private void insertMultipleBooking() {
-        app.book(flightTicketInfo().withNumbers(5).build());
-        app.book(flightTicketInfo().withPassenger(passenger().withId("oi").firstName("ali").build())
-                .withNumbers(1).build());
-        app.book(flightTicketInfo().withPassenger(passenger().withId("srs").firstName("hasan").build())
-                .withNumbers(3).build());
-        app.book(flightTicketInfo().withPassenger(passenger().withId("mona").firstName("mona").build())
-                .withNumbers(4).build());
+        app.book(bookingInformation().withTravelers(5).build());
+        app.book(bookingInformation().withPassenger(passenger().withId("oi").firstName("ali").build())
+                .withTravelers(1).build());
+        app.book(bookingInformation().withPassenger(passenger().withId("srs").firstName("hasan").build())
+                .withTravelers(3).build());
+        app.book(bookingInformation().withPassenger(passenger().withId("mona").firstName("mona").build())
+                .withTravelers(4).build());
     }
 }

@@ -1,5 +1,6 @@
 package travelAgency.repository.flight;
 
+import travelAgency.domain.exceptions.NotFindAnyFlightException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.repository.db.DbConnection;
@@ -17,12 +18,12 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     private final DbConnection db;
     private final Connection connection;
-    private FindFlightRepository findFlightRepository;
+    private final FindFlightRepository findFlightRepository;
 
     public FlightRepositoryImpl(DbConnection db) {
         this.db = db;
         this.connection = db.getConnection();
-        this.findFlightRepository = new FindFlightRepositoryImpl(db);
+        this.findFlightRepository = new FindFlightRepository(db);
     }
 
     @Override
@@ -46,11 +47,8 @@ public class FlightRepositoryImpl implements FlightRepository {
         insert.setString(3, flight.to().name());
         insert.setDate(4, convertToSQLDate(flight.departure()));
         insert.setDate(5, convertToSQLDate(flight.arrival()));
-        insert.setDouble(6, flight.price());
-    }
-
-    private Date convertToSQLDate(LocalDate localDate) {
-        return Date.valueOf(localDate);
+        insert.setInt(6, flight.totalCapacity());
+        insert.setDouble(7, flight.price());
     }
 
     @Override
@@ -84,11 +82,22 @@ public class FlightRepositoryImpl implements FlightRepository {
     }
 
     @Override
+    public int numberOfSeats(String flightNumber) {
+        return findFlight(flightNumber)
+                .orElseThrow(NotFindAnyFlightException::new)
+                .totalCapacity();
+    }
+
+    @Override
     public void truncate() {
         db.truncate(TABLE_NAME);
     }
 
     private PreparedStatement createQuery(String s) throws SQLException {
         return connection.prepareStatement(s);
+    }
+
+    private Date convertToSQLDate(LocalDate localDate) {
+        return Date.valueOf(localDate);
     }
 }

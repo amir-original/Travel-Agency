@@ -1,18 +1,16 @@
-package travelAgency.fakeData;
+package travelAgency.fake;
 
-import travelAgency.domain.city.City;
 import travelAgency.domain.exceptions.NotFindAnyFlightException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.repository.flight.FlightRepository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import static java.util.List.of;
-import static travelAgency.domain.city.City.KISH;
-import static travelAgency.fakeData.FakeFlightBuilder.flight;
+import static travelAgency.fake.FakeFlightBuilder.flight;
+
 
 public class FakeFlight implements FlightRepository {
 
@@ -20,12 +18,10 @@ public class FakeFlight implements FlightRepository {
 
     {
         flights = of(flight().build(),
-                flight().withFlightNumber("4256").to(KISH).withPrice(560).build(),
-                flight().withFlightNumber("0214").to(City.AHVAZ).build(),
-                flight().withFlightNumber("4578").withPrice(145)
-                        .departureAt(LocalDate.of(2023, 4, 9))
-                        .arrivalAt(LocalDate.of(2023, 4, 5)).build(),
-                flight().withFlightNumber("1456").build());
+                flight().withPrice(560).withFlightNumber("4256").build(),
+                flight().withFlightNumber("0214").withPrice(850).build(),
+                flight().withFlightNumber("0321").withPrice(145).build(),
+                flight().withFlightNumber("1456").withPrice(544).build());
     }
 
     @Override
@@ -50,7 +46,14 @@ public class FakeFlight implements FlightRepository {
 
     @Override
     public List<Flight> flights() {
-       return flights;
+        return flights;
+    }
+
+    @Override
+    public int numberOfSeats(String flightNumber) {
+        return findFlight(flightNumber)
+                .orElseThrow(NotFindAnyFlightException::new)
+                .totalCapacity();
     }
 
     @Override
