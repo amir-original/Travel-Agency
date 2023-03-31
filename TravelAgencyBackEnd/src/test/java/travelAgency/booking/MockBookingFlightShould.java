@@ -21,7 +21,6 @@ import static travelAgency.fake.FakeBookingInformationBuilder.bookingInformation
 public class MockBookingFlightShould {
 
     private static final String TICKET_NUMBER = "56472514";
-    public static final String NOT_FOUND_FLIGHT_NUMBER = "Not Found Flight Number";
     private BookingFlightTicket app;
     private FlightAvailabilityImpl flightAvailability;
     private PassengerRepository passengers;

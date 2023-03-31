@@ -106,20 +106,20 @@ public class BookingListRepositoryImpl implements BookingListRepository {
 
         final BookingInformation bookingInformation =
                 new BookingInformation(getFlight(rs),
-                        getPassenger(rs),
+                        buildPassenger(rs),
                         rs.getInt("number_of_tickets"));
 
         return new FlightTicket(ticket_number, bookingInformation);
     }
 
-    private Passenger getPassenger(ResultSet rs) throws SQLException {
+    private Passenger buildPassenger(ResultSet rs) throws SQLException {
         return passenger()
                 .withId(rs.getString("passenger_id"))
                 .firstName(rs.getString("first_name"))
                 .lastName(rs.getString("last_name"))
                 .withBirthday(rs.getDate("birthday").toLocalDate())
                 .ofCity(getCity(rs.getString("city")))
-                .address(rs.getString("address"))
+                .withAddress(rs.getString("address"))
                 .withZipcode(rs.getString("zipcode"))
                 .withPhoneNumber(rs.getString("phone_number"))
                 .build();

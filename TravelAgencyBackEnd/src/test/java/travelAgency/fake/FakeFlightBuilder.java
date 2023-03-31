@@ -1,6 +1,7 @@
 package travelAgency.fake;
 
 import travelAgency.domain.flight.Flight;
+import travelAgency.domain.flight.FlightBuilder;
 import travelAgency.domain.flight.FlightPlan;
 
 public class FakeFlightBuilder{

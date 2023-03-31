@@ -39,7 +39,7 @@ public class PassengerBuilder {
         return this;
     }
 
-    public PassengerBuilder address(String address) {
+    public PassengerBuilder withAddress(String address) {
         this.address = address;
         return this;
     }

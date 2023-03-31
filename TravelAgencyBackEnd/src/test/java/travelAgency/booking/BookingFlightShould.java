@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.*;
+import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.fake.FakeBookingList;
 import travelAgency.fake.FakeFlight;
@@ -24,7 +25,7 @@ import static travelAgency.domain.city.City.TEHRAN;
 import static travelAgency.fake.FakeBookingInformationBuilder.bookingInformation;
 import static travelAgency.fake.FakeFlightBuilder.flight;
 import static travelAgency.fake.FakeFlightPlanBuilder.flightPlan;
-import static travelAgency.fake.FakePassengerBuilder.passenger;
+import static travelAgency.fake.FakePassenger.passenger;
 
 public class BookingFlightShould {
 
@@ -181,7 +182,8 @@ public class BookingFlightShould {
                 () -> assertThatExceptionOfType(PhoneNumberLengthException.class)
                         .isThrownBy(() -> app.book(bookingInformation()
                                 .withPassenger(passenger()
-                                        .withPhoneNumber("0911145235675").build())
+                                        .withPhoneNumber("0911145235675")
+                                        .build())
                                 .build()))
         );
     }
@@ -212,8 +214,8 @@ public class BookingFlightShould {
         assertThatExceptionOfType(FlightScheduleException.class)
                 .isThrownBy(() -> {
                     final FlightPlan flightPlan = flightPlan().arrivalAt(yesterday).build();
-                    app.book(bookingInformation().withFlight(flight().withPlan(flightPlan).build())
-                            .build());
+                    final Flight flight = flight().withPlan(flightPlan).build();
+                    app.book(bookingInformation().withFlight(flight).build());
                 });
     }
 
@@ -255,12 +257,9 @@ public class BookingFlightShould {
 
     private void insertTenBookingFlight() {
         app.book(bookingInformation().withTravelers(4).build());
-        app.book(bookingInformation().withPassenger(passenger().withId("oi").firstName("ali").build())
-                .withTravelers(2).build());
-        app.book(bookingInformation().withPassenger(passenger().withId("srs").firstName("hasan").build())
-                .withTravelers(1).build());
-        app.book(bookingInformation().withPassenger(passenger().withId("mona").firstName("mona").build())
-                .withTravelers(3).build());
+        app.book(bookingInformation().withPassenger(passenger("se478")).withTravelers(2).build());
+        app.book(bookingInformation().withPassenger(passenger("mes784")).withTravelers(1).build());
+        app.book(bookingInformation().withPassenger(passenger("ew471")).withTravelers(3).build());
 
     }
 }

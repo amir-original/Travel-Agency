@@ -7,11 +7,10 @@ import travelAgency.domain.passenger.Passenger;
 
 import java.time.LocalDate;
 
-import static java.time.LocalDate.of;
 import static travelAgency.domain.city.City.PARIS;
 import static travelAgency.domain.city.City.TEHRAN;
 import static travelAgency.fake.FakeFlightBuilder.flight;
-import static travelAgency.fake.FakePassengerBuilder.passenger;
+import static travelAgency.fake.FakePassenger.passenger;
 
 public class FakeBookingInformationBuilder {
 

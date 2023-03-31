@@ -123,7 +123,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
                 .withBirthday(rs.getDate("birthday").toLocalDate())
                 .withZipcode(rs.getString("zipcode"))
                 .ofCity(City.valueOf(rs.getString("city")))
-                .address(rs.getString("address"))
+                .withAddress(rs.getString("address"))
                 .withPhoneNumber(rs.getString("phone_number"))
                 .build();
 

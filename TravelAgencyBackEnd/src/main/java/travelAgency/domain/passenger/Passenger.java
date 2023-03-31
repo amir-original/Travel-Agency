@@ -35,7 +35,7 @@ public record Passenger(@NotNull String id, @NotNull String fName, @NotNull Stri
                 ", lName='" + lName + '\'' +
                 ", birthday=" + birthday +
                 ", city=" + city +
-                ", address='" + address + '\'' +
+                ", withAddress='" + address + '\'' +
                 ", zipcode='" + zipcode + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 '}';

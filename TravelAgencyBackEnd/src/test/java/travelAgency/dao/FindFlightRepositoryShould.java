@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightBuilder;
 import travelAgency.domain.city.City;
+import travelAgency.fake.FakeFlight;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
 import travelAgency.repository.flight.FlightRepository;
 import travelAgency.repository.flight.FlightRepositoryImpl;

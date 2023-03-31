@@ -17,7 +17,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static travelAgency.fake.FakeFlightBuilder.flight;
 import static travelAgency.fake.FakeBookingInformationBuilder.bookingInformation;
-import static travelAgency.fake.FakePassengerBuilder.passenger;
+import static travelAgency.fake.FakePassenger.passenger;
 
 public class BookingListServiceShould {
 
@@ -75,11 +75,8 @@ public class BookingListServiceShould {
 
     private void insertMultipleBooking() {
         app.book(bookingInformation().withTravelers(5).build());
-        app.book(bookingInformation().withPassenger(passenger().withId("oi").firstName("ali").build())
-                .withTravelers(1).build());
-        app.book(bookingInformation().withPassenger(passenger().withId("srs").firstName("hasan").build())
-                .withTravelers(3).build());
-        app.book(bookingInformation().withPassenger(passenger().withId("mona").firstName("mona").build())
-                .withTravelers(4).build());
+        app.book(bookingInformation().withPassenger(passenger("se478")).withTravelers(1).build());
+        app.book(bookingInformation().withPassenger(passenger("mes784")).withTravelers(3).build());
+        app.book(bookingInformation().withPassenger(passenger("ew471")).withTravelers(4).build());
     }
 }

@@ -2,13 +2,17 @@ package travelAgency.fake;
 
 import travelAgency.domain.exceptions.NotFindAnyFlightException;
 import travelAgency.domain.flight.Flight;
+import travelAgency.domain.flight.FlightBuilder;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.repository.flight.FlightRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import static java.util.List.of;
+import static travelAgency.domain.city.City.RASHT;
+import static travelAgency.domain.city.City.TEHRAN;
 import static travelAgency.fake.FakeFlightBuilder.flight;
 
 
@@ -43,6 +47,19 @@ public class FakeFlight implements FlightRepository {
     public Optional<Flight> findFlight(String flightNumber) {
         return flights.stream().filter(f -> f.matches(flightNumber)).findFirst();
     }
+
+
+    public static FlightBuilder withDefaultValue() {
+        return FlightBuilder.flight()
+                .withFlightNumber("0321")
+                .withTotalCapacity(40)
+                .withPrice(145)
+                .from(TEHRAN)
+                .to(RASHT)
+                .departureAt(LocalDate.now())
+                .arrivalAt(LocalDate.now().plusDays(1));
+    }
+
 
     @Override
     public List<Flight> flights() {
