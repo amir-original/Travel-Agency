@@ -7,13 +7,13 @@ import travelAgency.domain.flight.FlightPlan;
 import travelAgency.repository.flight.FlightRepository;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 import static java.util.List.of;
-import static travelAgency.domain.city.City.RASHT;
+import static travelAgency.domain.city.City.PARIS;
 import static travelAgency.domain.city.City.TEHRAN;
-import static travelAgency.fake.FakeFlightBuilder.flight;
 
 
 public class FakeFlight implements FlightRepository {
@@ -21,26 +21,40 @@ public class FakeFlight implements FlightRepository {
     private final List<Flight> flights;
 
     {
-        flights = of(flight().build(),
-                flight().withPrice(560).withFlightNumber("4256").build(),
+        final List<Flight> list = of(
+                flight().withFlightNumber("8054").withPrice(450).build(),
+                flight().withFlightNumber("4256").withPrice(560).build(),
                 flight().withFlightNumber("0214").withPrice(850).build(),
                 flight().withFlightNumber("0321").withPrice(145).build(),
                 flight().withFlightNumber("1456").withPrice(544).build());
+        flights = new LinkedList<>(list);
+    }
+
+    @Override
+    public void checkExistenceFlightWith(String flightNumber) {
+        flights.stream()
+                .filter(flight -> flight.matches(flightNumber))
+                .findFirst()
+                .orElseThrow(NotFindAnyFlightException::new);
+
     }
 
     @Override
     public void addFlight(Flight flight) {
-
+        flights.add(flight);
     }
 
     @Override
     public void addFlights(List<Flight> flights) {
-
+        flights.forEach(this::addFlight);
     }
 
     @Override
-    public void deleteFlight(String serialNumber) {
-
+    public void deleteFlight(String flightNumber) {
+        flights.stream()
+                .filter(flight -> flight.matches(flightNumber))
+                .findFirst()
+                .ifPresent(flights::remove);
     }
 
     @Override
@@ -49,15 +63,20 @@ public class FakeFlight implements FlightRepository {
     }
 
 
-    public static FlightBuilder withDefaultValue() {
+    public static FlightBuilder flight() {
         return FlightBuilder.flight()
                 .withFlightNumber("0321")
                 .withTotalCapacity(40)
                 .withPrice(145)
                 .from(TEHRAN)
-                .to(RASHT)
+                .to(PARIS)
                 .departureAt(LocalDate.now())
                 .arrivalAt(LocalDate.now().plusDays(1));
+    }
+
+    public static Flight flight(String flightNumber) {
+        return new FakeFlight().findFlight(flightNumber)
+                .orElseThrow(NotFindAnyFlightException::new);
     }
 
 
@@ -80,14 +99,11 @@ public class FakeFlight implements FlightRepository {
 
     @Override
     public void truncate() {
-
+        flights.clear();
     }
 
-    @Override
-    public void checkExistenceFlightWith(String flightNumber) {
-        final boolean isPresent = flights.stream().anyMatch(flight -> flight.matches(flightNumber));
-        if (!isPresent)
-            throw new NotFindAnyFlightException();
+    public void insertMultipleFlights(){
+        addFlights(flights);
     }
 
 }

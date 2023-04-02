@@ -3,8 +3,8 @@ package travelAgency.dao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.flight.Flight;
 import travelAgency.domain.booking.FlightTicket;
+import travelAgency.domain.flight.Flight;
 import travelAgency.repository.booking.BookingListRepository;
 import travelAgency.repository.booking.BookingListRepositoryImpl;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static travelAgency.fake.FakeFlightBuilder.flight;
+import static travelAgency.fake.FakeFlight.flight;
 import static travelAgency.fake.FakeFlightTicketBuilder.flightTicket;
 
 public class BookingFLightRepositoryShould {
@@ -55,7 +55,7 @@ public class BookingFLightRepositoryShould {
     }
 
     private void insertSingleFlight() {
-        final Flight flight = flight().build();
+        final Flight flight = flight("0321");
         flightApi.addFlight(flight);
     }
 

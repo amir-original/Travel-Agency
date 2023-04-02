@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static travelAgency.fake.FakeFlight.flight;
 import static travelAgency.fake.FakeFlightPlanBuilder.flightPlan;
 
 public class SearchFlightEngineShould {
@@ -67,9 +68,11 @@ public class SearchFlightEngineShould {
 
         final CurrencyConverterServiceImpl dollarConverter = new CurrencyConverterServiceImpl(mock);
 
+        final Flight flight = flight("0321");
+
         assertAll(
-                () -> assertThat(flights.get(0).price()).isEqualTo(145),
-                () -> assertThat(flights.get(0).price(dollarConverter)).isEqualTo(6191500.0)
+                () -> assertThat(flights).contains(flight),
+                () -> assertThat(flight.price(dollarConverter)).isEqualTo(6191500.0)
         );
     }
 }

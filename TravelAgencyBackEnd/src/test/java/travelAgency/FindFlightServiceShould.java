@@ -2,12 +2,12 @@ package travelAgency;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import travelAgency.domain.exceptions.FlightNumberNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
-import travelAgency.domain.exceptions.FlightNumberNotFoundException;
 import travelAgency.fake.FakeFlight;
-import travelAgency.services.flights.FlightServiceImpl;
 import travelAgency.services.flights.FlightService;
+import travelAgency.services.flights.FlightServiceImpl;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static travelAgency.domain.city.City.BAGHDAD;
 import static travelAgency.domain.city.City.LONDON;
-import static travelAgency.fake.FakeFlightBuilder.flight;
+import static travelAgency.fake.FakeFlight.flight;
 import static travelAgency.fake.FakeFlightPlanBuilder.flightPlan;
 
 public class FindFlightServiceShould {
@@ -48,12 +48,8 @@ public class FindFlightServiceShould {
 
     @Test
     void find_flight_with_flight_number() {
-        final Flight flight = flight().build();
-
-        assertAll(
-                () -> assertThat(app.findFlight(flight.flightNumber())).isEqualTo(flight().build())
-
-        );
+        final String flightNumber = "0321";
+        assertThat(app.findFlight(flightNumber)).isEqualTo(flight(flightNumber));
     }
 
     @Test
@@ -61,7 +57,6 @@ public class FindFlightServiceShould {
         assertThatExceptionOfType(FlightNumberNotFoundException.class)
                 .isThrownBy(() -> app.findFlight(NOT_EXIST_FLIGHT_NUMBER));
     }
-
 
 
 }

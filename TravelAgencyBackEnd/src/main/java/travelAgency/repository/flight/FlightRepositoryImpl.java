@@ -33,9 +33,9 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     @Override
     public void addFlight(Flight flight) {
-        try (final PreparedStatement insert = createQuery(INSERT_QUERY)) {
-            filledFlightFields(flight, insert);
-            insert.executeUpdate();
+        try (final PreparedStatement query = createQuery(INSERT_QUERY)) {
+            filledFlightFields(flight, query);
+            query.executeUpdate();
         } catch (SQLException e) {
             throw new FlightRepositorySQLException();
         }

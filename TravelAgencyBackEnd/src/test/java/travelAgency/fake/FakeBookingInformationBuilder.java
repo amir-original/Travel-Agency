@@ -2,14 +2,8 @@ package travelAgency.fake;
 
 import travelAgency.domain.booking.BookingInformation;
 import travelAgency.domain.flight.Flight;
-import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.passenger.Passenger;
 
-import java.time.LocalDate;
-
-import static travelAgency.domain.city.City.PARIS;
-import static travelAgency.domain.city.City.TEHRAN;
-import static travelAgency.fake.FakeFlightBuilder.flight;
 import static travelAgency.fake.FakePassenger.passenger;
 
 public class FakeBookingInformationBuilder {
@@ -51,18 +45,7 @@ public class FakeBookingInformationBuilder {
         return new BookingInformation(flight, passenger, numberOfTickets);
     }
 
-    private Flight getFlightWith(String serialNumber) {
-        final LocalDate now = LocalDate.now();
-        final LocalDate tomorrow = LocalDate.now().plusDays(1);
-        FlightPlan flightPlan = FakeFlightPlanBuilder.flightPlan().from(TEHRAN)
-                .to(PARIS)
-                .departureAt(now)
-                .arrivalAt(tomorrow)
-                .build();
-
-        return flight()
-                .withFlightNumber(serialNumber)
-                .withPlan(flightPlan)
-                .build();
+    private Flight getFlightWith(String flightNumber) {
+        return FakeFlight.flight(flightNumber);
     }
 }

@@ -1,41 +1,31 @@
 package travelAgency.dao;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.flight.Flight;
-import travelAgency.domain.flight.FlightBuilder;
+import travelAgency.fake.FakeFlight;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
 import travelAgency.repository.flight.FlightRepository;
 import travelAgency.repository.flight.FlightRepositoryImpl;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-import static java.time.LocalDate.of;
 import static org.assertj.core.api.Assertions.assertThat;
-import static travelAgency.domain.city.City.PARIS;
-import static travelAgency.domain.city.City.TEHRAN;
-import static travelAgency.fake.FakeFlightBuilder.flight;
+import static travelAgency.fake.FakeFlight.flight;
 
 public class FlightRepositoryShould {
 
 
-    private static final String HOST = "jdbc:mysql://localhost:3306/travel_agency";
-    private static final String USER = "root";
-    private static final String PASS = "";
-    private static final String DELETE_SQL = "delete from flights order by id desc limit 1";
     private FlightRepository api;
+    private FakeFlight fakeFlight;
 
     @BeforeEach
     void setUp() {
         api = new FlightRepositoryImpl(new MySQLDbConnection());
         api.truncate();
+        fakeFlight = new FakeFlight();
     }
 
 
@@ -61,17 +51,17 @@ public class FlightRepositoryShould {
 
     @Test
     void create_multiple_flights() {
-        insertFlights();
+        insertMultipleFlights();
 
         final List<Flight> fetchedFlights = api.flights();
 
         assertThat(fetchedFlights).isNotEmpty();
-        assertThat(fetchedFlights.size()).isEqualTo(4);
+        assertThat(fetchedFlights.size()).isEqualTo(5);
     }
 
     @Test
     void truncate_flight_table() {
-        insertFlights();
+        insertMultipleFlights();
 
         api.truncate();
 
@@ -79,24 +69,12 @@ public class FlightRepositoryShould {
         assertThat(fetchedFlights).isEmpty();
     }
 
-    private void insertFlights() {
-        final List<Flight> flights = List.of(flight().withFlightNumber("145").withPrice(456).build(),
-                flight().withFlightNumber("478").withPrice(100).build(),
-                flight().withFlightNumber("748").withPrice(700).build(),
-                flight().withFlightNumber("887").withPrice(500).build());
-
-        api.addFlights(flights);
+    private void insertMultipleFlights() {
+        api.addFlights(fakeFlight.flights());
     }
 
     private Flight insertSingleFlight() {
-        final Flight flight = new FlightBuilder()
-                .withFlightNumber("fly580")
-                .from(TEHRAN)
-                .to(PARIS)
-                .departureAt(of(2023, 3, 3))
-                .arrivalAt(of(2023, 3, 6))
-                .withPrice(47500)
-                .build();
+        final Flight flight = flight("0321");
 
         api.addFlight(flight);
         return flight;
@@ -104,16 +82,7 @@ public class FlightRepositoryShould {
 
     @AfterEach
     void tearDown() {
-        try (final Connection conn = DriverManager.getConnection(HOST, USER, PASS);
-        final PreparedStatement delete = conn.prepareStatement(DELETE_SQL)) {
-         delete.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            fail();
-        }
+       api.truncate();
     }
 
-    private void fail() {
-        Assertions.fail("can't connect to database");
-    }
 }

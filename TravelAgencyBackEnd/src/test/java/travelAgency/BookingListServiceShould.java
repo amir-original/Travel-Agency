@@ -2,11 +2,12 @@ package travelAgency;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.services.bookingList.TicketNumberGenerator;
 import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
 import travelAgency.fake.FakeBookingList;
+import travelAgency.fake.FakeFlight;
 import travelAgency.services.bookingList.BookingListService;
 import travelAgency.services.bookingList.BookingListServiceImpl;
+import travelAgency.services.bookingList.TicketNumberGenerator;
 
 import java.time.LocalDate;
 
@@ -15,8 +16,8 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static travelAgency.fake.FakeFlightBuilder.flight;
 import static travelAgency.fake.FakeBookingInformationBuilder.bookingInformation;
+import static travelAgency.fake.FakeFlight.flight;
 import static travelAgency.fake.FakePassenger.passenger;
 
 public class BookingListServiceShould {

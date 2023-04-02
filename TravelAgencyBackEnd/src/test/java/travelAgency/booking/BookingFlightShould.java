@@ -23,7 +23,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static travelAgency.domain.city.City.TEHRAN;
 import static travelAgency.fake.FakeBookingInformationBuilder.bookingInformation;
-import static travelAgency.fake.FakeFlightBuilder.flight;
+import static travelAgency.fake.FakeFlight.flight;
 import static travelAgency.fake.FakeFlightPlanBuilder.flightPlan;
 import static travelAgency.fake.FakePassenger.passenger;
 
@@ -207,14 +207,13 @@ public class BookingFlightShould {
         LocalDate yesterday = LocalDate.now().minusDays(1);
         assertThatExceptionOfType(FlightScheduleException.class)
                 .isThrownBy(() -> {
-                    final FlightPlan flightPlan = flightPlan().departureAt(yesterday).build();
-                    app.book(bookingInformation().withFlight(flight().withPlan(flightPlan).build()).build());
+                    app.book(bookingInformation().withFlight(flight().departureAt(yesterday).build()).build());
                 });
 
         assertThatExceptionOfType(FlightScheduleException.class)
                 .isThrownBy(() -> {
                     final FlightPlan flightPlan = flightPlan().arrivalAt(yesterday).build();
-                    final Flight flight = flight().withPlan(flightPlan).build();
+                    final Flight flight = flight().arrivalAt(yesterday).build();
                     app.book(bookingInformation().withFlight(flight).build());
                 });
     }
@@ -223,9 +222,8 @@ public class BookingFlightShould {
     void throw_FlightLocationException_when_enter_origin_and_destination_the_same() {
         assertThatExceptionOfType(FlightLocationException.class)
                 .isThrownBy(() -> {
-                    final FlightPlan flightPlan = flightPlan().from(TEHRAN).to(TEHRAN).build();
                     app.book(bookingInformation()
-                            .withFlight(flight().withPlan(flightPlan).build())
+                            .withFlight(flight().from(TEHRAN).to(TEHRAN).build())
                             .build());
                 });
     }

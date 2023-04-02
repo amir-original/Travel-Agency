@@ -15,7 +15,7 @@ import static travelAgency.domain.city.City.TEHRAN;
 
 public class FakePassenger implements PassengerRepository {
 
-    private List<Passenger> passengers;
+    private final List<Passenger> passengers;
 
     {
         final PassengerBuilder passenger = FakePassenger.passenger();
