@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.booking.FlightTicket;
+import travelAgency.fake.FakeBookingList;
 import travelAgency.repository.booking.BookingListRepository;
 import travelAgency.repository.booking.BookingListRepositoryImpl;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
@@ -17,7 +18,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static travelAgency.fake.FakeFlight.flight;
-import static travelAgency.fake.FakeFlightTicketBuilder.flightTicket;
 
 public class BookingListRepositoryShould {
 
@@ -35,7 +35,7 @@ public class BookingListRepositoryShould {
     @Test
     void book_a_flight_ticket_in_db() {
 
-        final FlightTicket flightTicket = flightTicket().build();
+        final FlightTicket flightTicket = FakeBookingList.flightTicket("78456587");
 
         flights.addFlight(flight().build());
         passengers.save(flightTicket.passenger());
@@ -50,6 +50,11 @@ public class BookingListRepositoryShould {
         assertThat(ticket.get()).isEqualTo(flightTicket);
     }
 
+    @Test
+    void cancel_a_booking() {
+
+       /* bookingLists.cancel();*/
+    }
 
     @AfterEach
     void tearDown() {

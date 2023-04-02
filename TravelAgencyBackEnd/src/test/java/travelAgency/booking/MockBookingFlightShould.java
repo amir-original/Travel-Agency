@@ -7,6 +7,7 @@ import org.mockito.InOrder;
 import travelAgency.domain.booking.BookingInformation;
 import travelAgency.domain.booking.FlightTicket;
 import travelAgency.domain.passenger.Passenger;
+import travelAgency.fake.FakeBookingList;
 import travelAgency.repository.passenger.PassengerRepository;
 import travelAgency.services.BookingFlightTicket;
 import travelAgency.services.bookingList.BookingListService;
@@ -15,12 +16,10 @@ import travelAgency.services.flights.FlightAvailabilityImpl;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
-import static travelAgency.fake.FakeFlightTicketBuilder.flightTicket;
 import static travelAgency.fake.FakeBookingInformationBuilder.bookingInformation;
 
 public class MockBookingFlightShould {
 
-    private static final String TICKET_NUMBER = "56472514";
     private BookingFlightTicket app;
     private FlightAvailabilityImpl flightAvailability;
     private PassengerRepository passengers;
@@ -55,7 +54,7 @@ public class MockBookingFlightShould {
     @NotNull
     private BookingListService createTicketService() {
         final BookingListService ticketService = mock(BookingListServiceImpl.class);
-        final FlightTicket flightTicket = flightTicket().withFlightTicketNumber(TICKET_NUMBER).build();
+        final FlightTicket flightTicket = FakeBookingList.flightTicket("78456587");
         when(ticketService.book(any())).thenReturn(flightTicket);
         return ticketService;
     }

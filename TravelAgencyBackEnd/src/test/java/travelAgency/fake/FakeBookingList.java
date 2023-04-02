@@ -1,6 +1,7 @@
 package travelAgency.fake;
 
 import travelAgency.domain.booking.FlightTicket;
+import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
 import travelAgency.repository.booking.BookingListRepository;
 
 import java.util.LinkedList;
@@ -11,10 +12,10 @@ import static travelAgency.fake.FakeBookingInformationBuilder.bookingInformation
 
 public class FakeBookingList implements BookingListRepository {
 
-    private final List<FlightTicket> tickets = new LinkedList<>();
+    private final List<FlightTicket> bookings = new LinkedList<>();
 
     {
-        tickets.addAll(List.of(
+        bookings.addAll(List.of(
                 new FlightTicket("78456587", bookingInformation().build()),
                 new FlightTicket("84146521", bookingInformation().build()),
                 new FlightTicket("64125521", bookingInformation().build())
@@ -23,35 +24,41 @@ public class FakeBookingList implements BookingListRepository {
 
     @Override
     public void book(FlightTicket flightTicket) {
-        tickets.add(flightTicket);
+        bookings.add(flightTicket);
     }
 
     @Override
     public Optional<FlightTicket> findBooking(String ticketNumber) {
-        return tickets.stream()
+        return bookings.stream()
                 .filter(ticket -> ticket.isEqualTicketNumber(ticketNumber))
                 .findFirst();
     }
 
     @Override
     public List<FlightTicket> findBookings(String flightNumber) {
-        return tickets.stream()
+        return bookings.stream()
                 .filter(flightTicket -> flightTicket.flightNumber().equals(flightNumber))
                 .toList();
     }
 
     @Override
     public List<FlightTicket> getAllBookings() {
-        return tickets;
+        return bookings;
     }
 
     @Override
     public void cancel(FlightTicket flightTicket) {
-        tickets.remove(flightTicket);
+        bookings.remove(flightTicket);
     }
 
     @Override
     public void truncate() {
-        this.tickets.clear();
+        this.bookings.clear();
+    }
+
+    public static FlightTicket flightTicket(String ticketNumber){
+        return new FakeBookingList()
+                .findBooking(ticketNumber)
+                .orElseThrow(NotFoundAnyBookingFlightException::new);
     }
 }

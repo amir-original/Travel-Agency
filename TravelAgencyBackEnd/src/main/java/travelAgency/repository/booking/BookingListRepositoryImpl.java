@@ -53,7 +53,7 @@ public class BookingListRepositoryImpl implements BookingListRepository {
             sql.setString(1, tikcketNumber);
             final ResultSet resultSet = sql.executeQuery();
             if (resultSet.next()) {
-                flightTicket = getFlightTicket(resultSet);
+                flightTicket = buildFlightTicket(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -68,7 +68,7 @@ public class BookingListRepositoryImpl implements BookingListRepository {
             query.setString(1, flightNumber);
             final ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
-                result.add(getFlightTicket(resultSet));
+                result.add(buildFlightTicket(resultSet));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,7 +82,7 @@ public class BookingListRepositoryImpl implements BookingListRepository {
         try (final PreparedStatement query = createQuery(SELECT_ALL_JOIN)) {
             final ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
-                result.add(getFlightTicket(resultSet));
+                result.add(buildFlightTicket(resultSet));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -101,11 +101,11 @@ public class BookingListRepositoryImpl implements BookingListRepository {
     }
 
     @NotNull
-    private FlightTicket getFlightTicket(ResultSet rs) throws SQLException {
+    private FlightTicket buildFlightTicket(ResultSet rs) throws SQLException {
         final String ticket_number = rs.getString("ticket_number");
 
         final BookingInformation bookingInformation =
-                new BookingInformation(getFlight(rs),
+                new BookingInformation(buildFlight(rs),
                         buildPassenger(rs),
                         rs.getInt("number_of_tickets"));
 
@@ -125,7 +125,7 @@ public class BookingListRepositoryImpl implements BookingListRepository {
                 .build();
     }
 
-    private Flight getFlight(ResultSet rs) throws SQLException {
+    private Flight buildFlight(ResultSet rs) throws SQLException {
         return flight()
                 .withFlightNumber(rs.getString("flight_number"))
                 .from(getCity(rs.getString("from_city")))

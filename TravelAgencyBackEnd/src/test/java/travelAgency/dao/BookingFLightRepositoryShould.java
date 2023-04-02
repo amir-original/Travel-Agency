@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.booking.FlightTicket;
 import travelAgency.domain.flight.Flight;
+import travelAgency.fake.FakeBookingList;
 import travelAgency.repository.booking.BookingListRepository;
 import travelAgency.repository.booking.BookingListRepositoryImpl;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
@@ -16,7 +17,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static travelAgency.fake.FakeFlight.flight;
-import static travelAgency.fake.FakeFlightTicketBuilder.flightTicket;
 
 public class BookingFLightRepositoryShould {
 
@@ -35,10 +35,7 @@ public class BookingFLightRepositoryShould {
 
     @Test
     void book_information() {
-        final FlightTicket flightTicket = flightTicket().build();
-
-        passengerApi.save(flightTicket.passenger());
-        api.book(flightTicket);
+        var flightTicket = insertSingleTicket();
         Optional<FlightTicket> fetchedTicket = api.findBooking(flightTicket.ticketNumber());
         assertThat(fetchedTicket).isEqualTo(fetchedTicket);
     }
@@ -59,10 +56,11 @@ public class BookingFLightRepositoryShould {
         flightApi.addFlight(flight);
     }
 
-    private void insertSingleTicket() {
-        final FlightTicket flightTicket = flightTicket().build();
+    private FlightTicket insertSingleTicket() {
+        final FlightTicket flightTicket = FakeBookingList.flightTicket("78456587");
         passengerApi.save(flightTicket.passenger());
         api.book(flightTicket);
+        return flightTicket;
     }
 
     @AfterEach
