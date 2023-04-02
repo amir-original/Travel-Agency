@@ -4,6 +4,7 @@ import travelAgency.domain.booking.BookingInformation;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.passenger.Passenger;
 
+import static travelAgency.fake.FakeFlight.flight;
 import static travelAgency.fake.FakePassenger.passenger;
 
 public class FakeBookingInformationBuilder {
@@ -11,7 +12,7 @@ public class FakeBookingInformationBuilder {
     private static final String EXIST_FLIGHT_NUMBER = "0321";
     private static final String NOT_EXIST_FLIGHT_NUMBER = "Not Found Flight Number";
 
-    private Flight flight = getFlightWith(EXIST_FLIGHT_NUMBER);
+    private Flight flight = flight(EXIST_FLIGHT_NUMBER);
 
     private Passenger passenger = passenger().build();
 
@@ -27,7 +28,7 @@ public class FakeBookingInformationBuilder {
     }
 
     public FakeBookingInformationBuilder withNotFoundFlight() {
-        this.flight = getFlightWith(NOT_EXIST_FLIGHT_NUMBER);
+        this.flight = flight(NOT_EXIST_FLIGHT_NUMBER);
         return this;
     }
 
@@ -45,7 +46,4 @@ public class FakeBookingInformationBuilder {
         return new BookingInformation(flight, passenger, numberOfTickets);
     }
 
-    private Flight getFlightWith(String flightNumber) {
-        return FakeFlight.flight(flightNumber);
-    }
 }

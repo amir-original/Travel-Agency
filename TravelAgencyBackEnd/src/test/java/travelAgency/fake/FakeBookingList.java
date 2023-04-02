@@ -27,21 +27,21 @@ public class FakeBookingList implements BookingListRepository {
     }
 
     @Override
-    public Optional<FlightTicket> ticket(String ticketNumber) {
+    public Optional<FlightTicket> findBooking(String ticketNumber) {
         return tickets.stream()
                 .filter(ticket -> ticket.isEqualTicketNumber(ticketNumber))
                 .findFirst();
     }
 
     @Override
-    public List<FlightTicket> tickets(String flightNumber) {
+    public List<FlightTicket> findBookings(String flightNumber) {
         return tickets.stream()
                 .filter(flightTicket -> flightTicket.flightNumber().equals(flightNumber))
                 .toList();
     }
 
     @Override
-    public List<FlightTicket> tickets() {
+    public List<FlightTicket> getAllBookings() {
         return tickets;
     }
 

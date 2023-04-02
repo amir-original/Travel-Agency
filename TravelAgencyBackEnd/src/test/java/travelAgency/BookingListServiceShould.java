@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
 import travelAgency.fake.FakeBookingList;
-import travelAgency.fake.FakeFlight;
 import travelAgency.services.bookingList.BookingListService;
 import travelAgency.services.bookingList.BookingListServiceImpl;
 import travelAgency.services.bookingList.TicketNumberGenerator;
@@ -63,7 +62,7 @@ public class BookingListServiceShould {
                 () -> assertThat(app.getBookedSeats(EXIST_FLIGHT_NUMBER)).isEqualTo(bookingsBeforeCancel),
                 () -> assertThatNoException().isThrownBy(() -> app.cancel(ticket)),
                 () -> assertThatExceptionOfType(NotFoundAnyBookingFlightException.class)
-                        .isThrownBy(() -> app.ticket(ticket.ticketNumber())),
+                        .isThrownBy(() -> app.findBooking(ticket.ticketNumber())),
                 () -> assertThat(app.getBookedSeats(EXIST_FLIGHT_NUMBER)).isEqualTo(bookingsAfterCancel)
                 );
     }

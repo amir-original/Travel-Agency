@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface BookingListRepository {
     void book(FlightTicket flightTicket);
-    Optional<FlightTicket> ticket(String ticketNumber);
-    List<FlightTicket> tickets(String flightNumber);
-    List<FlightTicket> tickets();
     void cancel(FlightTicket flightTicket);
+    Optional<FlightTicket> findBooking(String ticketNumber);
+    List<FlightTicket> findBookings(String flightNumber);
+    List<FlightTicket> getAllBookings();
     void truncate();
 }

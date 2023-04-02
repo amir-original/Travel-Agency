@@ -28,11 +28,12 @@ public class FakePassenger implements PassengerRepository {
 
     @Override
     public void save(Passenger passenger) {
+        passengers.add(passenger);
     }
 
     @Override
     public void save(List<Passenger> passengers) {
-
+        passengers.forEach(this::save);
     }
 
     @Override

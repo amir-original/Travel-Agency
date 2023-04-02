@@ -39,7 +39,7 @@ public class BookingFLightRepositoryShould {
 
         passengerApi.save(flightTicket.passenger());
         api.book(flightTicket);
-        Optional<FlightTicket> fetchedTicket = api.ticket(flightTicket.ticketNumber());
+        Optional<FlightTicket> fetchedTicket = api.findBooking(flightTicket.ticketNumber());
         assertThat(fetchedTicket).isEqualTo(fetchedTicket);
     }
 
@@ -48,7 +48,7 @@ public class BookingFLightRepositoryShould {
         insertSingleFlight();
         insertSingleTicket();
 
-        final List<FlightTicket> tickets = api.tickets();
+        final List<FlightTicket> tickets = api.getAllBookings();
 
         assertThat(tickets).isNotEmpty();
         assertThat(tickets.size()).isEqualTo(1);

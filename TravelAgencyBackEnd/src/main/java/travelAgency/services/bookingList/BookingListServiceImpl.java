@@ -57,16 +57,16 @@ public class BookingListServiceImpl implements BookingListService {
 
     @Override
     public int getBookedSeats(String flightNumber) {
-        return bookings.tickets(flightNumber).stream().mapToInt(FlightTicket::travelers).sum();
+        return bookings.findBookings(flightNumber).stream().mapToInt(FlightTicket::travelers).sum();
     }
 
     @Override
-    public FlightTicket ticket(String ticketNumber) {
-        return bookings.ticket(ticketNumber).orElseThrow(NotFoundAnyBookingFlightException::new);
+    public FlightTicket findBooking(String ticketNumber) {
+        return bookings.findBooking(ticketNumber).orElseThrow(NotFoundAnyBookingFlightException::new);
     }
 
     private List<FlightTicket> getTickets() {
-        return bookings.tickets();
+        return bookings.getAllBookings();
     }
 
 }

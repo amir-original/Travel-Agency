@@ -4,7 +4,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.booking.FlightTicket;
-import travelAgency.fake.FakeFlight;
 import travelAgency.repository.booking.BookingListRepository;
 import travelAgency.repository.booking.BookingListRepositoryImpl;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
@@ -42,10 +41,10 @@ public class BookingListRepositoryShould {
         passengers.save(flightTicket.passenger());
         bookingLists.book(flightTicket);
 
-        final Optional<FlightTicket> ticket = bookingLists.ticket(flightTicket.ticketNumber());
+        final Optional<FlightTicket> ticket = bookingLists.findBooking(flightTicket.ticketNumber());
 
         if (ticket.isEmpty()) {
-            fail("ticket not found!");
+            fail("findBooking not found!");
         }
 
         assertThat(ticket.get()).isEqualTo(flightTicket);

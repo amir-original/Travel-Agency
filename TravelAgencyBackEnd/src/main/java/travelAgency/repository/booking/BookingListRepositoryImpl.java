@@ -47,7 +47,7 @@ public class BookingListRepositoryImpl implements BookingListRepository {
     }
 
     @Override
-    public Optional<FlightTicket> ticket(String tikcketNumber) {
+    public Optional<FlightTicket> findBooking(String tikcketNumber) {
         FlightTicket flightTicket = null;
         try (final PreparedStatement sql = createQuery(SELECT_JOIN_WHERE)) {
             sql.setString(1, tikcketNumber);
@@ -62,7 +62,7 @@ public class BookingListRepositoryImpl implements BookingListRepository {
     }
 
     @Override
-    public List<FlightTicket> tickets(String flightNumber) {
+    public List<FlightTicket> findBookings(String flightNumber) {
         List<FlightTicket> result = new LinkedList<>();
         try (final PreparedStatement query = createQuery(SELECT_ALL_JOIN_BY_FLIGHT_NUMBER)) {
             query.setString(1, flightNumber);
@@ -77,7 +77,7 @@ public class BookingListRepositoryImpl implements BookingListRepository {
     }
 
     @Override
-    public List<FlightTicket> tickets() {
+    public List<FlightTicket> getAllBookings() {
         List<FlightTicket> result = new LinkedList<>();
         try (final PreparedStatement query = createQuery(SELECT_ALL_JOIN)) {
             final ResultSet resultSet = query.executeQuery();

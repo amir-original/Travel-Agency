@@ -20,14 +20,14 @@ public class BookingFlightTicket {
         this.flightAvailability = flightAvailability;
     }
 
-    public FlightTicket book(BookingInformation bookingInfo) {
-        check(bookingInfo);
-        final String flightNumber = bookingInfo.flightNumber();
+    public FlightTicket book(BookingInformation bookingInformation) {
+        check(bookingInformation);
+        final String flightNumber = bookingInformation.flightNumber();
 
-        flightAvailability.checkingFlight(flightNumber, bookingInfo.numberOfTickets());
+        flightAvailability.checkingFlight(flightNumber, bookingInformation.numberOfTickets());
 
-        passengers.save(bookingInfo.passenger());
-        return bookingLists.book(bookingInfo);
+        passengers.save(bookingInformation.passenger());
+        return bookingLists.book(bookingInformation);
     }
 
     private void check(BookingInformation bookingInformation) {
