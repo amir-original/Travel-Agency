@@ -10,8 +10,7 @@ import travelAgency.fake.FakeBookingList;
 import travelAgency.fake.FakeFlight;
 import travelAgency.fake.FakePassenger;
 import travelAgency.services.BookingFlightTicket;
-import travelAgency.services.bookingList.BookingListServiceImpl;
-import travelAgency.services.bookingList.TicketNumberGenerator;
+import travelAgency.services.bookingList.TicketGenerator;
 import travelAgency.services.flights.FlightAvailabilityImpl;
 
 import java.time.LocalDate;
@@ -33,22 +32,21 @@ public class BookingFlightShould {
 
     @BeforeEach
     void setUp() {
-        TicketNumberGenerator ticketNumberGenerator = createMockTicketGenerator();
+        TicketGenerator ticketGenerator = createMockTicketGenerator();
         FakeBookingList fakeBookingList = new FakeBookingList();
-        final BookingListServiceImpl bookingLists =
-                new BookingListServiceImpl(fakeBookingList, ticketNumberGenerator);
 
-        app = new BookingFlightTicket(bookingLists,
-                new FlightAvailabilityImpl(new FakeFlight(), bookingLists),
-                new FakePassenger()
+        app = new BookingFlightTicket(fakeBookingList,
+                new FlightAvailabilityImpl(new FakeFlight(), fakeBookingList),
+                new FakePassenger(),
+                ticketGenerator
         );
     }
 
     @NotNull
-    private TicketNumberGenerator createMockTicketGenerator() {
-        TicketNumberGenerator ticketNumberGenerator = mock(TicketNumberGenerator.class);
-        when(ticketNumberGenerator.generate()).thenReturn("56472514");
-        return ticketNumberGenerator;
+    private TicketGenerator createMockTicketGenerator() {
+        TicketGenerator ticketGenerator = mock(TicketGenerator.class);
+        when(ticketGenerator.generate()).thenReturn("56472514");
+        return ticketGenerator;
     }
 
     @Test
@@ -205,12 +203,12 @@ public class BookingFlightShould {
     @Test
     void throw_FlightScheduleException_when_book_flight_with_past_departure_and_arrival() {
         LocalDate yesterday = LocalDate.now().minusDays(1);
-        assertThatExceptionOfType(FlightScheduleException.class)
+        assertThatExceptionOfType(FlightScheduleMostNotBePastException.class)
                 .isThrownBy(() -> {
                     app.book(bookingInformation().withFlight(flight().departureAt(yesterday).build()).build());
                 });
 
-        assertThatExceptionOfType(FlightScheduleException.class)
+        assertThatExceptionOfType(FlightScheduleMostNotBePastException.class)
                 .isThrownBy(() -> {
                     final FlightPlan flightPlan = flightPlan().arrivalAt(yesterday).build();
                     final Flight flight = flight().arrivalAt(yesterday).build();

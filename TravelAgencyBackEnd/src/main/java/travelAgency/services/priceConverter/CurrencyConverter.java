@@ -5,15 +5,11 @@ import java.util.Objects;
 public final class CurrencyConverter {
     private final double oneDollarToRail;
     private final double oneRialToDollar;
-    private final double oneEuroToRial;
-    private final double oneRialToEuro;
 
-    public CurrencyConverter(double oneDollarToRail, double oneRialToDollar,
-                             double oneEuroToRial, double oneRialToEuro) {
+
+    public CurrencyConverter(double oneDollarToRail, double oneRialToDollar) {
         this.oneDollarToRail = oneDollarToRail;
         this.oneRialToDollar = oneRialToDollar;
-        this.oneEuroToRial = oneEuroToRial;
-        this.oneRialToEuro = oneRialToEuro;
     }
 
     public double oneDollarToRail() {
@@ -24,13 +20,6 @@ public final class CurrencyConverter {
         return oneRialToDollar;
     }
 
-    public double oneEuroToRial() {
-        return oneEuroToRial;
-    }
-
-    public double oneRialToEuro() {
-        return oneRialToEuro;
-    }
 
     @Override
     public boolean equals(Object obj) {
@@ -38,23 +27,19 @@ public final class CurrencyConverter {
         if (obj == null || obj.getClass() != this.getClass()) return false;
         var that = (CurrencyConverter) obj;
         return Double.doubleToLongBits(this.oneDollarToRail) == Double.doubleToLongBits(that.oneDollarToRail) &&
-                Double.doubleToLongBits(this.oneRialToDollar) == Double.doubleToLongBits(that.oneRialToDollar) &&
-                Double.doubleToLongBits(this.oneEuroToRial) == Double.doubleToLongBits(that.oneEuroToRial) &&
-                Double.doubleToLongBits(this.oneRialToEuro) == Double.doubleToLongBits(that.oneRialToEuro);
+                Double.doubleToLongBits(this.oneRialToDollar) == Double.doubleToLongBits(that.oneRialToDollar);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(oneDollarToRail, oneRialToDollar, oneEuroToRial, oneRialToEuro);
+        return Objects.hash(oneDollarToRail, oneRialToDollar);
     }
 
     @Override
     public String toString() {
         return "CurrencyConverter[" +
                 "oneDollarToRail=" + oneDollarToRail + ", " +
-                "oneRialToDollar=" + oneRialToDollar + ", " +
-                "oneEuroToRial=" + oneEuroToRial + ", " +
-                "oneRialToEuro=" + oneRialToEuro + ']';
+                "oneRialToDollar=" + oneRialToDollar;
     }
 
 }

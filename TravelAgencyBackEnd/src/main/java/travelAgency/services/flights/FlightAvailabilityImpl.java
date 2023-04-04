@@ -2,18 +2,19 @@ package travelAgency.services.flights;
 
 import travelAgency.domain.exceptions.FullyBookedException;
 import travelAgency.domain.exceptions.NotEnoughCapacityException;
+import travelAgency.repository.booking.BookingListRepository;
 import travelAgency.repository.flight.FlightRepository;
-import travelAgency.services.bookingList.BookingListService;
 
 public class FlightAvailabilityImpl implements FlightAvailability {
 
     private static final int NO_SEATS = 0;
     private final FlightRepository flightRepository;
-    private final BookingListService bookingListService;
+    private final BookingListRepository bookingLists;
 
-    public FlightAvailabilityImpl(FlightRepository flightRepository, BookingListService bookingListService) {
+    public FlightAvailabilityImpl(FlightRepository flightRepository,
+                                  BookingListRepository bookingLists) {
         this.flightRepository = flightRepository;
-        this.bookingListService = bookingListService;
+        this.bookingLists = bookingLists;
     }
 
     @Override
@@ -35,7 +36,7 @@ public class FlightAvailabilityImpl implements FlightAvailability {
     }
 
     private int getBookedSeats(String flightNumber) {
-        return bookingListService.getBookedSeats(flightNumber);
+        return bookingLists.getBookedSeats(flightNumber);
     }
 
 

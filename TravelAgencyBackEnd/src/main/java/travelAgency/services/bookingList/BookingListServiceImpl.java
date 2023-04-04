@@ -1,10 +1,10 @@
 package travelAgency.services.bookingList;
 
-import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.booking.BookingInformation;
 import travelAgency.domain.booking.FlightTicket;
 import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
 import travelAgency.repository.booking.BookingListRepository;
+import travelAgency.services.BookingFlightTicket;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,37 +12,26 @@ import java.util.List;
 public class BookingListServiceImpl implements BookingListService {
 
     private final BookingListRepository bookings;
-    private final TicketNumberGenerator ticketNumberGenerator;
-
     private final SearchTicketEngine searchEngine;
+    private final BookingFlightTicket bookingFlightTicket;
 
 
     public BookingListServiceImpl(BookingListRepository bookings,
-                                  TicketNumberGenerator ticketNumberGenerator) {
+                                  BookingFlightTicket bookingFlightTicket) {
         this.bookings = bookings;
-        this.ticketNumberGenerator = ticketNumberGenerator;
+        this.bookingFlightTicket = bookingFlightTicket;
         this.searchEngine = new SearchTicketEngine(getTickets());
     }
 
 
     @Override
     public FlightTicket book(BookingInformation bookingInformation) {
-        final FlightTicket flightTicket = createTicket(bookingInformation);
+      /*  final FlightTicket flightTicket = createTicket(bookingInformation);
 
-        flightTicket.check();
+        checkTicket(flightTicket);
 
-        bookings.book(flightTicket);
-
-        return flightTicket;
-    }
-
-
-
-    @NotNull
-    private FlightTicket createTicket(BookingInformation bookingInformation) {
-        final String ticketNumber = ticketNumberGenerator.generate();
-
-        return new FlightTicket(ticketNumber, bookingInformation);
+        bookings.book(flightTicket);*/
+        return bookingFlightTicket.book(bookingInformation);
     }
 
     @Override
@@ -51,18 +40,19 @@ public class BookingListServiceImpl implements BookingListService {
     }
 
     @Override
-    public void cancel(FlightTicket flightTicket) {
-        bookings.cancel(flightTicket);
+    public void cancel(String ticketNumber) {
+        bookings.cancel(ticketNumber);
     }
 
     @Override
     public int getBookedSeats(String flightNumber) {
-        return bookings.findBookings(flightNumber).stream().mapToInt(FlightTicket::travelers).sum();
+        return bookings.getBookedSeats(flightNumber);
     }
 
     @Override
     public FlightTicket findBooking(String ticketNumber) {
-        return bookings.findBooking(ticketNumber).orElseThrow(NotFoundAnyBookingFlightException::new);
+        return bookings.findBooking(ticketNumber)
+                .orElseThrow(NotFoundAnyBookingFlightException::new);
     }
 
     private List<FlightTicket> getTickets() {

@@ -11,9 +11,8 @@ public interface BookingListService {
     FlightTicket search(String flightNumber,
                         String passengerFirstName,
                         LocalDate PassengerBirthday);
-    void cancel(FlightTicket flightTicket);
+    void cancel(String ticketNumber);
     int getBookedSeats(String flightNumber);
-
     FlightTicket findBooking(String ticketNumber);
 
 }

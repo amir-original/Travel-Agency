@@ -91,8 +91,21 @@ public class BookingListRepositoryImpl implements BookingListRepository {
     }
 
     @Override
-    public void cancel(FlightTicket flightTicket) {
+    public int getBookedSeats(String flightNumber) {
+        return findBookings(flightNumber)
+                .stream()
+                .mapToInt(FlightTicket::travelers)
+                .sum();
+    }
 
+    @Override
+    public void cancel(String ticketNumber) {
+        try (final PreparedStatement query = createQuery(CANCEL_BOOKING)) {
+            query.setString(1, ticketNumber);
+            query.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

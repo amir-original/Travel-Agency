@@ -2,37 +2,50 @@ package travelAgency.services;
 
 import travelAgency.domain.booking.BookingInformation;
 import travelAgency.domain.booking.FlightTicket;
+import travelAgency.repository.booking.BookingListRepository;
 import travelAgency.repository.passenger.PassengerRepository;
-import travelAgency.services.bookingList.BookingListService;
-import travelAgency.services.flights.FlightAvailabilityImpl;
+import travelAgency.services.bookingList.TicketGenerator;
+import travelAgency.services.flights.FlightAvailability;
 
 public class BookingFlightTicket {
 
-    private final BookingListService bookingLists;
+    private final BookingListRepository bookingLists;
     private final PassengerRepository passengers;
-    private final FlightAvailabilityImpl flightAvailability;
+    private final FlightAvailability flightAvailability;
+    private final TicketGenerator ticketGenerator;
 
-    public BookingFlightTicket(BookingListService bookingLists,
-                               FlightAvailabilityImpl flightAvailability,
-                               PassengerRepository passengers) {
+    public BookingFlightTicket(BookingListRepository bookingLists,
+                               FlightAvailability flightAvailability,
+                               PassengerRepository passengers,
+                               TicketGenerator ticketGenerator) {
         this.bookingLists = bookingLists;
         this.passengers = passengers;
-        this.flightAvailability = flightAvailability;
+        this.flightAvailability =  flightAvailability;
+        this.ticketGenerator = ticketGenerator;
     }
 
-    public FlightTicket book(BookingInformation bookingInformation) {
-        check(bookingInformation);
-        final String flightNumber = bookingInformation.flightNumber();
+    public FlightTicket book(BookingInformation bi) {
+        checkBookingInformation(bi);
 
-        flightAvailability.checkingFlight(flightNumber, bookingInformation.numberOfTickets());
+        flightAvailability.checkingFlight(bi.flightNumber(), bi.numberOfTickets());
+        final FlightTicket flightTicket = createTicket(bi);
+        checkTicket(flightTicket);
 
-        passengers.save(bookingInformation.passenger());
-        return bookingLists.book(bookingInformation);
+        passengers.save(bi.passenger());
+        bookingLists.book(flightTicket);
+        return flightTicket;
     }
 
-    private void check(BookingInformation bookingInformation) {
+    private void checkBookingInformation(BookingInformation bookingInformation) {
         bookingInformation.check();
     }
 
+    public FlightTicket createTicket(BookingInformation bookingInformation) {
+        return new FlightTicket(ticketGenerator.generate(), bookingInformation);
+    }
+
+    public void checkTicket(FlightTicket flightTicket) {
+        flightTicket.check();
+    }
 
 }

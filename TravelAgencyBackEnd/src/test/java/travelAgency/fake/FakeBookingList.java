@@ -47,8 +47,19 @@ public class FakeBookingList implements BookingListRepository {
     }
 
     @Override
-    public void cancel(FlightTicket flightTicket) {
-        bookings.remove(flightTicket);
+    public int getBookedSeats(String flightNumber) {
+        return findBookings(flightNumber)
+                .stream()
+                .mapToInt(FlightTicket::travelers)
+                .sum();
+    }
+
+    @Override
+    public void cancel(String ticketNumber) {
+        bookings.stream()
+                .filter(flightTicket -> flightTicket.ticketNumber().equals(ticketNumber))
+                .findFirst()
+                .ifPresent(bookings::remove);
     }
 
     @Override

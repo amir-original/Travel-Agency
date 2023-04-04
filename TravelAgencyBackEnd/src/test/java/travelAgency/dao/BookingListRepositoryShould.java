@@ -1,5 +1,6 @@
 package travelAgency.dao;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,11 +36,7 @@ public class BookingListRepositoryShould {
     @Test
     void book_a_flight_ticket_in_db() {
 
-        final FlightTicket flightTicket = FakeBookingList.flightTicket("78456587");
-
-        flights.addFlight(flight().build());
-        passengers.save(flightTicket.passenger());
-        bookingLists.book(flightTicket);
+        final FlightTicket flightTicket = insertBooking();
 
         final Optional<FlightTicket> ticket = bookingLists.findBooking(flightTicket.ticketNumber());
 
@@ -52,12 +49,29 @@ public class BookingListRepositoryShould {
 
     @Test
     void cancel_a_booking() {
+        final FlightTicket flightTicket = insertBooking();
 
-       /* bookingLists.cancel();*/
+        bookingLists.cancel(flightTicket.ticketNumber());
+
+        final boolean isEmpty = bookingLists.findBooking(flightTicket.ticketNumber()).isEmpty();
+
+        assertThat(isEmpty).isTrue();
+    }
+
+    @NotNull
+    private FlightTicket insertBooking() {
+        final FlightTicket flightTicket = FakeBookingList.flightTicket("78456587");
+
+        flights.addFlight(flight(flightTicket.flightNumber()));
+        passengers.save(flightTicket.passenger());
+        bookingLists.book(flightTicket);
+        return flightTicket;
     }
 
     @AfterEach
     void tearDown() {
         bookingLists.truncate();
+        flights.truncate();
+        passengers.truncate();
     }
 }

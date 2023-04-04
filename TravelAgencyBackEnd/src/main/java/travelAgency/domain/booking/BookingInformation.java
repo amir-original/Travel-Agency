@@ -8,7 +8,9 @@ import travelAgency.domain.passenger.Passenger;
 
 import java.time.LocalDate;
 
-public record BookingInformation(@NotNull Flight flight, @NotNull Passenger passenger, int numberOfTickets) {
+public record BookingInformation(@NotNull Flight flight,
+                                 @NotNull Passenger passenger,
+                                 int numberOfTickets) {
 
     public void check() {
         flight.check();

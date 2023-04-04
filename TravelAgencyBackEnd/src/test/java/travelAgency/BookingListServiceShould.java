@@ -1,20 +1,25 @@
 package travelAgency;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
 import travelAgency.fake.FakeBookingList;
+import travelAgency.fake.FakeFlight;
+import travelAgency.fake.FakePassenger;
+import travelAgency.services.BookingFlightTicket;
 import travelAgency.services.bookingList.BookingListService;
 import travelAgency.services.bookingList.BookingListServiceImpl;
-import travelAgency.services.bookingList.TicketNumberGenerator;
+import travelAgency.services.bookingList.TicketGenerator;
+import travelAgency.services.flights.FlightAvailabilityImpl;
 
 import java.time.LocalDate;
 
 import static java.time.LocalDate.of;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static travelAgency.fake.FakeBookingInformationBuilder.bookingInformation;
 import static travelAgency.fake.FakeFlight.flight;
 import static travelAgency.fake.FakePassenger.passenger;
@@ -28,9 +33,21 @@ public class BookingListServiceShould {
 
     @BeforeEach
     void setUp() {
-        TicketNumberGenerator ticketNumberGenerator = mock(TicketNumberGenerator.class);
-        when(ticketNumberGenerator.generate()).thenReturn("56472514");
-        app = new BookingListServiceImpl(new FakeBookingList(), ticketNumberGenerator);
+        TicketGenerator ticketGenerator = createTicketGenerator();
+        final FakeBookingList bookings = new FakeBookingList();
+
+        final FlightAvailabilityImpl flightAvailability = new FlightAvailabilityImpl(new FakeFlight(), bookings);
+        final FakePassenger passengers = new FakePassenger();
+        BookingFlightTicket bookingFlightTicket =
+                new BookingFlightTicket(bookings, flightAvailability, passengers, ticketGenerator);
+        app = new BookingListServiceImpl(bookings, bookingFlightTicket);
+    }
+
+    @NotNull
+    private TicketGenerator createTicketGenerator() {
+        TicketGenerator ticketGenerator = mock(TicketGenerator.class);
+        when(ticketGenerator.generate()).thenReturn("56472514");
+        return ticketGenerator;
     }
 
     @Test
@@ -60,7 +77,7 @@ public class BookingListServiceShould {
 
         assertAll(
                 () -> assertThat(app.getBookedSeats(EXIST_FLIGHT_NUMBER)).isEqualTo(bookingsBeforeCancel),
-                () -> assertThatNoException().isThrownBy(() -> app.cancel(ticket)),
+                () -> assertThatNoException().isThrownBy(() -> app.cancel(ticket.ticketNumber())),
                 () -> assertThatExceptionOfType(NotFoundAnyBookingFlightException.class)
                         .isThrownBy(() -> app.findBooking(ticket.ticketNumber())),
                 () -> assertThat(app.getBookedSeats(EXIST_FLIGHT_NUMBER)).isEqualTo(bookingsAfterCancel)

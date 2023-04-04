@@ -44,26 +44,4 @@ public record FlightTicket(@NotNull String ticketNumber,
     public Passenger passenger() {
         return bookingInformation.passenger();
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (FlightTicket) obj;
-        return Objects.equals(this.ticketNumber, that.ticketNumber) &&
-                Objects.equals(this.bookingInformation, that.bookingInformation);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(ticketNumber, bookingInformation);
-    }
-
-    @Override
-    public String toString() {
-        return "FlightTicket[" +
-                "ticketNumber=" + ticketNumber + ", " +
-                "flightTicketInfo=" + bookingInformation + ']';
-    }
-
 }

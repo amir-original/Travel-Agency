@@ -7,56 +7,66 @@ import org.mockito.InOrder;
 import travelAgency.domain.booking.BookingInformation;
 import travelAgency.domain.booking.FlightTicket;
 import travelAgency.domain.passenger.Passenger;
-import travelAgency.fake.FakeBookingList;
+import travelAgency.repository.booking.BookingListRepository;
 import travelAgency.repository.passenger.PassengerRepository;
 import travelAgency.services.BookingFlightTicket;
-import travelAgency.services.bookingList.BookingListService;
-import travelAgency.services.bookingList.BookingListServiceImpl;
+import travelAgency.services.bookingList.TicketGenerator;
 import travelAgency.services.flights.FlightAvailabilityImpl;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
 import static travelAgency.fake.FakeBookingInformationBuilder.bookingInformation;
+import static travelAgency.fake.FakeBookingList.flightTicket;
 
 public class MockBookingFlightShould {
 
+    public static final String TICKET_NUMBER = "78456587";
     private BookingFlightTicket app;
     private FlightAvailabilityImpl flightAvailability;
     private PassengerRepository passengers;
-    private BookingListService ticketService;
+    private BookingListRepository bookingLists;
+    private TicketGenerator ticketGenerator;
 
     @BeforeEach
     void setUp() {
         passengers = createPassengerRepository();
-        ticketService = createTicketService();
+        bookingLists = createTicketService();
         flightAvailability = createFindFlightsRepository();
-        app = new BookingFlightTicket(ticketService, flightAvailability, passengers);
+        ticketGenerator = createMockTicketGenerator();
+        app = new BookingFlightTicket(bookingLists, flightAvailability, passengers, ticketGenerator);
     }
 
     @Test
     void be_do_actions_in_order_when_booking_a_flight() {
         final BookingInformation bookingInformation = bookingInformation().build();
+        final FlightTicket flightTicket = createTicket();
 
         final FlightTicket ticket = app.book(bookingInformation);
         assertThat(ticket.bookingInformation()).isEqualTo(bookingInformation);
 
-        final InOrder inOrder = inOrder(flightAvailability, passengers, ticketService);
 
         final String flightNumber = bookingInformation.flightNumber();
 
-        inOrder.verify(flightAvailability).checkingFlight(flightNumber,
-                bookingInformation.numberOfTickets());
+        final InOrder inOrder = inOrder(flightAvailability, passengers,
+                bookingLists, ticketGenerator);
+
+        inOrder.verify(flightAvailability).checkingFlight(flightNumber, bookingInformation.numberOfTickets());
 
         inOrder.verify(passengers).save(bookingInformation.passenger());
-        inOrder.verify(ticketService).book(bookingInformation);
+        inOrder.verify(bookingLists).book(flightTicket);
     }
 
     @NotNull
-    private BookingListService createTicketService() {
-        final BookingListService ticketService = mock(BookingListServiceImpl.class);
-        final FlightTicket flightTicket = FakeBookingList.flightTicket("78456587");
-        when(ticketService.book(any())).thenReturn(flightTicket);
-        return ticketService;
+    private FlightTicket createTicket() {
+        return flightTicket(TICKET_NUMBER);
+    }
+
+    @NotNull
+    private BookingListRepository createTicketService() {
+        final BookingListRepository bookings = mock(BookingListRepository.class);
+        final FlightTicket flightTicket = createTicket();
+        doNothing().when(bookings).book(flightTicket);
+        return bookings;
     }
 
     private PassengerRepository createPassengerRepository() {
@@ -67,8 +77,15 @@ public class MockBookingFlightShould {
 
     private FlightAvailabilityImpl createFindFlightsRepository() {
         final FlightAvailabilityImpl mock = mock(FlightAvailabilityImpl.class);
-        doNothing().when(mock).checkingFlight(anyString(),anyInt());
+        doNothing().when(mock).checkingFlight(anyString(), anyInt());
         return mock;
+    }
+
+    @NotNull
+    private TicketGenerator createMockTicketGenerator() {
+        TicketGenerator ticketGenerator = mock(TicketGenerator.class);
+        when(ticketGenerator.generate()).thenReturn("56472514");
+        return ticketGenerator;
     }
 
 }

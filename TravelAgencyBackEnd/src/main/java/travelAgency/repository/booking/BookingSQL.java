@@ -16,4 +16,5 @@ public class BookingSQL {
     public static final String SELECT_JOIN_WHERE = SELECT_ALL_JOIN + " WHERE t.ticket_number = ?";
     public static final String TABLE_NAME = "booking_list";
     public static String SELECT_ALL_JOIN_BY_FLIGHT_NUMBER = SELECT_ALL_JOIN + " WHERE t.flight_number=?";
+    public static final String CANCEL_BOOKING = "delete from booking_list where ticket_number=?";
 }
