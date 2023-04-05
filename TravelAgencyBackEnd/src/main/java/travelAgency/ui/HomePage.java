@@ -2,78 +2,92 @@ package travelAgency.ui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class HomePage extends JFrame {
 
-    private JLabel welcomeLabel, dateLabel, iconLabel;
     private JButton bookingFlightButton, bookingListButton;
 
+    private final UiComponents uiComponents = new UiComponents();
+
+    public static void main(String[] args) {
+        final HomePage homePage = new HomePage();
+    }
+
+
     public HomePage() {
+        createComponents();
+
+        addActionToButtons();
+
+        setVisible(true);
+    }
+
+    private void createComponents() {
+        createLayout();
+        createWelcomeLabel();
+        createDateLabel();
+        createButtons();
+        createPanel();
+    }
+
+    private void createLayout() {
         setTitle("Booking Flight Management");
         setSize(700, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+    }
 
-        // Create welcome label
-        welcomeLabel = new JLabel("Welcome to Booking Flight System");
+    private void createWelcomeLabel() {
+        JLabel welcomeLabel = new JLabel("Welcome to Booking Flight System");
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 30));
         welcomeLabel.setHorizontalAlignment(JLabel.CENTER);
         add(welcomeLabel, BorderLayout.CENTER);
+    }
 
-        // Create date label
-        dateLabel = new JLabel(getCurrentDate());
+    private void createDateLabel() {
+        JLabel dateLabel = new JLabel(currentDateString());
         dateLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         dateLabel.setHorizontalAlignment(JLabel.LEFT);
         add(dateLabel, BorderLayout.NORTH);
+    }
 
-        // Create icon label
-       /* ImageIcon icon = new ImageIcon("C:\\Users\\amirrahmani\\Desktop\\3125713.png");
-        iconLabel = new JLabel(icon);
-        iconLabel.setSize(15,15);
-        add(iconLabel, BorderLayout.WEST);*/
+    private void createButtons() {
+        bookingFlightButton = uiComponents.button("Booking Flight");
+        bookingListButton = uiComponents.button("Booking List");
+    }
 
-        // Create buttons
-        bookingFlightButton = new JButton("Booking Flight");
-        bookingListButton = new JButton("Booking List");
-
-        // Create panel for buttons
+    private void createPanel() {
         JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 0));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         buttonPanel.add(bookingFlightButton);
         buttonPanel.add(bookingListButton);
         add(buttonPanel, BorderLayout.SOUTH);
-
-        bookingFlightButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new FlightBookingPage();
-                dispose();
-            }
-        });
-
-        bookingListButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new BookingListPage().createBookingListPage();
-                dispose();
-            }
-        });
-
-        setVisible(true);
     }
 
-    // Helper method to get current date
-    private String getCurrentDate() {
+    private String currentDateString() {
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy");
         return "Today's date: " + currentDate.format(formatter);
     }
 
-    public static void main(String[] args) {
-        new HomePage();
+    private void addActionToButtons() {
+        goToFlightBookingPage();
+        goToBookingListPage();
+    }
+
+    private void goToBookingListPage() {
+        bookingListButton.addActionListener(e -> {
+            new BookingListPage().createBookingListPage();
+            dispose();
+        });
+    }
+
+    private void goToFlightBookingPage() {
+        bookingFlightButton.addActionListener(e -> {
+            new FlightBookingPage();
+            dispose();
+        });
     }
 }
