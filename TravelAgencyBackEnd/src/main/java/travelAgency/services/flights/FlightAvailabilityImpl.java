@@ -1,5 +1,6 @@
 package travelAgency.services.flights;
 
+import travelAgency.domain.booking.BookingInformation;
 import travelAgency.domain.exceptions.FullyBookedException;
 import travelAgency.domain.exceptions.NotEnoughCapacityException;
 import travelAgency.repository.booking.BookingListRepository;
@@ -19,36 +20,38 @@ public class FlightAvailabilityImpl implements FlightAvailability {
 
     @Override
     public int totalCapacity(String flightNumber) {
-        return getAvailableSeats(flightNumber, getBookedSeats(flightNumber));
+        return getAvailableSeats(flightNumber, bookingLists.getBookedSeats(flightNumber));
     }
 
     @Override
-    public void checkingFlight(String flightNumber, int newTravelers) {
-        flightRepository.checkExistenceFlightWith(flightNumber);
-        checkAvailability(flightNumber, newTravelers, getBookedSeats(flightNumber));
+    public void checkFlight(BookingInformation bi) {
+        flightRepository.checkExistenceFlightWith(bi.flightNumber());
+        checkAvailability(bi);
     }
 
-    private void checkAvailability(String flightNumber, int newTravelers, int numberOfBooked) {
-        if (isSoldOutAllSeats(flightNumber, numberOfBooked))
+    private void checkAvailability(BookingInformation bi) {
+        if (isSoldOutAllSeats(bi.flightNumber()))
             throw new FullyBookedException();
-        if (!isAvailableSeatsFor(flightNumber, numberOfBooked, newTravelers))
+        if (!isAvailableSeatsFor(bi))
             throw new NotEnoughCapacityException();
     }
 
-    private int getBookedSeats(String flightNumber) {
-        return bookingLists.getBookedSeats(flightNumber);
+
+    private boolean isSoldOutAllSeats(String flightNumber) {
+        return getAvailableSeats(flightNumber, bookingLists.getBookedSeats(flightNumber)) <= NO_SEATS;
     }
 
-
-    private boolean isSoldOutAllSeats(String flightNumber, int numberOfBookedFlight) {
-        return getAvailableSeats(flightNumber, numberOfBookedFlight) <= NO_SEATS;
+    private boolean isAvailableSeatsFor(BookingInformation bi) {
+        final String flightNumber = bi.flightNumber();
+        final int totalBookingSeats = getTotalBookingSeats(bi);
+        return getAvailableSeats(flightNumber, totalBookingSeats) >= NO_SEATS;
     }
 
-    private boolean isAvailableSeatsFor(String flightNumber, int numberOfBookedFlight, int newTravelers) {
-        return getAvailableSeats(flightNumber, numberOfBookedFlight + newTravelers) >= NO_SEATS;
+    private int getTotalBookingSeats(BookingInformation bi) {
+        return bi.numberOfTickets() + bookingLists.getBookedSeats(bi.flightNumber());
     }
 
-    private int getAvailableSeats(String flightNumber, int numberOfBookedFlight) {
-        return flightRepository.numberOfSeats(flightNumber) - numberOfBookedFlight;
+    private int getAvailableSeats(String flightNumber, int bookedSeats) {
+        return flightRepository.numberOfSeats(flightNumber) - bookedSeats;
     }
 }

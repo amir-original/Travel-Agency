@@ -1,15 +1,22 @@
 package travelAgency.services.bookingList;
 
+import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.booking.BookingInformation;
 import travelAgency.domain.booking.FlightTicket;
-import travelAgency.helper.UniqueIdGenerator;
 
-public class TicketGenerator {
+public interface TicketGenerator {
 
-    private static final int MAX_LENGTH = 8;
+    String generateTicketNumber();
 
-    public String generate() {
-        return UniqueIdGenerator.generate(MAX_LENGTH);
+    @NotNull
+    default FlightTicket getFlightTicket(BookingInformation bi) {
+        final FlightTicket flightTicket = createTicket(bi);
+        flightTicket.check();
+        return flightTicket;
+    }
+
+    private FlightTicket createTicket(BookingInformation bookingInformation) {
+        return new FlightTicket(generateTicketNumber(), bookingInformation);
     }
 
 }

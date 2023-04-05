@@ -20,17 +20,12 @@ public class BookingListServiceImpl implements BookingListService {
                                   BookingFlightTicket bookingFlightTicket) {
         this.bookings = bookings;
         this.bookingFlightTicket = bookingFlightTicket;
-        this.searchEngine = new SearchTicketEngine(getTickets());
+        this.searchEngine = new SearchTicketEngine(getAllBookings());
     }
 
 
     @Override
     public FlightTicket book(BookingInformation bookingInformation) {
-      /*  final FlightTicket flightTicket = createTicket(bookingInformation);
-
-        checkTicket(flightTicket);
-
-        bookings.book(flightTicket);*/
         return bookingFlightTicket.book(bookingInformation);
     }
 
@@ -50,13 +45,14 @@ public class BookingListServiceImpl implements BookingListService {
     }
 
     @Override
+    public List<FlightTicket> getAllBookings() {
+        return bookings.getAllBookings();
+    }
+
+    @Override
     public FlightTicket findBooking(String ticketNumber) {
         return bookings.findBooking(ticketNumber)
                 .orElseThrow(NotFoundAnyBookingFlightException::new);
-    }
-
-    private List<FlightTicket> getTickets() {
-        return bookings.getAllBookings();
     }
 
 }

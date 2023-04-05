@@ -1,6 +1,5 @@
 package travelAgency.booking;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.*;
@@ -9,6 +8,7 @@ import travelAgency.domain.flight.FlightPlan;
 import travelAgency.fake.FakeBookingList;
 import travelAgency.fake.FakeFlight;
 import travelAgency.fake.FakePassenger;
+import travelAgency.fake.FakeTicketGenerator;
 import travelAgency.services.BookingFlightTicket;
 import travelAgency.services.bookingList.TicketGenerator;
 import travelAgency.services.flights.FlightAvailabilityImpl;
@@ -18,8 +18,6 @@ import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static travelAgency.domain.city.City.TEHRAN;
 import static travelAgency.fake.FakeBookingInformationBuilder.bookingInformation;
 import static travelAgency.fake.FakeFlight.flight;
@@ -32,7 +30,7 @@ public class BookingFlightShould {
 
     @BeforeEach
     void setUp() {
-        TicketGenerator ticketGenerator = createMockTicketGenerator();
+        TicketGenerator ticketGenerator = new FakeTicketGenerator();
         FakeBookingList fakeBookingList = new FakeBookingList();
 
         app = new BookingFlightTicket(fakeBookingList,
@@ -42,12 +40,7 @@ public class BookingFlightShould {
         );
     }
 
-    @NotNull
-    private TicketGenerator createMockTicketGenerator() {
-        TicketGenerator ticketGenerator = mock(TicketGenerator.class);
-        when(ticketGenerator.generate()).thenReturn("56472514");
-        return ticketGenerator;
-    }
+
 
     @Test
     void book_a_flight_without_throw_any_exception() {

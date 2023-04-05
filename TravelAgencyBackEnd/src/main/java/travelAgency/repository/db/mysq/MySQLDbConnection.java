@@ -19,8 +19,10 @@ public class MySQLDbConnection implements DbConnection {
         loadConfig();
     }
 
-    public MySQLDbConnection(String configFileName) {
-        this.configFileName = configFileName;
+    public MySQLDbConnection(String host,String user,String pass) {
+        this.host = host;
+        this.user = user;
+        this.pass = pass;
     }
 
     private void loadConfig() {

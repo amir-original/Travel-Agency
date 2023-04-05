@@ -1,6 +1,8 @@
 package travelAgency.services.flights;
 
+import travelAgency.domain.booking.BookingInformation;
+
 public interface FlightAvailability {
-    void checkingFlight(String flightNumber, int newTravelers);
+    void checkFlight(BookingInformation bookingInformation);
     int totalCapacity(String flightNumber);
 }

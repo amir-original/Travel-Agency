@@ -45,12 +45,11 @@ public class MockBookingFlightShould {
         assertThat(ticket.bookingInformation()).isEqualTo(bookingInformation);
 
 
-        final String flightNumber = bookingInformation.flightNumber();
-
         final InOrder inOrder = inOrder(flightAvailability, passengers,
                 bookingLists, ticketGenerator);
 
-        inOrder.verify(flightAvailability).checkingFlight(flightNumber, bookingInformation.numberOfTickets());
+        inOrder.verify(flightAvailability).checkFlight(bookingInformation);
+        inOrder.verify(ticketGenerator).getFlightTicket(bookingInformation);
 
         inOrder.verify(passengers).save(bookingInformation.passenger());
         inOrder.verify(bookingLists).book(flightTicket);
@@ -77,14 +76,15 @@ public class MockBookingFlightShould {
 
     private FlightAvailabilityImpl createFindFlightsRepository() {
         final FlightAvailabilityImpl mock = mock(FlightAvailabilityImpl.class);
-        doNothing().when(mock).checkingFlight(anyString(), anyInt());
+        doNothing().when(mock).checkFlight(any());
         return mock;
     }
 
     @NotNull
     private TicketGenerator createMockTicketGenerator() {
         TicketGenerator ticketGenerator = mock(TicketGenerator.class);
-        when(ticketGenerator.generate()).thenReturn("56472514");
+        when(ticketGenerator.generateTicketNumber()).thenReturn("56472514");
+        when(ticketGenerator.getFlightTicket(any())).thenReturn(createTicket());
         return ticketGenerator;
     }
 

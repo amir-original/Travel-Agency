@@ -12,7 +12,7 @@ public class BookingFlightTicket {
     private final BookingListRepository bookingLists;
     private final PassengerRepository passengers;
     private final FlightAvailability flightAvailability;
-    private final TicketGenerator ticketGenerator;
+    public final TicketGenerator ticketGenerator;
 
     public BookingFlightTicket(BookingListRepository bookingLists,
                                FlightAvailability flightAvailability,
@@ -27,9 +27,8 @@ public class BookingFlightTicket {
     public FlightTicket book(BookingInformation bi) {
         checkBookingInformation(bi);
 
-        flightAvailability.checkingFlight(bi.flightNumber(), bi.numberOfTickets());
-        final FlightTicket flightTicket = createTicket(bi);
-        checkTicket(flightTicket);
+        flightAvailability.checkFlight(bi);
+        final FlightTicket flightTicket = ticketGenerator.getFlightTicket(bi);
 
         passengers.save(bi.passenger());
         bookingLists.book(flightTicket);
@@ -38,14 +37,6 @@ public class BookingFlightTicket {
 
     private void checkBookingInformation(BookingInformation bookingInformation) {
         bookingInformation.check();
-    }
-
-    public FlightTicket createTicket(BookingInformation bookingInformation) {
-        return new FlightTicket(ticketGenerator.generate(), bookingInformation);
-    }
-
-    public void checkTicket(FlightTicket flightTicket) {
-        flightTicket.check();
     }
 
 }
