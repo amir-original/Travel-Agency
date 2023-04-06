@@ -12,7 +12,7 @@ public class FlightBookingPage extends JFrame {
     private JComboBox<String> originComboBox, destinationComboBox;
     private JButton backButton, searchButton, nextButton;
 
-    private UiComponents ui = new UiComponents();
+    private  UiComponents ui;
 
     public static void main(String[] args) {
         new FlightBookingPage();
@@ -25,14 +25,21 @@ public class FlightBookingPage extends JFrame {
 
         createComponents(mainPanel);
 
+        pack();
         setVisible(true);
     }
 
     private void setupPage() {
+        initConfigPage();
+        this.ui = new UiComponents();
+    }
+
+    private void initConfigPage() {
         setTitle("Flight Booking Page");
         setSize(1100, 700);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
     }
 
     @NotNull
@@ -52,7 +59,7 @@ public class FlightBookingPage extends JFrame {
     }
 
     private void createHeaderPanel(JPanel mainPanel) {
-        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
         createFromField(headerPanel);
 

@@ -49,8 +49,8 @@ public class HomePage extends JFrame {
     private void createDateLabel() {
         JLabel dateLabel = new JLabel(currentDateString());
         dateLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        dateLabel.setHorizontalAlignment(JLabel.LEFT);
-        add(dateLabel, BorderLayout.NORTH);
+        dateLabel.setHorizontalAlignment(JLabel.CENTER);
+        add(dateLabel, BorderLayout.PAGE_START);
     }
 
     private void createButtons() {
@@ -79,7 +79,7 @@ public class HomePage extends JFrame {
 
     private void goToBookingListPage() {
         bookingListButton.addActionListener(e -> {
-            new BookingListPage().createBookingListPage();
+            new BookingListPage();
             dispose();
         });
     }

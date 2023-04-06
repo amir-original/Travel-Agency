@@ -15,16 +15,30 @@ public class BookingListPage extends JFrame {
     public void createBookingListPage() {
         setupPage();
 
-        JPanel mainPanel = new JPanel(new GridLayout(0, 3, 10, 10));
+        createComponentsAndAddToPage();
 
-        createComponentsAndAddToPage(mainPanel);
-
+        pack();
         setVisible(true);
 
         // TODO: add search logic here
     }
 
-    private void createComponentsAndAddToPage(JPanel mainPanel) {
+    private void setupPage() {
+        initPageConfig();
+        this.ui = new UiComponents();
+    }
+
+    private void initPageConfig() {
+        setTitle("Booking List");
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setSize(900, 700);
+        setLayout(new BorderLayout());
+        setResizable(false);
+    }
+
+    private void createComponentsAndAddToPage() {
+        JPanel mainPanel =  new JPanel(new GridLayout(0, 3, 10, 10));
+
         createFlightNumberField(mainPanel);
 
         createFirstNameField(mainPanel);
@@ -38,6 +52,7 @@ public class BookingListPage extends JFrame {
         createButtons(buttonPanel);
 
         addComponentsToPage(mainPanel, buttonPanel);
+
     }
 
     private void addComponentsToPage(JPanel mainPanel, JPanel buttonPanel) {
@@ -52,18 +67,6 @@ public class BookingListPage extends JFrame {
             createHomePage();
             dispose(); // close current frame
         });
-    }
-
-    private void setupPage() {
-        initPageConfig();
-        this.ui = new UiComponents();
-    }
-
-    private void initPageConfig() {
-        setTitle("Booking List");
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setSize(900, 700);
-        setLayout(new BorderLayout());
     }
 
     private void createButtons(JPanel buttonPanel) {

@@ -1,97 +1,138 @@
 package travelAgency.ui;
 
-import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
-import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class BookingInfoPage extends JFrame {
 
-    public static void createBookingInfoPage() {
-        JFrame frame = new JFrame("Booking Information");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 400);
-        frame.setLayout(new BorderLayout());
+    private UiComponents ui;
 
-        JPanel inputPanel = new JPanel(new GridLayout(0, 3, 10, 10));
+    public void BookingInfoPage() {
+        setupPage();
 
-        JLabel firstNameLabel = new JLabel("First Name:");
-        JTextField firstNameField = new JTextField(20);
-        JLabel lastNameLabel = new JLabel("Last Name:");
-        JTextField lastNameField = new JTextField(20);
-        JLabel birthdayLabel = new JLabel("Date of Birth:");
-        UtilDateModel model = new UtilDateModel();
-        JDatePanelImpl datePanel = new JDatePanelImpl(model);
-        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
-        JLabel cityLabel = new JLabel("City:");
-        JTextField cityField = new JTextField(20);
-        JLabel addressLabel = new JLabel("Address:");
-        JTextField addressField = new JTextField(20);
-        JLabel postalCodeLabel = new JLabel("Postal Code:");
-        JTextField postalCodeField = new JTextField(20);
-        JLabel phoneLabel = new JLabel("Phone Number:");
-        JTextField phoneField = new JTextField(20);
+        createComponentsAndAddToPage();
 
-        inputPanel.add(firstNameLabel);
-        inputPanel.add(firstNameField);
-        inputPanel.add(new JLabel());
-        inputPanel.add(lastNameLabel);
-        inputPanel.add(lastNameField);
-        inputPanel.add(new JLabel());
+        pack();
+        setVisible(true);
+    }
+
+    private void setupPage() {
+        setTitle("Booking Information");
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setSize(900, 800);
+        setLayout(new BorderLayout());
+        setResizable(false);
+        this.ui = new UiComponents();
+    }
+
+    private void createComponentsAndAddToPage() {
+        createInfoFields();
+        createButtons();
+    }
+
+    private void createInfoFields() {
+        JPanel inputPanel =  new JPanel();
+        inputPanel.setLayout(new GridLayout(0,3,10,20));
+        inputPanel.setPreferredSize(new Dimension(650,400));
+
+        createFirstNameField(inputPanel);
+
+        createLastNameField(inputPanel);
+
+        createBirthdayField(inputPanel);
+
+        createCityField(inputPanel);
+
+        createAddressField(inputPanel);
+
+        createPostalCodeField(inputPanel);
+
+        createPhoneNumberField(inputPanel);
+
+        add(inputPanel,BorderLayout.LINE_START);
+    }
+
+    private void createFirstNameField(JPanel inputPanel) {
+        createField(inputPanel,"First Name:");
+    }
+
+    private void createLastNameField(JPanel inputPanel) {
+        createField(inputPanel, "Last Name:");
+    }
+
+    private void createBirthdayField(JPanel inputPanel) {
+        JLabel birthdayLabel = ui.label("Date of Birth:");
+        JDatePickerImpl datePicker = ui.datePicker();
         inputPanel.add(birthdayLabel);
         inputPanel.add(datePicker);
         inputPanel.add(new JLabel());
-        inputPanel.add(cityLabel);
-        inputPanel.add(cityField);
-        inputPanel.add(new JLabel());
-        inputPanel.add(addressLabel);
-        inputPanel.add(addressField);
-        inputPanel.add(new JLabel());
-        inputPanel.add(postalCodeLabel);
-        inputPanel.add(postalCodeField);
-        inputPanel.add(new JLabel());
+    }
+
+    private void createPhoneNumberField(JPanel inputPanel) {
+        createField(inputPanel, "Phone Number:");
+    }
+
+    private void createPostalCodeField(JPanel inputPanel) {
+        createField(inputPanel, "Postal Code:");
+    }
+
+    private void createAddressField(JPanel inputPanel) {
+        createField(inputPanel, "Address:");
+    }
+
+    private void createCityField(JPanel inputPanel) {
+        createField(inputPanel, "City:");
+    }
+
+    private void createField(JPanel inputPanel, String label) {
+        JLabel phoneLabel = ui.label(label);
+        JTextField phoneField = ui.textInput(10);
+
         inputPanel.add(phoneLabel);
         inputPanel.add(phoneField);
         inputPanel.add(new JLabel());
+    }
 
+    private void createButtons() {
         JPanel buttonPanel = new JPanel(new FlowLayout());
+        createBookButton(buttonPanel);
+        createBackButton(buttonPanel);
+        add(buttonPanel, BorderLayout.SOUTH);
 
-        JButton bookButton = new JButton("Book");
-        JButton backButton = new JButton("Back");
+    }
 
+    private void createBookButton(JPanel buttonPanel) {
+        JButton bookButton = ui.button("Book");
         buttonPanel.add(bookButton);
-        buttonPanel.add(backButton);
+        bookActionToBookButton(bookButton);
+    }
 
-        frame.add(inputPanel, BorderLayout.CENTER);
-        frame.add(buttonPanel, BorderLayout.SOUTH);
-
-        frame.setVisible(true);
-
-        bookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO: add booking logic here
-                JOptionPane.showMessageDialog(frame, "Booking successful!");
-                frame.dispose(); // close frame after successful booking
-            }
-        });
-
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               // createFlightBookingPage();
-                frame.dispose(); // close current frame
-            }
+    private void bookActionToBookButton(JButton bookButton) {
+        bookButton.addActionListener(e -> {
+            // TODO: add booking logic here
+            JOptionPane.showMessageDialog(this, "Booking successful!");
+            dispose(); // close frame after successful booking
         });
     }
 
+    private void createBackButton(JPanel buttonPanel) {
+        JButton backButton = ui.button("Back");
+        buttonPanel.add(backButton);
+        goBackToFlightBookingPageAction(backButton);
+    }
+
+    private void goBackToFlightBookingPageAction(JButton backButton) {
+        backButton.addActionListener(e -> {
+            new FlightBookingPage();
+            dispose(); // close current frame
+        });
+    }
 
     public static void main(String[] args) {
-        createBookingInfoPage();
+        final BookingInfoPage bookingInfoPage = new BookingInfoPage();
+        bookingInfoPage.BookingInfoPage();
     }
 }
 
