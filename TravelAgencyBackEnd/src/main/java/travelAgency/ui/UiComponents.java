@@ -1,6 +1,10 @@
 package travelAgency.ui;
 
 import com.toedter.calendar.JDateChooser;
+import net.sourceforge.jdatepicker.JDatePicker;
+import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
+import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
+import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,6 +48,22 @@ public class UiComponents {
         JSpinner inputNumber = new JSpinner(new SpinnerNumberModel(startWith, min, max, 1));
         inputNumber.setPreferredSize(new Dimension(width,height));
         return inputNumber;
+    }
+
+    public JDatePickerImpl datePicker(){
+        UtilDateModel model = new UtilDateModel();
+        JDatePanelImpl datePanel = new JDatePanelImpl(model);
+        return new JDatePickerImpl(datePanel);
+    }
+
+    public JScrollPane scrollPanel(int width,int height){
+        JPanel resultPanel = new JPanel();
+        resultPanel.setPreferredSize(new Dimension(width, height));
+        return new JScrollPane(resultPanel);
+    }
+
+    public JTextField textInput(int columns){
+        return new JTextField(columns);
     }
 
 
