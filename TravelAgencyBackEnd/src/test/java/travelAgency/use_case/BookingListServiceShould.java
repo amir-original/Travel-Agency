@@ -80,6 +80,12 @@ public class BookingListServiceShould {
         assertThat(app.getBookedSeats("0321")).isEqualTo(19);
     }
 
+    @Test
+    void get_available_seats() {
+        insertMultipleBooking();
+        assertThat(app.availableSeats("0321")).isEqualTo(21);
+    }
+
     private void insertMultipleBooking() {
         appService.book(bookingInformation().withTravelers(5).build());
         appService.book(bookingInformation().withPassenger(passenger("se478")).withTravelers(1).build());

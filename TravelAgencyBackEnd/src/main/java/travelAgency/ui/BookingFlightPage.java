@@ -163,14 +163,14 @@ public class BookingFlightPage extends JFrame {
 
     private void addActionToSearchButton() {
         searchButton.addActionListener(e -> {
-            // Perform search and display results in resultLabel
+            // Perform searchFlights and display results in resultLabel
             final String text = "Showing results for " +
                     originComboBox.getSelectedItem()
                     + " to " +
                     destinationComboBox.getSelectedItem();
 
 
-            // TODO search flight
+            // TODO searchFlights flight
             final FlightPanel flightPanel = new FlightPanel();
 
             final String from = (String) originComboBox.getSelectedItem();
@@ -182,7 +182,7 @@ public class BookingFlightPage extends JFrame {
             final FlightPlan searchFlightPlan = new FlightPlan(location, schedule);
 
             flightPanel.showFlightsInfo(
-                    flightService.search(searchFlightPlan),
+                    flightService.searchFlights(searchFlightPlan),
                     flightService
             );
 

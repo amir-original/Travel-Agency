@@ -10,15 +10,13 @@ import java.util.List;
 public class FlightServiceImpl implements FlightService {
 
     private final FlightRepository flights;
-    private final FlightAvailability flightAvailability;
 
-    public FlightServiceImpl(FlightRepository flights, FlightAvailability flightAvailability) {
+    public FlightServiceImpl(FlightRepository flights) {
         this.flights = flights;
-        this.flightAvailability = flightAvailability;
     }
 
     @Override
-    public List<Flight> search(FlightPlan searchFlightPlan) {
+    public List<Flight> searchFlights(FlightPlan searchFlightPlan) {
         return searchFlightPlan.search(flights.flights());
     }
 

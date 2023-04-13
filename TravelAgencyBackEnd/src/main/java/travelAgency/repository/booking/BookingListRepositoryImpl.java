@@ -1,5 +1,6 @@
 package travelAgency.repository.booking;
 
+import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.booking.BookingInformation;
 import travelAgency.domain.booking.Reservation;
 import travelAgency.domain.city.City;
@@ -49,10 +50,20 @@ public class BookingListRepositoryImpl implements BookingListRepository {
 
     @Override
     public Optional<Reservation> findBooking(String tikcketNumber) {
+        return findBookingBy(tikcketNumber, FIND_RESERVATION_BY_TICKET_NUMBER);
+    }
+
+    @Override
+    public Optional<Reservation> findBookingByFlightNumber(String flightNumber) {
+        return findBookingBy(flightNumber, FIND_RESERVATION_BY_FLIGHT_NUMBER);
+    }
+
+    @NotNull
+    private Optional<Reservation> findBookingBy(String flightNumber, String sql) {
         Reservation reservation = null;
-        try (final PreparedStatement sql = createQuery(SELECT_JOIN_WHERE)) {
-            sql.setString(1, tikcketNumber);
-            final ResultSet resultSet = sql.executeQuery();
+        try (final PreparedStatement query = createQuery(sql)) {
+            query.setString(1, flightNumber);
+            final ResultSet resultSet = query.executeQuery();
             if (resultSet.next()) {
                 reservation = buildFlightTicket(resultSet);
             }

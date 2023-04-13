@@ -5,9 +5,7 @@ import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.FlightNumberNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
-import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.use_case.fake.FakeFlight;
-import travelAgency.services.flights.FlightAvailabilityImpl;
 import travelAgency.services.flights.FlightService;
 import travelAgency.services.flights.FlightServiceImpl;
 
@@ -28,14 +26,13 @@ public class FindFlightServiceShould {
 
     @BeforeEach
     void setUp() {
-        final FakeFlight fakeFlight = new FakeFlight();
-        app = new FlightServiceImpl(fakeFlight,new FlightAvailabilityImpl(fakeFlight, new FakeBookingList()));
+        app = new FlightServiceImpl(new FakeFlight());
     }
 
     @Test
     void find_flights_with_entered_flight_information() {
         final FlightPlan flightPlan = flightPlan().build();
-        final List<Flight> flights = app.search(flightPlan);
+        final List<Flight> flights = app.searchFlights(flightPlan);
 
         assertAll(
                 () -> assertThat(flights).isNotEmpty(),
@@ -46,7 +43,7 @@ public class FindFlightServiceShould {
     @Test
     void return_empty_list_when_entered_wrong_information() {
         FlightPlan flightPlan = flightPlan().from(LONDON).to(BAGHDAD).build();
-        assertThat(app.search(flightPlan)).isEmpty();
+        assertThat(app.searchFlights(flightPlan)).isEmpty();
     }
 
     @Test

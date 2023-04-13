@@ -3,15 +3,15 @@ package travelAgency.dao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import travelAgency.domain.exceptions.NotFoundAnyPassengerException;
 import travelAgency.domain.passenger.Passenger;
-import travelAgency.use_case.fake.FakePassenger;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
 import travelAgency.repository.passenger.PassengerRepositoryImpl;
+import travelAgency.use_case.fake.FakePassenger;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.*;
 
 public class PassengerRepositoryShould {
 
@@ -44,6 +44,15 @@ public class PassengerRepositoryShould {
         insertMultiplePassengers();
 
         assertThat(api.getPassengers().size()).isEqualTo(3);
+    }
+
+    @Test
+    void throw_NotFoundAnyPassengerException_when_passenger_is_not_found() {
+        final Optional<Passenger> fetchedPassenger = api.findPassengerById("notFound");
+
+        assertThatExceptionOfType(NotFoundAnyPassengerException.class)
+                .isThrownBy(() -> fetchedPassenger.orElseThrow(NotFoundAnyPassengerException::new));
+
     }
 
     private void insertMultiplePassengers() {

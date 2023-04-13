@@ -1,24 +1,24 @@
 package travelAgency.services.flights;
 
 import travelAgency.domain.booking.BookingInformation;
-import travelAgency.services.bookingList.BookingList;
 import travelAgency.repository.booking.BookingListRepository;
 import travelAgency.repository.flight.FlightRepository;
 
 public class FlightAvailabilityImpl implements FlightAvailability {
+
     private final FlightRepository flights;
-    private final BookingList bookingList;
+    private final BookingListRepository bookingLists;
 
     public FlightAvailabilityImpl(FlightRepository flights,
                                   BookingListRepository bookingLists) {
         this.flights = flights;
-        bookingList = new BookingList(bookingLists.getAllBookings());
+        this.bookingLists = bookingLists;
     }
 
     @Override
-    public void checkFlight(BookingInformation bi) {
+    public void checkFlightPreBooking(BookingInformation bi) {
         bi.checkExistenceFlight(flights.flights());
-        bookingList.checkAvailability(bi);
+        bi.checkAvailability(bookingLists.getAllBookings());
     }
 
 }

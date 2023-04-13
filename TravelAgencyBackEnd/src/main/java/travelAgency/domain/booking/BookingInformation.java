@@ -3,11 +3,12 @@ package travelAgency.domain.booking;
 import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.exceptions.NumberOfTravelersException;
 import travelAgency.domain.flight.Flight;
-import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.passenger.Passenger;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static java.util.stream.Stream.of;
 
 public record BookingInformation(@NotNull Flight flight,
                                  @NotNull Passenger passenger,
@@ -37,6 +38,10 @@ public record BookingInformation(@NotNull Flight flight,
 
         return flight.flightNumber().equals(flightNumber) &&
                 passenger.canMatchWith(passengerFirstName, passengerBirthday);
+    }
+
+    public void checkAvailability(List<Reservation> reservations) {
+        flight.checkAvailability(reservations, numberOfTickets);
     }
 
 

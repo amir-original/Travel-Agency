@@ -35,7 +35,7 @@ public class App {
 
         BookingReservation bookingReservationInfo = new BookingReservation(bookings, flightAvailability, passengers, ticketGenerator);
         BookingListService bookingListService = new BookingListServiceImpl(bookings);
-        FlightService flightService = new FlightServiceImpl(flightRepository,flightAvailability);
+        FlightService flightService = new FlightServiceImpl(flightRepository);
         final HomePage homePage = new HomePage(cityService,bookingListService,flightService);
     }
 }

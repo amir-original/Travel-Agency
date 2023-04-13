@@ -35,6 +35,14 @@ public class FakeBookingList implements BookingListRepository {
     }
 
     @Override
+    public Optional<Reservation> findBookingByFlightNumber(String flightNumber) {
+        return bookings
+                .stream()
+                .filter(reservation -> reservation.canMatchWith(flightNumber))
+                .findFirst();
+    }
+
+    @Override
     public List<Reservation> getAllBookings() {
         return bookings;
     }

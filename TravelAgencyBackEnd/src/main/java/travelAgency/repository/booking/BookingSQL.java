@@ -13,6 +13,7 @@ public class BookingSQL {
             VALUES (?,?,?,?)
             """;
 
-    public static final String SELECT_JOIN_WHERE = SELECT_ALL_JOIN + " WHERE t.ticket_number = ?";
+    public static final String FIND_RESERVATION_BY_TICKET_NUMBER = SELECT_ALL_JOIN + " WHERE t.ticket_number = ?";
     public static final String CANCEL_BOOKING = "delete from booking_list where ticket_number=?";
+    public static String FIND_RESERVATION_BY_FLIGHT_NUMBER = FIND_RESERVATION_BY_TICKET_NUMBER + "WHERE f.flight_number = ?";
 }

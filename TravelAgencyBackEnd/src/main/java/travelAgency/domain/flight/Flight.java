@@ -1,20 +1,23 @@
 package travelAgency.domain.flight;
 
 import org.jetbrains.annotations.NotNull;
+import travelAgency.domain.booking.Reservation;
 import travelAgency.domain.city.City;
-import travelAgency.domain.exceptions.FlightNumberException;
-import travelAgency.domain.exceptions.FlightPriceException;
-import travelAgency.domain.exceptions.NotFoundAnyFlightException;
+import travelAgency.domain.exceptions.*;
 import travelAgency.services.priceConverter.CurrencyConverterService;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+import static java.util.stream.Stream.of;
+
 public record Flight(@NotNull String flightNumber,
                      int totalCapacity,
                      double price,
                      @NotNull FlightPlan plan) {
+
+    private static final int FULLY_BOOKED = 0;
 
     public Flight(@NotNull String flightNumber, int totalCapacity, double price, @NotNull FlightPlan plan) {
         this.flightNumber = flightNumber;
@@ -35,6 +38,49 @@ public record Flight(@NotNull String flightNumber,
                 .filter(flight -> flight.matches(flightNumber))
                 .findFirst()
                 .orElseThrow(NotFoundAnyFlightException::new);
+    }
+
+    public void checkAvailability(List<Reservation> reservations, int newTravelers) {
+        if (isSoldOutAllSeats(reservations))
+            throw new FullyBookedException();
+        if (!isAvailableSeatsFor(reservations, newTravelers))
+            throw new NotEnoughCapacityException();
+    }
+
+    private boolean isSoldOutAllSeats(List<Reservation> reservations) {
+        return getAvailableSeats(reservations) == FULLY_BOOKED;
+    }
+
+    public int getAvailableSeats(List<Reservation> reservations) {
+        return getTotalCapacity(reservations) - getBookedSeats(reservations);
+    }
+
+    public int getBookedSeats(List<Reservation> reservations){
+        return reservations.stream()
+                .filter(flightTicket -> flightTicket.canMatchWith(flightNumber()))
+                .mapToInt(Reservation::travelers)
+                .sum();
+    }
+
+    private boolean isAvailableSeatsFor(List<Reservation> reservations, int newTravelers) {
+        return getAvailableSeatsAfterBooking(reservations, newTravelers) >= FULLY_BOOKED;
+    }
+
+    private int getAvailableSeatsAfterBooking(List<Reservation> reservations, int newTravelers){
+        return getTotalCapacity(reservations) - getTotalBookingSeats(reservations, newTravelers);
+    }
+
+    private int getTotalCapacity(List<Reservation> reservations) {
+        return reservations.stream()
+                .flatMap(reservation -> of(reservation.flight()))
+                .filter(flight -> flight.matches(flightNumber()))
+                .findFirst()
+                .orElseThrow(NotFoundAnyFlightException::new)
+                .totalCapacity();
+    }
+
+    private int getTotalBookingSeats(List<Reservation> reservations, int newTravelers) {
+        return newTravelers + getBookedSeats(reservations);
     }
 
     public boolean matches(FlightPlan flightPlan) {
@@ -88,4 +134,6 @@ public record Flight(@NotNull String flightNumber,
                 ", spec=" + plan +
                 '}';
     }
+
+
 }

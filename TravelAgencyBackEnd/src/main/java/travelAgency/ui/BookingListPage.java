@@ -28,7 +28,7 @@ public class BookingListPage extends JFrame {
         pack();
         setVisible(true);
 
-        // TODO: add search logic here
+        // TODO: add searchFlights logic here
     }
 
     private void setupPage() {
