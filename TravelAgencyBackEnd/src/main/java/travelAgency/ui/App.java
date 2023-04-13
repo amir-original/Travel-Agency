@@ -4,7 +4,7 @@ import travelAgency.repository.booking.BookingListRepositoryImpl;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
 import travelAgency.repository.flight.FlightRepositoryImpl;
 import travelAgency.repository.passenger.PassengerRepositoryImpl;
-import travelAgency.services.BookingFlightTicket;
+import travelAgency.services.BookingReservation;
 import travelAgency.services.bookingList.TicketNumberGeneratorImpl;
 import travelAgency.services.city.CityService;
 import travelAgency.services.city.CityServiceImpl;
@@ -33,7 +33,7 @@ public class App {
         final PassengerRepositoryImpl passengers = new PassengerRepositoryImpl(db);
         final TicketNumberGeneratorImpl ticketGenerator = new TicketNumberGeneratorImpl();
 
-        BookingFlightTicket bookingFlightTicketInfo = new BookingFlightTicket(bookings, flightAvailability, passengers, ticketGenerator);
+        BookingReservation bookingReservationInfo = new BookingReservation(bookings, flightAvailability, passengers, ticketGenerator);
         BookingListService bookingListService = new BookingListServiceImpl(bookings);
         FlightService flightService = new FlightServiceImpl(flightRepository,flightAvailability);
         final HomePage homePage = new HomePage(cityService,bookingListService,flightService);

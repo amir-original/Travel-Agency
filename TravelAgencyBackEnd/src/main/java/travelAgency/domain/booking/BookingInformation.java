@@ -28,8 +28,8 @@ public record BookingInformation(@NotNull Flight flight,
         flight.checkExistenceFlight(flights);
     }
 
-    public FlightTicket getFlightTicket(String ticketNumber) {
-        return new FlightTicket(ticketNumber, this);
+    public Reservation getReservation(String ticketNumber) {
+        return new Reservation(ticketNumber, this);
     }
 
     public boolean canMatchWith(String flightNumber, String passengerFirstName,
@@ -39,10 +39,6 @@ public record BookingInformation(@NotNull Flight flight,
                 passenger.canMatchWith(passengerFirstName, passengerBirthday);
     }
 
-
-    public FlightPlan flightPlan() {
-        return flight.plan();
-    }
 
     public String flightNumber() {
         return flight.flightNumber();

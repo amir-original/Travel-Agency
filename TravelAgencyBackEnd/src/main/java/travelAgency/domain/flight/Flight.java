@@ -1,11 +1,10 @@
 package travelAgency.domain.flight;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.booking.BookingInformation;
 import travelAgency.domain.city.City;
 import travelAgency.domain.exceptions.FlightNumberException;
 import travelAgency.domain.exceptions.FlightPriceException;
-import travelAgency.domain.exceptions.NotFindAnyFlightException;
+import travelAgency.domain.exceptions.NotFoundAnyFlightException;
 import travelAgency.services.priceConverter.CurrencyConverterService;
 
 import java.time.LocalDate;
@@ -35,7 +34,7 @@ public record Flight(@NotNull String flightNumber,
         flights.stream()
                 .filter(flight -> flight.matches(flightNumber))
                 .findFirst()
-                .orElseThrow(NotFindAnyFlightException::new);
+                .orElseThrow(NotFoundAnyFlightException::new);
     }
 
     public boolean matches(FlightPlan flightPlan) {

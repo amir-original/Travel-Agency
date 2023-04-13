@@ -7,17 +7,16 @@ import travelAgency.domain.passenger.Passenger;
 
 import java.time.LocalDate;
 
-public record FlightTicket(@NotNull String ticketNumber,
-                           @NotNull BookingInformation bookingInformation) {
+public record Reservation(@NotNull String ticketNumber,
+                          @NotNull BookingInformation bookingInformation) {
 
-    public FlightTicket(@NotNull String ticketNumber, @NotNull BookingInformation bookingInformation) {
+    public Reservation(@NotNull String ticketNumber, @NotNull BookingInformation bookingInformation) {
         this.ticketNumber = ticketNumber;
         this.bookingInformation = bookingInformation;
         validate();
     }
 
     public void validate() {
-
         if (ticketNumber.isBlank()) throw new FlightTicketNumberException();
     }
 
@@ -41,7 +40,7 @@ public record FlightTicket(@NotNull String ticketNumber,
         return bookingInformation.flightNumber();
     }
 
-    public String passenger_id() {
+    public String passengerId() {
         return bookingInformation.passengerId();
     }
 

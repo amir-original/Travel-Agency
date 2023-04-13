@@ -8,7 +8,7 @@ import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakePassenger;
 import travelAgency.use_case.fake.FakeTicketNumberGenerator;
-import travelAgency.services.BookingFlightTicket;
+import travelAgency.services.BookingReservation;
 import travelAgency.services.bookingList.BookingListService;
 import travelAgency.services.bookingList.BookingListServiceImpl;
 import travelAgency.services.flights.FlightAvailabilityImpl;
@@ -28,7 +28,7 @@ public class BookingListServiceShould {
     private static final LocalDate SARA_BIRTHDAY = of(1999, 4, 5);
     private static final String EXIST_FLIGHT_NUMBER = "0321";
     private BookingListService app;
-    private BookingFlightTicket appService;
+    private BookingReservation appService;
 
     @BeforeEach
     void setUp() {
@@ -37,7 +37,7 @@ public class BookingListServiceShould {
 
         final FlightAvailabilityImpl flightAvailability = new FlightAvailabilityImpl(new FakeFlight(), bookings);
         final FakePassenger passengers = new FakePassenger();
-        appService = new BookingFlightTicket(bookings, flightAvailability, passengers, ticketNumberGenerator);
+        appService = new BookingReservation(bookings, flightAvailability, passengers, ticketNumberGenerator);
         app = new BookingListServiceImpl(bookings);
     }
 

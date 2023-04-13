@@ -3,7 +3,7 @@ package travelAgency.dao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.booking.FlightTicket;
+import travelAgency.domain.booking.Reservation;
 import travelAgency.domain.flight.Flight;
 import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.repository.booking.BookingListRepository;
@@ -36,7 +36,7 @@ public class BookingFLightRepositoryShould {
     @Test
     void book_information() {
         var flightTicket = insertSingleTicket();
-        Optional<FlightTicket> fetchedTicket = api.findBooking(flightTicket.ticketNumber());
+        Optional<Reservation> fetchedTicket = api.findBooking(flightTicket.ticketNumber());
         assertThat(fetchedTicket).isEqualTo(fetchedTicket);
     }
 
@@ -45,7 +45,7 @@ public class BookingFLightRepositoryShould {
         insertSingleFlight();
         insertSingleTicket();
 
-        final List<FlightTicket> tickets = api.getAllBookings();
+        final List<Reservation> tickets = api.getAllBookings();
 
         assertThat(tickets).isNotEmpty();
         assertThat(tickets.size()).isEqualTo(1);
@@ -56,11 +56,11 @@ public class BookingFLightRepositoryShould {
         flightApi.addFlight(flight);
     }
 
-    private FlightTicket insertSingleTicket() {
-        final FlightTicket flightTicket = FakeBookingList.flightTicket("78456587");
-        passengerApi.save(flightTicket.passenger());
-        api.book(flightTicket);
-        return flightTicket;
+    private Reservation insertSingleTicket() {
+        final Reservation reservation = FakeBookingList.flightTicket("78456587");
+        passengerApi.save(reservation.passenger());
+        api.book(reservation);
+        return reservation;
     }
 
     @AfterEach

@@ -5,11 +5,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 import travelAgency.domain.booking.BookingInformation;
-import travelAgency.domain.booking.FlightTicket;
+import travelAgency.domain.booking.Reservation;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.repository.booking.BookingListRepository;
 import travelAgency.repository.passenger.PassengerRepository;
-import travelAgency.services.BookingFlightTicket;
+import travelAgency.services.BookingReservation;
 import travelAgency.services.bookingList.TicketNumberGenerator;
 import travelAgency.services.flights.FlightAvailabilityImpl;
 
@@ -21,7 +21,7 @@ import static travelAgency.use_case.fake.FakeBookingList.flightTicket;
 public class MockBookingFlightShould {
 
     public static final String TICKET_NUMBER = "78456587";
-    private BookingFlightTicket app;
+    private BookingReservation app;
     private FlightAvailabilityImpl flightAvailability;
     private PassengerRepository passengers;
     private BookingListRepository bookingLists;
@@ -33,14 +33,14 @@ public class MockBookingFlightShould {
         bookingLists = createTicketService();
         flightAvailability = createFindFlightsRepository();
         ticketNumberGenerator = createMockTicketGenerator();
-        app = new BookingFlightTicket(bookingLists, flightAvailability, passengers, ticketNumberGenerator);
+        app = new BookingReservation(bookingLists, flightAvailability, passengers, ticketNumberGenerator);
     }
 
     @Test
     void be_do_actions_in_order_when_booking_a_flight() {
         final BookingInformation bookingInformation = bookingInformation().build();
 
-        final FlightTicket ticket = app.book(bookingInformation);
+        final Reservation ticket = app.book(bookingInformation);
         assertThat(ticket.bookingInformation()).isEqualTo(bookingInformation);
 
 
@@ -49,22 +49,22 @@ public class MockBookingFlightShould {
 
         inOrder.verify(flightAvailability).checkFlight(bookingInformation);
 
-        final FlightTicket flightTicket = bookingInformation.getFlightTicket(ticketNumberGenerator.generateTicketNumber());
+        final Reservation reservation = bookingInformation.getReservation(ticketNumberGenerator.generateTicketNumber());
 
         inOrder.verify(passengers).save(bookingInformation.passenger());
-        inOrder.verify(bookingLists).book(flightTicket);
+        inOrder.verify(bookingLists).book(reservation);
     }
 
     @NotNull
-    private FlightTicket createTicket() {
+    private Reservation createTicket() {
         return flightTicket(TICKET_NUMBER);
     }
 
     @NotNull
     private BookingListRepository createTicketService() {
         final BookingListRepository bookings = mock(BookingListRepository.class);
-        final FlightTicket flightTicket = createTicket();
-        doNothing().when(bookings).book(flightTicket);
+        final Reservation reservation = createTicket();
+        doNothing().when(bookings).book(reservation);
         return bookings;
     }
 
@@ -84,7 +84,7 @@ public class MockBookingFlightShould {
     private TicketNumberGenerator createMockTicketGenerator() {
         TicketNumberGenerator ticketNumberGenerator = mock(TicketNumberGenerator.class);
         when(ticketNumberGenerator.generateTicketNumber()).thenReturn("56472514");
-        //when(ticketNumberGenerator.getFlightTicket(any())).thenReturn(createTicket());
+        //when(ticketNumberGenerator.getReservation(any())).thenReturn(createTicket());
         return ticketNumberGenerator;
     }
 

@@ -2,7 +2,7 @@ package travelAgency.repository.flight;
 
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.city.City;
-import travelAgency.domain.exceptions.NotFindAnyFlightException;
+import travelAgency.domain.exceptions.NotFoundAnyFlightException;
 import travelAgency.repository.db.DbConnection;
 
 import java.sql.*;
@@ -61,10 +61,6 @@ public class FindFlightRepository {
                 .build();
     }
 
-
-    public void checkExistenceFlightWith(String flightNumber) {
-        if (findFlight(flightNumber).isEmpty()) throw new NotFindAnyFlightException();
-    }
 
     private PreparedStatement createQuery(String sql) throws SQLException {
         return connection.prepareStatement(sql);

@@ -1,14 +1,14 @@
 package travelAgency.repository.booking;
 
-import travelAgency.domain.booking.FlightTicket;
+import travelAgency.domain.booking.Reservation;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface BookingListRepository {
-    void book(FlightTicket flightTicket);
+    void book(Reservation reservation);
     void cancel(String ticketNumber);
-    Optional<FlightTicket> findBooking(String ticketNumber);
-    List<FlightTicket> getAllBookings();
+    Optional<Reservation> findBooking(String ticketNumber);
+    List<Reservation> getAllBookings();
     void truncate();
 }

@@ -40,14 +40,14 @@ public class FlightRepositoryImpl implements FlightRepository {
         }
     }
 
-    private void filledFlightFields(Flight flight, PreparedStatement insert) throws SQLException {
-        insert.setString(1, flight.flightNumber());
-        insert.setString(2, flight.from().name());
-        insert.setString(3, flight.to().name());
-        insert.setDate(4, convertToSQLDate(flight.departure()));
-        insert.setDate(5, convertToSQLDate(flight.arrival()));
-        insert.setInt(6, flight.totalCapacity());
-        insert.setDouble(7, flight.price());
+    private void filledFlightFields(Flight flight, PreparedStatement query) throws SQLException {
+        query.setString(1, flight.flightNumber());
+        query.setString(2, flight.from().name());
+        query.setString(3, flight.to().name());
+        query.setDate(4, convertToSQLDate(flight.departure()));
+        query.setDate(5, convertToSQLDate(flight.arrival()));
+        query.setInt(6, flight.totalCapacity());
+        query.setDouble(7, flight.price());
     }
 
     @Override

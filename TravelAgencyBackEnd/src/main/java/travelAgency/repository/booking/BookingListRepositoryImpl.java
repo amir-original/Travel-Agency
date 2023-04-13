@@ -1,7 +1,7 @@
 package travelAgency.repository.booking;
 
 import travelAgency.domain.booking.BookingInformation;
-import travelAgency.domain.booking.FlightTicket;
+import travelAgency.domain.booking.Reservation;
 import travelAgency.domain.city.City;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.passenger.Passenger;
@@ -31,40 +31,40 @@ public class BookingListRepositoryImpl implements BookingListRepository {
     }
 
     @Override
-    public void book(FlightTicket flightTicket) {
+    public void book(Reservation reservation) {
         try (final PreparedStatement query = createQuery(INSERT_QUERY)) {
-            fillFlightTicket(flightTicket, query);
+            fillFlightTicket(reservation, query);
             query.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private void fillFlightTicket(FlightTicket flightTicket, PreparedStatement query) throws SQLException {
-        query.setString(1, flightTicket.ticketNumber());
-        query.setString(2, flightTicket.flightNumber());
-        query.setString(3, flightTicket.passenger_id());
-        query.setInt(4, flightTicket.travelers());
+    private void fillFlightTicket(Reservation reservation, PreparedStatement query) throws SQLException {
+        query.setString(1, reservation.ticketNumber());
+        query.setString(2, reservation.flightNumber());
+        query.setString(3, reservation.passengerId());
+        query.setInt(4, reservation.travelers());
     }
 
     @Override
-    public Optional<FlightTicket> findBooking(String tikcketNumber) {
-        FlightTicket flightTicket = null;
+    public Optional<Reservation> findBooking(String tikcketNumber) {
+        Reservation reservation = null;
         try (final PreparedStatement sql = createQuery(SELECT_JOIN_WHERE)) {
             sql.setString(1, tikcketNumber);
             final ResultSet resultSet = sql.executeQuery();
             if (resultSet.next()) {
-                flightTicket = buildFlightTicket(resultSet);
+                reservation = buildFlightTicket(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return Optional.ofNullable(flightTicket);
+        return Optional.ofNullable(reservation);
     }
 
     @Override
-    public List<FlightTicket> getAllBookings() {
-        List<FlightTicket> result = new LinkedList<>();
+    public List<Reservation> getAllBookings() {
+        List<Reservation> result = new LinkedList<>();
         try (final PreparedStatement query = createQuery(SELECT_ALL_JOIN)) {
             final ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
@@ -91,7 +91,7 @@ public class BookingListRepositoryImpl implements BookingListRepository {
         db.truncate(TABLE_NAME);
     }
 
-    private FlightTicket buildFlightTicket(ResultSet rs) throws SQLException {
+    private Reservation buildFlightTicket(ResultSet rs) throws SQLException {
         final String ticket_number = rs.getString("ticket_number");
 
         final BookingInformation bookingInformation =
@@ -99,7 +99,7 @@ public class BookingListRepositoryImpl implements BookingListRepository {
                         buildPassenger(rs),
                         rs.getInt("number_of_tickets"));
 
-        return new FlightTicket(ticket_number, bookingInformation);
+        return new Reservation(ticket_number, bookingInformation);
     }
 
     private Passenger buildPassenger(ResultSet rs) throws SQLException {

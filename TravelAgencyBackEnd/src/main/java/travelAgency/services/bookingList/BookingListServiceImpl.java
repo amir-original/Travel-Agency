@@ -1,10 +1,7 @@
 package travelAgency.services.bookingList;
 
-import travelAgency.domain.booking.BookingInformation;
-import travelAgency.domain.booking.FlightTicket;
-import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
+import travelAgency.domain.booking.Reservation;
 import travelAgency.repository.booking.BookingListRepository;
-import travelAgency.services.BookingFlightTicket;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,12 +15,12 @@ public class BookingListServiceImpl implements BookingListService {
 
     public BookingListServiceImpl(BookingListRepository bookings) {
         this.bookings = bookings;
-        this.searchEngine = new SearchTicketEngine(getAllBookings());
+        this.searchEngine = new SearchTicketEngine(getAllReservations());
         bookingList = new BookingList(bookings.getAllBookings());
     }
 
     @Override
-    public FlightTicket search(String flightNumber, String passengerFirstName, LocalDate passengerBirthday) {
+    public Reservation search(String flightNumber, String passengerFirstName, LocalDate passengerBirthday) {
        return searchEngine.search(flightNumber,passengerFirstName,passengerBirthday);
     }
 
@@ -43,7 +40,7 @@ public class BookingListServiceImpl implements BookingListService {
     }
 
     @Override
-    public List<FlightTicket> getAllBookings() {
+    public List<Reservation> getAllReservations() {
         return bookings.getAllBookings();
     }
 

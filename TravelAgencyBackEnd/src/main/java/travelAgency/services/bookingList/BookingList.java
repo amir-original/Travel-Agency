@@ -1,20 +1,21 @@
 package travelAgency.services.bookingList;
 
 import travelAgency.domain.booking.BookingInformation;
-import travelAgency.domain.booking.FlightTicket;
+import travelAgency.domain.booking.Reservation;
 import travelAgency.domain.exceptions.FullyBookedException;
 import travelAgency.domain.exceptions.NotEnoughCapacityException;
-import travelAgency.domain.exceptions.NotFindAnyFlightException;
+import travelAgency.domain.exceptions.NotFoundAnyFlightException;
 
 import java.util.List;
 
 import static java.util.stream.Stream.of;
 
 public class BookingList {
-    private final List<FlightTicket> bookings;
+
+    private final List<Reservation> bookings;
     private static final int FULL_CAPACITY = 0;
 
-    public BookingList(List<FlightTicket> bookings) {
+    public BookingList(List<Reservation> bookings) {
         this.bookings = bookings;
     }
 
@@ -44,7 +45,7 @@ public class BookingList {
     public int getBookedSeats(String flightNumber){
         return bookings.stream()
                 .filter(flightTicket -> flightTicket.canMatchWith(flightNumber))
-                .mapToInt(FlightTicket::travelers)
+                .mapToInt(Reservation::travelers)
                 .sum();
     }
 
@@ -57,7 +58,7 @@ public class BookingList {
                 .flatMap(flightTicket -> of(flightTicket.flight()))
                 .filter(flight -> flight.matches(flightNumber))
                 .findFirst()
-                .orElseThrow(NotFindAnyFlightException::new)
+                .orElseThrow(NotFoundAnyFlightException::new)
                 .totalCapacity();
     }
 }
