@@ -5,7 +5,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.booking.FlightTicket;
-import travelAgency.fake.FakeBookingList;
+import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.repository.booking.BookingListRepository;
 import travelAgency.repository.booking.BookingListRepositoryImpl;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-import static travelAgency.fake.FakeFlight.flight;
+import static travelAgency.use_case.fake.FakeFlight.flight;
 
 public class BookingListRepositoryShould {
 

@@ -1,11 +1,11 @@
-package travelAgency.fake;
+package travelAgency.use_case.fake;
 
 import travelAgency.domain.booking.BookingInformation;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.passenger.Passenger;
 
-import static travelAgency.fake.FakeFlight.flight;
-import static travelAgency.fake.FakePassenger.passenger;
+import static travelAgency.use_case.fake.FakeFlight.flight;
+import static travelAgency.use_case.fake.FakePassenger.passenger;
 
 public class FakeBookingInformationBuilder {
 

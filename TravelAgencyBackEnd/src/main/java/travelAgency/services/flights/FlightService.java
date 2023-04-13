@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface FlightService {
     List<Flight> search(FlightPlan searchFlightPlan);
-    List<Flight> findFlights(FlightPlan flightPlan);
     Flight findFlight(String flightNumber);
+    int availableSeats(String flightNumber);
 }

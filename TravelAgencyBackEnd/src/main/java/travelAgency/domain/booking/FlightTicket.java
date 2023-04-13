@@ -6,19 +6,27 @@ import travelAgency.domain.flight.Flight;
 import travelAgency.domain.passenger.Passenger;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 public record FlightTicket(@NotNull String ticketNumber,
                            @NotNull BookingInformation bookingInformation) {
 
+    public FlightTicket(@NotNull String ticketNumber, @NotNull BookingInformation bookingInformation) {
+        this.ticketNumber = ticketNumber;
+        this.bookingInformation = bookingInformation;
+        validate();
+    }
 
+    public void validate() {
+
+        if (ticketNumber.isBlank()) throw new FlightTicketNumberException();
+    }
 
     public boolean canMatchWith(String flightName, String passengerFirstName, LocalDate passengerBirthday) {
         return bookingInformation.canMatchWith(flightName, passengerFirstName, passengerBirthday);
     }
 
-    public void check() {
-        if (ticketNumber.isBlank()) throw new FlightTicketNumberException();
+    public boolean canMatchWith(String searchFlightNumber) {
+        return flightNumber().equals(searchFlightNumber);
     }
 
     public boolean isEqualTicketNumber(String ticketNumber) {

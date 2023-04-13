@@ -2,8 +2,10 @@ package travelAgency.domain.flight;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.city.City;
+import travelAgency.services.flights.FlightServiceImpl;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record FlightPlan(@NotNull FlightLocation location,
                          @NotNull FlightSchedule schedule) {
@@ -24,8 +26,10 @@ public record FlightPlan(@NotNull FlightLocation location,
         return schedule.arrival();
     }
 
-    public void check() {
-        location.check();
-        schedule.check();
+    public List<Flight> search(List<Flight> flights) {
+        return flights
+                .stream()
+                .filter(flight -> flight.matches(this))
+                .toList();
     }
 }

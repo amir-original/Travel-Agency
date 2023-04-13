@@ -1,16 +1,16 @@
-package travelAgency.booking;
+package travelAgency.use_case.booking;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.*;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
-import travelAgency.fake.FakeBookingList;
-import travelAgency.fake.FakeFlight;
-import travelAgency.fake.FakePassenger;
-import travelAgency.fake.FakeTicketGenerator;
+import travelAgency.use_case.fake.FakeBookingList;
+import travelAgency.use_case.fake.FakeFlight;
+import travelAgency.use_case.fake.FakePassenger;
+import travelAgency.use_case.fake.FakeTicketNumberGenerator;
 import travelAgency.services.BookingFlightTicket;
-import travelAgency.services.bookingList.TicketGenerator;
+import travelAgency.services.bookingList.TicketNumberGenerator;
 import travelAgency.services.flights.FlightAvailabilityImpl;
 
 import java.time.LocalDate;
@@ -19,10 +19,10 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static travelAgency.domain.city.City.TEHRAN;
-import static travelAgency.fake.FakeBookingInformationBuilder.bookingInformation;
-import static travelAgency.fake.FakeFlight.flight;
-import static travelAgency.fake.FakeFlightPlanBuilder.flightPlan;
-import static travelAgency.fake.FakePassenger.passenger;
+import static travelAgency.use_case.fake.FakeBookingInformationBuilder.bookingInformation;
+import static travelAgency.use_case.fake.FakeFlight.flight;
+import static travelAgency.use_case.fake.FakeFlightPlanBuilder.flightPlan;
+import static travelAgency.use_case.fake.FakePassenger.passenger;
 
 public class BookingFlightShould {
 
@@ -30,13 +30,13 @@ public class BookingFlightShould {
 
     @BeforeEach
     void setUp() {
-        TicketGenerator ticketGenerator = new FakeTicketGenerator();
+        TicketNumberGenerator ticketNumberGenerator = new FakeTicketNumberGenerator();
         FakeBookingList fakeBookingList = new FakeBookingList();
 
         app = new BookingFlightTicket(fakeBookingList,
                 new FlightAvailabilityImpl(new FakeFlight(), fakeBookingList),
                 new FakePassenger(),
-                ticketGenerator
+                ticketNumberGenerator
         );
     }
 

@@ -1,4 +1,4 @@
-package travelAgency.fake;
+package travelAgency.use_case.fake;
 
 import travelAgency.domain.exceptions.NotFoundAnyPassengerException;
 import travelAgency.domain.passenger.Passenger;
@@ -37,7 +37,7 @@ public class FakePassenger implements PassengerRepository {
     }
 
     @Override
-    public Optional<Passenger> getPassenger(String passengerId) {
+    public Optional<Passenger> findPassengerById(String passengerId) {
         return passengers.stream()
                 .filter(passenger -> passenger.id().equals(passengerId))
                 .findFirst();
@@ -68,6 +68,6 @@ public class FakePassenger implements PassengerRepository {
     public static Passenger passenger(String passengerId) {
         final FakePassenger fakePassenger = new FakePassenger();
 
-        return fakePassenger.getPassenger(passengerId).orElseThrow(NotFoundAnyPassengerException::new);
+        return fakePassenger.findPassengerById(passengerId).orElseThrow(NotFoundAnyPassengerException::new);
     }
 }

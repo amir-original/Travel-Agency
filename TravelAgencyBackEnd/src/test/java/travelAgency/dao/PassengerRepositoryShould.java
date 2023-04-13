@@ -4,7 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.passenger.Passenger;
-import travelAgency.fake.FakePassenger;
+import travelAgency.use_case.fake.FakePassenger;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
 import travelAgency.repository.passenger.PassengerRepositoryImpl;
 
@@ -26,14 +26,14 @@ public class PassengerRepositoryShould {
 
     @Test
     void save_passenger_info_and_fetch_passenger_with_id() {
-        final Passenger passenger = fakePassenger.getPassenger("se478").get();
+        final Passenger passenger = fakePassenger.findPassengerById("se478").get();
 
         api.save(passenger);
 
-        final Optional<Passenger> fetchedPassenger = api.getPassenger(passenger.id());
+        final Optional<Passenger> fetchedPassenger = api.findPassengerById(passenger.id());
 
         if (fetchedPassenger.isEmpty()) {
-            fail("not found any getPassenger with this id in db");
+            fail("not found any findPassengerById with this id in db");
         }
 
         assertThat(passenger).isEqualTo(fetchedPassenger.get());

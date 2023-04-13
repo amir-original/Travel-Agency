@@ -1,4 +1,4 @@
-package travelAgency.fake;
+package travelAgency.use_case.fake;
 
 import travelAgency.domain.city.City;
 import travelAgency.domain.flight.FlightLocation;

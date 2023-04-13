@@ -4,7 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.flight.Flight;
-import travelAgency.fake.FakeFlight;
+import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
 import travelAgency.repository.flight.FlightRepository;
 import travelAgency.repository.flight.FlightRepositoryImpl;
@@ -39,7 +39,7 @@ public class FindFlightRepositoryShould {
         insertFlights();
 
         final Flight flight =FakeFlight.flight().build();
-        final List<Flight> flights = api.findFlights(flight.plan());
+        final List<Flight> flights = flight.plan().search(api.flights());
 
         assertThat(flights).isNotEmpty();
         assertThat(flights.size()).isEqualTo(5);

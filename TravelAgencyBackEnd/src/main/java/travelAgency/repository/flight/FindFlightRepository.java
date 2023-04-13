@@ -1,7 +1,6 @@
 package travelAgency.repository.flight;
 
 import travelAgency.domain.flight.Flight;
-import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.city.City;
 import travelAgency.domain.exceptions.NotFindAnyFlightException;
 import travelAgency.repository.db.DbConnection;
@@ -33,28 +32,6 @@ public class FindFlightRepository {
             e.printStackTrace();
         }
         return flights;
-    }
-
-
-    public List<Flight> findFlights(FlightPlan flightPlan) {
-        List<Flight> result = new LinkedList<>();
-        try (final PreparedStatement query = createQuery(SELECT_ALL_FIND_FLIGHTS)) {
-            filledFlightPlan(flightPlan, query);
-            final ResultSet resultSet = query.executeQuery();
-            while (resultSet.next()){
-                result.add(buildFlight(resultSet));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    private void filledFlightPlan(FlightPlan flightPlan, PreparedStatement query) throws SQLException {
-        query.setString(1, flightPlan.from().name());
-        query.setString(2, flightPlan.to().name());
-        query.setDate(3, Date.valueOf(flightPlan.departure()));
-        query.setDate(4, Date.valueOf(flightPlan.arrival()));
     }
 
 

@@ -1,11 +1,13 @@
-package travelAgency;
+package travelAgency.use_case;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.FlightNumberNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
-import travelAgency.fake.FakeFlight;
+import travelAgency.use_case.fake.FakeBookingList;
+import travelAgency.use_case.fake.FakeFlight;
+import travelAgency.services.flights.FlightAvailabilityImpl;
 import travelAgency.services.flights.FlightService;
 import travelAgency.services.flights.FlightServiceImpl;
 
@@ -16,8 +18,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static travelAgency.domain.city.City.BAGHDAD;
 import static travelAgency.domain.city.City.LONDON;
-import static travelAgency.fake.FakeFlight.flight;
-import static travelAgency.fake.FakeFlightPlanBuilder.flightPlan;
+import static travelAgency.use_case.fake.FakeFlight.flight;
+import static travelAgency.use_case.fake.FakeFlightPlanBuilder.flightPlan;
 
 public class FindFlightServiceShould {
 
@@ -26,13 +28,14 @@ public class FindFlightServiceShould {
 
     @BeforeEach
     void setUp() {
-        app = new FlightServiceImpl(new FakeFlight());
+        final FakeFlight fakeFlight = new FakeFlight();
+        app = new FlightServiceImpl(fakeFlight,new FlightAvailabilityImpl(fakeFlight, new FakeBookingList()));
     }
 
     @Test
     void find_flights_with_entered_flight_information() {
         final FlightPlan flightPlan = flightPlan().build();
-        final List<Flight> flights = app.findFlights(flightPlan);
+        final List<Flight> flights = app.search(flightPlan);
 
         assertAll(
                 () -> assertThat(flights).isNotEmpty(),
@@ -43,7 +46,7 @@ public class FindFlightServiceShould {
     @Test
     void return_empty_list_when_entered_wrong_information() {
         FlightPlan flightPlan = flightPlan().from(LONDON).to(BAGHDAD).build();
-        assertThat(app.findFlights(flightPlan)).isEmpty();
+        assertThat(app.search(flightPlan)).isEmpty();
     }
 
     @Test

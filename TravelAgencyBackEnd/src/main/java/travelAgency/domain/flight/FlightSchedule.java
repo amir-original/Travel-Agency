@@ -9,7 +9,14 @@ import static java.time.LocalDate.now;
 
 public record FlightSchedule(@NotNull LocalDate departure, @NotNull LocalDate arrival) {
 
-    public void check() {
+
+    public FlightSchedule(@NotNull LocalDate departure, @NotNull LocalDate arrival) {
+        this.departure = departure;
+        this.arrival = arrival;
+        validate();
+    }
+
+    public void validate() {
         if (isPassed())
             throw new FlightScheduleMostNotBePastException();
     }

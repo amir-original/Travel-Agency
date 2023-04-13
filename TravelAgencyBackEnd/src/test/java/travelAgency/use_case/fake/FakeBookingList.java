@@ -1,4 +1,4 @@
-package travelAgency.fake;
+package travelAgency.use_case.fake;
 
 import travelAgency.domain.booking.FlightTicket;
 import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import static travelAgency.fake.FakeBookingInformationBuilder.bookingInformation;
+import static travelAgency.use_case.fake.FakeBookingInformationBuilder.bookingInformation;
 
 public class FakeBookingList implements BookingListRepository {
 
@@ -35,23 +35,8 @@ public class FakeBookingList implements BookingListRepository {
     }
 
     @Override
-    public List<FlightTicket> findBookings(String flightNumber) {
-        return bookings.stream()
-                .filter(flightTicket -> flightTicket.flightNumber().equals(flightNumber))
-                .toList();
-    }
-
-    @Override
     public List<FlightTicket> getAllBookings() {
         return bookings;
-    }
-
-    @Override
-    public int getBookedSeats(String flightNumber) {
-        return findBookings(flightNumber)
-                .stream()
-                .mapToInt(FlightTicket::travelers)
-                .sum();
     }
 
     @Override

@@ -7,28 +7,37 @@ import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.passenger.Passenger;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record BookingInformation(@NotNull Flight flight,
                                  @NotNull Passenger passenger,
                                  int numberOfTickets) {
 
-    public void check() {
-        flight.check();
-        checkTicketNumber();
-        passenger.check();
+    public BookingInformation(@NotNull Flight flight, @NotNull Passenger passenger, int numberOfTickets) {
+        this.flight = flight;
+        this.passenger = passenger;
+        this.numberOfTickets = numberOfTickets;
+        validate();
     }
 
-    private void checkTicketNumber() {
-        if (numberOfTickets() <= 0) throw new NumberOfTravelersException();
+    public void validate() {
+        if (this.numberOfTickets() <= 0) throw new NumberOfTravelersException();
+    }
+
+    public void checkExistenceFlight(List<Flight> flights) {
+        flight.checkExistenceFlight(flights);
+    }
+
+    public FlightTicket getFlightTicket(String ticketNumber) {
+        return new FlightTicket(ticketNumber, this);
     }
 
     public boolean canMatchWith(String flightNumber, String passengerFirstName,
                                 LocalDate passengerBirthday) {
 
         return flight.flightNumber().equals(flightNumber) &&
-                passenger.canMatchWith(passengerFirstName,passengerBirthday);
+                passenger.canMatchWith(passengerFirstName, passengerBirthday);
     }
-
 
 
     public FlightPlan flightPlan() {

@@ -75,7 +75,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     }
 
     @Override
-    public Optional<Passenger> getPassenger(String passengerId) {
+    public Optional<Passenger> findPassengerById(String passengerId) {
         Passenger passenger = null;
         try (final PreparedStatement query = createQuery(SELECT_PASSENGER)) {
             query.setString(1, passengerId);

@@ -1,5 +1,9 @@
 package travelAgency.ui;
 
+import travelAgency.services.city.CityService;
+import travelAgency.services.bookingList.BookingListService;
+import travelAgency.services.flights.FlightService;
+
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
@@ -7,16 +11,23 @@ import java.time.format.DateTimeFormatter;
 
 public class HomePage extends JFrame {
 
+    private final CityService cityService;
+    private final BookingListService bookingListService;
+    private final FlightService flightService;
     private JButton bookingFlightButton, bookingListButton;
 
     private final UiComponents uiComponents = new UiComponents();
 
-    public static void main(String[] args) {
-        final HomePage homePage = new HomePage();
+
+    public HomePage(CityService cityService, BookingListService bookingListService, FlightService flightService) {
+        this.cityService = cityService;
+        this.bookingListService = bookingListService;
+        this.flightService = flightService;
+        createHomePage();
     }
 
 
-    public HomePage() {
+    private void createHomePage() {
         createComponents();
 
         addActionToButtons();
@@ -79,14 +90,14 @@ public class HomePage extends JFrame {
 
     private void goToBookingListPage() {
         bookingListButton.addActionListener(e -> {
-            new BookingListPage();
+            new BookingListPage(bookingListService);
             dispose();
         });
     }
 
     private void goToFlightBookingPage() {
         bookingFlightButton.addActionListener(e -> {
-            new FlightBookingPage();
+            new BookingFlightPage(cityService,bookingListService,flightService);
             dispose();
         });
     }

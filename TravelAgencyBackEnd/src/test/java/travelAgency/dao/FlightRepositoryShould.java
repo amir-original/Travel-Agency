@@ -4,7 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.flight.Flight;
-import travelAgency.fake.FakeFlight;
+import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
 import travelAgency.repository.flight.FlightRepository;
 import travelAgency.repository.flight.FlightRepositoryImpl;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static travelAgency.fake.FakeFlight.flight;
+import static travelAgency.use_case.fake.FakeFlight.flight;
 
 public class FlightRepositoryShould {
 
@@ -82,7 +82,7 @@ public class FlightRepositoryShould {
 
     @AfterEach
     void tearDown() {
-       api.truncate();
+        api.truncate();
     }
 
 }

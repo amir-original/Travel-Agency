@@ -13,20 +13,13 @@ public class BookingListServiceImpl implements BookingListService {
 
     private final BookingListRepository bookings;
     private final SearchTicketEngine searchEngine;
-    private final BookingFlightTicket bookingFlightTicket;
+    private final BookingList bookingList;
 
 
-    public BookingListServiceImpl(BookingListRepository bookings,
-                                  BookingFlightTicket bookingFlightTicket) {
+    public BookingListServiceImpl(BookingListRepository bookings) {
         this.bookings = bookings;
-        this.bookingFlightTicket = bookingFlightTicket;
         this.searchEngine = new SearchTicketEngine(getAllBookings());
-    }
-
-
-    @Override
-    public FlightTicket book(BookingInformation bookingInformation) {
-        return bookingFlightTicket.book(bookingInformation);
+        bookingList = new BookingList(bookings.getAllBookings());
     }
 
     @Override
@@ -41,18 +34,17 @@ public class BookingListServiceImpl implements BookingListService {
 
     @Override
     public int getBookedSeats(String flightNumber) {
-        return bookings.getBookedSeats(flightNumber);
+        return bookingList.getBookedSeats(flightNumber);
+    }
+
+    @Override
+    public int availableSeats(String flightNumber) {
+        return bookingList.availableSeats(flightNumber);
     }
 
     @Override
     public List<FlightTicket> getAllBookings() {
         return bookings.getAllBookings();
-    }
-
-    @Override
-    public FlightTicket findBooking(String ticketNumber) {
-        return bookings.findBooking(ticketNumber)
-                .orElseThrow(NotFoundAnyBookingFlightException::new);
     }
 
 }

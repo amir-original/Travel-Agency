@@ -1,12 +1,15 @@
 package travelAgency.domain.flight;
 
 import org.jetbrains.annotations.NotNull;
+import travelAgency.domain.booking.BookingInformation;
 import travelAgency.domain.city.City;
 import travelAgency.domain.exceptions.FlightNumberException;
 import travelAgency.domain.exceptions.FlightPriceException;
+import travelAgency.domain.exceptions.NotFindAnyFlightException;
 import travelAgency.services.priceConverter.CurrencyConverterService;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public record Flight(@NotNull String flightNumber,
@@ -14,19 +17,33 @@ public record Flight(@NotNull String flightNumber,
                      double price,
                      @NotNull FlightPlan plan) {
 
+    public Flight(@NotNull String flightNumber, int totalCapacity, double price, @NotNull FlightPlan plan) {
+        this.flightNumber = flightNumber;
+        this.totalCapacity = totalCapacity;
+        this.price = price;
+        this.plan = plan;
+        validate();
+    }
+
+    public void validate() {
+        if (flightNumber.isBlank() || flightNumber.length() < 3)
+            throw new FlightNumberException();
+        if (price <= 0) throw new FlightPriceException();
+    }
+
+    public void checkExistenceFlight(List<Flight> flights) {
+        flights.stream()
+                .filter(flight -> flight.matches(flightNumber))
+                .findFirst()
+                .orElseThrow(NotFindAnyFlightException::new);
+    }
+
     public boolean matches(FlightPlan flightPlan) {
         return plan.equals(flightPlan);
     }
 
     public boolean matches(String flightNumber) {
         return flightNumber().equals(flightNumber);
-    }
-
-    public void check() {
-        plan.check();
-        if (flightNumber.isBlank() || flightNumber.length() < 3)
-            throw new FlightNumberException();
-        if (price <= 0) throw new FlightPriceException();
     }
 
     public double price(CurrencyConverterService currencyConverter) {

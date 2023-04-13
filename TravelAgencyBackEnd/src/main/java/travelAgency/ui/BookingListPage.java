@@ -1,16 +1,24 @@
 package travelAgency.ui;
 
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
+import travelAgency.services.bookingList.BookingListService;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class BookingListPage extends JFrame {
 
+    private final BookingListService bookingListService;
     private JScrollPane scrollPane;
     private JButton backButton;
 
     private UiComponents ui;
+
+    public BookingListPage(BookingListService bookingListService) {
+        this.bookingListService = bookingListService;
+        createBookingListPage();
+    }
+
 
     public void createBookingListPage() {
         setupPage();
@@ -64,7 +72,7 @@ public class BookingListPage extends JFrame {
 
     private void goToHomePageAction() {
         backButton.addActionListener(e -> {
-            createHomePage();
+            new App();
             dispose(); // close current frame
         });
     }
@@ -119,14 +127,6 @@ public class BookingListPage extends JFrame {
         mainPanel.add(new JLabel());
         mainPanel.add(birthdayLabel);
         mainPanel.add(datePicker);
-    }
-
-    private static void createHomePage() {
-        new HomePage();
-    }
-
-    public static void main(String[] args) {
-        new BookingListPage().createBookingListPage();
     }
 
 }

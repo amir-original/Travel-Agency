@@ -1,8 +1,6 @@
 package travelAgency.repository.flight;
 
-import travelAgency.domain.exceptions.NotFindAnyFlightException;
 import travelAgency.domain.flight.Flight;
-import travelAgency.domain.flight.FlightPlan;
 import travelAgency.repository.db.DbConnection;
 
 import java.sql.*;
@@ -37,6 +35,7 @@ public class FlightRepositoryImpl implements FlightRepository {
             filledFlightFields(flight, query);
             query.executeUpdate();
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new FlightRepositorySQLException();
         }
     }
@@ -69,23 +68,6 @@ public class FlightRepositoryImpl implements FlightRepository {
     @Override
     public List<Flight> flights() {
         return findFlightRepository.getFlights();
-    }
-
-    @Override
-    public List<Flight> findFlights(FlightPlan flightPlan) {
-        return findFlightRepository.findFlights(flightPlan);
-    }
-
-    @Override
-    public void checkExistenceFlightWith(String flightNumber) {
-        findFlightRepository.checkExistenceFlightWith(flightNumber);
-    }
-
-    @Override
-    public int numberOfSeats(String flightNumber) {
-        return findFlight(flightNumber)
-                .orElseThrow(NotFindAnyFlightException::new)
-                .totalCapacity();
     }
 
     @Override

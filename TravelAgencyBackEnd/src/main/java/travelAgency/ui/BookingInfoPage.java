@@ -125,7 +125,7 @@ public class BookingInfoPage extends JFrame {
 
     private void goBackToFlightBookingPageAction(JButton backButton) {
         backButton.addActionListener(e -> {
-            new FlightBookingPage();
+           // new BookingFlightPage();
             dispose(); // close current frame
         });
     }

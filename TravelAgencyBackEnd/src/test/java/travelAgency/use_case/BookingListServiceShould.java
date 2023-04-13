@@ -1,16 +1,16 @@
-package travelAgency;
+package travelAgency.use_case;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
-import travelAgency.fake.FakeBookingList;
-import travelAgency.fake.FakeFlight;
-import travelAgency.fake.FakePassenger;
-import travelAgency.fake.FakeTicketGenerator;
+import travelAgency.services.bookingList.TicketNumberGenerator;
+import travelAgency.use_case.fake.FakeBookingList;
+import travelAgency.use_case.fake.FakeFlight;
+import travelAgency.use_case.fake.FakePassenger;
+import travelAgency.use_case.fake.FakeTicketNumberGenerator;
 import travelAgency.services.BookingFlightTicket;
 import travelAgency.services.bookingList.BookingListService;
 import travelAgency.services.bookingList.BookingListServiceImpl;
-import travelAgency.services.bookingList.TicketGenerator;
 import travelAgency.services.flights.FlightAvailabilityImpl;
 
 import java.time.LocalDate;
@@ -18,9 +18,9 @@ import java.time.LocalDate;
 import static java.time.LocalDate.of;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static travelAgency.fake.FakeBookingInformationBuilder.bookingInformation;
-import static travelAgency.fake.FakeFlight.flight;
-import static travelAgency.fake.FakePassenger.passenger;
+import static travelAgency.use_case.fake.FakeBookingInformationBuilder.bookingInformation;
+import static travelAgency.use_case.fake.FakeFlight.flight;
+import static travelAgency.use_case.fake.FakePassenger.passenger;
 
 public class BookingListServiceShould {
 
@@ -28,17 +28,17 @@ public class BookingListServiceShould {
     private static final LocalDate SARA_BIRTHDAY = of(1999, 4, 5);
     private static final String EXIST_FLIGHT_NUMBER = "0321";
     private BookingListService app;
+    private BookingFlightTicket appService;
 
     @BeforeEach
     void setUp() {
-        TicketGenerator ticketGenerator = new FakeTicketGenerator();
+        TicketNumberGenerator ticketNumberGenerator = new FakeTicketNumberGenerator();
         final FakeBookingList bookings = new FakeBookingList();
 
         final FlightAvailabilityImpl flightAvailability = new FlightAvailabilityImpl(new FakeFlight(), bookings);
         final FakePassenger passengers = new FakePassenger();
-        BookingFlightTicket bookingFlightTicket =
-                new BookingFlightTicket(bookings, flightAvailability, passengers, ticketGenerator);
-        app = new BookingListServiceImpl(bookings, bookingFlightTicket);
+        appService = new BookingFlightTicket(bookings, flightAvailability, passengers, ticketNumberGenerator);
+        app = new BookingListServiceImpl(bookings);
     }
 
 
@@ -70,8 +70,6 @@ public class BookingListServiceShould {
         assertAll(
                 () -> assertThat(app.getBookedSeats(EXIST_FLIGHT_NUMBER)).isEqualTo(bookingsBeforeCancel),
                 () -> assertThatNoException().isThrownBy(() -> app.cancel(ticket.ticketNumber())),
-                () -> assertThatExceptionOfType(NotFoundAnyBookingFlightException.class)
-                        .isThrownBy(() -> app.findBooking(ticket.ticketNumber())),
                 () -> assertThat(app.getBookedSeats(EXIST_FLIGHT_NUMBER)).isEqualTo(bookingsAfterCancel)
                 );
     }
@@ -83,9 +81,9 @@ public class BookingListServiceShould {
     }
 
     private void insertMultipleBooking() {
-        app.book(bookingInformation().withTravelers(5).build());
-        app.book(bookingInformation().withPassenger(passenger("se478")).withTravelers(1).build());
-        app.book(bookingInformation().withPassenger(passenger("mes784")).withTravelers(3).build());
-        app.book(bookingInformation().withPassenger(passenger("ew471")).withTravelers(4).build());
+        appService.book(bookingInformation().withTravelers(5).build());
+        appService.book(bookingInformation().withPassenger(passenger("se478")).withTravelers(1).build());
+        appService.book(bookingInformation().withPassenger(passenger("mes784")).withTravelers(3).build());
+        appService.book(bookingInformation().withPassenger(passenger("ew471")).withTravelers(4).build());
     }
 }

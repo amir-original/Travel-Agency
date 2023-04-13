@@ -9,36 +9,27 @@ import java.util.List;
 
 public class FlightServiceImpl implements FlightService {
 
-    private final FlightRepository flightRepository;
-    private final SearchFlightEngine searchFlightEngine;
-    private List<Flight> flights;
+    private final FlightRepository flights;
+    private final FlightAvailability flightAvailability;
 
-    public FlightServiceImpl(FlightRepository flightRepository) {
-        this.flightRepository = flightRepository;
-        getFlights();
-        this.searchFlightEngine = new SearchFlightEngine(flights);
+    public FlightServiceImpl(FlightRepository flights, FlightAvailability flightAvailability) {
+        this.flights = flights;
+        this.flightAvailability = flightAvailability;
     }
-
-    private void getFlights() {
-        this.flights = flightRepository.flights();
-    }
-
 
     @Override
     public List<Flight> search(FlightPlan searchFlightPlan) {
-        return searchFlightEngine.search(searchFlightPlan);
+        return searchFlightPlan.search(flights.flights());
     }
-
-    @Override
-    public List<Flight> findFlights(FlightPlan flightPlan) {
-        return flightRepository.findFlights(flightPlan);
-    }
-
 
     @Override
     public Flight findFlight(String flightNumber) {
-        return flightRepository.findFlight(flightNumber)
+        return flights.findFlight(flightNumber)
                 .orElseThrow(FlightNumberNotFoundException::new);
     }
 
+    @Override
+    public int availableSeats(String flightNumber) {
+        return 5;
+    }
 }

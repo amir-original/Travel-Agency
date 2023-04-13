@@ -1,9 +1,8 @@
-package travelAgency.fake;
+package travelAgency.use_case.fake;
 
 import travelAgency.domain.exceptions.NotFindAnyFlightException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightBuilder;
-import travelAgency.domain.flight.FlightPlan;
 import travelAgency.repository.flight.FlightRepository;
 
 import java.time.LocalDate;
@@ -28,15 +27,6 @@ public class FakeFlight implements FlightRepository {
                 flight().withFlightNumber("0321").withPrice(145).build(),
                 flight().withFlightNumber("1456").withPrice(544).build());
         flights = new LinkedList<>(list);
-    }
-
-    @Override
-    public void checkExistenceFlightWith(String flightNumber) {
-        flights.stream()
-                .filter(flight -> flight.matches(flightNumber))
-                .findFirst()
-                .orElseThrow(NotFindAnyFlightException::new);
-
     }
 
     @Override
@@ -83,18 +73,6 @@ public class FakeFlight implements FlightRepository {
     @Override
     public List<Flight> flights() {
         return flights;
-    }
-
-    @Override
-    public int numberOfSeats(String flightNumber) {
-        return findFlight(flightNumber)
-                .orElseThrow(NotFindAnyFlightException::new)
-                .totalCapacity();
-    }
-
-    @Override
-    public List<Flight> findFlights(FlightPlan flightPlan) {
-        return flights.stream().filter(flight -> flight.matches(flightPlan)).toList();
     }
 
     @Override

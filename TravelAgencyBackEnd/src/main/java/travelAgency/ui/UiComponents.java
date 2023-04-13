@@ -66,5 +66,4 @@ public class UiComponents {
         return new JTextField(columns);
     }
 
-
 }

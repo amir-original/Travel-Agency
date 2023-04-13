@@ -2,23 +2,42 @@ package travelAgency.ui;
 
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
+import travelAgency.domain.flight.FlightLocation;
+import travelAgency.domain.flight.FlightPlan;
+import travelAgency.domain.flight.FlightSchedule;
+import travelAgency.services.city.CityService;
+import travelAgency.services.bookingList.BookingListService;
+import travelAgency.services.flights.FlightService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
-public class FlightBookingPage extends JFrame {
+public class BookingFlightPage extends JFrame {
 
     private JLabel resultLabel;
     private JComboBox<String> originComboBox, destinationComboBox;
     private JButton backButton, searchButton, nextButton;
 
     private  UiComponents ui;
+    private final CityService cityService;
+    private final BookingListService bookingListService;
+    private final FlightService flightService;
+    private JDateChooser departureDatePicker;
+    private JDateChooser arrivalDatePicker;
+    private JPanel resultPanel;
 
-    public static void main(String[] args) {
-        new FlightBookingPage();
+
+    public BookingFlightPage(CityService cityService, BookingListService bookingListService, FlightService flightService) {
+        this.cityService = cityService;
+        this.bookingListService = bookingListService;
+        this.flightService = flightService;
+
+        createBookingFlightPage();
     }
 
-    public FlightBookingPage() {
+    private void createBookingFlightPage() {
         setupPage();
 
         JPanel mainPanel = createMainPanel();
@@ -28,6 +47,7 @@ public class FlightBookingPage extends JFrame {
         pack();
         setVisible(true);
     }
+
 
     private void setupPage() {
         initConfigPage();
@@ -74,30 +94,28 @@ public class FlightBookingPage extends JFrame {
 
     private void createFromField(JPanel headerPanel) {
         JLabel originLabel = ui.label("From:");
-        final String[] values = {"New York", "Los Angeles", "Chicago", "Houston", "Miami"};
-        originComboBox = ui.dropdown(values, 100, 30);
+        originComboBox = ui.dropdown(cityService.citiesArray(), 100, 30);
         headerPanel.add(originLabel);
         headerPanel.add(originComboBox);
     }
 
     private void createToField(JPanel headerPanel) {
         JLabel destinationLabel = ui.label("To:");
-        final String[] values = {"London", "Paris", "Tokyo", "Sydney", "Beijing"};
-        destinationComboBox = ui.dropdown(values, 100, 30);
+        destinationComboBox = ui.dropdown(cityService.citiesArray(), 100, 30);
         headerPanel.add(destinationLabel);
         headerPanel.add(destinationComboBox);
     }
 
     private void createDepartureField(JPanel headerPanel) {
         JLabel departureLabel = ui.label("Departure:");
-        JDateChooser departureDatePicker = ui.dateChooser(150, 30);
+        departureDatePicker = ui.dateChooser(150, 30);
         headerPanel.add(departureLabel);
         headerPanel.add(departureDatePicker);
     }
 
     private void createArrivalField(JPanel mainPanel, JPanel headerPanel) {
         JLabel arrivalLabel = ui.label("Arrival:");
-        JDateChooser arrivalDatePicker = ui.dateChooser(150,30);
+        arrivalDatePicker = ui.dateChooser(150,30);
         headerPanel.add(arrivalLabel);
         headerPanel.add(arrivalDatePicker);
         mainPanel.add(headerPanel, BorderLayout.NORTH);
@@ -151,6 +169,27 @@ public class FlightBookingPage extends JFrame {
                     + " to " +
                     destinationComboBox.getSelectedItem();
 
+
+            // TODO search flight
+            final FlightPanel flightPanel = new FlightPanel();
+
+            final String from = (String) originComboBox.getSelectedItem();
+            String to = (String) destinationComboBox.getSelectedItem();
+            final FlightLocation location = new FlightLocation(cityService.getCity(from),cityService.getCity(to));
+            LocalDate departure = departureDatePicker.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate arrival = arrivalDatePicker.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            final FlightSchedule schedule = new FlightSchedule(departure,arrival);
+            final FlightPlan searchFlightPlan = new FlightPlan(location, schedule);
+
+            flightPanel.showFlightsInfo(
+                    flightService.search(searchFlightPlan),
+                    flightService
+            );
+
+            resultPanel.add(flightPanel);
+
+
+
             resultLabel.setText(text);
             nextButton.setEnabled(true);
         });
@@ -171,16 +210,18 @@ public class FlightBookingPage extends JFrame {
     private void goBackToHomePageAction() {
         backButton.addActionListener(e -> {
             // Go back to previous page
-            new HomePage();
+            new App();
             dispose();
         });
     }
 
     private void createResultPanel(JPanel mainPanel) {
-        JPanel resultPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        resultPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         resultPanel.setPreferredSize(new Dimension(800, 400));
         JScrollPane scrollPane = new JScrollPane(resultPanel);
         resultLabel = ui.label("No results to show");
+
+        // TODO show information
         resultPanel.add(resultLabel);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
     }

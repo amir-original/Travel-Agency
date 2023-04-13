@@ -1,4 +1,4 @@
-package travelAgency.priceConverter;
+package travelAgency.use_case.priceConverter;
 
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
