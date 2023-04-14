@@ -37,7 +37,7 @@ public record Passenger(@NotNull String id, @NotNull String fName, @NotNull Stri
         if (address.isBlank())
             throw new PassengerAddressException();
         if (phoneNumber.isBlank())
-            throw new PassengerPhoneNumbersNotEmptyException();
+            throw new PhoneNumberNotEmptyException();
         if (phoneNumber.length() != 12)
             throw new PhoneNumberLengthException();
     }

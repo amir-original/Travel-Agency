@@ -35,8 +35,7 @@ public class FlightRepositoryImpl implements FlightRepository {
             filledFlightFields(flight, query);
             query.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new FlightRepositorySQLException();
+            throw new SQLFlightInsertionException(e.getMessage());
         }
     }
 

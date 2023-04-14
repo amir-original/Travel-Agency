@@ -1,7 +1,7 @@
 package travelAgency.use_case.fake;
 
 import travelAgency.domain.booking.Reservation;
-import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
+import travelAgency.domain.exceptions.ReservationNotFoundException;
 import travelAgency.repository.booking.BookingListRepository;
 
 import java.util.LinkedList;
@@ -63,6 +63,6 @@ public class FakeBookingList implements BookingListRepository {
     public static Reservation flightTicket(String ticketNumber){
         return new FakeBookingList()
                 .findBooking(ticketNumber)
-                .orElseThrow(NotFoundAnyBookingFlightException::new);
+                .orElseThrow(ReservationNotFoundException::new);
     }
 }

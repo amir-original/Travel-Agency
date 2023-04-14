@@ -2,12 +2,12 @@ package travelAgency.use_case;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.exceptions.FlightNumberNotFoundException;
+import travelAgency.domain.exceptions.FlightNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
-import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.services.flights.FlightService;
 import travelAgency.services.flights.FlightServiceImpl;
+import travelAgency.use_case.fake.FakeFlight;
 
 import java.util.List;
 
@@ -53,8 +53,8 @@ public class FindFlightServiceShould {
     }
 
     @Test
-    void throw_NotFoundAnyFlightException_when_find_flight_with_wrong_flight_number() {
-        assertThatExceptionOfType(FlightNumberNotFoundException.class)
+    void throw_FlightNotFoundException_when_find_flight_with_wrong_flight_number() {
+        assertThatExceptionOfType(FlightNotFoundException.class)
                 .isThrownBy(() -> app.findFlight(NOT_EXIST_FLIGHT_NUMBER));
     }
 

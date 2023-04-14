@@ -1,7 +1,7 @@
 package travelAgency.services.bookingList;
 
 import travelAgency.domain.booking.Reservation;
-import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
+import travelAgency.domain.exceptions.ReservationNotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +12,7 @@ public record SearchTicketEngine(List<Reservation> tickets) {
         return tickets.stream()
                 .filter(reservation -> reservation.canMatchWith(flightNumber, passengerFirstName, passengerBirthday))
                 .findFirst()
-                .orElseThrow(NotFoundAnyBookingFlightException::new);
+                .orElseThrow(ReservationNotFoundException::new);
     }
 
 }

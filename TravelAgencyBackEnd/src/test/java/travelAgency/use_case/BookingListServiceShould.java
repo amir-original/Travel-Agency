@@ -2,7 +2,7 @@ package travelAgency.use_case;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
+import travelAgency.domain.exceptions.ReservationNotFoundException;
 import travelAgency.services.bookingList.TicketNumberGenerator;
 import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.use_case.fake.FakeFlight;
@@ -56,7 +56,7 @@ public class BookingListServiceShould {
     @Test
     void throw_NotFoundAnyBookingFlightException_when_there_is_not_any_flight_with_enter_information() {
 
-        assertThatExceptionOfType(NotFoundAnyBookingFlightException.class)
+        assertThatExceptionOfType(ReservationNotFoundException.class)
                 .isThrownBy(() -> app.search("023", SARA, SARA_BIRTHDAY));
     }
 

@@ -37,7 +37,7 @@ public record Flight(@NotNull String flightNumber,
         flights.stream()
                 .filter(flight -> flight.matches(flightNumber))
                 .findFirst()
-                .orElseThrow(NotFoundAnyFlightException::new);
+                .orElseThrow(FlightNotFoundException::new);
     }
 
     public void checkAvailability(List<Reservation> reservations, int newTravelers) {
@@ -75,7 +75,7 @@ public record Flight(@NotNull String flightNumber,
                 .flatMap(reservation -> of(reservation.flight()))
                 .filter(flight -> flight.matches(flightNumber()))
                 .findFirst()
-                .orElseThrow(NotFoundAnyFlightException::new)
+                .orElseThrow(FlightNotFoundException::new)
                 .totalCapacity();
     }
 

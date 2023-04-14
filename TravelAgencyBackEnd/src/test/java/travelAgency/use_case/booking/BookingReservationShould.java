@@ -58,15 +58,15 @@ public class BookingReservationShould {
     }
 
     @Test
-    void throw_FlightScheduleException_when_book_flight_with_past_departure_and_arrival_date() {
+    void throw_PastFlightScheduleException_when_book_flight_with_past_departure_and_arrival_date() {
         LocalDate yesterday = LocalDate.now().minusDays(1);
-        assertThatExceptionOfType(FlightScheduleMostNotBePastException.class)
+        assertThatExceptionOfType(PastFlightScheduleException.class)
                 .isThrownBy(() -> {
                     final Flight flight = flight().departureAt(yesterday).build();
                     app.book(bookingInformation().withFlight(flight).build());
                 });
 
-        assertThatExceptionOfType(FlightScheduleMostNotBePastException.class)
+        assertThatExceptionOfType(PastFlightScheduleException.class)
                 .isThrownBy(() -> {
                     final Flight flight = flight().arrivalAt(yesterday).build();
                     app.book(bookingInformation().withFlight(flight).build());

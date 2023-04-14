@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.city.City;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Stream;
 
 public class CityServiceImpl implements CityService {
@@ -25,6 +26,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public City getCity(String name) {
-        return City.valueOf(name);
+        return City.valueOf(name.toUpperCase());
     }
+
 }

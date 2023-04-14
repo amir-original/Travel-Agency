@@ -1,6 +1,6 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.domain.exceptions.NotFoundAnyFlightException;
+import travelAgency.domain.exceptions.FlightNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightBuilder;
 import travelAgency.repository.flight.FlightRepository;
@@ -66,7 +66,7 @@ public class FakeFlight implements FlightRepository {
 
     public static Flight flight(String flightNumber) {
         return new FakeFlight().findFlight(flightNumber)
-                .orElseThrow(NotFoundAnyFlightException::new);
+                .orElseThrow(FlightNotFoundException::new);
     }
 
 

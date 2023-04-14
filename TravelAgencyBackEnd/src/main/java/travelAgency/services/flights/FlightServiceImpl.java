@@ -1,8 +1,8 @@
 package travelAgency.services.flights;
 
+import travelAgency.domain.exceptions.FlightNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
-import travelAgency.domain.exceptions.FlightNumberNotFoundException;
 import travelAgency.repository.flight.FlightRepository;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public Flight findFlight(String flightNumber) {
         return flights.findFlight(flightNumber)
-                .orElseThrow(FlightNumberNotFoundException::new);
+                .orElseThrow(FlightNotFoundException::new);
     }
 
     @Override

@@ -2,7 +2,6 @@ package travelAgency.repository.flight;
 
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.city.City;
-import travelAgency.domain.exceptions.NotFoundAnyFlightException;
 import travelAgency.repository.db.DbConnection;
 
 import java.sql.*;

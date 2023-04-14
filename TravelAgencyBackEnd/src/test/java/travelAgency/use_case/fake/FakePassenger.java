@@ -1,6 +1,6 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.domain.exceptions.NotFoundAnyPassengerException;
+import travelAgency.domain.exceptions.PassengerNotFoundException;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.domain.passenger.PassengerBuilder;
 import travelAgency.repository.passenger.PassengerRepository;
@@ -68,6 +68,6 @@ public class FakePassenger implements PassengerRepository {
     public static Passenger passenger(String passengerId) {
         final FakePassenger fakePassenger = new FakePassenger();
 
-        return fakePassenger.findPassengerById(passengerId).orElseThrow(NotFoundAnyPassengerException::new);
+        return fakePassenger.findPassengerById(passengerId).orElseThrow(PassengerNotFoundException::new);
     }
 }

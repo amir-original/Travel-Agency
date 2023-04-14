@@ -42,14 +42,14 @@ public class BookingReservationPassengerInfoShould {
     }
 
     @Test
-    void the_number_of_travelers_less_than_or_equal_to_zero_is_invalid() {
+    void throw_NumberOfTravelersException_when_travelers_are_less_than_or_equal_to_zero() {
         assertThatExceptionOfType(NumberOfTravelersException.class)
                 .isThrownBy(() -> app.book(bookingInformation().withTravelers(0).build()));
     }
 
     @Test
-    void throw_NotFoundAnyFlightException_when_there_is_not_any_flight_with_entered_information() {
-        assertThatExceptionOfType(NotFoundAnyFlightException.class)
+    void throw_FlightNotFoundException_when_there_is_not_any_flight_with_entered_information() {
+        assertThatExceptionOfType(FlightNotFoundException.class)
                 .isThrownBy(() -> app.book(bookingInformation().withNotFoundFlight().build()));
     }
 
@@ -137,10 +137,10 @@ public class BookingReservationPassengerInfoShould {
     }
 
     @Test
-    void throw_PassengerPhoneNumbersNotNullException_when_phone_number_is_null_or_empty() {
+    void throw_PassengerPhoneNumberNotNullException_when_phone_number_is_null_or_empty() {
         assertAll(
                 () -> assertThat(IllegalArgumentException.class,null),
-                () -> assertThat(PassengerPhoneNumbersNotEmptyException.class,"")
+                () -> assertThat(PhoneNumberNotEmptyException.class,"")
         );
 
     }

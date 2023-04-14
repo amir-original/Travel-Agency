@@ -1,7 +1,7 @@
 package travelAgency.domain.flight;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.exceptions.FlightScheduleMostNotBePastException;
+import travelAgency.domain.exceptions.PastFlightScheduleException;
 
 import java.time.LocalDate;
 
@@ -18,7 +18,7 @@ public record FlightSchedule(@NotNull LocalDate departure, @NotNull LocalDate ar
 
     public void validate() {
         if (isPassed())
-            throw new FlightScheduleMostNotBePastException();
+            throw new PastFlightScheduleException();
     }
 
     private boolean isPassed() {

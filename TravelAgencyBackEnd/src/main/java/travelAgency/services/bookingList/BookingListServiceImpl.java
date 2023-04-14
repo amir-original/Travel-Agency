@@ -1,7 +1,7 @@
 package travelAgency.services.bookingList;
 
 import travelAgency.domain.booking.Reservation;
-import travelAgency.domain.exceptions.NotFoundAnyBookingFlightException;
+import travelAgency.domain.exceptions.ReservationNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.repository.booking.BookingListRepository;
 
@@ -47,7 +47,7 @@ public class BookingListServiceImpl implements BookingListService {
     public Flight findFlight(String flightNumber) {
         return bookings
                 .findBookingByFlightNumber(flightNumber)
-                .orElseThrow(NotFoundAnyBookingFlightException::new)
+                .orElseThrow(ReservationNotFoundException::new)
                 .flight();
     }
 

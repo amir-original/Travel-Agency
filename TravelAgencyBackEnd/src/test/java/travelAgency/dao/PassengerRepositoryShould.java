@@ -3,7 +3,7 @@ package travelAgency.dao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.exceptions.NotFoundAnyPassengerException;
+import travelAgency.domain.exceptions.PassengerNotFoundException;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.repository.db.mysq.MySQLDbConnection;
 import travelAgency.repository.passenger.PassengerRepositoryImpl;
@@ -32,9 +32,7 @@ public class PassengerRepositoryShould {
 
         final Optional<Passenger> fetchedPassenger = api.findPassengerById(passenger.id());
 
-        if (fetchedPassenger.isEmpty()) {
-            fail("not found any findPassengerById with this id in db");
-        }
+       fetchedPassenger.orElseThrow(PassengerNotFoundException::new);
 
         assertThat(passenger).isEqualTo(fetchedPassenger.get());
     }
@@ -50,8 +48,8 @@ public class PassengerRepositoryShould {
     void throw_NotFoundAnyPassengerException_when_passenger_is_not_found() {
         final Optional<Passenger> fetchedPassenger = api.findPassengerById("notFound");
 
-        assertThatExceptionOfType(NotFoundAnyPassengerException.class)
-                .isThrownBy(() -> fetchedPassenger.orElseThrow(NotFoundAnyPassengerException::new));
+        assertThatExceptionOfType(PassengerNotFoundException.class)
+                .isThrownBy(() -> fetchedPassenger.orElseThrow(PassengerNotFoundException::new));
 
     }
 
