@@ -60,6 +60,11 @@ public class FlightServiceShould {
     }
 
     @Test
+    void return_the_total_capacity_of_the_flight_when_6_seats_on_the_flight_have_been_booked() {
+        assertThat(app.availableSeats("0321")).isEqualTo(34);
+    }
+
+    @Test
     void return_total_capacity_when_there_is_not_any_reservation_for_flight() {
         assertThat(app.availableSeats("8054")).isEqualTo(40);
     }
