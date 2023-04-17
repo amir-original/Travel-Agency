@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.flight.Flight;
 import travelAgency.services.priceConverter.currencyApi.RialToDollarConverterApi;
+import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.services.flights.FlightService;
 import travelAgency.services.flights.FlightServiceImpl;
@@ -32,7 +33,7 @@ public class SearchFlightEngineShould {
 
     @BeforeEach
     void setUp() {
-        app = new FlightServiceImpl(new FakeFlight());
+        app = new FlightServiceImpl(new FakeFlight(),new FakeBookingList());
         dollarToRialConverter = getCurrencyConverter(DollarToRialConverterApi.class, ONE_DOLLAR_TO_RIAL);
         rialToDollarConverter = getCurrencyConverter(RialToDollarConverterApi.class, ONE_RIAL_TO_DOLLAR);
     }

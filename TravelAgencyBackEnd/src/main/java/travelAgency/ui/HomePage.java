@@ -1,5 +1,6 @@
 package travelAgency.ui;
 
+import travelAgency.services.BookingReservation;
 import travelAgency.services.city.CityService;
 import travelAgency.services.bookingList.BookingListService;
 import travelAgency.services.flights.FlightService;
@@ -14,15 +15,21 @@ public class HomePage extends JFrame {
     private final CityService cityService;
     private final BookingListService bookingListService;
     private final FlightService flightService;
+    private final BookingReservation bookingReservation;
     private JButton bookingFlightButton, bookingListButton;
 
     private final UiComponents uiComponents = new UiComponents();
 
 
-    public HomePage(CityService cityService, BookingListService bookingListService, FlightService flightService) {
+    public HomePage(CityService cityService,
+                    BookingListService bookingListService,
+                    FlightService flightService,
+                    BookingReservation bookingReservation) {
+
         this.cityService = cityService;
         this.bookingListService = bookingListService;
         this.flightService = flightService;
+        this.bookingReservation = bookingReservation;
         createHomePage();
     }
 
@@ -97,7 +104,7 @@ public class HomePage extends JFrame {
 
     private void goToFlightBookingPage() {
         bookingFlightButton.addActionListener(e -> {
-            new BookingFlightPage(cityService,bookingListService,flightService);
+            new BookingFlightPage(cityService,bookingListService,flightService,bookingReservation);
             dispose();
         });
     }

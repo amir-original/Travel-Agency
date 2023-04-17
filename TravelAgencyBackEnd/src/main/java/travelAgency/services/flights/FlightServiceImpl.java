@@ -3,6 +3,7 @@ package travelAgency.services.flights;
 import travelAgency.domain.exceptions.FlightNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
+import travelAgency.repository.booking.BookingListRepository;
 import travelAgency.repository.flight.FlightRepository;
 
 import java.util.List;
@@ -10,9 +11,11 @@ import java.util.List;
 public class FlightServiceImpl implements FlightService {
 
     private final FlightRepository flights;
+    private final BookingListRepository bookings;
 
-    public FlightServiceImpl(FlightRepository flights) {
+    public FlightServiceImpl(FlightRepository flights,BookingListRepository bookingListRepository) {
         this.flights = flights;
+        bookings = bookingListRepository;
     }
 
     @Override
@@ -28,6 +31,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public int availableSeats(String flightNumber) {
-        return 5;
+        return findFlight(flightNumber).getAvailableSeats(bookings.getAllBookings());
     }
+
 }

@@ -3,6 +3,7 @@ package travelAgency.use_case;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.ReservationNotFoundException;
+import travelAgency.repository.booking.BookingListRepositoryImpl;
 import travelAgency.services.bookingList.TicketNumberGenerator;
 import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.use_case.fake.FakeFlight;
@@ -80,11 +81,6 @@ public class BookingListServiceShould {
         assertThat(app.getBookedSeats("0321")).isEqualTo(19);
     }
 
-    @Test
-    void get_available_seats() {
-        insertMultipleBooking();
-        assertThat(app.availableSeats("0321")).isEqualTo(21);
-    }
 
     private void insertMultipleBooking() {
         appService.book(bookingInformation().withTravelers(5).build());

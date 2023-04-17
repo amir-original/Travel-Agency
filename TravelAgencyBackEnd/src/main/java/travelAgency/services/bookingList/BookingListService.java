@@ -12,6 +12,5 @@ public interface BookingListService {
                        String passengerFirstName,
                        LocalDate PassengerBirthday);
     int getBookedSeats(String flightNumber);
-    int availableSeats(String flightNumber);
     List<Reservation> getAllReservations();
 }

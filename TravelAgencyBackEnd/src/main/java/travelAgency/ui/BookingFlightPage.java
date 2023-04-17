@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.flight.FlightLocation;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.flight.FlightSchedule;
+import travelAgency.services.BookingReservation;
 import travelAgency.services.city.CityService;
 import travelAgency.services.bookingList.BookingListService;
 import travelAgency.services.flights.FlightService;
@@ -13,6 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Calendar;
 
 public class BookingFlightPage extends JFrame {
 
@@ -29,7 +31,11 @@ public class BookingFlightPage extends JFrame {
     private JPanel resultPanel;
 
 
-    public BookingFlightPage(CityService cityService, BookingListService bookingListService, FlightService flightService) {
+    public BookingFlightPage(CityService cityService,
+                             BookingListService bookingListService,
+                             FlightService flightService,
+                             BookingReservation bookingReservation) {
+
         this.cityService = cityService;
         this.bookingListService = bookingListService;
         this.flightService = flightService;
@@ -95,6 +101,7 @@ public class BookingFlightPage extends JFrame {
     private void createFromField(JPanel headerPanel) {
         JLabel originLabel = ui.label("From:");
         originComboBox = ui.dropdown(cityService.citiesArray(), 100, 30);
+        originComboBox.setSelectedItem(cityService.getCity("tehran"));
         headerPanel.add(originLabel);
         headerPanel.add(originComboBox);
     }
@@ -109,6 +116,7 @@ public class BookingFlightPage extends JFrame {
     private void createDepartureField(JPanel headerPanel) {
         JLabel departureLabel = ui.label("Departure:");
         departureDatePicker = ui.dateChooser(150, 30);
+        disableDatesBeforTodaysDate(departureDatePicker);
         headerPanel.add(departureLabel);
         headerPanel.add(departureDatePicker);
     }
@@ -116,9 +124,14 @@ public class BookingFlightPage extends JFrame {
     private void createArrivalField(JPanel mainPanel, JPanel headerPanel) {
         JLabel arrivalLabel = ui.label("Arrival:");
         arrivalDatePicker = ui.dateChooser(150,30);
+        disableDatesBeforTodaysDate(arrivalDatePicker);
         headerPanel.add(arrivalLabel);
         headerPanel.add(arrivalDatePicker);
         mainPanel.add(headerPanel, BorderLayout.NORTH);
+    }
+
+    private void disableDatesBeforTodaysDate(JDateChooser dateChooser) {
+        dateChooser.setMinSelectableDate(Calendar.getInstance().getTime());
     }
 
     private void createPassengersField(JPanel headerPanel) {
@@ -164,35 +177,58 @@ public class BookingFlightPage extends JFrame {
     private void addActionToSearchButton() {
         searchButton.addActionListener(e -> {
             // Perform searchFlights and display results in resultLabel
-            final String text = "Showing results for " +
-                    originComboBox.getSelectedItem()
-                    + " to " +
-                    destinationComboBox.getSelectedItem();
+            displayResultOfSearchFlightsInResultLabel();
 
 
             // TODO searchFlights flight
-            final FlightPanel flightPanel = new FlightPanel();
+            final FlightSearchResult flightSearchResult = new FlightSearchResult();
 
-            final String from = (String) originComboBox.getSelectedItem();
-            String to = (String) destinationComboBox.getSelectedItem();
-            final FlightLocation location = new FlightLocation(cityService.getCity(from),cityService.getCity(to));
-            LocalDate departure = departureDatePicker.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            LocalDate arrival = arrivalDatePicker.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            final FlightSchedule schedule = new FlightSchedule(departure,arrival);
-            final FlightPlan searchFlightPlan = new FlightPlan(location, schedule);
+            final FlightPlan searchFlightPlan = getFlightPlan();
 
-            flightPanel.showFlightsInfo(
+            flightSearchResult.showFlightsInfo(
                     flightService.searchFlights(searchFlightPlan),
-                    flightService
+                    bookingListService.getAllReservations()
             );
 
-            resultPanel.add(flightPanel);
+            resultPanel.add(flightSearchResult);
 
 
 
-            resultLabel.setText(text);
             nextButton.setEnabled(true);
         });
+    }
+
+    @NotNull
+    private FlightPlan getFlightPlan() {
+        final FlightLocation location = getFlightLocation();
+
+        final FlightSchedule schedule = getFlightSchedule();
+
+        return new FlightPlan(location, schedule);
+    }
+
+    @NotNull
+    private FlightSchedule getFlightSchedule() {
+        LocalDate departure = departureDatePicker.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate arrival = arrivalDatePicker.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        System.out.println(departure);
+        System.out.println(arrival);
+        return new FlightSchedule(departure,arrival);
+    }
+
+    @NotNull
+    private FlightLocation getFlightLocation() {
+        final String from = (String) originComboBox.getSelectedItem();
+        String to = (String) destinationComboBox.getSelectedItem();
+        return new FlightLocation(cityService.getCity(from),cityService.getCity(to));
+    }
+
+    private void displayResultOfSearchFlightsInResultLabel() {
+        final String text = "Showing results for " +
+                originComboBox.getSelectedItem()
+                + " to " +
+                destinationComboBox.getSelectedItem();
+        resultLabel.setText(text);
     }
 
     private void goToNextPageAction() {

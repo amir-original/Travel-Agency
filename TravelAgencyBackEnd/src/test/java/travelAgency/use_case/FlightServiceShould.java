@@ -7,6 +7,7 @@ import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.services.flights.FlightService;
 import travelAgency.services.flights.FlightServiceImpl;
+import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.use_case.fake.FakeFlight;
 
 import java.util.List;
@@ -19,14 +20,14 @@ import static travelAgency.domain.city.City.LONDON;
 import static travelAgency.use_case.fake.FakeFlight.flight;
 import static travelAgency.use_case.fake.FakeFlightPlanBuilder.flightPlan;
 
-public class FindFlightServiceShould {
+public class FlightServiceShould {
 
     private static final String NOT_EXIST_FLIGHT_NUMBER = "fwefefef";
     private FlightService app;
 
     @BeforeEach
     void setUp() {
-        app = new FlightServiceImpl(new FakeFlight());
+        app = new FlightServiceImpl(new FakeFlight(),new FakeBookingList());
     }
 
     @Test
@@ -58,5 +59,8 @@ public class FindFlightServiceShould {
                 .isThrownBy(() -> app.findFlight(NOT_EXIST_FLIGHT_NUMBER));
     }
 
-
+    @Test
+    void return_total_capacity_when_there_is_not_any_reservation_for_flight() {
+        assertThat(app.availableSeats("8054")).isEqualTo(40);
+    }
 }

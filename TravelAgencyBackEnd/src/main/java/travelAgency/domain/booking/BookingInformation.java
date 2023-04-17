@@ -27,6 +27,7 @@ public record BookingInformation(@NotNull Flight flight,
 
     public void checkExistenceFlight(List<Flight> flights) {
         flight.checkExistenceFlight(flights);
+        flight.validateSchedule();
     }
 
     public Reservation getReservation(String ticketNumber) {

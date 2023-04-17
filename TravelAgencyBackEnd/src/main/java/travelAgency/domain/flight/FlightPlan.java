@@ -10,6 +10,17 @@ import java.util.List;
 public record FlightPlan(@NotNull FlightLocation location,
                          @NotNull FlightSchedule schedule) {
 
+    public void validateSchedule() {
+        schedule.validate();
+    }
+
+    public List<Flight> search(List<Flight> flights) {
+        return flights
+                .stream()
+                .filter(flight -> flight.matches(this))
+                .toList();
+    }
+
     public City from() {
         return location.from();
     }
@@ -24,12 +35,5 @@ public record FlightPlan(@NotNull FlightLocation location,
 
     public LocalDate arrival() {
         return schedule.arrival();
-    }
-
-    public List<Flight> search(List<Flight> flights) {
-        return flights
-                .stream()
-                .filter(flight -> flight.matches(this))
-                .toList();
     }
 }

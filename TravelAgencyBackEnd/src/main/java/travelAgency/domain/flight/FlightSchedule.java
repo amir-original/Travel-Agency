@@ -13,7 +13,6 @@ public record FlightSchedule(@NotNull LocalDate departure, @NotNull LocalDate ar
     public FlightSchedule(@NotNull LocalDate departure, @NotNull LocalDate arrival) {
         this.departure = departure;
         this.arrival = arrival;
-        validate();
     }
 
     public void validate() {

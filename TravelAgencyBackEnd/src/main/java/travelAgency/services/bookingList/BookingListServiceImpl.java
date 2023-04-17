@@ -35,11 +35,6 @@ public class BookingListServiceImpl implements BookingListService {
     }
 
     @Override
-    public int availableSeats(String flightNumber) {
-        return findFlight(flightNumber).getAvailableSeats(getAllReservations());
-    }
-
-    @Override
     public List<Reservation> getAllReservations() {
         return bookings.getAllBookings();
     }
