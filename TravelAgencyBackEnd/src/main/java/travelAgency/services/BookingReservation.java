@@ -27,7 +27,7 @@ public class BookingReservation {
 
     public Reservation book(BookingInformation bi) {
         flightAvailability.checkFlightPreBooking(bi);
-        final String ticketNumber = TicketNumberGenerator.generateTicketNumber();
+        final String ticketNumber = TicketNumberGenerator.getTicketNumberFormat();
 
         final Reservation reservation = bi.getReservation(ticketNumber);
 

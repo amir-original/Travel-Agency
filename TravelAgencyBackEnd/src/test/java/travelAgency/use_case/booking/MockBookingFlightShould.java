@@ -49,7 +49,7 @@ public class MockBookingFlightShould {
 
         inOrder.verify(flightAvailability).checkFlightPreBooking(bookingInformation);
 
-        final Reservation reservation = bookingInformation.getReservation(ticketNumberGenerator.generateTicketNumber());
+        final Reservation reservation = bookingInformation.getReservation(ticketNumberGenerator.getTicketNumberFormat());
 
         inOrder.verify(passengers).save(bookingInformation.passenger());
         inOrder.verify(bookingLists).book(reservation);
@@ -83,8 +83,7 @@ public class MockBookingFlightShould {
     @NotNull
     private TicketNumberGenerator createMockTicketGenerator() {
         TicketNumberGenerator ticketNumberGenerator = mock(TicketNumberGenerator.class);
-        when(ticketNumberGenerator.generateTicketNumber()).thenReturn("56472514");
-        //when(ticketNumberGenerator.getReservation(any())).thenReturn(createTicket());
+        when(ticketNumberGenerator.getTicketNumberFormat()).thenReturn("AA-7845-65874");
         return ticketNumberGenerator;
     }
 
