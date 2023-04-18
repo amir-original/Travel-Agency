@@ -16,7 +16,7 @@ public record Flight(@NotNull String flightNumber,
                      double price,
                      @NotNull FlightPlan plan) {
 
-    private static final int LEFT_SEATS = 0;
+    private static final int FULLY_BOOKED = 0;
     public static final int EMPTY_BOOKED = 0;
 
     public Flight(@NotNull String flightNumber, int totalCapacity, double price, @NotNull FlightPlan plan) {
@@ -48,7 +48,7 @@ public record Flight(@NotNull String flightNumber,
     }
 
     private boolean isSoldOutAllSeats(List<Reservation> reservations) {
-        return getAvailableSeats(reservations) == LEFT_SEATS;
+        return getAvailableSeats(reservations) == FULLY_BOOKED;
     }
 
     public int getAvailableSeats(List<Reservation> reservations) {
@@ -64,7 +64,7 @@ public record Flight(@NotNull String flightNumber,
     }
 
     private boolean isAvailableSeatsFor(List<Reservation> reservations, int newTravelers) {
-        return getAvailableSeatsAfterBooking(reservations, newTravelers) >= LEFT_SEATS;
+        return getAvailableSeatsAfterBooking(reservations, newTravelers) >= FULLY_BOOKED;
     }
 
     private int getAvailableSeatsAfterBooking(List<Reservation> reservations, int newTravelers) {

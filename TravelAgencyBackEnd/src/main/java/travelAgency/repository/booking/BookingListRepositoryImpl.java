@@ -19,6 +19,8 @@ import java.util.Optional;
 import static travelAgency.domain.flight.FlightBuilder.flight;
 import static travelAgency.domain.passenger.PassengerBuilder.passenger;
 import static travelAgency.repository.booking.BookingSQL.*;
+import static travelAgency.repository.flight.FlightSQL.buildFlight;
+import static travelAgency.repository.passenger.PassengerSQL.buildPassenger;
 
 public class BookingListRepositoryImpl implements BookingListRepository {
 
@@ -41,16 +43,9 @@ public class BookingListRepositoryImpl implements BookingListRepository {
         }
     }
 
-    private void fillFlightTicket(Reservation reservation, PreparedStatement query) throws SQLException {
-        query.setString(1, reservation.ticketNumber());
-        query.setString(2, reservation.flightNumber());
-        query.setString(3, reservation.passengerId());
-        query.setInt(4, reservation.travelers());
-    }
-
     @Override
-    public Optional<Reservation> findBooking(String tikcketNumber) {
-        return findBookingBy(tikcketNumber, FIND_RESERVATION_BY_TICKET_NUMBER);
+    public Optional<Reservation> findBooking(String ticketNumber) {
+        return findBookingBy(ticketNumber, FIND_RESERVATION_BY_TICKET_NUMBER);
     }
 
     @Override
@@ -100,45 +95,6 @@ public class BookingListRepositoryImpl implements BookingListRepository {
     @Override
     public void truncate() {
         db.truncate(TABLE_NAME);
-    }
-
-    private Reservation buildFlightTicket(ResultSet rs) throws SQLException {
-        final String ticket_number = rs.getString("ticket_number");
-
-        final BookingInformation bookingInformation =
-                new BookingInformation(buildFlight(rs),
-                        buildPassenger(rs),
-                        rs.getInt("number_of_tickets"));
-
-        return new Reservation(ticket_number, bookingInformation);
-    }
-
-    private Passenger buildPassenger(ResultSet rs) throws SQLException {
-        return passenger()
-                .withId(rs.getString("passenger_id"))
-                .firstName(rs.getString("first_name"))
-                .lastName(rs.getString("last_name"))
-                .withBirthday(rs.getDate("birthday").toLocalDate())
-                .ofCity(getCity(rs.getString("city")))
-                .withAddress(rs.getString("address"))
-                .withZipcode(rs.getString("zipcode"))
-                .withPhoneNumber(rs.getString("phone_number"))
-                .build();
-    }
-
-    private Flight buildFlight(ResultSet rs) throws SQLException {
-        return flight()
-                .withFlightNumber(rs.getString("flight_number"))
-                .from(getCity(rs.getString("from_city")))
-                .to(getCity(rs.getString("to_city")))
-                .withPrice(rs.getDouble("price"))
-                .departureAt(rs.getDate("departure").toLocalDate())
-                .arrivalAt(rs.getDate("arrival").toLocalDate())
-                .build();
-    }
-
-    private City getCity(String city) {
-        return City.valueOf(city);
     }
 
     private PreparedStatement createQuery(String query) throws SQLException {

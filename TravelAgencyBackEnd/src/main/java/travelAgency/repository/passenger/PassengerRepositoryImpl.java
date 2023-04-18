@@ -37,21 +37,6 @@ public class PassengerRepositoryImpl implements PassengerRepository {
         }
     }
 
-    private void fillPassengerField(Passenger passenger, PreparedStatement sql) throws SQLException {
-        sql.setString(1, passenger.id());
-        sql.setString(2, passenger.fName());
-        sql.setString(3, passenger.lName());
-        sql.setDate(4, convertToSQLDate(passenger.birthday()));
-        sql.setString(5, passenger.city().name());
-        sql.setString(6, passenger.address());
-        sql.setString(7, passenger.zipcode());
-        sql.setString(8, passenger.phoneNumber());
-    }
-
-    private Date convertToSQLDate(LocalDate localDate) {
-        return Date.valueOf(localDate);
-    }
-
     @Override
     public void save(List<Passenger> passengers) {
         passengers.forEach(this::save);
@@ -113,20 +98,6 @@ public class PassengerRepositoryImpl implements PassengerRepository {
             passengers.add(buildPassenger(rs));
         }
         return passengers;
-    }
-
-    private Passenger buildPassenger(ResultSet rs) throws SQLException {
-        return passenger()
-                .withId(rs.getString("passenger_id"))
-                .firstName(rs.getString("first_name"))
-                .lastName(rs.getString("last_name"))
-                .withBirthday(rs.getDate("birthday").toLocalDate())
-                .withZipcode(rs.getString("zipcode"))
-                .ofCity(City.valueOf(rs.getString("city")))
-                .withAddress(rs.getString("address"))
-                .withPhoneNumber(rs.getString("phone_number"))
-                .build();
-
     }
 
     public void truncate() {

@@ -4,14 +4,15 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.flight.Flight;
-import travelAgency.services.priceConverter.currencyApi.RialToDollarConverterApi;
+import travelAgency.services.priceConverter.CurrencyConverterService;
+import travelAgency.services.priceConverter.currencyApi.IRRToUSDConverter;
 import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.services.flights.FlightService;
 import travelAgency.services.flights.FlightServiceImpl;
 import travelAgency.services.priceConverter.CurrencyConverterServiceImpl;
-import travelAgency.services.priceConverter.currencyApi.CurrencyConverterApiService;
-import travelAgency.services.priceConverter.currencyApi.DollarToRialConverterApi;
+import travelAgency.services.priceConverter.currencyApi.ExchangeRateService;
+import travelAgency.services.priceConverter.currencyApi.USDToIRRConverter;
 
 import java.util.List;
 
@@ -28,14 +29,14 @@ public class SearchFlightEngineShould {
     private static final double ONE_DOLLAR_TO_RIAL = 42700D;
     private static final Double ONE_RIAL_TO_DOLLAR = 0.000024;
     private FlightService app;
-    private CurrencyConverterApiService dollarToRialConverter;
-    private CurrencyConverterApiService rialToDollarConverter;
+    private ExchangeRateService dollarToRialConverter;
+    private ExchangeRateService rialToDollarConverter;
 
     @BeforeEach
     void setUp() {
         app = new FlightServiceImpl(new FakeFlight(),new FakeBookingList());
-        dollarToRialConverter = getCurrencyConverter(DollarToRialConverterApi.class, ONE_DOLLAR_TO_RIAL);
-        rialToDollarConverter = getCurrencyConverter(RialToDollarConverterApi.class, ONE_RIAL_TO_DOLLAR);
+        dollarToRialConverter = getCurrencyConverter(USDToIRRConverter.class, ONE_DOLLAR_TO_RIAL);
+        rialToDollarConverter = getCurrencyConverter(IRRToUSDConverter.class, ONE_RIAL_TO_DOLLAR);
     }
 
     @Test
@@ -71,7 +72,7 @@ public class SearchFlightEngineShould {
     void converted_price_from_dollar_to_rial() {
         final List<Flight> flights = app.searchFlights(flightPlan().build());
 
-        final CurrencyConverterServiceImpl dollarConverter = new CurrencyConverterServiceImpl(dollarToRialConverter);
+        final CurrencyConverterService dollarConverter = new CurrencyConverterServiceImpl(dollarToRialConverter);
         final Flight flight = flight("0321");
 
         assertAll(
@@ -84,7 +85,7 @@ public class SearchFlightEngineShould {
     void converted_price_from_rial_to_dollar() {
         final List<Flight> flights = app.searchFlights(flightPlan().build());
 
-        final CurrencyConverterServiceImpl dollarConverter = new CurrencyConverterServiceImpl(rialToDollarConverter);
+        final CurrencyConverterService dollarConverter = new CurrencyConverterServiceImpl(rialToDollarConverter);
 
         final Flight flight = flight("0321");
         final double convertedPrice = flight.price() * ONE_RIAL_TO_DOLLAR;
@@ -96,10 +97,10 @@ public class SearchFlightEngineShould {
     }
 
     @NotNull
-    private CurrencyConverterApiService
-    getCurrencyConverter(Class<? extends CurrencyConverterApiService> classToMock, Double CurrencyAmount) {
-        final CurrencyConverterApiService mock = mock(classToMock);
-        when(mock.diffAmount()).thenReturn(CurrencyAmount);
+    private ExchangeRateService
+    getCurrencyConverter(Class<? extends ExchangeRateService> classToMock, Double currencyAmount) {
+        final ExchangeRateService mock = mock(classToMock);
+        when(mock.diffAmount()).thenReturn(currencyAmount);
         return mock;
     }
 }

@@ -39,16 +39,6 @@ public class FlightRepositoryImpl implements FlightRepository {
         }
     }
 
-    private void filledFlightFields(Flight flight, PreparedStatement query) throws SQLException {
-        query.setString(1, flight.flightNumber());
-        query.setString(2, flight.from().name());
-        query.setString(3, flight.to().name());
-        query.setDate(4, convertToSQLDate(flight.departure()));
-        query.setDate(5, convertToSQLDate(flight.arrival()));
-        query.setInt(6, flight.totalCapacity());
-        query.setDouble(7, flight.price());
-    }
-
     @Override
     public void deleteFlight(String flightNumber) {
         try (final PreparedStatement query = createQuery(DELETE_QUERY)) {
@@ -76,9 +66,5 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     private PreparedStatement createQuery(String s) throws SQLException {
         return connection.prepareStatement(s);
-    }
-
-    private Date convertToSQLDate(LocalDate localDate) {
-        return Date.valueOf(localDate);
     }
 }

@@ -1,15 +1,17 @@
 package travelAgency.repository.flight;
 
 import travelAgency.domain.flight.Flight;
-import travelAgency.domain.city.City;
 import travelAgency.repository.db.DbConnection;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+
 import static travelAgency.repository.flight.FlightSQL.*;
-import static travelAgency.domain.flight.FlightBuilder.flight;
 
 public class FindFlightRepository {
     private final Connection connection;
@@ -46,18 +48,6 @@ public class FindFlightRepository {
             e.printStackTrace();
         }
         return Optional.ofNullable(flight);
-    }
-
-    private Flight buildFlight(ResultSet resultSet) throws SQLException {
-        return flight()
-                .withFlightNumber(resultSet.getString("flight_number"))
-                .from(City.valueOf(resultSet.getString("from_city")))
-                .to(City.valueOf(resultSet.getString("to_city")))
-                .departureAt(resultSet.getDate("departure").toLocalDate())
-                .arrivalAt(resultSet.getDate("arrival").toLocalDate())
-                .withPrice(resultSet.getDouble("price"))
-                .withTotalCapacity(resultSet.getInt("total_capacity"))
-                .build();
     }
 
 

@@ -13,20 +13,19 @@ public class MySQLDbConnection implements DbConnection {
     private String user;
     private String pass;
     private Connection connection;
-    private String configFileName = "db-config";
 
     public MySQLDbConnection() {
-        loadConfig();
+        PropertiesReader propertiesReader = new PropertiesReader("db-config");
+        loadConfig(propertiesReader);
     }
 
-    public MySQLDbConnection(String host,String user,String pass) {
+    public MySQLDbConnection(String host, String user, String pass) {
         this.host = host;
         this.user = user;
         this.pass = pass;
     }
 
-    private void loadConfig() {
-        final PropertiesReader propertiesReader = new PropertiesReader(configFileName);
+    private void loadConfig(PropertiesReader propertiesReader) {
         host = propertiesReader.getProperty("host");
         user = propertiesReader.getProperty("username");
         pass = propertiesReader.getProperty("password");
