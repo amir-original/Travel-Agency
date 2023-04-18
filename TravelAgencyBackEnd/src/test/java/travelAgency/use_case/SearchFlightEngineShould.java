@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import travelAgency.domain.flight.Flight;
 import travelAgency.services.priceConverter.CurrencyConverterService;
 import travelAgency.services.priceConverter.currencyApi.IRRToUSDConverter;
+import travelAgency.services.priceConverter.exception.AmountNotNegativeException;
 import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.services.flights.FlightService;
@@ -34,7 +35,7 @@ public class SearchFlightEngineShould {
 
     @BeforeEach
     void setUp() {
-        app = new FlightServiceImpl(new FakeFlight(),new FakeBookingList());
+        app = new FlightServiceImpl(new FakeFlight(), new FakeBookingList());
         dollarToRialConverter = getCurrencyConverter(USDToIRRConverter.class, ONE_DOLLAR_TO_RIAL);
         rialToDollarConverter = getCurrencyConverter(IRRToUSDConverter.class, ONE_RIAL_TO_DOLLAR);
     }
@@ -72,7 +73,7 @@ public class SearchFlightEngineShould {
     void converted_price_from_dollar_to_rial() {
         final List<Flight> flights = app.searchFlights(flightPlan().build());
 
-        final CurrencyConverterService dollarConverter = new CurrencyConverterServiceImpl(dollarToRialConverter);
+        final CurrencyConverterService dollarConverter = getCurrencyConverterService(dollarToRialConverter);
         final Flight flight = flight("0321");
 
         assertAll(
@@ -85,7 +86,7 @@ public class SearchFlightEngineShould {
     void converted_price_from_rial_to_dollar() {
         final List<Flight> flights = app.searchFlights(flightPlan().build());
 
-        final CurrencyConverterService dollarConverter = new CurrencyConverterServiceImpl(rialToDollarConverter);
+        final CurrencyConverterService dollarConverter = getCurrencyConverterService(rialToDollarConverter);
 
         final Flight flight = flight("0321");
         final double convertedPrice = flight.price() * ONE_RIAL_TO_DOLLAR;
@@ -94,6 +95,19 @@ public class SearchFlightEngineShould {
                 () -> assertThat(flights).contains(flight),
                 () -> assertThat(flight.price(dollarConverter)).isEqualTo(convertedPrice)
         );
+    }
+
+    @Test
+    void throw_AmountNotNegativeException_when_converted_negative_amount() {
+        final CurrencyConverterService dollarConverter = getCurrencyConverterService(rialToDollarConverter);
+
+        assertThatExceptionOfType(AmountNotNegativeException.class)
+                .isThrownBy(() -> dollarConverter.convert(-500));
+    }
+
+    @NotNull
+    private CurrencyConverterService getCurrencyConverterService(ExchangeRateService rialToDollarConverter) {
+        return new CurrencyConverterServiceImpl(rialToDollarConverter);
     }
 
     @NotNull

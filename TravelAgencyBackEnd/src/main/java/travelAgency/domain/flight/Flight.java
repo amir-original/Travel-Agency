@@ -30,7 +30,11 @@ public record Flight(@NotNull String flightNumber,
     public void validate() {
         if (flightNumber.isBlank() || flightNumber.length() < 3)
             throw new FlightNumberException();
-        if (price <= EMPTY_BOOKED) throw new FlightPriceException();
+        if (isNegativePrice()) throw new FlightPriceException();
+    }
+
+    private boolean isNegativePrice() {
+        return price <= 0;
     }
 
     public void checkExistenceFlight(List<Flight> flights) {

@@ -20,4 +20,6 @@ public class ExchangeRatesShould {
 
         AssertionsForClassTypes.assertThat(rialToDollar.diffAmount()).isEqualTo(0.000024);
     }
+
+
 }

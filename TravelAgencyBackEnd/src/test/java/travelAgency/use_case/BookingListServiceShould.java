@@ -28,6 +28,7 @@ public class BookingListServiceShould {
     private static final String SARA = "Sara";
     private static final LocalDate SARA_BIRTHDAY = of(1999, 4, 5);
     private static final String EXIST_FLIGHT_NUMBER = "0321";
+    public static final String NOT_FOUND_TICKET_NUMBER = "78456871";
     private BookingListService app;
     private BookingReservation appService;
 
@@ -73,6 +74,12 @@ public class BookingListServiceShould {
                 () -> assertThatNoException().isThrownBy(() -> app.cancel(ticket.ticketNumber())),
                 () -> assertThat(app.getBookedSeats(EXIST_FLIGHT_NUMBER)).isEqualTo(bookingsAfterCancel)
                 );
+    }
+
+    @Test
+    void throw_ReservationNotFoundException_when_cancel_the_ticket_number_is_not_found() {
+        assertThatExceptionOfType(ReservationNotFoundException.class)
+                .isThrownBy(()-> app.cancel(NOT_FOUND_TICKET_NUMBER));
     }
 
     @Test
