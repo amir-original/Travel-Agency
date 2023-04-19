@@ -3,7 +3,6 @@ package travelAgency.use_case;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.ReservationNotFoundException;
-import travelAgency.repository.booking.BookingListRepositoryImpl;
 import travelAgency.services.bookingList.TicketNumberGenerator;
 import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.use_case.fake.FakeFlight;
@@ -12,7 +11,7 @@ import travelAgency.use_case.fake.FakeTicketNumberGenerator;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.bookingList.BookingListService;
 import travelAgency.services.bookingList.BookingListServiceImpl;
-import travelAgency.services.flights.FlightAvailabilityImpl;
+import travelAgency.services.flight.FlightAvailabilityImpl;
 
 import java.time.LocalDate;
 
@@ -91,8 +90,8 @@ public class BookingListServiceShould {
 
     private void insertMultipleBooking() {
         appService.book(bookingInformation().withTravelers(5).build());
-        appService.book(bookingInformation().withPassenger(passenger("se478")).withTravelers(1).build());
-        appService.book(bookingInformation().withPassenger(passenger("mes784")).withTravelers(3).build());
-        appService.book(bookingInformation().withPassenger(passenger("ew471")).withTravelers(4).build());
+        appService.book(bookingInformation().withPassenger(passenger("44")).withTravelers(1).build());
+        appService.book(bookingInformation().withPassenger(passenger("55")).withTravelers(3).build());
+        appService.book(bookingInformation().withPassenger(passenger("22")).withTravelers(4).build());
     }
 }

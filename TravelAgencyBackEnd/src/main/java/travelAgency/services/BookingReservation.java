@@ -1,12 +1,15 @@
 package travelAgency.services;
 
-import travelAgency.domain.booking.BookingInformation;
-import travelAgency.domain.booking.Reservation;
+import org.apache.commons.lang.RandomStringUtils;
+import travelAgency.domain.passenger.Passenger;
+import travelAgency.domain.reservation.BookingInformation;
+import travelAgency.domain.reservation.Reservation;
 import travelAgency.repository.booking.BookingListRepository;
 import travelAgency.repository.passenger.PassengerRepository;
 import travelAgency.services.bookingList.TicketNumberGenerator;
-import travelAgency.services.flights.FlightAvailability;
+import travelAgency.services.flight.FlightAvailability;
 
+// application service
 public class BookingReservation {
 
     private final BookingListRepository bookingLists;
@@ -28,10 +31,13 @@ public class BookingReservation {
     public Reservation book(BookingInformation bi) {
         flightAvailability.checkFlightPreBooking(bi);
         final String ticketNumber = TicketNumberGenerator.getTicketNumberFormat();
+        //final String passengerId = RandomStringUtils.randomNumeric(5);
 
         final Reservation reservation = bi.getReservation(ticketNumber);
 
-        passengers.save(bi.passenger());
+        final Passenger passenger = bi.passenger();
+
+        passengers.save(passenger);
         bookingLists.book(reservation);
         return reservation;
     }

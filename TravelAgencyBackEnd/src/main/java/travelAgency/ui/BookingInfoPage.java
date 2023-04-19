@@ -1,11 +1,12 @@
 package travelAgency.ui;
 
 import com.toedter.calendar.JDateChooser;
-import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
-import travelAgency.domain.booking.BookingInformation;
+import org.apache.commons.lang.RandomStringUtils;
+import travelAgency.domain.reservation.BookingInformation;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.domain.passenger.PassengerBuilder;
+import travelAgency.domain.reservation.Reservation;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.city.CityService;
 
@@ -140,8 +141,9 @@ public class BookingInfoPage extends JFrame {
     private void bookActionToBookButton(JButton bookButton) {
         bookButton.addActionListener(e -> {
             // TODO: add booking logic here
-            final Passenger passenger = PassengerBuilder.passenger()
-                    .withId("Bg-8748")
+            final Passenger passenger = PassengerBuilder
+                    .passenger()
+                    .withId(RandomStringUtils.randomNumeric(5))
                     .firstName(firstName.getText())
                     .lastName(lastName.getText())
                     .withPhoneNumber(phoneNumber.getText())
@@ -150,11 +152,19 @@ public class BookingInfoPage extends JFrame {
                     .ofCity(city.getText())
                     .withBirthday(birthdayPicker.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
                     .build();
+
             final BookingInformation bookingInformation = new BookingInformation(selectFlight, passenger,travelers);
 
-            bookingReservation.book(bookingInformation);
-            JOptionPane.showMessageDialog(this, "Booking successful!");
-            dispose(); // close frame after successful booking
+            final Reservation reservation = bookingReservation.book(bookingInformation);
+            try{
+                final ReservationResultDialog dialog = new ReservationResultDialog(reservation);
+                dialog.printTicket();
+                dialog.setVisible(true);
+                JOptionPane.showMessageDialog(this, "Booking successful!");
+                dispose(); // close frame after successful booking
+            }catch (Exception exception){
+                exception.printStackTrace();
+            }
         });
     }
 

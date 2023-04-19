@@ -3,7 +3,7 @@ package travelAgency.dao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.booking.Reservation;
+import travelAgency.domain.reservation.Reservation;
 import travelAgency.domain.flight.Flight;
 import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.repository.booking.BookingListRepository;

@@ -4,9 +4,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.*;
 import travelAgency.domain.flight.Flight;
+import travelAgency.domain.reservation.BookingInformation;
+import travelAgency.domain.reservation.Reservation;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.bookingList.TicketNumberGenerator;
-import travelAgency.services.flights.FlightAvailabilityImpl;
+import travelAgency.services.flight.FlightAvailabilityImpl;
 import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakePassenger;
@@ -40,7 +42,11 @@ public class BookingReservationShould {
 
     @Test
     void book_a_flight_without_throw_any_exception() {
-        assertThatNoException().isThrownBy(() -> app.book(bookingInformation().build()));
+        final BookingInformation bookingInformation = bookingInformation().build();
+        final Reservation reservation = app.book(bookingInformation);
+        System.out.println(reservation.getTicketInfo());
+
+        //assertThatNoException().isThrownBy(() -> app.book(bookingInformation));
     }
 
 
@@ -58,19 +64,19 @@ public class BookingReservationShould {
     }
 
     @Test
-    void throw_PastFlightScheduleException_when_book_flight_with_past_departure_and_arrival_date() {
-        LocalDate yesterday = LocalDate.now().minusDays(1);
+    void throw_PastFlightScheduleException_when_book_flight_with_past_departure_date() {
         assertThatExceptionOfType(PastFlightScheduleException.class)
-                .isThrownBy(() -> {
-                    final Flight flight = flight().departureAt(yesterday).build();
-                    app.book(bookingInformation().withFlight(flight).build());
-                });
+                .isThrownBy(() -> app.book(bookingInformation()
+                        .withFlight(flight("4784"))
+                        .build()));
+    }
 
+    @Test
+    void throw_PastFlightScheduleException_when_book_flight_with_past_arrival_date() {
         assertThatExceptionOfType(PastFlightScheduleException.class)
-                .isThrownBy(() -> {
-                    final Flight flight = flight().arrivalAt(yesterday).build();
-                    app.book(bookingInformation().withFlight(flight).build());
-                });
+                .isThrownBy(() -> app.book(bookingInformation()
+                        .withFlight(flight("5120"))
+                        .build()));
     }
 
     @Test
@@ -111,9 +117,9 @@ public class BookingReservationShould {
 
     private void insertTenBookingFlight() {
         app.book(bookingInformation().withTravelers(4).build());
-        app.book(bookingInformation().withPassenger(passenger("se478")).withTravelers(2).build());
-        app.book(bookingInformation().withPassenger(passenger("mes784")).withTravelers(1).build());
-        app.book(bookingInformation().withPassenger(passenger("ew471")).withTravelers(3).build());
+        app.book(bookingInformation().withPassenger(passenger("55")).withTravelers(2).build());
+        app.book(bookingInformation().withPassenger(passenger("44")).withTravelers(1).build());
+        app.book(bookingInformation().withPassenger(passenger("22")).withTravelers(3).build());
 
     }
 }

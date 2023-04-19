@@ -9,8 +9,8 @@ import travelAgency.services.priceConverter.currencyApi.IRRToUSDConverter;
 import travelAgency.services.priceConverter.exception.AmountNotNegativeException;
 import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.use_case.fake.FakeFlight;
-import travelAgency.services.flights.FlightService;
-import travelAgency.services.flights.FlightServiceImpl;
+import travelAgency.services.flight.FlightService;
+import travelAgency.services.flight.FlightServiceImpl;
 import travelAgency.services.priceConverter.CurrencyConverterServiceImpl;
 import travelAgency.services.priceConverter.currencyApi.ExchangeRateService;
 import travelAgency.services.priceConverter.currencyApi.USDToIRRConverter;
@@ -35,7 +35,7 @@ public class SearchFlightEngineShould {
 
     @BeforeEach
     void setUp() {
-        app = new FlightServiceImpl(new FakeFlight(), new FakeBookingList());
+        app = new FlightServiceImpl(new FakeFlight());
         dollarToRialConverter = getCurrencyConverter(USDToIRRConverter.class, ONE_DOLLAR_TO_RIAL);
         rialToDollarConverter = getCurrencyConverter(IRRToUSDConverter.class, ONE_RIAL_TO_DOLLAR);
     }

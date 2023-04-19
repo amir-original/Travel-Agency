@@ -45,7 +45,7 @@ public class FlightRepositoryShould {
     void delete_flight() {
         final Flight flight = insertSingleFlight();
 
-        api.deleteFlight(flight.flightNumber());
+        api.deleteFlight(flight);
 
         final Optional<Flight> fetchedFlight = api.findFlight(flight.flightNumber());
 
@@ -59,7 +59,7 @@ public class FlightRepositoryShould {
         final List<Flight> fetchedFlights = api.flights();
 
         assertThat(fetchedFlights).isNotEmpty();
-        assertThat(fetchedFlights.size()).isEqualTo(5);
+        assertThat(fetchedFlights.size()).isEqualTo(7);
     }
 
     @Test

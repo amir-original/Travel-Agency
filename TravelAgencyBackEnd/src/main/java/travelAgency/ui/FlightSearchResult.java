@@ -1,7 +1,7 @@
 package travelAgency.ui;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.booking.Reservation;
+import travelAgency.domain.reservation.Reservation;
 import travelAgency.domain.flight.Flight;
 import travelAgency.services.priceConverter.CurrencyConverterServiceImpl;
 import travelAgency.services.priceConverter.currencyApi.USDToIRRConverter;
@@ -73,7 +73,7 @@ public class FlightSearchResult extends JPanel {
         row[0] = flight.from();
         row[1] = flight.to();
         row[2] = flight.flightNumber();
-        row[3] = flight.getAvailableSeats(allReservations);
+        row[3] = 2; // TODO flight.getAvailableSeats(allReservations);
         initPrice(exchangeRate, row, flight);
         tableModel.addRow(row);
     }

@@ -1,4 +1,4 @@
-package travelAgency.services.flights;
+package travelAgency.services.flight;
 
 import travelAgency.domain.exceptions.FlightNotFoundException;
 import travelAgency.domain.flight.Flight;
@@ -11,11 +11,9 @@ import java.util.List;
 public class FlightServiceImpl implements FlightService {
 
     private final FlightRepository flights;
-    private final BookingListRepository bookings;
 
-    public FlightServiceImpl(FlightRepository flights,BookingListRepository bookingListRepository) {
+    public FlightServiceImpl(FlightRepository flights) {
         this.flights = flights;
-        bookings = bookingListRepository;
     }
 
     @Override
@@ -27,11 +25,6 @@ public class FlightServiceImpl implements FlightService {
     public Flight findFlight(String flightNumber) {
         return flights.findFlight(flightNumber)
                 .orElseThrow(FlightNotFoundException::new);
-    }
-
-    @Override
-    public int availableSeats(String flightNumber) {
-        return findFlight(flightNumber).getAvailableSeats(bookings.getAllBookings());
     }
 
 }

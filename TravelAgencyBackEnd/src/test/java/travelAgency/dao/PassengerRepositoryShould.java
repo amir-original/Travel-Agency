@@ -26,7 +26,7 @@ public class PassengerRepositoryShould {
 
     @Test
     void save_passenger_info_and_fetch_passenger_with_id() {
-        final Passenger passenger = fakePassenger.findPassengerById("se478").get();
+        final Passenger passenger = FakePassenger.passenger().withId("87").build();
 
         api.save(passenger);
 
@@ -41,12 +41,12 @@ public class PassengerRepositoryShould {
     void fetch_all_passengers() {
         insertMultiplePassengers();
 
-        assertThat(api.getPassengers().size()).isEqualTo(3);
+        assertThat(api.getPassengers().size()).isEqualTo(4);
     }
 
     @Test
     void throw_NotFoundAnyPassengerException_when_passenger_is_not_found() {
-        final Optional<Passenger> fetchedPassenger = api.findPassengerById("notFound");
+        final Optional<Passenger> fetchedPassenger = api.findPassengerById("00");
 
         assertThatExceptionOfType(PassengerNotFoundException.class)
                 .isThrownBy(() -> fetchedPassenger.orElseThrow(PassengerNotFoundException::new));

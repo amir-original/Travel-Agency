@@ -1,7 +1,7 @@
 package travelAgency.repository.booking;
 
-import travelAgency.domain.booking.BookingInformation;
-import travelAgency.domain.booking.Reservation;
+import travelAgency.domain.reservation.BookingInformation;
+import travelAgency.domain.reservation.Reservation;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -1,6 +1,6 @@
 package travelAgency.services.bookingList;
 
-import travelAgency.domain.booking.Reservation;
+import travelAgency.domain.reservation.Reservation;
 import travelAgency.domain.exceptions.ReservationNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.repository.booking.BookingListRepository;
@@ -34,7 +34,7 @@ public class BookingListServiceImpl implements BookingListService {
 
     @Override
     public int getBookedSeats(String flightNumber) {
-        return findFlight(flightNumber).getBookedSeats(getAllReservations());
+        return findReservation(flightNumber).getBookedSeats(getAllReservations());
     }
 
     @Override
@@ -42,11 +42,9 @@ public class BookingListServiceImpl implements BookingListService {
         return bookings.getAllBookings();
     }
 
-    public Flight findFlight(String flightNumber) {
-        return bookings
-                .findBookingByFlightNumber(flightNumber)
-                .orElseThrow(ReservationNotFoundException::new)
-                .flight();
+    public Reservation findReservation(String flightNumber) {
+        return bookings.findBookingByFlightNumber(flightNumber)
+                .orElseThrow(ReservationNotFoundException::new);
     }
 
 }

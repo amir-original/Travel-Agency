@@ -16,9 +16,9 @@ import travelAgency.services.city.CityService;
 import travelAgency.services.city.CityServiceImpl;
 import travelAgency.services.bookingList.BookingListService;
 import travelAgency.services.bookingList.BookingListServiceImpl;
-import travelAgency.services.flights.FlightAvailabilityImpl;
-import travelAgency.services.flights.FlightService;
-import travelAgency.services.flights.FlightServiceImpl;
+import travelAgency.services.flight.FlightAvailabilityImpl;
+import travelAgency.services.flight.FlightService;
+import travelAgency.services.flight.FlightServiceImpl;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -44,12 +44,12 @@ public class App {
         final BookingListRepository bookings = new BookingListRepositoryImpl(db);
         final FlightRepository flights = new FlightRepositoryImpl(db);
 
-      // insertFlights(flights);
+       //insertFlights(flights);
 
         initBookingReservation(db, bookings, flights);
 
         BookingListService bookingListService = new BookingListServiceImpl(bookings);
-        FlightService flightService = new FlightServiceImpl(flights,bookings);
+        FlightService flightService = new FlightServiceImpl(flights);
         final HomePage homePage = new HomePage(cityService,bookingListService, flightService, bookingReservation);
     }
 
@@ -61,8 +61,8 @@ public class App {
                 .withPrice(1000)
                 .from(TEHRAN)
                 .to(NAJAF)
-                .departureAt(LocalDate.of(2023,4,18))
-                .arrivalAt(LocalDate.of(2023,4,21)).build());
+                .departureAt(LocalDate.of(2023,5,20))
+                .arrivalAt(LocalDate.of(2023,5,30)).build());
 
         flights.addFlights(list);
     }

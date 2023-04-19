@@ -20,12 +20,16 @@ public class FakeFlight implements FlightRepository {
     private final List<Flight> flights;
 
     {
+        final LocalDate yesterday = LocalDate.now().minusDays(1);
+
         final List<Flight> list = of(
                 flight().withFlightNumber("8054").withPrice(450).build(),
                 flight().withFlightNumber("4256").withPrice(560).build(),
                 flight().withFlightNumber("0214").withPrice(850).build(),
                 flight().withFlightNumber("0321").withPrice(145).build(),
-                flight().withFlightNumber("1456").withPrice(544).build());
+                flight().withFlightNumber("1456").withPrice(544).build(),
+                flight().withFlightNumber("4784").withPrice(20).departureAt(yesterday).build(),
+                flight().withFlightNumber("5120").withPrice(14).arrivalAt(yesterday).build());
         flights = new LinkedList<>(list);
     }
 
@@ -40,16 +44,18 @@ public class FakeFlight implements FlightRepository {
     }
 
     @Override
-    public void deleteFlight(String flightNumber) {
+    public void deleteFlight(Flight flight) {
         flights.stream()
-                .filter(flight -> flight.matches(flightNumber))
+                .filter(f -> f.match(flight))
                 .findFirst()
                 .ifPresent(flights::remove);
     }
 
     @Override
     public Optional<Flight> findFlight(String flightNumber) {
-        return flights.stream().filter(f -> f.matches(flightNumber)).findFirst();
+        return flights.stream()
+                .filter(f -> f.hasSameFlightNumber(flightNumber))
+                .findFirst();
     }
 
 
@@ -78,10 +84,6 @@ public class FakeFlight implements FlightRepository {
     @Override
     public void truncate() {
         flights.clear();
-    }
-
-    public void insertMultipleFlights(){
-        addFlights(flights);
     }
 
 }

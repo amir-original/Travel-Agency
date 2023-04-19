@@ -1,6 +1,6 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.domain.booking.Reservation;
+import travelAgency.domain.reservation.Reservation;
 import travelAgency.domain.exceptions.ReservationNotFoundException;
 import travelAgency.repository.booking.BookingListRepository;
 

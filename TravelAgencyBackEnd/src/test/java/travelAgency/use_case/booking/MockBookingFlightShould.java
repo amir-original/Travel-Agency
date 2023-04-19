@@ -4,14 +4,14 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
-import travelAgency.domain.booking.BookingInformation;
-import travelAgency.domain.booking.Reservation;
+import travelAgency.domain.reservation.BookingInformation;
+import travelAgency.domain.reservation.Reservation;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.repository.booking.BookingListRepository;
 import travelAgency.repository.passenger.PassengerRepository;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.bookingList.TicketNumberGenerator;
-import travelAgency.services.flights.FlightAvailabilityImpl;
+import travelAgency.services.flight.FlightAvailabilityImpl;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;

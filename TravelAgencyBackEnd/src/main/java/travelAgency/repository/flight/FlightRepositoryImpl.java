@@ -4,7 +4,6 @@ import travelAgency.domain.flight.Flight;
 import travelAgency.repository.db.DbConnection;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,9 +39,9 @@ public class FlightRepositoryImpl implements FlightRepository {
     }
 
     @Override
-    public void deleteFlight(String flightNumber) {
+    public void deleteFlight(Flight flight) {
         try (final PreparedStatement query = createQuery(DELETE_QUERY)) {
-            query.setString(1, flightNumber);
+            query.setString(1, flight.flightNumber());
             query.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

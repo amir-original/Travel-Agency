@@ -1,16 +1,13 @@
 package travelAgency.repository.passenger;
 
 import travelAgency.domain.passenger.Passenger;
-import travelAgency.domain.city.City;
 import travelAgency.repository.db.DbConnection;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import static travelAgency.domain.passenger.PassengerBuilder.passenger;
 import static travelAgency.repository.passenger.PassengerSQL.*;
 
 public class PassengerRepositoryImpl implements PassengerRepository {

@@ -1,6 +1,6 @@
 package travelAgency.services.bookingList;
 
-import travelAgency.domain.booking.Reservation;
+import travelAgency.domain.reservation.Reservation;
 import travelAgency.domain.exceptions.ReservationNotFoundException;
 
 import java.time.LocalDate;

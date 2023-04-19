@@ -3,11 +3,11 @@ package travelAgency.use_case.booking;
 import org.assertj.core.api.ThrowableAssertAlternative;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.booking.Reservation;
+import travelAgency.domain.reservation.Reservation;
 import travelAgency.domain.exceptions.*;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.bookingList.TicketNumberGenerator;
-import travelAgency.services.flights.FlightAvailabilityImpl;
+import travelAgency.services.flight.FlightAvailabilityImpl;
 import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakePassenger;
@@ -42,8 +42,8 @@ public class BookingReservationPassengerInfoShould {
     }
 
     @Test
-    void throw_NumberOfTravelersException_when_travelers_are_less_than_or_equal_to_zero() {
-        assertThatExceptionOfType(NumberOfTravelersException.class)
+    void throw_InvalidNumberOfTicketsException_when_travelers_are_less_than_or_equal_to_zero() {
+        assertThatExceptionOfType(InvalidNumberOfTicketsException.class)
                 .isThrownBy(() -> app.book(bookingInformation().withTravelers(0).build()));
     }
 

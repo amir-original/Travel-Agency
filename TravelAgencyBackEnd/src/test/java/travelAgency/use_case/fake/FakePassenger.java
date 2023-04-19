@@ -20,9 +20,11 @@ public class FakePassenger implements PassengerRepository {
     {
         final PassengerBuilder passenger = FakePassenger.passenger();
         final List<Passenger> passengerList = List.of(
-                passenger.withId("se478").firstName("ali").lastName("bahrami").build(),
-                passenger.withId("mes784").firstName("mona").lastName("jalili").build(),
-                passenger.withId("ew471").firstName("amir").lastName("amiri").ofCity(RASHT.name()).build());
+                passenger.withId("44").firstName("ali").lastName("bahrami").build(),
+                passenger.withId("22").firstName("mona").lastName("jalili").build(),
+                passenger.withId("12").firstName("amir").lastName("amiri").ofCity(RASHT.name()).build(),
+                passenger.withId("55").build()
+        );
         passengers = new LinkedList<>(passengerList);
     }
 
@@ -55,7 +57,7 @@ public class FakePassenger implements PassengerRepository {
 
     public static PassengerBuilder passenger() {
         return PassengerBuilder.passenger()
-                .withId("sa78478")
+                .withId("55")
                 .firstName("Sara")
                 .lastName("Baiati")
                 .withBirthday(of(1999, 4, 5))
@@ -68,6 +70,7 @@ public class FakePassenger implements PassengerRepository {
     public static Passenger passenger(String passengerId) {
         final FakePassenger fakePassenger = new FakePassenger();
 
-        return fakePassenger.findPassengerById(passengerId).orElseThrow(PassengerNotFoundException::new);
+        return fakePassenger.findPassengerById(passengerId)
+                .orElseThrow(PassengerNotFoundException::new);
     }
 }

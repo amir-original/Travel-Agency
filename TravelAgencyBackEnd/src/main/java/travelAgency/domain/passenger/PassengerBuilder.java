@@ -1,7 +1,5 @@
 package travelAgency.domain.passenger;
 
-import travelAgency.domain.city.City;
-
 import java.time.LocalDate;
 
 public class PassengerBuilder {

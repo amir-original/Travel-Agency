@@ -3,7 +3,7 @@ package travelAgency.ui;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.city.CityService;
 import travelAgency.services.bookingList.BookingListService;
-import travelAgency.services.flights.FlightService;
+import travelAgency.services.flight.FlightService;
 
 import javax.swing.*;
 import java.awt.*;

@@ -11,7 +11,7 @@ public interface FlightRepository {
 
     void addFlights(List<Flight> flights);
 
-    void deleteFlight(String serialNumber);
+    void deleteFlight(Flight flight);
 
     Optional<Flight> findFlight(String flightNumber);
 

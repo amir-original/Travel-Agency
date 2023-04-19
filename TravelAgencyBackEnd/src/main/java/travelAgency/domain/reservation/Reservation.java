@@ -1,4 +1,4 @@
-package travelAgency.domain.booking;
+package travelAgency.domain.reservation;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.exceptions.FlightTicketNumberException;
@@ -6,6 +6,9 @@ import travelAgency.domain.flight.Flight;
 import travelAgency.domain.passenger.Passenger;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import static java.lang.String.format;
 
 public record Reservation(@NotNull String ticketNumber,
                           @NotNull BookingInformation bookingInformation) {
@@ -16,7 +19,7 @@ public record Reservation(@NotNull String ticketNumber,
         validate();
     }
 
-    public void validate() {
+    private void validate() {
         if (ticketNumber.isBlank()) throw new FlightTicketNumberException();
     }
 
@@ -30,6 +33,10 @@ public record Reservation(@NotNull String ticketNumber,
 
     public boolean isEqualTicketNumber(String ticketNumber) {
         return this.ticketNumber.equals(ticketNumber);
+    }
+
+    public int getBookedSeats(List<Reservation> reservations) {
+        return bookingInformation.getBookedSeats(reservations);
     }
 
     public Flight flight() {
@@ -50,5 +57,21 @@ public record Reservation(@NotNull String ticketNumber,
 
     public Passenger passenger() {
         return bookingInformation.passenger();
+    }
+
+    public String getTicketInfo() {
+        return format(""" 
+                        Passenger Name: %s               Flight Number: %s           Ticket Number: %s  
+                                From : %s  📍 ------------------------------------------- ✈  To: %s
+                        Departure: %s                    Arrival: %s                 Price: %s     
+                        """,
+                passenger().fullName(),
+                flightNumber(),
+                ticketNumber,
+                flight().from(),
+                flight().to(),
+                flight().departure(),
+                flight().arrival(),
+                flight().price());
     }
 }

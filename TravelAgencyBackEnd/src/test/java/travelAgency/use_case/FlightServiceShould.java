@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.FlightNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
-import travelAgency.services.flights.FlightService;
-import travelAgency.services.flights.FlightServiceImpl;
+import travelAgency.services.flight.FlightService;
+import travelAgency.services.flight.FlightServiceImpl;
 import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.use_case.fake.FakeFlight;
 
@@ -27,7 +27,7 @@ public class FlightServiceShould {
 
     @BeforeEach
     void setUp() {
-        app = new FlightServiceImpl(new FakeFlight(),new FakeBookingList());
+        app = new FlightServiceImpl(new FakeFlight());
     }
 
     @Test
@@ -57,15 +57,5 @@ public class FlightServiceShould {
     void throw_FlightNotFoundException_when_find_flight_with_wrong_flight_number() {
         assertThatExceptionOfType(FlightNotFoundException.class)
                 .isThrownBy(() -> app.findFlight(NOT_EXIST_FLIGHT_NUMBER));
-    }
-
-    @Test
-    void return_the_total_capacity_of_the_flight_when_6_seats_on_the_flight_have_been_booked() {
-        assertThat(app.availableSeats("0321")).isEqualTo(34);
-    }
-
-    @Test
-    void return_total_capacity_when_there_is_not_any_reservation_for_flight() {
-        assertThat(app.availableSeats("8054")).isEqualTo(40);
     }
 }

@@ -1,6 +1,6 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.domain.booking.BookingInformation;
+import travelAgency.domain.reservation.BookingInformation;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.passenger.Passenger;
 
