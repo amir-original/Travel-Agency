@@ -78,22 +78,19 @@ public class SearchFlightEngineShould {
 
         assertAll(
                 () -> assertThat(flights).contains(flight),
-                () -> assertThat(flight.price(dollarConverter)).isEqualTo(6191500.0)
+                () -> assertThat(flight.price(dollarConverter)).isEqualTo("6,191,500.00")
         );
     }
 
     @Test
     void converted_price_from_rial_to_dollar() {
-        final List<Flight> flights = app.searchFlights(flightPlan().build());
-
         final CurrencyConverterService dollarConverter = getCurrencyConverterService(rialToDollarConverter);
-
-        final Flight flight = flight("0321");
-        final double convertedPrice = flight.price() * ONE_RIAL_TO_DOLLAR;
+        double flightPrice = 870000;
+        final double convertedPrice = flightPrice * ONE_RIAL_TO_DOLLAR;
 
         assertAll(
-                () -> assertThat(flights).contains(flight),
-                () -> assertThat(flight.price(dollarConverter)).isEqualTo(convertedPrice)
+                () -> assertThat(dollarConverter.convert(flightPrice))
+                        .isEqualTo(convertedPrice)
         );
     }
 

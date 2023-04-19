@@ -1,15 +1,42 @@
 package travelAgency.ui;
 
+import com.toedter.calendar.JDateChooser;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
+import travelAgency.domain.booking.BookingInformation;
+import travelAgency.domain.flight.Flight;
+import travelAgency.domain.passenger.Passenger;
+import travelAgency.domain.passenger.PassengerBuilder;
+import travelAgency.services.BookingReservation;
+import travelAgency.services.city.CityService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.ZoneId;
 
 public class BookingInfoPage extends JFrame {
 
-    private UiComponents ui;
 
-    public void BookingInfoPage() {
+    private final Flight selectFlight;
+    private final BookingReservation bookingReservation;
+    private final CityService cityService;
+    private final int travelers;
+    private UiComponents ui;
+    private JTextField firstName;
+    private JTextField lastName;
+    private JDateChooser birthdayPicker;
+    private JTextField phoneNumber;
+    private JTextField postalCode;
+    private JTextField address;
+    private JTextField city;
+
+    public BookingInfoPage(Flight flight,
+                           BookingReservation bookingReservation,
+                           CityService cityService,
+                           int travelers) {
+        selectFlight = flight;
+        this.bookingReservation = bookingReservation;
+        this.cityService = cityService;
+        this.travelers = travelers;
         setupPage();
 
         createComponentsAndAddToPage();
@@ -55,44 +82,45 @@ public class BookingInfoPage extends JFrame {
     }
 
     private void createFirstNameField(JPanel inputPanel) {
-        createField(inputPanel,"First Name:");
+        firstName = createField(inputPanel, "First Name:");
     }
 
     private void createLastNameField(JPanel inputPanel) {
-        createField(inputPanel, "Last Name:");
+        lastName = createField(inputPanel, "Last Name:");
     }
 
     private void createBirthdayField(JPanel inputPanel) {
         JLabel birthdayLabel = ui.label("Date of Birth:");
-        JDatePickerImpl datePicker = ui.datePicker();
+        birthdayPicker = ui.dateChooser(150,30);
         inputPanel.add(birthdayLabel);
-        inputPanel.add(datePicker);
+        inputPanel.add(birthdayPicker);
         inputPanel.add(new JLabel());
     }
 
     private void createPhoneNumberField(JPanel inputPanel) {
-        createField(inputPanel, "Phone Number:");
+        phoneNumber = createField(inputPanel, "Phone Number:");
     }
 
     private void createPostalCodeField(JPanel inputPanel) {
-        createField(inputPanel, "Postal Code:");
+        postalCode = createField(inputPanel, "Postal Code:");
     }
 
     private void createAddressField(JPanel inputPanel) {
-        createField(inputPanel, "Address:");
+        address = createField(inputPanel, "Address:");
     }
 
     private void createCityField(JPanel inputPanel) {
-        createField(inputPanel, "City:");
+        city = createField(inputPanel, "City:");
     }
 
-    private void createField(JPanel inputPanel, String label) {
+    private JTextField createField(JPanel inputPanel, String label) {
         JLabel phoneLabel = ui.label(label);
-        JTextField phoneField = ui.textInput(10);
+        JTextField textInput = ui.textInput(10);
 
         inputPanel.add(phoneLabel);
-        inputPanel.add(phoneField);
+        inputPanel.add(textInput);
         inputPanel.add(new JLabel());
+        return  textInput;
     }
 
     private void createButtons() {
@@ -112,6 +140,19 @@ public class BookingInfoPage extends JFrame {
     private void bookActionToBookButton(JButton bookButton) {
         bookButton.addActionListener(e -> {
             // TODO: add booking logic here
+            final Passenger passenger = PassengerBuilder.passenger()
+                    .withId("Bg-8748")
+                    .firstName(firstName.getText())
+                    .lastName(lastName.getText())
+                    .withPhoneNumber(phoneNumber.getText())
+                    .withAddress(address.getText())
+                    .withZipcode(postalCode.getText())
+                    .ofCity(city.getText())
+                    .withBirthday(birthdayPicker.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+                    .build();
+            final BookingInformation bookingInformation = new BookingInformation(selectFlight, passenger,travelers);
+
+            bookingReservation.book(bookingInformation);
             JOptionPane.showMessageDialog(this, "Booking successful!");
             dispose(); // close frame after successful booking
         });
@@ -128,11 +169,6 @@ public class BookingInfoPage extends JFrame {
            // new BookingFlightPage();
             dispose(); // close current frame
         });
-    }
-
-    public static void main(String[] args) {
-        final BookingInfoPage bookingInfoPage = new BookingInfoPage();
-        bookingInfoPage.BookingInfoPage();
     }
 }
 

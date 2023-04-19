@@ -1,20 +1,20 @@
 package travelAgency.domain.passenger;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.city.City;
 import travelAgency.domain.exceptions.*;
 
 import java.time.LocalDate;
+import java.util.regex.Pattern;
 
 public record Passenger(@NotNull String id, @NotNull String fName, @NotNull String lName,
-                        @NotNull LocalDate birthday, @NotNull City city, @NotNull String address,
+                        @NotNull LocalDate birthday, @NotNull String city, @NotNull String address,
                         @NotNull String zipcode, @NotNull String phoneNumber) {
 
     public Passenger(@NotNull String id,
                      @NotNull String fName,
                      @NotNull String lName,
                      @NotNull LocalDate birthday,
-                     @NotNull City city,
+                     @NotNull String city,
                      @NotNull String address,
                      @NotNull String zipcode,
                      @NotNull String phoneNumber) {
@@ -26,10 +26,10 @@ public record Passenger(@NotNull String id, @NotNull String fName, @NotNull Stri
         this.address = address;
         this.zipcode = zipcode;
         this.phoneNumber = phoneNumber;
-        validate();
+        validatePassengerInformation();
     }
 
-    public void validate() {
+    public void validatePassengerInformation() {
         if (isNameBlank(fName,lName))
             throw new PassengerNameException();
         if (zipcode.isBlank())
@@ -38,26 +38,16 @@ public record Passenger(@NotNull String id, @NotNull String fName, @NotNull Stri
             throw new PassengerAddressException();
         if (phoneNumber.isBlank())
             throw new PhoneNumberNotEmptyException();
-        if (phoneNumber.length() != 12)
-            throw new PhoneNumberLengthException();
+        if (isNotValidPhoneNumberFormat())
+            throw new InvalidPhoneNumberException();
+    }
+
+    private boolean isNotValidPhoneNumberFormat() {
+        return !Pattern.matches("^((\\+98)|(0)|(98)9)\\d{9}$",phoneNumber);
     }
 
     private boolean isNameBlank(String fName,String lName) {
         return fName.isBlank() || lName.isBlank();
-    }
-
-    @Override
-    public String toString() {
-        return "Passenger{" +
-                "passengerId='" + id + '\'' +
-                ", fName='" + fName + '\'' +
-                ", lName='" + lName + '\'' +
-                ", birthday=" + birthday +
-                ", city=" + city +
-                ", withAddress='" + address + '\'' +
-                ", zipcode='" + zipcode + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
     }
 
     public boolean canMatchWith(String passengerFirstName, LocalDate PassengerBirthday) {

@@ -18,7 +18,7 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
         return amount * rateService.diffAmount();
     }
 
-    private void check(double amount){
+    private void check(double amount) {
         if (isNegative(amount)) throw new AmountNotNegativeException();
     }
 

@@ -38,7 +38,7 @@ public class PassengerSQL {
                 .lastName(rs.getString("last_name"))
                 .withBirthday(rs.getDate("birthday").toLocalDate())
                 .withZipcode(rs.getString("zipcode"))
-                .ofCity(getCity(rs.getString("city")))
+                .ofCity(rs.getString("city"))
                 .withAddress(rs.getString("address"))
                 .withPhoneNumber(rs.getString("phone_number"))
                 .build();
@@ -50,7 +50,7 @@ public class PassengerSQL {
         sql.setString(2, passenger.fName());
         sql.setString(3, passenger.lName());
         sql.setDate(4, convertToSQLDate(passenger.birthday()));
-        sql.setString(5, passenger.city().name());
+        sql.setString(5, passenger.city());
         sql.setString(6, passenger.address());
         sql.setString(7, passenger.zipcode());
         sql.setString(8, passenger.phoneNumber());

@@ -146,10 +146,10 @@ public class BookingReservationPassengerInfoShould {
     }
 
     @Test
-    void throw_PhoneNumberLengthException_when_phone_number_is_invalid_format() {
+    void throw_InvalidPhoneNumberException_when_phone_number_is_invalid_format() {
         assertAll(
-                () -> assertThat(PhoneNumberLengthException.class,"09124568"),
-                () -> assertThat(PhoneNumberLengthException.class,"0911145235675")
+                () -> assertThat(InvalidPhoneNumberException.class,"09124568"),
+                () -> assertThat(InvalidPhoneNumberException.class,"0911145235675")
         );
     }
 

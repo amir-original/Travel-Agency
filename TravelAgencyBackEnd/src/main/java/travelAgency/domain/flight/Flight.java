@@ -6,17 +6,15 @@ import travelAgency.domain.city.City;
 import travelAgency.domain.exceptions.*;
 import travelAgency.services.priceConverter.CurrencyConverterService;
 
-import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 public record Flight(@NotNull String flightNumber,
                      int totalCapacity,
                      double price,
                      @NotNull FlightPlan plan) {
 
-    private static final int FULLY_BOOKED = 0;
+    private static final int NO_AVAILABLE_SEATS = -1;
     public static final int EMPTY_BOOKED = 0;
 
     public Flight(@NotNull String flightNumber, int totalCapacity, double price, @NotNull FlightPlan plan) {
@@ -52,7 +50,7 @@ public record Flight(@NotNull String flightNumber,
     }
 
     private boolean isSoldOutAllSeats(List<Reservation> reservations) {
-        return getAvailableSeats(reservations) == FULLY_BOOKED;
+        return getAvailableSeats(reservations) == NO_AVAILABLE_SEATS;
     }
 
     public int getAvailableSeats(List<Reservation> reservations) {
@@ -68,7 +66,7 @@ public record Flight(@NotNull String flightNumber,
     }
 
     private boolean isAvailableSeatsFor(List<Reservation> reservations, int newTravelers) {
-        return getAvailableSeatsAfterBooking(reservations, newTravelers) >= FULLY_BOOKED;
+        return getAvailableSeatsAfterBooking(reservations, newTravelers) >= NO_AVAILABLE_SEATS;
     }
 
     private int getAvailableSeatsAfterBooking(List<Reservation> reservations, int newTravelers) {
@@ -91,8 +89,12 @@ public record Flight(@NotNull String flightNumber,
         plan.validateSchedule();
     }
 
-    public double price(CurrencyConverterService currencyConverter) {
-        return currencyConverter.convert(price);
+    public String price(CurrencyConverterService currencyConverter) {
+        return formatPrice(currencyConverter.convert(price));
+    }
+
+    private String formatPrice(double price) {
+        return String.format("%,.2f", price);
     }
 
     public City to() {
@@ -109,46 +111,5 @@ public record Flight(@NotNull String flightNumber,
 
     public LocalDate arrival() {
         return plan.arrival();
-    }
-
-    public String getFlightInfo(List<Reservation> reservations) {
-        return String.format("""
-                        Flight:
-                           Flight Number: %s
-                           From: %s
-                           To: %s
-                           Price: %s Rial
-                           Available Seats: %s
-                           select flight
-                        """,
-                flightNumber(),
-                from(),
-                to(),
-                NumberFormat.getInstance().format(price()),
-                getAvailableSeats(reservations));
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Flight flight = (Flight) o;
-        return Double.compare(flight.price, price) == EMPTY_BOOKED &&
-                Objects.equals(flightNumber, flight.flightNumber) &&
-                Objects.equals(plan, flight.plan);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(flightNumber, price, plan);
-    }
-
-    @Override
-    public String toString() {
-        return "Flight{" +
-                "name='" + flightNumber + '\'' +
-                ", price=" + price +
-                ", spec=" + plan +
-                '}';
     }
 }

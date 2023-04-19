@@ -39,7 +39,7 @@ public class FlightSQL {
                 .to(City.valueOf(resultSet.getString("to_city")))
                 .departureAt(resultSet.getDate("departure").toLocalDate())
                 .arrivalAt(resultSet.getDate("arrival").toLocalDate())
-                .withPrice(resultSet.getDouble("price"))
+                .withPrice(resultSet.getLong("price"))
                 .withTotalCapacity(resultSet.getInt("total_capacity"))
                 .build();
     }

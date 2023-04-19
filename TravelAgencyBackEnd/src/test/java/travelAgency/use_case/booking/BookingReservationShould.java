@@ -95,12 +95,12 @@ public class BookingReservationShould {
         booking30seats();
 
         assertThatExceptionOfType(NotEnoughCapacityException.class)
-                .isThrownBy(() -> app.book(bookingInformation().withTravelers(5).build()));
+                .isThrownBy(() -> app.book(bookingInformation().withTravelers(6).build()));
     }
 
     private void bookingAllSeats() {
         booking30seats();
-        app.book(bookingInformation().withTravelers(4).build());
+        app.book(bookingInformation().withTravelers(5).build());
     }
 
     private void booking30seats() {

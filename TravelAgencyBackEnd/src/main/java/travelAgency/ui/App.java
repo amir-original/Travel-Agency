@@ -44,7 +44,7 @@ public class App {
         final BookingListRepository bookings = new BookingListRepositoryImpl(db);
         final FlightRepository flights = new FlightRepositoryImpl(db);
 
-       //insertFlights(flights);
+      // insertFlights(flights);
 
         initBookingReservation(db, bookings, flights);
 

@@ -55,6 +55,7 @@ public class HomePage extends JFrame {
         setSize(700, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+        setResizable(false);
     }
 
     private void createWelcomeLabel() {

@@ -22,7 +22,7 @@ public class FakePassenger implements PassengerRepository {
         final List<Passenger> passengerList = List.of(
                 passenger.withId("se478").firstName("ali").lastName("bahrami").build(),
                 passenger.withId("mes784").firstName("mona").lastName("jalili").build(),
-                passenger.withId("ew471").firstName("amir").lastName("amiri").ofCity(RASHT).build());
+                passenger.withId("ew471").firstName("amir").lastName("amiri").ofCity(RASHT.name()).build());
         passengers = new LinkedList<>(passengerList);
     }
 
@@ -59,7 +59,7 @@ public class FakePassenger implements PassengerRepository {
                 .firstName("Sara")
                 .lastName("Baiati")
                 .withBirthday(of(1999, 4, 5))
-                .ofCity(TEHRAN)
+                .ofCity(TEHRAN.name())
                 .withAddress("Iran,TEHRAN")
                 .withZipcode("1145789")
                 .withPhoneNumber("989907994339");

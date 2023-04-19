@@ -10,7 +10,7 @@ public class PassengerBuilder {
     private String fName;
     private String lName ;
     private LocalDate birthday;
-    private City city;
+    private String city;
     private String address;
     private String zipcode ;
     private String phoneNumber;
@@ -44,7 +44,7 @@ public class PassengerBuilder {
         return this;
     }
 
-    public PassengerBuilder ofCity(City city) {
+    public PassengerBuilder ofCity(String city) {
         this.city = city;
         return this;
     }
