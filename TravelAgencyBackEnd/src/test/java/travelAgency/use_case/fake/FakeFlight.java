@@ -1,9 +1,11 @@
 package travelAgency.use_case.fake;
 
 import travelAgency.domain.exceptions.FlightNotFoundException;
+import travelAgency.domain.flight.Currency;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightBuilder;
-import travelAgency.repository.flight.FlightRepository;
+import travelAgency.dao.database.flight.FlightRepository;
+import travelAgency.domain.flight.Money;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -13,6 +15,7 @@ import java.util.Optional;
 import static java.util.List.of;
 import static travelAgency.domain.city.City.PARIS;
 import static travelAgency.domain.city.City.TEHRAN;
+import static travelAgency.domain.flight.Currency.USD;
 
 
 public class FakeFlight implements FlightRepository {
@@ -23,13 +26,13 @@ public class FakeFlight implements FlightRepository {
         final LocalDate yesterday = LocalDate.now().minusDays(1);
 
         final List<Flight> list = of(
-                flight().withFlightNumber("8054").withPrice(450).build(),
-                flight().withFlightNumber("4256").withPrice(560).build(),
-                flight().withFlightNumber("0214").withPrice(850).build(),
-                flight().withFlightNumber("0321").withPrice(145).build(),
-                flight().withFlightNumber("1456").withPrice(544).build(),
-                flight().withFlightNumber("4784").withPrice(20).departureAt(yesterday).build(),
-                flight().withFlightNumber("5120").withPrice(14).arrivalAt(yesterday).build());
+                flight().withFlightNumber("8054").withPrice(new Money(560, USD)).build(),
+                flight().withFlightNumber("4256").withPrice(new Money(560,USD)).build(),
+                flight().withFlightNumber("0214").withPrice(new Money(88,USD)).build(),
+                flight().withFlightNumber("0321").withPrice(new Money(100,USD)).build(),
+                flight().withFlightNumber("1456").withPrice(new Money(400,USD)).build(),
+                flight().withFlightNumber("4784").withPrice(new Money(310,USD)).departureAt(yesterday).build(),
+                flight().withFlightNumber("5120").withPrice(new Money(70,USD)).arrivalAt(yesterday).build());
         flights = new LinkedList<>(list);
     }
 
@@ -63,7 +66,7 @@ public class FakeFlight implements FlightRepository {
         return FlightBuilder.flight()
                 .withFlightNumber("0321")
                 .withTotalCapacity(40)
-                .withPrice(145)
+                .withPrice(new Money(100,USD))
                 .from(TEHRAN)
                 .to(PARIS)
                 .departureAt(LocalDate.now())

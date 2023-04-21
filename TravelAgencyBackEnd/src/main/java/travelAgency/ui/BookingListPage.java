@@ -1,34 +1,40 @@
 package travelAgency.ui;
 
-import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
-import travelAgency.services.bookingList.BookingListService;
+import com.toedter.calendar.JDateChooser;
+import travelAgency.domain.reservation.Reservation;
+import travelAgency.services.reservation.ReservationListService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class BookingListPage extends JFrame {
 
-    private final BookingListService bookingListService;
-    private JScrollPane scrollPane;
+    private final ReservationListService reservationListService;
+    private JPanel resultPanel;
     private JButton backButton;
 
     private UiComponents ui;
+    private JTextField firstNameField;
+    private JTextField flightNumberField;
+    private JDateChooser birthdayField;
+    private ReservationSearchResult reservationSearchResult;
 
-    public BookingListPage(BookingListService bookingListService) {
-        this.bookingListService = bookingListService;
+    public BookingListPage(ReservationListService reservationListService) {
+        this.reservationListService = reservationListService;
         createBookingListPage();
     }
 
 
     public void createBookingListPage() {
         setupPage();
-
         createComponentsAndAddToPage();
-
         pack();
         setVisible(true);
 
-        // TODO: add searchFlights logic here
+        reservationSearchResult = new ReservationSearchResult();
     }
 
     private void setupPage() {
@@ -65,7 +71,7 @@ public class BookingListPage extends JFrame {
 
     private void addComponentsToPage(JPanel mainPanel, JPanel buttonPanel) {
         add(mainPanel, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
+        add(resultPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
@@ -81,7 +87,6 @@ public class BookingListPage extends JFrame {
         createSearchButton(buttonPanel);
         createCancelButton(buttonPanel);
         createBackButton(buttonPanel);
-
     }
 
     private void createCancelButton(JPanel buttonPanel) {
@@ -90,10 +95,28 @@ public class BookingListPage extends JFrame {
     }
 
     private void createSearchButton(JPanel buttonPanel) {
+        resultPanel.add(new JLabel("Hello"));
         JButton searchButton = ui.button("Search");
         buttonPanel.add(searchButton);
+        searchButton.addActionListener(e ->
+                {
+                    final LocalDate localDateOf = getLocalDateOf(birthdayField.getDate());
+                    System.out.println(localDateOf);
+                    final Reservation searchReservation =
+                            reservationListService.search(flightNumberField.getText(),
+                                    firstNameField.getText(),
+                                    localDateOf);
+
+                    System.out.println(searchReservation);
+                    reservationSearchResult.showReservationInfo(searchReservation);
+                    resultPanel.add(reservationSearchResult);
+                }
+        );
     }
 
+    private LocalDate getLocalDateOf(Date date){
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
     private void createBackButton(JPanel buttonPanel) {
         backButton = ui.button("Back to Home");
         buttonPanel.add(backButton);
@@ -101,14 +124,18 @@ public class BookingListPage extends JFrame {
     }
 
     private void createResultPanel(JPanel mainPanel) {
-        scrollPane = ui.scrollPanel(800,400);
+        resultPanel = new JPanel();
+        resultPanel.setPreferredSize(new Dimension(800,400));
+        final JScrollPane jScrollPane = ui.scrollPanel(resultPanel);
+
         mainPanel.add(new JLabel());
         mainPanel.add(new JLabel("Search Results"));
+        mainPanel.add(jScrollPane);
     }
 
     private void createFirstNameField(JPanel mainPanel) {
         JLabel firstNameLabel = ui.label("First Name:");
-        JTextField firstNameField = ui.textInput(20);
+        firstNameField = ui.textInput(20);
         mainPanel.add(new JLabel());
         mainPanel.add(firstNameLabel);
         mainPanel.add(firstNameField);
@@ -116,17 +143,17 @@ public class BookingListPage extends JFrame {
 
     private void createFlightNumberField(JPanel mainPanel) {
         JLabel flightNumberLabel = ui.label("Flight Number:");
-        JTextField flightNumberField = ui.textInput(20);
+        flightNumberField = ui.textInput(20);
         mainPanel.add(flightNumberLabel);
         mainPanel.add(flightNumberField);
     }
 
     private void createBirthdayDatePicker(JPanel mainPanel) {
         JLabel birthdayLabel = ui.label("Date of Birth:");
-        JDatePickerImpl datePicker = ui.datePicker();
+        birthdayField = ui.dateChooser(150,30);
         mainPanel.add(new JLabel());
         mainPanel.add(birthdayLabel);
-        mainPanel.add(datePicker);
+        mainPanel.add(birthdayField);
     }
 
 }

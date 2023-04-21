@@ -1,7 +1,6 @@
 package travelAgency.domain.flight;
 
-import travelAgency.domain.exceptions.FlightNumberException;
-import travelAgency.domain.exceptions.FlightPriceException;
+import travelAgency.domain.exceptions.InvalidFlightNumberException;
 
 public class FlightValidator {
 
@@ -13,11 +12,11 @@ public class FlightValidator {
 
     public void validate() {
         if (flight.flightNumber().isBlank() || flight.flightNumber().length() < 3)
-            throw new FlightNumberException();
-        if (isNegativePrice()) throw new FlightPriceException();
+            throw new InvalidFlightNumberException();
+        if (isNegativePrice()) throw new IllegalArgumentException("the price must not be negative!");
     }
 
     private boolean isNegativePrice() {
-        return flight.price() <= 0;
+        return flight.price().amount() <= 0;
     }
 }

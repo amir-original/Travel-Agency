@@ -1,6 +1,6 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.services.bookingList.TicketNumberGenerator;
+import travelAgency.services.reservation.TicketNumberGenerator;
 
 public class FakeTicketNumberGenerator implements TicketNumberGenerator {
 

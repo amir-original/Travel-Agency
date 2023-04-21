@@ -8,7 +8,6 @@ public interface CityService {
 
     List<String> citiesList();
     String[] citiesArray();
-
     City getCity(String city);
 
 }

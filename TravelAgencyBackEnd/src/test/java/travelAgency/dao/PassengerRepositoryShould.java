@@ -5,8 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.PassengerNotFoundException;
 import travelAgency.domain.passenger.Passenger;
-import travelAgency.repository.db.mysq.MySQLDbConnection;
-import travelAgency.repository.passenger.PassengerRepositoryImpl;
+import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
+import travelAgency.dao.database.passenger.PassengerRepositoryImpl;
 import travelAgency.use_case.fake.FakePassenger;
 
 import java.util.Optional;

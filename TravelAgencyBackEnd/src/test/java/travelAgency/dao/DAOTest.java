@@ -1,8 +1,8 @@
 package travelAgency.dao;
 
 import org.junit.jupiter.api.Test;
-import travelAgency.repository.db.mysq.DatabaseConnectionException;
-import travelAgency.repository.db.mysq.MySQLDbConnection;
+import travelAgency.dao.database.db_config.mysq.DatabaseConnectionException;
+import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
 
 import static org.assertj.core.api.Assertions.*;
 

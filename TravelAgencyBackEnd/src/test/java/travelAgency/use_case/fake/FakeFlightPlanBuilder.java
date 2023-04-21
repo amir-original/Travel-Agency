@@ -42,7 +42,7 @@ public class FakeFlightPlanBuilder  {
     }
 
     public FakeFlightPlanBuilder withNotExistLocation() {
-        this.to = City.DELHI;
+        this.to = City.KASHAN;
         return this;
     }
 

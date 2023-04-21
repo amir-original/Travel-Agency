@@ -4,13 +4,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.flight.Flight;
-import travelAgency.repository.flight.SQLFlightInsertionException;
+import travelAgency.dao.database.flight.SQLFlightInsertionException;
 import travelAgency.use_case.fake.FakeFlight;
-import travelAgency.repository.db.mysq.MySQLDbConnection;
-import travelAgency.repository.flight.FlightRepository;
-import travelAgency.repository.flight.FlightRepositoryImpl;
+import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
+import travelAgency.dao.database.flight.FlightRepository;
+import travelAgency.dao.database.flight.FlightRepositoryImpl;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 

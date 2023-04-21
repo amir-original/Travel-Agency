@@ -14,13 +14,13 @@ public class PassengerValidator {
 
     public void validatePassengerInformation() {
         if (isNameBlank())
-            throw new PassengerNameException();
+            throw new IllegalArgumentException("the name must not be null or empty!");
         if (passenger.zipcode().isBlank())
-            throw new PassengerZipCodeException();
+            throw new IllegalArgumentException("the zipcode must not be null or empty!");
         if (passenger.address().isBlank())
-            throw new PassengerAddressException();
+            throw new IllegalArgumentException("the address must not be null or empty!");
         if (passenger.phoneNumber().isBlank())
-            throw new PhoneNumberNotEmptyException();
+            throw new IllegalArgumentException("the phoneNumber must not be null or empty!");
         if (isNotValidPhoneNumberFormat())
             throw new InvalidPhoneNumberException();
     }

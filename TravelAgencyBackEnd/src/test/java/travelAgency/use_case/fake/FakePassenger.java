@@ -3,7 +3,7 @@ package travelAgency.use_case.fake;
 import travelAgency.domain.exceptions.PassengerNotFoundException;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.domain.passenger.PassengerBuilder;
-import travelAgency.repository.passenger.PassengerRepository;
+import travelAgency.dao.database.passenger.PassengerRepository;
 
 import java.util.LinkedList;
 import java.util.List;

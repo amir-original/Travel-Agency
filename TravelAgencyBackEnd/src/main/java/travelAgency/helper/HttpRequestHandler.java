@@ -12,16 +12,14 @@ import java.net.http.HttpResponse;
 
 public class HttpRequestHandler implements HttpRequestApi {
 
-    private String uri;
     private final Gson gson = new Gson();
 
     private HttpRequest.Builder method;
 
     @Override
     public HttpRequestHandler target(String baseUri) {
-        uri = baseUri;
         try {
-            builder().uri(new URI(uri));
+            requestBuilder().uri(new URI(baseUri));
             return this;
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
@@ -29,49 +27,14 @@ public class HttpRequestHandler implements HttpRequestApi {
     }
 
     @Override
-    public HttpRequestHandler path(String endpoint) {
-        target(uri + endpoint);
-        return this;
+    public <T> T GET(Class<T> responseType) {
+        final HttpRequest httpRequest = method.GET().build();
+        final String body = getHttpResponse(httpRequest).body();
+        return getResponse(body,responseType);
     }
 
-    @Override
-    public HttpRequestHandler GET() {
-        method = method.GET();
-        return this;
-    }
-
-    @Override
-    public HttpRequestHandler POST(Object entity) {
-        method = method.POST(bodyPublisher(entity));
-        return this;
-    }
-
-    @Override
-    public HttpRequestHandler PUT(Object entity) {
-        method.PUT(bodyPublisher(entity));
-        return this;
-    }
-
-    @Override
-    public HttpRequestHandler DELETE() {
-        method = method.DELETE();
-        return this;
-    }
-
-    @Override
-    public HttpRequestHandler mediaType(String type) {
-        method = method.header("content-type", type);
-        return this;
-    }
-
-    @Override
-    public HttpRequestHandler header(String key,String value) {
-        method = method.header(key, value);
-        return this;
-    }
-
-    public <T> T getResponse(HttpResponse<String> response, Type responseType) {
-        return gson.fromJson(response.body(), responseType);
+    public <T> T getResponse(String json, Type responseType) {
+        return gson.fromJson(json, responseType);
     }
 
     public HttpResponse<String> getHttpResponse(HttpRequest request) {
@@ -87,18 +50,8 @@ public class HttpRequestHandler implements HttpRequestApi {
         return getHttpResponse(request);
     }
 
-    private String toJson(Object entity) {
-        return gson.toJson(entity);
-    }
-
-    private HttpRequest.BodyPublisher bodyPublisher(Object entity) {
-        return HttpRequest.BodyPublishers.ofString(toJson(entity));
-    }
-
-    private HttpRequest.Builder builder() {
+    private HttpRequest.Builder requestBuilder() {
         method = HttpRequest.newBuilder();
         return method;
     }
-
-
 }

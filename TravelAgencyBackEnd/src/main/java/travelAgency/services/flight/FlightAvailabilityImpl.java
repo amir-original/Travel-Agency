@@ -1,30 +1,48 @@
 package travelAgency.services.flight;
 
+import travelAgency.domain.exceptions.FullyBookedException;
+import travelAgency.domain.exceptions.NotEnoughCapacityException;
 import travelAgency.domain.flight.Flight;
-import travelAgency.domain.flight.SeatAvailabilityChecker;
-import travelAgency.domain.reservation.BookingInformation;
-import travelAgency.repository.booking.BookingListRepository;
-import travelAgency.repository.flight.FlightRepository;
+import travelAgency.domain.flight.FlightScheduleValidator;
+import travelAgency.domain.reservation.ReservationInformation;
+import travelAgency.services.reservation.ReservationListService;
 
 public class FlightAvailabilityImpl implements FlightAvailability {
 
-    private final FlightRepository flights;
-    private final BookingListRepository bookingLists;
+    private static final int NO_AVAILABLE_SEATS = 0;
 
-    public FlightAvailabilityImpl(FlightRepository flights, BookingListRepository bookingLists) {
+    private final FlightService flights;
+    private final ReservationListService bookingLists;
+
+    public FlightAvailabilityImpl(FlightService flights, ReservationListService bookingLists) {
         this.flights = flights;
         this.bookingLists = bookingLists;
     }
 
     @Override
-    public void checkFlightPreBooking(BookingInformation bi) {
-        final Flight flight = bi.findFlight(flights.flights());
-        flight.validateSchedule();
-        checkFlightCapacity(bi);
+    public void checkFlightPreBooking(ReservationInformation reservation) {
+        final Flight flight = flights.findFlight(reservation.flightNumber());
+        FlightScheduleValidator flightScheduleValidator = new FlightScheduleValidator(flight.schedule());
+
+        flightScheduleValidator.validate();
+        checkCapacity(reservation);
     }
 
-    private void checkFlightCapacity(BookingInformation bi) {
-        new SeatAvailabilityChecker(bi).checkCapacity(bookingLists.getAllBookings());
+    public void checkCapacity(ReservationInformation reservation) {
+        if (isSoldOutAllSeats(reservation))
+            throw new FullyBookedException();
+        if (!hasEnoughCapacity(reservation))
+            throw new NotEnoughCapacityException();
+    }
+
+    private boolean isSoldOutAllSeats(ReservationInformation reservation) {
+        final int availableSeats = bookingLists.getAvailableSeats(reservation.flightNumber());
+        return availableSeats == NO_AVAILABLE_SEATS;
+    }
+
+    private boolean hasEnoughCapacity(ReservationInformation reservation) {
+        final int availableSeats = bookingLists.getAvailableSeats(reservation.flightNumber());
+        return availableSeats >= reservation.numberOfTickets();
     }
 
 }

@@ -7,7 +7,6 @@ import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.services.flight.FlightService;
 import travelAgency.services.flight.FlightServiceImpl;
-import travelAgency.use_case.fake.FakeBookingList;
 import travelAgency.use_case.fake.FakeFlight;
 
 import java.util.List;

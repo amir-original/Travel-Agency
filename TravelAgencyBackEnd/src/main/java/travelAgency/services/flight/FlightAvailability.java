@@ -1,7 +1,7 @@
 package travelAgency.services.flight;
 
-import travelAgency.domain.reservation.BookingInformation;
+import travelAgency.domain.reservation.ReservationInformation;
 
 public interface FlightAvailability {
-    void checkFlightPreBooking(BookingInformation bookingInformation);
+    void checkFlightPreBooking(ReservationInformation reservationInformation);
 }

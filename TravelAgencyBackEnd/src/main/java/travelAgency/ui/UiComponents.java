@@ -50,16 +50,30 @@ public class UiComponents {
         return inputNumber;
     }
 
+    public JLabel h1Label(String txt,int horizontalAlignment){
+        JLabel header = new JLabel(txt, horizontalAlignment);
+        header.setFont(new Font("Arial",Font.BOLD,35));
+        return header;
+    }
+
+    public JTextArea disableTextArea(String txt){
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        textArea.setOpaque(false);
+        textArea.setFocusable(false);
+        textArea.setFont(new Font("Arial Unicode MS", Font.PLAIN, 17));
+        textArea.append(txt);
+        return textArea;
+    }
+
     public JDatePickerImpl datePicker(){
         UtilDateModel model = new UtilDateModel();
         JDatePanelImpl datePanel = new JDatePanelImpl(model);
         return new JDatePickerImpl(datePanel);
     }
 
-    public JScrollPane scrollPanel(int width,int height){
-        JPanel resultPanel = new JPanel();
-        resultPanel.setPreferredSize(new Dimension(width, height));
-        return new JScrollPane(resultPanel);
+    public JScrollPane scrollPanel(JPanel panel){
+        return new JScrollPane(panel);
     }
 
     public JTextField textInput(int columns){

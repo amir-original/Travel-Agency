@@ -3,8 +3,7 @@ package travelAgency.services.flight;
 import travelAgency.domain.exceptions.FlightNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
-import travelAgency.repository.booking.BookingListRepository;
-import travelAgency.repository.flight.FlightRepository;
+import travelAgency.dao.database.flight.FlightRepository;
 
 import java.util.List;
 
@@ -25,6 +24,11 @@ public class FlightServiceImpl implements FlightService {
     public Flight findFlight(String flightNumber) {
         return flights.findFlight(flightNumber)
                 .orElseThrow(FlightNotFoundException::new);
+    }
+
+    @Override
+    public int getTotalCapacity(String flightNumber) {
+        return findFlight(flightNumber).totalCapacity();
     }
 
 }

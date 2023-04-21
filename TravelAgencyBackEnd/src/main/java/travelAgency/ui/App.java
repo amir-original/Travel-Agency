@@ -1,76 +1,63 @@
 package travelAgency.ui;
 
-import travelAgency.domain.flight.Flight;
-import travelAgency.domain.flight.FlightBuilder;
-import travelAgency.repository.booking.BookingListRepository;
-import travelAgency.repository.booking.BookingListRepositoryImpl;
-import travelAgency.repository.db.mysq.MySQLDbConnection;
-import travelAgency.repository.flight.FlightRepository;
-import travelAgency.repository.flight.FlightRepositoryImpl;
-import travelAgency.repository.passenger.PassengerRepository;
-import travelAgency.repository.passenger.PassengerRepositoryImpl;
+import travelAgency.dao.database.reservation.ReservationListRepository;
+import travelAgency.dao.database.reservation.ReservationListRepositoryImpl;
+import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
+import travelAgency.dao.database.flight.FlightRepository;
+import travelAgency.dao.database.flight.FlightRepositoryImpl;
+import travelAgency.dao.database.passenger.PassengerRepository;
+import travelAgency.dao.database.passenger.PassengerRepositoryImpl;
 import travelAgency.services.BookingReservation;
-import travelAgency.services.bookingList.TicketNumberGenerator;
-import travelAgency.services.bookingList.TicketNumberGeneratorImpl;
+import travelAgency.services.reservation.TicketNumberGenerator;
+import travelAgency.services.reservation.TicketNumberGeneratorImpl;
 import travelAgency.services.city.CityService;
 import travelAgency.services.city.CityServiceImpl;
-import travelAgency.services.bookingList.BookingListService;
-import travelAgency.services.bookingList.BookingListServiceImpl;
+import travelAgency.services.reservation.ReservationListService;
+import travelAgency.services.reservation.ReservationListServiceImpl;
 import travelAgency.services.flight.FlightAvailabilityImpl;
 import travelAgency.services.flight.FlightService;
 import travelAgency.services.flight.FlightServiceImpl;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import static java.util.List.of;
-import static travelAgency.domain.city.City.*;
 
 public class App {
 
     private static BookingReservation bookingReservation;
+    private static CityService cityService;
+    private static ReservationListService reservationListService;
+    private static FlightService flightService;
 
     public App() {
-        runHomePage();
+        setup();
+        run();
     }
 
     public static void main(String[] args) {
-        runHomePage();
+        setup();
+        run();
     }
 
-    private static void runHomePage() {
-        CityService cityService = new CityServiceImpl();
-        final MySQLDbConnection db = new MySQLDbConnection();
-        final BookingListRepository bookings = new BookingListRepositoryImpl(db);
-        final FlightRepository flights = new FlightRepositoryImpl(db);
+    private static void run() {
+        new HomePage(cityService, reservationListService, flightService, bookingReservation);
+    }
 
-       //insertFlights(flights);
+    private static void setup() {
+        cityService = new CityServiceImpl();
+        final MySQLDbConnection db = new MySQLDbConnection();
+        final ReservationListRepository bookings = new ReservationListRepositoryImpl(db);
+        final FlightRepository flights = new FlightRepositoryImpl(db);
 
         initBookingReservation(db, bookings, flights);
 
-        BookingListService bookingListService = new BookingListServiceImpl(bookings);
-        FlightService flightService = new FlightServiceImpl(flights);
-        final HomePage homePage = new HomePage(cityService,bookingListService, flightService, bookingReservation);
+        flightService = new FlightServiceImpl(flights);
+        reservationListService = new ReservationListServiceImpl(bookings, flightService);
     }
 
-    private static void insertFlights(FlightRepository flights) {
-
-        List<Flight> list = List.of(FlightBuilder.flight()
-                .withFlightNumber("780")
-                .withTotalCapacity(45)
-                .withPrice(1000)
-                .from(TEHRAN)
-                .to(NAJAF)
-                .departureAt(LocalDate.of(2023,5,20))
-                .arrivalAt(LocalDate.of(2023,5,30)).build());
-
-        flights.addFlights(list);
-    }
-
-    private static void initBookingReservation(MySQLDbConnection db, BookingListRepository bookings, FlightRepository flights) {
+    private static void initBookingReservation(MySQLDbConnection db, ReservationListRepository bookings, FlightRepository flights) {
         PassengerRepository passengers = new PassengerRepositoryImpl(db);
         TicketNumberGenerator ticketNumberGenerator = new TicketNumberGeneratorImpl();
-        final FlightAvailabilityImpl flightAvailability = new FlightAvailabilityImpl(flights, bookings);
+        final FlightAvailabilityImpl flightAvailability =
+                new FlightAvailabilityImpl(new FlightServiceImpl(flights), new ReservationListServiceImpl(bookings,new FlightServiceImpl(flights)));
 
         bookingReservation = new BookingReservation(bookings, flightAvailability,passengers,ticketNumberGenerator);
     }

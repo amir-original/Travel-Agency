@@ -5,12 +5,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.domain.flight.Flight;
-import travelAgency.use_case.fake.FakeBookingList;
-import travelAgency.repository.booking.BookingListRepository;
-import travelAgency.repository.booking.BookingListRepositoryImpl;
-import travelAgency.repository.db.mysq.MySQLDbConnection;
-import travelAgency.repository.flight.FlightRepositoryImpl;
-import travelAgency.repository.passenger.PassengerRepositoryImpl;
+import travelAgency.use_case.fake.FakeReservationList;
+import travelAgency.dao.database.reservation.ReservationListRepository;
+import travelAgency.dao.database.reservation.ReservationListRepositoryImpl;
+import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
+import travelAgency.dao.database.flight.FlightRepositoryImpl;
+import travelAgency.dao.database.passenger.PassengerRepositoryImpl;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +20,7 @@ import static travelAgency.use_case.fake.FakeFlight.flight;
 
 public class BookingFLightRepositoryShould {
 
-    private BookingListRepository api;
+    private ReservationListRepository api;
     private PassengerRepositoryImpl passengerApi;
     private FlightRepositoryImpl flightApi;
 
@@ -28,7 +28,7 @@ public class BookingFLightRepositoryShould {
     @BeforeEach
     void setUp() {
         final MySQLDbConnection mysql = new MySQLDbConnection();
-        api = new BookingListRepositoryImpl(mysql);
+        api = new ReservationListRepositoryImpl(mysql);
         flightApi = new FlightRepositoryImpl(mysql);
         passengerApi = new PassengerRepositoryImpl(mysql);
     }
@@ -36,7 +36,7 @@ public class BookingFLightRepositoryShould {
     @Test
     void book_information() {
         var flightTicket = insertSingleTicket();
-        Optional<Reservation> fetchedTicket = api.findBooking(flightTicket.ticketNumber());
+        Optional<Reservation> fetchedTicket = api.findReservation(flightTicket.ticketNumber());
         assertThat(fetchedTicket).isEqualTo(fetchedTicket);
     }
 
@@ -45,7 +45,7 @@ public class BookingFLightRepositoryShould {
         insertSingleFlight();
         insertSingleTicket();
 
-        final List<Reservation> tickets = api.getAllBookings();
+        final List<Reservation> tickets = api.getReservations();
 
         assertThat(tickets).isNotEmpty();
         assertThat(tickets.size()).isEqualTo(1);
@@ -57,7 +57,7 @@ public class BookingFLightRepositoryShould {
     }
 
     private Reservation insertSingleTicket() {
-        final Reservation reservation = FakeBookingList.flightTicket("78456587");
+        final Reservation reservation = FakeReservationList.flightTicket("78456587");
         passengerApi.save(reservation.passenger());
         api.book(reservation);
         return reservation;

@@ -8,7 +8,7 @@ public class FlightBuilder {
 
     private String flightNumber;
     private int totalCapacity;
-    private double price;
+    private Money price;
     private City from;
     private City to;
     private LocalDate departure;
@@ -48,7 +48,7 @@ public class FlightBuilder {
         return this;
     }
 
-    public FlightBuilder withPrice(double price) {
+    public FlightBuilder withPrice(Money price) {
         this.price = price;
         return this;
     }

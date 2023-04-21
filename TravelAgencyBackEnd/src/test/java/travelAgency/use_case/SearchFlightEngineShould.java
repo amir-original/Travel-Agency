@@ -3,17 +3,18 @@ package travelAgency.use_case;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import travelAgency.dao.api.ExchangeRateDAO;
+import travelAgency.domain.flight.Currency;
 import travelAgency.domain.flight.Flight;
-import travelAgency.services.priceConverter.CurrencyConverterService;
-import travelAgency.services.priceConverter.currencyApi.IRRToUSDConverter;
-import travelAgency.services.priceConverter.exception.AmountNotNegativeException;
-import travelAgency.use_case.fake.FakeBookingList;
-import travelAgency.use_case.fake.FakeFlight;
+import travelAgency.domain.flight.Money;
 import travelAgency.services.flight.FlightService;
 import travelAgency.services.flight.FlightServiceImpl;
-import travelAgency.services.priceConverter.CurrencyConverterServiceImpl;
-import travelAgency.services.priceConverter.currencyApi.ExchangeRateService;
-import travelAgency.services.priceConverter.currencyApi.USDToIRRConverter;
+import travelAgency.services.price_converter.CurrencyConverterService;
+import travelAgency.services.price_converter.CurrencyConverterServiceImpl;
+import travelAgency.services.price_converter.currencyApi.ExchangeRateService;
+import travelAgency.services.price_converter.currencyApi.IRRToUSDConverter;
+import travelAgency.services.price_converter.currencyApi.USDToIRRConverter;
+import travelAgency.use_case.fake.FakeFlight;
 
 import java.util.List;
 
@@ -29,15 +30,19 @@ public class SearchFlightEngineShould {
 
     private static final double ONE_DOLLAR_TO_RIAL = 42700D;
     private static final Double ONE_RIAL_TO_DOLLAR = 0.000024;
+
     private FlightService app;
-    private ExchangeRateService dollarToRialConverter;
-    private ExchangeRateService rialToDollarConverter;
+    private CurrencyConverterService usdToIrrConverter;
+    private CurrencyConverterService irrToUsdConverter;
 
     @BeforeEach
     void setUp() {
         app = new FlightServiceImpl(new FakeFlight());
-        dollarToRialConverter = getCurrencyConverter(USDToIRRConverter.class, ONE_DOLLAR_TO_RIAL);
-        rialToDollarConverter = getCurrencyConverter(IRRToUSDConverter.class, ONE_RIAL_TO_DOLLAR);
+        final ExchangeRateDAO exchangeRateDAO = mockExchangeRateDAO();
+        ExchangeRateService dollarToRialConverter = new USDToIRRConverter(exchangeRateDAO);
+        ExchangeRateService rialToDollarConverter = new IRRToUSDConverter(exchangeRateDAO);
+        usdToIrrConverter = getCurrencyConverterService(dollarToRialConverter);
+        irrToUsdConverter = getCurrencyConverterService(rialToDollarConverter);
     }
 
     @Test
@@ -73,34 +78,44 @@ public class SearchFlightEngineShould {
     void converted_price_from_dollar_to_rial() {
         final List<Flight> flights = app.searchFlights(flightPlan().build());
 
-        final CurrencyConverterService dollarConverter = getCurrencyConverterService(dollarToRialConverter);
         final Flight flight = flight("0321");
+
+        Money expectedMoney = new Money(4270000.00,Currency.IRR);
 
         assertAll(
                 () -> assertThat(flights).contains(flight),
-                () -> assertThat(flight.price(dollarConverter)).isEqualTo("6,191,500.00")
+                () -> assertThat(usdToIrrConverter.convert(flight.price())).isEqualTo(expectedMoney)
         );
     }
 
     @Test
     void converted_price_from_rial_to_dollar() {
-        final CurrencyConverterService dollarConverter = getCurrencyConverterService(rialToDollarConverter);
-        double flightPrice = 870000;
-        final double convertedPrice = flightPrice * ONE_RIAL_TO_DOLLAR;
+        Money flightPrice = new Money(870000, Currency.IRR);
 
-        assertAll(
-                () -> assertThat(dollarConverter.convert(flightPrice))
-                        .isEqualTo(convertedPrice)
-        );
+        final double convertedPrice = flightPrice.amount() * ONE_RIAL_TO_DOLLAR;
+
+
+        assertThat(irrToUsdConverter.convert(flightPrice).amount()).isEqualTo(convertedPrice);
     }
 
     @Test
-    void throw_AmountNotNegativeException_when_converted_negative_amount() {
-        final CurrencyConverterService dollarConverter = getCurrencyConverterService(rialToDollarConverter);
+    void does_not_convert_price_when_has_not_the_same_currency() {
+        Money irrFlightPrice = new Money(870000, Currency.IRR);
+        Money usdFlightPrice = new Money(240, Currency.USD);
 
-        assertThatExceptionOfType(AmountNotNegativeException.class)
-                .isThrownBy(() -> dollarConverter.convert(-500));
+
+        assertThat(usdToIrrConverter.convert(irrFlightPrice).amount()).isEqualTo(870000);
+
+        assertThat(irrToUsdConverter.convert(usdFlightPrice).amount()).isEqualTo(240);
     }
+
+    @Test
+    void throw_IllegalArgumentException_when_converted_negative_amount() {
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> irrToUsdConverter.convert(new Money(-500, Currency.USD)));
+    }
+
+
 
     @NotNull
     private CurrencyConverterService getCurrencyConverterService(ExchangeRateService rialToDollarConverter) {
@@ -108,10 +123,10 @@ public class SearchFlightEngineShould {
     }
 
     @NotNull
-    private ExchangeRateService
-    getCurrencyConverter(Class<? extends ExchangeRateService> classToMock, Double currencyAmount) {
-        final ExchangeRateService mock = mock(classToMock);
-        when(mock.diffAmount()).thenReturn(currencyAmount);
+    private ExchangeRateDAO mockExchangeRateDAO() {
+        final ExchangeRateDAO mock = mock(ExchangeRateDAO.class);
+        when(mock.usdToIrr()).thenReturn(ONE_DOLLAR_TO_RIAL);
+        when(mock.irrToUsd()).thenReturn(ONE_RIAL_TO_DOLLAR);
         return mock;
     }
 }

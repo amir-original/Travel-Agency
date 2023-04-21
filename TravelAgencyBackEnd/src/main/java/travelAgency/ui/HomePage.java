@@ -2,7 +2,7 @@ package travelAgency.ui;
 
 import travelAgency.services.BookingReservation;
 import travelAgency.services.city.CityService;
-import travelAgency.services.bookingList.BookingListService;
+import travelAgency.services.reservation.ReservationListService;
 import travelAgency.services.flight.FlightService;
 
 import javax.swing.*;
@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 public class HomePage extends JFrame {
 
     private final CityService cityService;
-    private final BookingListService bookingListService;
+    private final ReservationListService reservationListService;
     private final FlightService flightService;
     private final BookingReservation bookingReservation;
     private JButton bookingFlightButton, bookingListButton;
@@ -22,12 +22,12 @@ public class HomePage extends JFrame {
 
 
     public HomePage(CityService cityService,
-                    BookingListService bookingListService,
+                    ReservationListService reservationListService,
                     FlightService flightService,
                     BookingReservation bookingReservation) {
 
         this.cityService = cityService;
-        this.bookingListService = bookingListService;
+        this.reservationListService = reservationListService;
         this.flightService = flightService;
         this.bookingReservation = bookingReservation;
         createHomePage();
@@ -74,7 +74,7 @@ public class HomePage extends JFrame {
 
     private void createButtons() {
         bookingFlightButton = uiComponents.button("Booking Flight");
-        bookingListButton = uiComponents.button("Booking List");
+        bookingListButton = uiComponents.button("Search/Cancel Flight");
     }
 
     private void createPanel() {
@@ -98,14 +98,14 @@ public class HomePage extends JFrame {
 
     private void goToBookingListPage() {
         bookingListButton.addActionListener(e -> {
-            new BookingListPage(bookingListService);
+            new BookingListPage(reservationListService);
             dispose();
         });
     }
 
     private void goToFlightBookingPage() {
         bookingFlightButton.addActionListener(e -> {
-            new BookingFlightPage(cityService,bookingListService,flightService,bookingReservation);
+            new BookingFlightPage(cityService, reservationListService,flightService,bookingReservation);
             dispose();
         });
     }

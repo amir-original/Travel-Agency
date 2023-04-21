@@ -2,26 +2,24 @@ package travelAgency.domain.flight;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.city.City;
-import travelAgency.services.priceConverter.CurrencyConverterService;
 
 import java.time.LocalDate;
 
 public record Flight(@NotNull String flightNumber,
                      int totalCapacity,
-                     double price,
+                     Money price,
                      @NotNull FlightPlan plan) {
 
-    public Flight(@NotNull String flightNumber, int totalCapacity, double price, @NotNull FlightPlan plan) {
+    public Flight(@NotNull String flightNumber,
+                  int totalCapacity,
+                  Money price,
+                  @NotNull FlightPlan plan) {
         this.flightNumber = flightNumber;
         this.totalCapacity = totalCapacity;
         this.price = price;
         this.plan = plan;
-        final FlightValidator flightValidator = new FlightValidator(this);
+        FlightValidator flightValidator = new FlightValidator(this);
         flightValidator.validate();
-    }
-
-    public boolean match(FlightPlan flightPlan) {
-        return plan.equals(flightPlan);
     }
 
     public boolean match(Flight flight) {
@@ -30,14 +28,6 @@ public record Flight(@NotNull String flightNumber,
 
     public boolean hasSameFlightNumber(String flightNumber) {
         return this.flightNumber.equals(flightNumber);
-    }
-
-    public void validateSchedule() {
-        plan.validateSchedule();
-    }
-
-    public String price(CurrencyConverterService currencyConverter) {
-        return currencyConverter.convertAndFormat(price);
     }
 
     public City to() {
@@ -56,4 +46,7 @@ public record Flight(@NotNull String flightNumber,
         return plan.arrival();
     }
 
+    public FlightSchedule schedule() {
+        return plan.schedule();
+    }
 }
