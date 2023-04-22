@@ -4,8 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.*;
 import travelAgency.services.BookingReservation;
-import travelAgency.services.flight.FlightService;
-import travelAgency.services.flight.FlightServiceImpl;
+import travelAgency.services.flight.FlightListService;
+import travelAgency.services.flight.FlightListServiceImpl;
 import travelAgency.services.reservation.ReservationListServiceImpl;
 import travelAgency.services.reservation.TicketNumberGenerator;
 import travelAgency.services.flight.FlightAvailabilityImpl;
@@ -26,7 +26,7 @@ public class BookingReservationPassengerInfoShould {
     void setUp() {
         TicketNumberGenerator ticketNumberGenerator = new FakeTicketNumberGenerator();
         FakeReservationList fakeBookingList = new FakeReservationList();
-        final FlightService flights = new FlightServiceImpl(new FakeFlight());
+        final FlightListService flights = new FlightListServiceImpl(new FakeFlight());
         final FlightAvailabilityImpl flightAvailability =
                 new FlightAvailabilityImpl(flights, new ReservationListServiceImpl(fakeBookingList,flights));
         app = new BookingReservation(fakeBookingList, flightAvailability,

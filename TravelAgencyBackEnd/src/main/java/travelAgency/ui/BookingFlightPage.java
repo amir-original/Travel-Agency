@@ -8,7 +8,7 @@ import travelAgency.domain.flight.FlightSchedule;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.city.CityService;
 import travelAgency.services.reservation.ReservationListService;
-import travelAgency.services.flight.FlightService;
+import travelAgency.services.flight.FlightListService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +28,7 @@ public class BookingFlightPage extends JFrame {
     private UiComponents ui;
     private final CityService cityService;
     private final ReservationListService reservationListService;
-    private final FlightService flightService;
+    private final FlightListService flightListService;
     private final BookingReservation bookingReservation;
     private JDateChooser departureDatePicker;
     private JDateChooser arrivalDatePicker;
@@ -39,12 +39,12 @@ public class BookingFlightPage extends JFrame {
 
     public BookingFlightPage(CityService cityService,
                              ReservationListService reservationListService,
-                             FlightService flightService,
+                             FlightListService flightListService,
                              BookingReservation bookingReservation) {
 
         this.cityService = cityService;
         this.reservationListService = reservationListService;
-        this.flightService = flightService;
+        this.flightListService = flightListService;
         this.bookingReservation = bookingReservation;
 
         createBookingFlightPage();
@@ -192,7 +192,7 @@ public class BookingFlightPage extends JFrame {
 
             final Object exchangeRate = currencyConverter.getSelectedItem();
 
-            flightSearchResult.showFlightsInfo(flightService.searchFlights(searchFlightPlan), exchangeRate);
+            flightSearchResult.showFlightsInfo(flightListService.searchFlights(searchFlightPlan), exchangeRate);
 
             System.out.println(flightSearchResult.getSelectedFlight());
 
@@ -244,7 +244,7 @@ public class BookingFlightPage extends JFrame {
         nextButton.addActionListener(e -> {
             // Go to next page to book flight
             final String selectedFlight = flightSearchResult.getSelectedFlight();
-            new ReservationInformationPage(flightService.findFlight(selectedFlight),
+            new ReservationInformationPage(flightListService.findFlight(selectedFlight),
                     bookingReservation,
                     cityService, (int) passengersSpinner.getValue()
             );

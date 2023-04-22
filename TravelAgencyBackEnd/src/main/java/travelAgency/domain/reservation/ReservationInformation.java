@@ -35,17 +35,6 @@ public record ReservationInformation(@NotNull Flight flight,
                 passenger.canMatchWith(passengerFirstName, passengerBirthday);
     }
 
-    public Flight findFlight(List<Flight> flights) {
-        return flights.stream()
-                .filter(this::isFlightAvailable)
-                .findFirst()
-                .orElseThrow(FlightNotFoundException::new);
-    }
-
-    private boolean isFlightAvailable(Flight flight) {
-        return flight.hasSameFlightNumber(flightNumber());
-    }
-
     public String flightNumber() {
         return flight.flightNumber();
     }

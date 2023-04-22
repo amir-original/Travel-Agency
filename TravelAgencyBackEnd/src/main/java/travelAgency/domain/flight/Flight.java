@@ -2,6 +2,7 @@ package travelAgency.domain.flight;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.city.City;
+import travelAgency.domain.flight.currency.Money;
 
 import java.time.LocalDate;
 
@@ -28,6 +29,10 @@ public record Flight(@NotNull String flightNumber,
 
     public boolean hasSameFlightNumber(String flightNumber) {
         return this.flightNumber.equals(flightNumber);
+    }
+
+    public boolean hasSameFlightPlan(FlightPlan searchFlightPlan) {
+        return plan.hasSameFlightPlan(searchFlightPlan);
     }
 
     public City to() {

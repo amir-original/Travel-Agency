@@ -4,16 +4,16 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.dao.api.ExchangeRateDAO;
-import travelAgency.domain.flight.Currency;
+import travelAgency.domain.flight.currency.Currency;
 import travelAgency.domain.flight.Flight;
-import travelAgency.domain.flight.Money;
-import travelAgency.services.flight.FlightService;
-import travelAgency.services.flight.FlightServiceImpl;
-import travelAgency.services.price_converter.CurrencyConverterService;
-import travelAgency.services.price_converter.CurrencyConverterServiceImpl;
-import travelAgency.services.price_converter.currencyApi.ExchangeRateService;
-import travelAgency.services.price_converter.currencyApi.IRRToUSDConverter;
-import travelAgency.services.price_converter.currencyApi.USDToIRRConverter;
+import travelAgency.domain.flight.currency.Money;
+import travelAgency.services.flight.FlightListService;
+import travelAgency.services.flight.FlightListServiceImpl;
+import travelAgency.services.currency_exchange.CurrencyConverterService;
+import travelAgency.services.currency_exchange.CurrencyConverterServiceImpl;
+import travelAgency.services.currency_exchange.currency_api.ExchangeRateService;
+import travelAgency.services.currency_exchange.currency_api.IRRToUSDConverter;
+import travelAgency.services.currency_exchange.currency_api.USDToIRRConverter;
 import travelAgency.use_case.fake.FakeFlight;
 
 import java.util.List;
@@ -31,13 +31,13 @@ public class SearchFlightEngineShould {
     private static final double ONE_DOLLAR_TO_RIAL = 42700D;
     private static final Double ONE_RIAL_TO_DOLLAR = 0.000024;
 
-    private FlightService app;
+    private FlightListService app;
     private CurrencyConverterService usdToIrrConverter;
     private CurrencyConverterService irrToUsdConverter;
 
     @BeforeEach
     void setUp() {
-        app = new FlightServiceImpl(new FakeFlight());
+        app = new FlightListServiceImpl(new FakeFlight());
         final ExchangeRateDAO exchangeRateDAO = mockExchangeRateDAO();
         ExchangeRateService dollarToRialConverter = new USDToIRRConverter(exchangeRateDAO);
         ExchangeRateService rialToDollarConverter = new IRRToUSDConverter(exchangeRateDAO);

@@ -15,8 +15,8 @@ import travelAgency.services.city.CityServiceImpl;
 import travelAgency.services.reservation.ReservationListService;
 import travelAgency.services.reservation.ReservationListServiceImpl;
 import travelAgency.services.flight.FlightAvailabilityImpl;
-import travelAgency.services.flight.FlightService;
-import travelAgency.services.flight.FlightServiceImpl;
+import travelAgency.services.flight.FlightListService;
+import travelAgency.services.flight.FlightListServiceImpl;
 
 import static java.util.List.of;
 
@@ -25,7 +25,7 @@ public class App {
     private static BookingReservation bookingReservation;
     private static CityService cityService;
     private static ReservationListService reservationListService;
-    private static FlightService flightService;
+    private static FlightListService flightListService;
 
     public App() {
         setup();
@@ -38,7 +38,7 @@ public class App {
     }
 
     private static void run() {
-        new HomePage(cityService, reservationListService, flightService, bookingReservation);
+        new HomePage(cityService, reservationListService, flightListService, bookingReservation);
     }
 
     private static void setup() {
@@ -49,15 +49,15 @@ public class App {
 
         initBookingReservation(db, bookings, flights);
 
-        flightService = new FlightServiceImpl(flights);
-        reservationListService = new ReservationListServiceImpl(bookings, flightService);
+        flightListService = new FlightListServiceImpl(flights);
+        reservationListService = new ReservationListServiceImpl(bookings, flightListService);
     }
 
     private static void initBookingReservation(MySQLDbConnection db, ReservationListRepository bookings, FlightRepository flights) {
         PassengerRepository passengers = new PassengerRepositoryImpl(db);
         TicketNumberGenerator ticketNumberGenerator = new TicketNumberGeneratorImpl();
         final FlightAvailabilityImpl flightAvailability =
-                new FlightAvailabilityImpl(new FlightServiceImpl(flights), new ReservationListServiceImpl(bookings,new FlightServiceImpl(flights)));
+                new FlightAvailabilityImpl(new FlightListServiceImpl(flights), new ReservationListServiceImpl(bookings,new FlightListServiceImpl(flights)));
 
         bookingReservation = new BookingReservation(bookings, flightAvailability,passengers,ticketNumberGenerator);
     }

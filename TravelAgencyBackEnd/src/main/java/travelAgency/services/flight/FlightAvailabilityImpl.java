@@ -11,10 +11,10 @@ public class FlightAvailabilityImpl implements FlightAvailability {
 
     private static final int NO_AVAILABLE_SEATS = 0;
 
-    private final FlightService flights;
+    private final FlightListService flights;
     private final ReservationListService bookingLists;
 
-    public FlightAvailabilityImpl(FlightService flights, ReservationListService bookingLists) {
+    public FlightAvailabilityImpl(FlightListService flights, ReservationListService bookingLists) {
         this.flights = flights;
         this.bookingLists = bookingLists;
     }

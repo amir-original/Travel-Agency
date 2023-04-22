@@ -36,8 +36,7 @@ public record Passenger(@NotNull String id,
     }
 
     public boolean canMatchWith(String passengerFirstName, LocalDate PassengerBirthday) {
-        return fName().equals(passengerFirstName)
-                && birthday().equals(PassengerBirthday);
+        return fName().equals(passengerFirstName) && birthday().equals(PassengerBirthday);
     }
 
     public String fullName() {

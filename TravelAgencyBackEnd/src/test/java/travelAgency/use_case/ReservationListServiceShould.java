@@ -3,7 +3,7 @@ package travelAgency.use_case;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.ReservationNotFoundException;
-import travelAgency.services.flight.FlightServiceImpl;
+import travelAgency.services.flight.FlightListServiceImpl;
 import travelAgency.services.reservation.TicketNumberGenerator;
 import travelAgency.use_case.fake.FakeReservationList;
 import travelAgency.use_case.fake.FakeFlight;
@@ -37,7 +37,7 @@ public class ReservationListServiceShould {
         TicketNumberGenerator ticketNumberGenerator = new FakeTicketNumberGenerator();
         final FakeReservationList bookings = new FakeReservationList();
         final FakeFlight flights = new FakeFlight();
-        final FlightServiceImpl flightService = new FlightServiceImpl(flights);
+        final FlightListServiceImpl flightService = new FlightListServiceImpl(flights);
 
         final FlightAvailabilityImpl flightAvailability = new FlightAvailabilityImpl(flightService, new ReservationListServiceImpl(bookings,flightService));
         final FakePassenger passengers = new FakePassenger();

@@ -1,9 +1,9 @@
 package travelAgency.ui;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.flight.Currency;
+import travelAgency.domain.flight.currency.Currency;
 import travelAgency.domain.flight.FlightBuilder;
-import travelAgency.domain.flight.Money;
+import travelAgency.domain.flight.currency.Money;
 import travelAgency.domain.passenger.PassengerBuilder;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.domain.reservation.ReservationInformation;

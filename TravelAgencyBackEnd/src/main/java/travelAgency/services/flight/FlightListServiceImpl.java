@@ -7,17 +7,19 @@ import travelAgency.dao.database.flight.FlightRepository;
 
 import java.util.List;
 
-public class FlightServiceImpl implements FlightService {
+public class FlightListServiceImpl implements FlightListService {
 
     private final FlightRepository flights;
 
-    public FlightServiceImpl(FlightRepository flights) {
+    public FlightListServiceImpl(FlightRepository flights) {
         this.flights = flights;
     }
 
     @Override
     public List<Flight> searchFlights(FlightPlan searchFlightPlan) {
-        return searchFlightPlan.search(flights.flights());
+        return flights.flights().stream()
+                .filter(flight -> flight.hasSameFlightPlan(searchFlightPlan))
+                .toList();
     }
 
     @Override

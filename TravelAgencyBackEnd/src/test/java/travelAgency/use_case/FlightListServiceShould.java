@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import travelAgency.domain.exceptions.FlightNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
-import travelAgency.services.flight.FlightService;
-import travelAgency.services.flight.FlightServiceImpl;
+import travelAgency.services.flight.FlightListService;
+import travelAgency.services.flight.FlightListServiceImpl;
 import travelAgency.use_case.fake.FakeFlight;
 
 import java.util.List;
@@ -19,14 +19,14 @@ import static travelAgency.domain.city.City.LONDON;
 import static travelAgency.use_case.fake.FakeFlight.flight;
 import static travelAgency.use_case.fake.FakeFlightPlanBuilder.flightPlan;
 
-public class FlightServiceShould {
+public class FlightListServiceShould {
 
     private static final String NOT_EXIST_FLIGHT_NUMBER = "fwefefef";
-    private FlightService app;
+    private FlightListService app;
 
     @BeforeEach
     void setUp() {
-        app = new FlightServiceImpl(new FakeFlight());
+        app = new FlightListServiceImpl(new FakeFlight());
     }
 
     @Test

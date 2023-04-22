@@ -1,6 +1,6 @@
 package travelAgency.helper;
 
-import travelAgency.domain.flight.Money;
+import travelAgency.domain.flight.currency.Money;
 
 public class PriceFormat {
 

@@ -1,6 +1,7 @@
 package travelAgency.domain.flight;
 
 import travelAgency.domain.city.City;
+import travelAgency.domain.flight.currency.Money;
 
 import java.time.LocalDate;
 

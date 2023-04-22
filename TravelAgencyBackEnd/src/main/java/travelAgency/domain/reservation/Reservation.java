@@ -6,7 +6,6 @@ import travelAgency.domain.flight.Flight;
 import travelAgency.domain.passenger.Passenger;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import static java.lang.String.format;
 import static travelAgency.helper.PriceFormat.formatPriceWithSymbol;
@@ -22,11 +21,8 @@ public record Reservation(@NotNull String ticketNumber,
         if (ticketNumber.isBlank()) throw new InvalidTicketNumberException();
     }
 
-    public boolean canMatchWith(String flightNumber,
-                                String passengerFirstName,
-                                LocalDate passengerBirthday) {
-        return reservationInformation
-                .canMatchWith(flightNumber, passengerFirstName, passengerBirthday);
+    public boolean canMatchWith(String flightNumber, String passengerFirstName, LocalDate passengerBirthday) {
+        return reservationInformation.canMatchWith(flightNumber, passengerFirstName, passengerBirthday);
     }
 
     public boolean canMatchWith(String searchFlightNumber) {

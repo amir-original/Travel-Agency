@@ -3,7 +3,7 @@ package travelAgency.services.reservation;
 import travelAgency.dao.database.reservation.ReservationListRepository;
 import travelAgency.domain.exceptions.ReservationNotFoundException;
 import travelAgency.domain.reservation.Reservation;
-import travelAgency.services.flight.FlightService;
+import travelAgency.services.flight.FlightListService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,14 +12,14 @@ public class ReservationListServiceImpl implements ReservationListService {
 
     public static final int NO_BOOKINGS = 0;
     private final ReservationListRepository reservations;
-    private final SearchTicketEngine searchEngine;
-    private final FlightService flights;
+    private final SearchReservationEngine searchEngine;
+    private final FlightListService flights;
 
 
-    public ReservationListServiceImpl(ReservationListRepository reservations, FlightService flights) {
+    public ReservationListServiceImpl(ReservationListRepository reservations, FlightListService flights) {
         this.reservations = reservations;
         this.flights = flights;
-        this.searchEngine = new SearchTicketEngine(getAllReservations());
+        this.searchEngine = new SearchReservationEngine(getAllReservations());
     }
 
     @Override

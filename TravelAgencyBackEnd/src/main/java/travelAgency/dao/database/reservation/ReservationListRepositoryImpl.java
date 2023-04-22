@@ -16,7 +16,7 @@ import static travelAgency.dao.database.reservation.ReservationSQL.*;
 
 public class ReservationListRepositoryImpl implements ReservationListRepository {
 
-    private static final String TABLE_NAME = "booking_list";
+    private static final String TABLE_NAME = "reservation";
     private final DbConnection db;
     private final Connection connection;
 
@@ -86,7 +86,7 @@ public class ReservationListRepositoryImpl implements ReservationListRepository 
 
     @Override
     public void cancel(String ticketNumber) {
-        try (final PreparedStatement query = createQuery(CANCEL_BOOKING)) {
+        try (final PreparedStatement query = createQuery(CANCEL_RESERVATION)) {
             query.setString(1, ticketNumber);
             query.executeUpdate();
         } catch (SQLException e) {

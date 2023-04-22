@@ -9,12 +9,6 @@ import java.util.List;
 public record FlightPlan(@NotNull FlightLocation location,
                          @NotNull FlightSchedule schedule) {
 
-    public List<Flight> search(List<Flight> flights) {
-        return flights.stream()
-                .filter(flight -> hasSameFlightPlan(flight.plan()))
-                .toList();
-    }
-
     public boolean hasSameFlightPlan(FlightPlan flightPlan) {
         return flightPlan.equals(this);
     }

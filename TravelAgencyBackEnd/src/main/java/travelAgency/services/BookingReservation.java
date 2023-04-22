@@ -32,7 +32,6 @@ public class BookingReservation {
         final String ticketNumber = TicketNumberGenerator.getTicketNumberFormat();
 
         final Reservation reservation = bi.getReservation(ticketNumber);
-
         final Passenger passenger = reservation.passenger();
 
         passengers.save(passenger);

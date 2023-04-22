@@ -3,12 +3,12 @@ package travelAgency.ui;
 import org.jetbrains.annotations.NotNull;
 import travelAgency.dao.api.ExchangeRateDAOImpl;
 import travelAgency.domain.flight.Flight;
-import travelAgency.domain.flight.Money;
-import travelAgency.services.price_converter.CurrencyConverterService;
-import travelAgency.services.price_converter.CurrencyConverterServiceImpl;
-import travelAgency.services.price_converter.currencyApi.ExchangeRateService;
-import travelAgency.services.price_converter.currencyApi.IRRToUSDConverter;
-import travelAgency.services.price_converter.currencyApi.USDToIRRConverter;
+import travelAgency.domain.flight.currency.Money;
+import travelAgency.services.currency_exchange.CurrencyConverterService;
+import travelAgency.services.currency_exchange.CurrencyConverterServiceImpl;
+import travelAgency.services.currency_exchange.currency_api.ExchangeRateService;
+import travelAgency.services.currency_exchange.currency_api.IRRToUSDConverter;
+import travelAgency.services.currency_exchange.currency_api.USDToIRRConverter;
 import travelAgency.services.reservation.ReservationListService;
 
 import javax.swing.*;

@@ -3,6 +3,7 @@ package travelAgency.dao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import travelAgency.domain.exceptions.FlightNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class FindFlightRepositoryShould {
 
@@ -27,7 +29,7 @@ public class FindFlightRepositoryShould {
 
     @Test
     void find_flight_with_flight_number() {
-        final Flight flight = insertSingleFlight();
+        final Flight flight = insertSingleFlight("0321");
 
         final Optional<Flight> fetchedFlight = api.findFlight(flight.flightNumber());
 
@@ -35,18 +37,29 @@ public class FindFlightRepositoryShould {
     }
 
     @Test
-    void find_all_matched_flights_with_entered_flight_plan() {
+    void find_all_flights() {
         insertFlights();
 
-        final Flight flight =FakeFlight.flight().build();
-        final List<Flight> flights = flight.plan().search(api.flights());
+        final List<Flight> flights = api.flights();
 
         assertThat(flights).isNotEmpty();
-        assertThat(flights.size()).isEqualTo(5);
+        assertThat(flights.size()).isEqualTo(7);
     }
 
-    private Flight insertSingleFlight() {
-        final Flight flight = FakeFlight.flight("0321");
+    @Test
+    void delete_flight_by_flight_number() {
+        final String flightNumber = "4784";
+        final Flight flight = insertSingleFlight(flightNumber);
+
+        assertThat(api.findFlight(flightNumber).get()).isEqualTo(flight);
+
+        api.deleteFlight(flight);
+
+        assertThat(api.findFlight(flightNumber).isEmpty()).isTrue();
+    }
+
+    private Flight insertSingleFlight(String flightNumber) {
+        final Flight flight = FakeFlight.flight(flightNumber);
         api.addFlight(flight);
         return flight;
     }

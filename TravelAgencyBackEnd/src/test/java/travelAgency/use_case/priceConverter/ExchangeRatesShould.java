@@ -4,8 +4,8 @@ import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.dao.api.ExchangeRateDAOImpl;
-import travelAgency.services.price_converter.currencyApi.USDToIRRConverter;
-import travelAgency.services.price_converter.currencyApi.IRRToUSDConverter;
+import travelAgency.services.currency_exchange.currency_api.USDToIRRConverter;
+import travelAgency.services.currency_exchange.currency_api.IRRToUSDConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

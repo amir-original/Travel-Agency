@@ -1,6 +1,6 @@
-package travelAgency.services.price_converter.currencyApi;
+package travelAgency.services.currency_exchange.currency_api;
 
-import travelAgency.domain.flight.Currency;
+import travelAgency.domain.flight.currency.Currency;
 
 public interface ExchangeRateService {
     double diffAmount();

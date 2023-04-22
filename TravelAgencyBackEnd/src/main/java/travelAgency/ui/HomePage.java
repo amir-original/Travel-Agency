@@ -3,7 +3,7 @@ package travelAgency.ui;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.city.CityService;
 import travelAgency.services.reservation.ReservationListService;
-import travelAgency.services.flight.FlightService;
+import travelAgency.services.flight.FlightListService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +14,7 @@ public class HomePage extends JFrame {
 
     private final CityService cityService;
     private final ReservationListService reservationListService;
-    private final FlightService flightService;
+    private final FlightListService flightListService;
     private final BookingReservation bookingReservation;
     private JButton bookingFlightButton, bookingListButton;
 
@@ -23,12 +23,12 @@ public class HomePage extends JFrame {
 
     public HomePage(CityService cityService,
                     ReservationListService reservationListService,
-                    FlightService flightService,
+                    FlightListService flightListService,
                     BookingReservation bookingReservation) {
 
         this.cityService = cityService;
         this.reservationListService = reservationListService;
-        this.flightService = flightService;
+        this.flightListService = flightListService;
         this.bookingReservation = bookingReservation;
         createHomePage();
     }
@@ -105,7 +105,7 @@ public class HomePage extends JFrame {
 
     private void goToFlightBookingPage() {
         bookingFlightButton.addActionListener(e -> {
-            new BookingFlightPage(cityService, reservationListService,flightService,bookingReservation);
+            new BookingFlightPage(cityService, reservationListService, flightListService,bookingReservation);
             dispose();
         });
     }

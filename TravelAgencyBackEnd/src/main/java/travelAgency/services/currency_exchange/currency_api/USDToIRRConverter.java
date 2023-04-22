@@ -1,7 +1,10 @@
-package travelAgency.services.price_converter.currencyApi;
+package travelAgency.services.currency_exchange.currency_api;
 
 import travelAgency.dao.api.ExchangeRateDAO;
-import travelAgency.domain.flight.Currency;
+import travelAgency.domain.flight.currency.Currency;
+
+import static travelAgency.domain.flight.currency.Currency.IRR;
+import static travelAgency.domain.flight.currency.Currency.USD;
 
 public class USDToIRRConverter implements ExchangeRateService {
 
@@ -18,11 +21,11 @@ public class USDToIRRConverter implements ExchangeRateService {
 
     @Override
     public Currency baseCurrency() {
-        return Currency.USD;
+        return USD;
     }
 
     @Override
     public Currency targetCurrency() {
-        return Currency.IRR;
+        return IRR;
     }
 }

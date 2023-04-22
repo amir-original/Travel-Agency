@@ -2,11 +2,14 @@ package travelAgency.services.reservation;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 import static org.apache.commons.lang.RandomStringUtils.randomNumeric;
 
 public class TicketNumberGeneratorImpl implements TicketNumberGenerator {
 
     public static final String PREFIX = "AA";
+
 
     @Override
     public String getTicketNumberFormat() {

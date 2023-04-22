@@ -27,7 +27,7 @@ public class ReservationSQL {
     public static final String FIND_RESERVATION_BY_TICKET_NUMBER =
             GET_ALL_RESERVATIONS + " WHERE t.ticket_number = ?";
 
-    public static final String CANCEL_BOOKING =
+    public static final String CANCEL_RESERVATION =
             "DELETE FROM reservation WHERE ticket_number=?";
 
     public static String FIND_RESERVATION_BY_FLIGHT_NUMBER =

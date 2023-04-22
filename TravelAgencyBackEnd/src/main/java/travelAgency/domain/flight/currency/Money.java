@@ -1,4 +1,4 @@
-package travelAgency.domain.flight;
+package travelAgency.domain.flight.currency;
 
 public record Money(double amount, Currency currency) {
 

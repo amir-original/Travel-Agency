@@ -6,10 +6,10 @@ import travelAgency.domain.exceptions.ReservationNotFoundException;
 import java.time.LocalDate;
 import java.util.List;
 
-public record SearchTicketEngine(List<Reservation> tickets) {
+public record SearchReservationEngine(List<Reservation> reservations) {
 
     public Reservation search(String flightNumber, String passengerFirstName, LocalDate passengerBirthday) {
-        return tickets.stream()
+        return reservations.stream()
                 .filter(reservation -> reservation.canMatchWith(flightNumber, passengerFirstName, passengerBirthday))
                 .findFirst()
                 .orElseThrow(ReservationNotFoundException::new);

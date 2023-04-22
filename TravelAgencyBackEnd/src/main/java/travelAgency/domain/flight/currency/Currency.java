@@ -1,4 +1,4 @@
-package travelAgency.domain.flight;
+package travelAgency.domain.flight.currency;
 
 public enum Currency {
     USD("usd", "$"), IRR("irr", "ريال");
