@@ -23,8 +23,7 @@ public class ReservationInformationPage extends JFrame {
     public static final String BOOKING_FAIL = "Booking Fail!";
 
     private final Flight selectFlight;
-    private final BookingReservation bookingReservation;
-    private final CityService cityService;
+    private final BookingReservation reservationListService;
     private final int travelers;
     private UiComponents ui;
     private JTextField passportNumber;
@@ -36,10 +35,9 @@ public class ReservationInformationPage extends JFrame {
     private JTextField address;
     private JTextField city;
 
-    public ReservationInformationPage(Flight flight, BookingReservation bookingReservation, CityService cityService, int travelers) {
+    public ReservationInformationPage(Flight flight, BookingReservation reservationListService, CityService cityService, int travelers) {
         selectFlight = flight;
-        this.bookingReservation = bookingReservation;
-        this.cityService = cityService;
+        this.reservationListService = reservationListService;
         this.travelers = travelers;
         setupPage();
         createComponentsAndAddToPage();
@@ -81,14 +79,14 @@ public class ReservationInformationPage extends JFrame {
 
         createPhoneNumberField(inputPanel);
 
-        add(inputPanel,BorderLayout.LINE_START);
+        add(inputPanel, BorderLayout.LINE_START);
     }
 
     @NotNull
     private JPanel createPanel() {
-        JPanel inputPanel =  new JPanel();
-        inputPanel.setLayout(new GridLayout(0,3,10,20));
-        inputPanel.setPreferredSize(new Dimension(650,400));
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new GridLayout(0, 3, 10, 20));
+        inputPanel.setPreferredSize(new Dimension(650, 400));
         return inputPanel;
     }
 
@@ -106,7 +104,7 @@ public class ReservationInformationPage extends JFrame {
 
     private void createBirthdayField(JPanel inputPanel) {
         JLabel birthdayLabel = ui.label("Date of Birth:");
-        birthdayPicker = ui.dateChooser(150,30);
+        birthdayPicker = ui.dateChooser(150, 30);
         inputPanel.add(birthdayLabel);
         inputPanel.add(birthdayPicker);
         inputPanel.add(new JLabel());
@@ -134,7 +132,7 @@ public class ReservationInformationPage extends JFrame {
         inputPanel.add(phoneLabel);
         inputPanel.add(textInput);
         inputPanel.add(new JLabel());
-        return  textInput;
+        return textInput;
     }
 
     private void createButtons() {
@@ -153,10 +151,10 @@ public class ReservationInformationPage extends JFrame {
 
     private void bookActionToBookButton(JButton bookButton) {
         bookButton.addActionListener(e -> {
-            try{
+            try {
                 final Reservation reservation = bookReservation();
                 processSuccessfulBooking(reservation);
-            }catch (Exception exception){
+            } catch (Exception exception) {
                 exception.printStackTrace();
                 showMessageDialog(BOOKING_FAIL);
             }
@@ -171,7 +169,7 @@ public class ReservationInformationPage extends JFrame {
     }
 
     private Reservation bookReservation() {
-        return bookingReservation.book(getReservationInformation());
+        return reservationListService.book(getReservationInformation());
     }
 
     @NotNull
@@ -198,19 +196,19 @@ public class ReservationInformationPage extends JFrame {
     }
 
     private void showMessageDialog(String message) {
-        JOptionPane.showMessageDialog(this, message);
+        ui.showMessageDialog(this, message);
     }
 
     private void createBackButton(JPanel buttonPanel) {
         JButton backButton = ui.button("Back");
         buttonPanel.add(backButton);
-        goBackToFlightBookingPageAction(backButton);
+        goToHomePage(backButton);
     }
 
-    private void goBackToFlightBookingPageAction(JButton backButton) {
+    private void goToHomePage(JButton backButton) {
         backButton.addActionListener(e -> {
-           //new BookingFlightPage(cityService,bookingReservation);
-            dispose(); // close current frame
+            new App().run();
+            dispose();
         });
     }
 }
