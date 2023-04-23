@@ -1,24 +1,22 @@
 package travelAgency.ui;
 
-import travelAgency.dao.database.reservation.ReservationListRepository;
-import travelAgency.dao.database.reservation.ReservationListRepositoryImpl;
 import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
 import travelAgency.dao.database.flight.FlightRepository;
 import travelAgency.dao.database.flight.FlightRepositoryImpl;
 import travelAgency.dao.database.passenger.PassengerRepository;
 import travelAgency.dao.database.passenger.PassengerRepositoryImpl;
+import travelAgency.dao.database.reservation.ReservationListRepository;
+import travelAgency.dao.database.reservation.ReservationListRepositoryImpl;
 import travelAgency.services.BookingReservation;
-import travelAgency.services.reservation.TicketNumberGenerator;
-import travelAgency.services.reservation.TicketNumberGeneratorImpl;
 import travelAgency.services.city.CityService;
 import travelAgency.services.city.CityServiceImpl;
-import travelAgency.services.reservation.ReservationListService;
-import travelAgency.services.reservation.ReservationListServiceImpl;
 import travelAgency.services.flight.FlightAvailabilityImpl;
 import travelAgency.services.flight.FlightListService;
 import travelAgency.services.flight.FlightListServiceImpl;
-
-import static java.util.List.of;
+import travelAgency.services.reservation.ReservationListService;
+import travelAgency.services.reservation.ReservationListServiceImpl;
+import travelAgency.services.reservation.TicketNumberGenerator;
+import travelAgency.services.reservation.TicketNumberGeneratorImpl;
 
 public class App {
 
@@ -27,24 +25,22 @@ public class App {
     private static ReservationListService reservationListService;
     private static FlightListService flightListService;
 
-    public App() {
-        run();
-    }
 
     public static void main(String[] args) {
-        run();
+        final App app = new App();
+        app.run();
     }
 
-    private static void run() {
+    public void run() {
         setup();
         buildHomePage();
     }
 
-    private static void buildHomePage() {
+    private  void buildHomePage() {
         new HomePage(cityService, reservationListService, flightListService, bookingReservation);
     }
 
-    private static void setup() {
+    private  void setup() {
         cityService = new CityServiceImpl();
         final MySQLDbConnection db = new MySQLDbConnection();
         final ReservationListRepository bookings = new ReservationListRepositoryImpl(db);

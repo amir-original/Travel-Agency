@@ -5,13 +5,18 @@ import net.sourceforge.jdatepicker.JDatePicker;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
+import travelAgency.services.city.CityService;
+import travelAgency.services.city.CityServiceImpl;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class UiComponents {
 
-    public JButton button(String label,int width,int height) {
+    public UiComponents() {
+    }
+
+    public JButton button(String label, int width, int height) {
         final JButton button = new JButton(label);
         button.setPreferredSize(new Dimension(width, height));
         return button;
@@ -66,10 +71,26 @@ public class UiComponents {
         return textArea;
     }
 
+    public JPanel boarderLayoutPanel(){
+        return panel(new BorderLayout());
+    }
+
+    public JPanel flowLayoutPanel(int align,int hgap,int vgap){
+       return panel(new FlowLayout(align,hgap,vgap));
+    }
+
+    public JPanel panel(LayoutManager layoutManager){
+        return new JPanel(layoutManager);
+    }
+
     public JDatePickerImpl datePicker(){
         UtilDateModel model = new UtilDateModel();
         JDatePanelImpl datePanel = new JDatePanelImpl(model);
         return new JDatePickerImpl(datePanel);
+    }
+
+    public void showMessageDialog(Component parentComponent,String message) {
+        JOptionPane.showMessageDialog(parentComponent, message);
     }
 
     public JScrollPane scrollPanel(JPanel panel){

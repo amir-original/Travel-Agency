@@ -19,13 +19,13 @@ import java.util.List;
 
 import static travelAgency.helper.PriceFormatter.formatPriceWithSymbol;
 
-public class FlightSearchResult extends JPanel {
+public class FlightSearchResultPanel extends JPanel {
 
     private final ReservationListService reservationListService;
     private DefaultTableModel tableModel;
     private String selectFlightNumber;
 
-    public FlightSearchResult(ReservationListService reservationService) {
+    public FlightSearchResultPanel(ReservationListService reservationService) {
 
         this.reservationListService = reservationService;
     }

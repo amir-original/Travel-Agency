@@ -2,6 +2,7 @@ package travelAgency.ui;
 
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
+import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightLocation;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.flight.FlightSchedule;
@@ -15,25 +16,25 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.List;
 
 import static java.lang.String.format;
 
 public class BookingFlightPage extends JFrame {
 
-    private final FlightSearchResult flightSearchResult;
+    private final FlightSearchResultPanel flightSearchResult;
     private JLabel resultLabel;
     private JComboBox<String> originComboBox, destinationComboBox;
     private JButton backButton, searchButton, nextButton;
 
     private UiComponents ui;
     private final CityService cityService;
-    private final ReservationListService reservationListService;
     private final FlightListService flightListService;
     private final BookingReservation bookingReservation;
     private JDateChooser departureDatePicker;
     private JDateChooser arrivalDatePicker;
     private JPanel resultPanel;
-    private JComboBox<String> currencyConverter;
+    private JComboBox<String> exchangeRate;
     private JSpinner passengersSpinner;
 
 
@@ -43,12 +44,11 @@ public class BookingFlightPage extends JFrame {
                              BookingReservation bookingReservation) {
 
         this.cityService = cityService;
-        this.reservationListService = reservationListService;
         this.flightListService = flightListService;
         this.bookingReservation = bookingReservation;
+        flightSearchResult = new FlightSearchResultPanel(reservationListService);
 
         createBookingFlightPage();
-        flightSearchResult = new FlightSearchResult(reservationListService);
     }
 
     private void createBookingFlightPage() {
@@ -78,8 +78,7 @@ public class BookingFlightPage extends JFrame {
 
     @NotNull
     private JPanel createMainPanel() {
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
+        JPanel mainPanel = ui.boarderLayoutPanel();
         add(mainPanel);
         return mainPanel;
     }
@@ -87,58 +86,69 @@ public class BookingFlightPage extends JFrame {
     private void createComponents(JPanel mainPanel) {
         createHeaderPanel(mainPanel);
 
-        createFooterPanel(mainPanel);
+        initializeResultPanel(mainPanel);
 
-        createResultPanel(mainPanel);
+        createFooterPanel(mainPanel);
     }
 
     private void createHeaderPanel(JPanel mainPanel) {
-        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        JPanel headerPanel = ui.flowLayoutPanel(FlowLayout.CENTER, 10, 10);
 
+        createHeaderPanelFields(headerPanel);
+
+        mainPanel.add(headerPanel, BorderLayout.NORTH);
+    }
+
+    private void createHeaderPanelFields(JPanel headerPanel) {
         createFromField(headerPanel);
 
         createToField(headerPanel);
 
         createDepartureField(headerPanel);
 
-        createArrivalField(mainPanel, headerPanel);
+        createArrivalField(headerPanel);
 
         createPassengersField(headerPanel);
     }
 
     private void createFromField(JPanel headerPanel) {
-        JLabel originLabel = ui.label("From:");
-        originComboBox = ui.dropdown(cityService.citiesArray(), 100, 30);
-        originComboBox.setSelectedItem(cityService.getCity("Tehran"));
-        headerPanel.add(originLabel);
-        headerPanel.add(originComboBox);
+        originComboBox = createAndAddCityDropdownToPanel(headerPanel, "From:");
     }
 
     private void createToField(JPanel headerPanel) {
-        JLabel destinationLabel = ui.label("To:");
-        destinationComboBox = ui.dropdown(cityService.citiesArray(), 100, 30);
-        headerPanel.add(destinationLabel);
-        headerPanel.add(destinationComboBox);
+        destinationComboBox = createAndAddCityDropdownToPanel(headerPanel, "To:");
+    }
+
+    private JComboBox<String> createAndAddCityDropdownToPanel(JPanel headerPanel, String labelText) {
+        JLabel label = ui.label(labelText);
+        JComboBox<String> cityDropdown = getAirportListsDropdown();
+        headerPanel.add(label);
+        headerPanel.add(cityDropdown);
+        return cityDropdown;
+    }
+
+    public JComboBox<String> getAirportListsDropdown() {
+        return ui.dropdown(cityService.citiesArray(), 100, 30);
     }
 
     private void createDepartureField(JPanel headerPanel) {
-        JLabel departureLabel = ui.label("Departure:");
-        departureDatePicker = ui.dateChooser(150, 30);
-        disableDatesBeforTodaysDate(departureDatePicker);
+        departureDatePicker = createAndAddDatePickerToHeaderPanel(headerPanel, "Departure:");
+    }
+
+    private void createArrivalField(JPanel headerPanel) {
+        arrivalDatePicker = createAndAddDatePickerToHeaderPanel(headerPanel, "Arrival:");
+    }
+
+    private JDateChooser createAndAddDatePickerToHeaderPanel(JPanel headerPanel, String labelText) {
+        JLabel departureLabel = ui.label(labelText);
+        final JDateChooser jDateChooser = ui.dateChooser(150, 30);
+        disableDatesBefogTodayDate(jDateChooser);
         headerPanel.add(departureLabel);
-        headerPanel.add(departureDatePicker);
+        headerPanel.add(jDateChooser);
+        return jDateChooser;
     }
 
-    private void createArrivalField(JPanel mainPanel, JPanel headerPanel) {
-        JLabel arrivalLabel = ui.label("Arrival:");
-        arrivalDatePicker = ui.dateChooser(150, 30);
-        disableDatesBeforTodaysDate(arrivalDatePicker);
-        headerPanel.add(arrivalLabel);
-        headerPanel.add(arrivalDatePicker);
-        mainPanel.add(headerPanel, BorderLayout.NORTH);
-    }
-
-    private void disableDatesBeforTodaysDate(JDateChooser dateChooser) {
+    private void disableDatesBefogTodayDate(JDateChooser dateChooser) {
         dateChooser.setMinSelectableDate(Calendar.getInstance().getTime());
     }
 
@@ -151,13 +161,12 @@ public class BookingFlightPage extends JFrame {
 
 
     private void createFooterPanel(JPanel mainPanel) {
-        JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        JPanel footerPanel = ui.flowLayoutPanel(FlowLayout.CENTER, 20, 10);
 
         createFooterButtons(footerPanel);
 
-        footerPanel.add(backButton);
-        footerPanel.add(searchButton);
-        footerPanel.add(nextButton);
+        addButtonsToFooterPanel(footerPanel);
+
         mainPanel.add(footerPanel, BorderLayout.SOUTH);
     }
 
@@ -171,50 +180,84 @@ public class BookingFlightPage extends JFrame {
         createNextButton();
     }
 
+    private void createCurrencyConverterField(JPanel footerPanel) {
+        final JLabel converterLabel = ui.label("Currency");
+        final String[] values = {"IRR", "USD"};
+        exchangeRate = ui.dropdown(values, 100, 30);
+        footerPanel.add(converterLabel);
+        footerPanel.add(exchangeRate);
+    }
+
     private void createBackButton() {
-        backButton = ui.button("Back", 100, 30);
+        backButton = createButton("Back");
         goBackToHomePageAction();
     }
 
-    private void createSearchButton() {
-        searchButton = ui.button("Search", 100, 30);
+    private void goBackToHomePageAction() {
+        backButton.addActionListener(e -> {
+            final App app = new App();
+            app.run();
+            dispose();
+        });
+    }
 
+    private void createSearchButton() {
+        searchButton = createButton("Search");
         addActionToSearchButton();
     }
 
     private void addActionToSearchButton() {
-        searchButton.addActionListener(e -> {
-            // Perform searchFlights and display results in resultLabel
-            displayResultOfSearchFlightsInResultLabel();
+        searchButton.addActionListener(e -> performFlightSearchAndDisplayResults());
+    }
 
-            // TODO searchFlights flight
-            final FlightPlan searchFlightPlan = getFlightPlan();
+    private void performFlightSearchAndDisplayResults() {
+        displaySearchResultTitle();
 
-            final Object exchangeRate = currencyConverter.getSelectedItem();
+        final Object exchangeRate = this.exchangeRate.getSelectedItem();
 
-            flightSearchResult.showFlightsInfo(flightListService.searchFlights(searchFlightPlan), exchangeRate);
+        final List<Flight> searchFlights = flightListService.searchFlights(getFlightPlan());
 
-            System.out.println(flightSearchResult.getSelectedFlight());
+        flightSearchResult.showFlightsInfo(searchFlights, exchangeRate);
 
-            resultPanel.removeAll();
-            resultPanel.add(flightSearchResult);
-            // Refresh the result panel
-            resultPanel.revalidate();
-            resultPanel.repaint();
+        updateFlightSearchResults(flightSearchResult);
 
-            repaint();
-            revalidate();
+        enableNextButtonIfSearchResultsExist(searchFlights);
+    }
 
+    private void displaySearchResultTitle() {
+        final Object origin = originComboBox.getSelectedItem();
+        final Object destination = destinationComboBox.getSelectedItem();
+        final String title = format("Showing results for %s to %s ", origin, destination);
+        resultLabel.setText(title);
+    }
+
+    private void updateFlightSearchResults(FlightSearchResultPanel flightSearchResult) {
+        resultPanel.removeAll();
+        resultPanel.add(flightSearchResult);
+        resultPanel.repaint();
+    }
+
+    private void enableNextButtonIfSearchResultsExist(List<Flight> searchFlights) {
+        if (!searchFlights.isEmpty())
             nextButton.setEnabled(true);
-        });
+    }
+
+    private void createNextButton() {
+        nextButton = createButton("Next");
+        nextButton.setEnabled(false);
+        goToNextPageAction();
+    }
+
+    private void addButtonsToFooterPanel(JPanel footerPanel) {
+        footerPanel.add(backButton);
+        footerPanel.add(searchButton);
+        footerPanel.add(nextButton);
     }
 
     @NotNull
     private FlightPlan getFlightPlan() {
         final FlightLocation location = getFlightLocation();
-
         final FlightSchedule schedule = getFlightSchedule();
-
         return new FlightPlan(location, schedule);
     }
 
@@ -232,59 +275,52 @@ public class BookingFlightPage extends JFrame {
         return new FlightLocation(cityService.getCity(from), cityService.getCity(to));
     }
 
-    private void displayResultOfSearchFlightsInResultLabel() {
-        final String text = format("Showing results for %s to %s ",
-                originComboBox.getSelectedItem(),
-                destinationComboBox.getSelectedItem());
-
-        resultLabel.setText(text);
-    }
-
     private void goToNextPageAction() {
-        nextButton.addActionListener(e -> {
-            // Go to next page to book flight
-            final String selectedFlight = flightSearchResult.getSelectedFlight();
-            new ReservationInformationPage(flightListService.findFlight(selectedFlight),
-                    bookingReservation,
-                    cityService, (int) passengersSpinner.getValue()
-            );
-            dispose();
-        });
+        nextButton.addActionListener(e -> goToReservationInformationPage());
     }
 
-    private void createNextButton() {
-        nextButton = ui.button("Next", 100, 30);
-        nextButton.setEnabled(false);
-        goToNextPageAction();
+    private void goToReservationInformationPage() {
+        final Flight flight = getFlight();
+        new ReservationInformationPage(flight, bookingReservation, cityService, getTravelers());
+        dispose();
     }
 
-    private void goBackToHomePageAction() {
-        backButton.addActionListener(e -> {
-            // Go back to previous page
-            new App();
-            dispose();
-        });
+    private int getTravelers() {
+        return (int) passengersSpinner.getValue();
     }
 
-    private void createResultPanel(JPanel mainPanel) {
-        resultPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        resultPanel.setPreferredSize(new Dimension(800, 400));
-        JScrollPane scrollPane = new JScrollPane(resultPanel);
-        resultLabel = ui.label("No results to show");
+    private Flight getFlight() {
+        final String selectedFlight = flightSearchResult.getSelectedFlight();
+        validateFlightSelection(selectedFlight);
+        return flightListService.findFlight(selectedFlight);
+    }
 
-        // TODO show information
-        resultPanel.repaint();
-        resultPanel.add(resultLabel);
+    private void validateFlightSelection(String selectedFlight) {
+        if (selectedFlight == null)
+            ui.showMessageDialog(this, "Please select a flight to proceed.");
+    }
+
+    private JButton createButton(String buttonName) {
+        return ui.button(buttonName, 100, 30);
+    }
+
+    private void initializeResultPanel(JPanel mainPanel) {
+        JScrollPane scrollPane = initializeResultPanel();
         mainPanel.add(scrollPane, BorderLayout.CENTER);
     }
 
-    private void createCurrencyConverterField(JPanel footerPanel) {
-        final JLabel converterLabel = ui.label("Currency");
-        final String[] values = {"IRR", "USD"};
-        currencyConverter = ui.dropdown(values, 100, 30);
-        footerPanel.add(converterLabel);
-        footerPanel.add(currencyConverter);
+    private JScrollPane initializeResultPanel() {
+        createResultPanel();
+        JScrollPane scrollPane = ui.scrollPanel(resultPanel);
+        resultLabel = ui.label("No results to show");
+        resultPanel.add(resultLabel);
+        resultPanel.repaint();
+        return scrollPane;
     }
 
+    private void createResultPanel() {
+        resultPanel = ui.flowLayoutPanel(FlowLayout.CENTER, 20, 10);
+        resultPanel.setPreferredSize(new Dimension(800, 400));
+    }
 }
 
