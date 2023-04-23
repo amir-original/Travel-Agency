@@ -34,7 +34,7 @@ public class ReservationSQL {
             FIND_RESERVATION_BY_TICKET_NUMBER + "WHERE f.flight_number = ?";
 
 
-    public static void fillFlightTicket(Reservation reservation, PreparedStatement query) throws SQLException {
+    public static void fillOutReservationFields(Reservation reservation, PreparedStatement query) throws SQLException {
         query.setString(1, reservation.ticketNumber());
         query.setString(2, reservation.flightNumber());
         query.setString(3, reservation.passengerId());
@@ -42,16 +42,16 @@ public class ReservationSQL {
     }
 
 
-    public static Reservation buildFlightTicket(ResultSet rs) throws SQLException {
+    public static Reservation buildReservation(ResultSet rs) throws SQLException {
         final String ticket_number = rs.getString("ticket_number");
 
-        final ReservationInformation reservationInformation = getReservationInformation(rs);
+        final ReservationInformation reservationInformation = buildReservationInformation(rs);
 
-        return new Reservation(ticket_number, reservationInformation);
+        return reservationInformation.getReservation(ticket_number);
     }
 
     @NotNull
-    private static ReservationInformation getReservationInformation(ResultSet rs) throws SQLException {
+    private static ReservationInformation buildReservationInformation(ResultSet rs) throws SQLException {
         return new ReservationInformation(buildFlight(rs),
                 buildPassenger(rs),
                 rs.getInt("number_of_tickets"));

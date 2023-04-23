@@ -35,7 +35,7 @@ public class FlightSQL {
     public static final String FIND_FLIGHT_BY_FLIGHT_NUMBER_SQL
             = "SELECT * FROM flights WHERE flight_number = ?";
 
-    public static void filledFlightFields(Flight flight, PreparedStatement query) throws SQLException {
+    public static void filledOutFlightFields(Flight flight, PreparedStatement query) throws SQLException {
         query.setString(1, flight.flightNumber());
         query.setString(2, flight.from().name());
         query.setString(3, flight.to().name());

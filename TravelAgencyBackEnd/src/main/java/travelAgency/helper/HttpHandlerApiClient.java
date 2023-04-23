@@ -10,19 +10,23 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class HttpRequestHandler implements HttpRequestApi {
+public class HttpHandlerApiClient implements HttpApiClient {
 
-    private final Gson gson = new Gson();
+    private final Gson gson;
 
     private HttpRequest.Builder method;
 
+    public HttpHandlerApiClient() {
+        this.gson = new Gson();
+    }
+
     @Override
-    public HttpRequestHandler target(String baseUri) {
+    public HttpHandlerApiClient target(String baseUri) {
         try {
             requestBuilder().uri(new URI(baseUri));
             return this;
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException("your base uri is incorrect! " + baseUri);
         }
     }
 
@@ -30,7 +34,7 @@ public class HttpRequestHandler implements HttpRequestApi {
     public <T> T GET(Class<T> responseType) {
         final HttpRequest httpRequest = method.GET().build();
         final String body = getHttpResponse(httpRequest).body();
-        return getResponse(body,responseType);
+        return getResponse(body, responseType);
     }
 
     public <T> T getResponse(String json, Type responseType) {

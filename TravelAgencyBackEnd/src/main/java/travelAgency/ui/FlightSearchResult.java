@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-import static travelAgency.helper.PriceFormat.formatPriceWithSymbol;
+import static travelAgency.helper.PriceFormatter.formatPriceWithSymbol;
 
 public class FlightSearchResult extends JPanel {
 

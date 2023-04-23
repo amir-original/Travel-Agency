@@ -28,16 +28,19 @@ public class App {
     private static FlightListService flightListService;
 
     public App() {
-        setup();
         run();
     }
 
     public static void main(String[] args) {
-        setup();
         run();
     }
 
     private static void run() {
+        setup();
+        buildHomePage();
+    }
+
+    private static void buildHomePage() {
         new HomePage(cityService, reservationListService, flightListService, bookingReservation);
     }
 

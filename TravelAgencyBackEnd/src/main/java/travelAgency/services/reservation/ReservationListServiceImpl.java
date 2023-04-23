@@ -6,7 +6,6 @@ import travelAgency.domain.reservation.Reservation;
 import travelAgency.services.flight.FlightListService;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class ReservationListServiceImpl implements ReservationListService {
 
@@ -19,7 +18,7 @@ public class ReservationListServiceImpl implements ReservationListService {
     public ReservationListServiceImpl(ReservationListRepository reservations, FlightListService flights) {
         this.reservations = reservations;
         this.flights = flights;
-        this.searchEngine = new SearchReservationEngine(getAllReservations());
+        this.searchEngine = new SearchReservationEngine(this.reservations.getReservations());
     }
 
     @Override
@@ -36,6 +35,11 @@ public class ReservationListServiceImpl implements ReservationListService {
     }
 
     @Override
+    public int getAvailableSeats(String flightNumber) {
+        return flights.getTotalCapacity(flightNumber) - getTotalBookedSeats(flightNumber);
+    }
+
+    @Override
     public int getTotalBookedSeats(String flightNumber) {
         return this.reservations.getReservations().isEmpty() ? NO_BOOKINGS :
                 calculateTotalBookedSeats(flightNumber);
@@ -47,14 +51,4 @@ public class ReservationListServiceImpl implements ReservationListService {
                 .mapToInt(Reservation::travelers)
                 .sum();
     }
-
-    @Override
-    public int getAvailableSeats(String flightNumber) {
-        return flights.getTotalCapacity(flightNumber) - getTotalBookedSeats(flightNumber);
-    }
-
-    private List<Reservation> getAllReservations() {
-        return reservations.getReservations();
-    }
-
 }

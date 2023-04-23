@@ -1,17 +1,17 @@
 package travelAgency.dao.api;
 
-import travelAgency.helper.HttpRequestHandler;
+import travelAgency.helper.HttpHandlerApiClient;
 import travelAgency.helper.PropertiesReader;
 
 public class ExchangeRateDAOImpl implements ExchangeRateDAO {
 
     public static final String API = "app.api.exchangeRate.url";
-    private final HttpRequestHandler request;
+    private final HttpHandlerApiClient request;
     private String baseUri;
 
     public ExchangeRateDAOImpl() {
         readConfig();
-        request = new HttpRequestHandler();
+        request = new HttpHandlerApiClient();
     }
 
     @Override

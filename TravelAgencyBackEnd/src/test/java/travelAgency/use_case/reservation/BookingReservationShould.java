@@ -2,11 +2,15 @@ package travelAgency.use_case.reservation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import travelAgency.dao.database.passenger.PassengerRepository;
 import travelAgency.domain.exceptions.*;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.reservation.ReservationInformation;
 import travelAgency.services.BookingReservation;
+import travelAgency.services.flight.FlightAvailability;
+import travelAgency.services.flight.FlightListService;
 import travelAgency.services.flight.FlightListServiceImpl;
+import travelAgency.services.reservation.ReservationListService;
 import travelAgency.services.reservation.ReservationListServiceImpl;
 import travelAgency.services.reservation.TicketNumberGenerator;
 import travelAgency.services.flight.FlightAvailabilityImpl;
@@ -30,13 +34,13 @@ public class BookingReservationShould {
     void setUp() {
         TicketNumberGenerator ticketNumberGenerator = new FakeTicketNumberGenerator();
         FakeReservationList fakeBookingList = new FakeReservationList();
-        final FlightListServiceImpl flightService = new FlightListServiceImpl(new FakeFlight());
-        final FlightAvailabilityImpl flightAvailability =
-                new FlightAvailabilityImpl(flightService, new ReservationListServiceImpl(fakeBookingList,flightService));
+        FakeFlight fakeFlight = new FakeFlight();
+        FlightListService flightService = new FlightListServiceImpl(fakeFlight);
+        ReservationListService reservationListService = new ReservationListServiceImpl(fakeBookingList, flightService);
+        FlightAvailability flightAvailability = new FlightAvailabilityImpl(flightService, reservationListService);
+        PassengerRepository passengerService = new FakePassenger();
 
-        app = new BookingReservation(fakeBookingList, flightAvailability,
-                new FakePassenger(), ticketNumberGenerator
-        );
+        app = new BookingReservation(fakeBookingList, flightAvailability, passengerService, ticketNumberGenerator);
     }
 
 
@@ -95,7 +99,7 @@ public class BookingReservationShould {
     }
 
     @Test
-    void throw_NotEnoughCapacityException_when_booking_a_flight_if_there_are_insufficient_seats_available() {
+    void throw_NotEnoughCapacityException_if_there_are_not_enough_seats_available_when_booking_a_flight() {
         booking30seats();
 
         assertThatExceptionOfType(NotEnoughCapacityException.class)

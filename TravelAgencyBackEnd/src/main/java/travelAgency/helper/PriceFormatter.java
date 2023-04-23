@@ -2,7 +2,7 @@ package travelAgency.helper;
 
 import travelAgency.domain.flight.currency.Money;
 
-public class PriceFormat {
+public class PriceFormatter {
 
     public static String formatPrice(double price) {
         return String.format("%,.2f", price);

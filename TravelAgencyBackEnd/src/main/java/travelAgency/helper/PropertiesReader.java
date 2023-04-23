@@ -29,7 +29,9 @@ public class PropertiesReader {
         try (InputStream configFile = new FileInputStream(getPath())) {
             properties.load(configFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new MissingPropertyException();
+        }catch (NullPointerException e){
+            throw new InvalidPropertiesFileException("The resource not found!,enter a correct file name!");
         }
     }
 

@@ -28,7 +28,7 @@ public class ReservationListRepositoryImpl implements ReservationListRepository 
     @Override
     public void book(Reservation reservation) {
         try (final PreparedStatement query = createQuery(INSERT_RESERVATION_SQL)) {
-            fillFlightTicket(reservation, query);
+            fillOutReservationFields(reservation, query);
             query.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,7 +61,7 @@ public class ReservationListRepositoryImpl implements ReservationListRepository 
     private Reservation getReservationIfExist(ResultSet rs) throws SQLException {
         Reservation result = null;
         if (rs.next()) {
-            result = buildFlightTicket(rs);
+            result = buildReservation(rs);
         }
         return result;
     }
@@ -80,7 +80,7 @@ public class ReservationListRepositoryImpl implements ReservationListRepository 
 
     private void findReservationsIfExists(List<Reservation> result, ResultSet resultSet) throws SQLException {
         while (resultSet.next()) {
-            result.add(buildFlightTicket(resultSet));
+            result.add(buildReservation(resultSet));
         }
     }
 
