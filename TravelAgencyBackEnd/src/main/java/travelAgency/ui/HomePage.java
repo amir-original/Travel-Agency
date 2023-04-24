@@ -1,5 +1,6 @@
 package travelAgency.ui;
 
+import travelAgency.dao.api.ExchangeRateDAO;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.city.CityService;
 import travelAgency.services.reservation.ReservationListService;
@@ -16,21 +17,24 @@ public class HomePage extends JFrame {
     private final ReservationListService reservationListService;
     private final FlightListService flightListService;
     private final BookingReservation bookingReservation;
+    private final ExchangeRateDAO exchangeRateDAO;
     private JButton bookingFlightButton, bookingListButton;
 
     private final UiComponents uiComponents = new UiComponents();
 
 
-    public HomePage(CityService cityService,
-                    ReservationListService reservationListService,
+    public HomePage(ReservationListService reservationListService,
                     FlightListService flightListService,
-                    BookingReservation bookingReservation) {
+                    BookingReservation bookingReservation,
+                    ExchangeRateDAO exchangeRateDAO,
+                    CityService cityService) {
 
         this.cityService = cityService;
         this.reservationListService = reservationListService;
         this.flightListService = flightListService;
         this.bookingReservation = bookingReservation;
         createHomePage();
+        this.exchangeRateDAO = exchangeRateDAO;
     }
 
 
@@ -105,7 +109,7 @@ public class HomePage extends JFrame {
 
     private void goToFlightBookingPage() {
         bookingFlightButton.addActionListener(e -> {
-            new BookingFlightPage(cityService, reservationListService, flightListService,bookingReservation);
+            new BookingFlightPage(cityService, flightListService,bookingReservation, exchangeRateDAO);
             dispose();
         });
     }

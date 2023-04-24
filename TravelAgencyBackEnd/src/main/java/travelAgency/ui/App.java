@@ -1,5 +1,6 @@
 package travelAgency.ui;
 
+import travelAgency.dao.api.ExchangeRateDAOImpl;
 import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
 import travelAgency.dao.database.flight.FlightRepository;
 import travelAgency.dao.database.flight.FlightRepositoryImpl;
@@ -24,6 +25,18 @@ public class App {
     private static CityService cityService;
     private static ReservationListService reservationListService;
     private static FlightListService flightListService;
+    private final ExchangeRateDAOImpl exchangeRateDAO;
+
+    public App() {
+        exchangeRateDAO = new ExchangeRateDAOImpl();
+        cityService = new CityServiceImpl();
+        final MySQLDbConnection db = new MySQLDbConnection();
+        final ReservationListRepository bookings = new ReservationListRepositoryImpl(db);
+        final FlightRepository flights = new FlightRepositoryImpl(db);
+        initBookingReservation(db, bookings, flights);
+        flightListService = new FlightListServiceImpl(flights);
+        reservationListService = new ReservationListServiceImpl(bookings, flightListService);
+    }
 
 
     public static void main(String[] args) {
@@ -32,24 +45,11 @@ public class App {
     }
 
     public void run() {
-        setup();
         buildHomePage();
     }
 
     private  void buildHomePage() {
-        new HomePage(cityService, reservationListService, flightListService, bookingReservation);
-    }
-
-    private  void setup() {
-        cityService = new CityServiceImpl();
-        final MySQLDbConnection db = new MySQLDbConnection();
-        final ReservationListRepository bookings = new ReservationListRepositoryImpl(db);
-        final FlightRepository flights = new FlightRepositoryImpl(db);
-
-        initBookingReservation(db, bookings, flights);
-
-        flightListService = new FlightListServiceImpl(flights);
-        reservationListService = new ReservationListServiceImpl(bookings, flightListService);
+        new HomePage(reservationListService, flightListService, bookingReservation, exchangeRateDAO, cityService);
     }
 
     private static void initBookingReservation(MySQLDbConnection db, ReservationListRepository bookings, FlightRepository flights) {

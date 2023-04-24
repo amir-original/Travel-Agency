@@ -1,14 +1,12 @@
 package travelAgency.ui;
 
 import com.toedter.calendar.JDateChooser;
-import net.sourceforge.jdatepicker.JDatePicker;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
-import travelAgency.services.city.CityService;
-import travelAgency.services.city.CityServiceImpl;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class UiComponents {
@@ -99,6 +97,37 @@ public class UiComponents {
 
     public JTextField textInput(int columns){
         return new JTextField(columns);
+    }
+
+    private void createBackButton(JFrame frame) {
+        final JButton button = button("Back",100,30);
+        goBackToHomePageAction(button,frame);
+    }
+
+
+    public JTable createReadOnlyTable() {
+        JTable table = new JTable();
+        final DefaultTableModel tableModel = createReadOnlyTableModel();
+        table.removeAll();
+        table.setModel(tableModel);
+        return table;
+    }
+
+    public DefaultTableModel createReadOnlyTableModel(){
+        return new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+    }
+
+    private void goBackToHomePageAction(JButton button,JFrame frame) {
+        button.addActionListener(e -> {
+            final App app = new App();
+            app.run();
+            frame.dispose();
+        });
     }
 
 }

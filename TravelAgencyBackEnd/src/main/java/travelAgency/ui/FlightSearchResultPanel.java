@@ -1,7 +1,7 @@
 package travelAgency.ui;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.dao.api.ExchangeRateDAOImpl;
+import travelAgency.dao.api.ExchangeRateDAO;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.currency.Money;
 import travelAgency.services.currency_exchange.CurrencyConverterService;
@@ -9,9 +9,9 @@ import travelAgency.services.currency_exchange.CurrencyConverterServiceImpl;
 import travelAgency.services.currency_exchange.currency_api.ExchangeRateService;
 import travelAgency.services.currency_exchange.currency_api.IRRToUSDConverter;
 import travelAgency.services.currency_exchange.currency_api.USDToIRRConverter;
-import travelAgency.services.reservation.ReservationListService;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -19,73 +19,69 @@ import java.util.List;
 
 import static travelAgency.helper.PriceFormatter.formatPriceWithSymbol;
 
+
 public class FlightSearchResultPanel extends JPanel {
 
-    private final ReservationListService reservationListService;
+    private final ExchangeRateDAO exchangeRateDAO;
     private DefaultTableModel tableModel;
     private String selectFlightNumber;
+    private final UiComponents ui = new UiComponents();
 
-    public FlightSearchResultPanel(ReservationListService reservationService) {
-
-        this.reservationListService = reservationService;
+    public FlightSearchResultPanel(ExchangeRateDAO exchangeRateDAO) {
+        this.exchangeRateDAO = exchangeRateDAO;
     }
 
-    public void showFlightsInfo(List<Flight> searchFlights,Object exchangeRate) {
+    public void showFlightsInfo(List<Flight> searchFlights, Object exchangeRate) {
 
         setLayout(new BorderLayout());
-        // create table and set model
-        JTable table = createTable();
-        table.removeAll();
 
-        setupTableHeader();
-        table.setModel(tableModel);
+        JTable table = createTableAndSetModel();
 
         removeAll();
         add(new JScrollPane(table), BorderLayout.CENTER);
 
-        // add flight data to table model
-        initTableRows(searchFlights, exchangeRate);
+        addFlightsToTable(searchFlights, exchangeRate);
 
-        // add click listener to table rows
-        getSelectFlight(table);
+        addClickListenerToTableRows(table);
 
-        // disable cell editing
-        table.setDefaultEditor(Object.class, null);
+        disableCellEditing(table);
 
-        // set cell alignment
-        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
-        table.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
+        setCellAlignment(table);
 
-        // set column widths
-        setColumns(table);
+        setColumnWidths(table);
 
-        // set table dimensions to fit panel
         setup(table);
 
         repaint();
         revalidate();
     }
 
+    private void disableCellEditing(JTable table) {
+        table.setDefaultEditor(Object.class, null);
+    }
+
+    private void setCellAlignment(JTable table) {
+        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        table.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
+    }
+
     @NotNull
-    private JTable createTable() {
+    private JTable createTableAndSetModel() {
         JTable table = new JTable();
-        tableModel = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        tableModel = ui.createReadOnlyTableModel();
+        setupTableHeader();
+        table.removeAll();
+        table.setModel(tableModel);
         return table;
     }
 
-    private void initTableRows(List<Flight> searchFlights, Object exchangeRate) {
-        for (Flight flight : searchFlights) {
-            initTableRow(exchangeRate, flight);
-        }
+    private void addFlightsToTable(List<Flight> searchFlights, Object exchangeRate) {
+        for (Flight flight : searchFlights)
+            addFlightToRow(exchangeRate, flight);
     }
 
-    private void initTableRow(Object exchangeRate, Flight flight) {
+    private void addFlightToRow(Object exchangeRate, Flight flight) {
         Object[] row = new Object[5];
         row[0] = flight.from();
         row[1] = flight.to();
@@ -97,15 +93,17 @@ public class FlightSearchResultPanel extends JPanel {
     }
 
     private void initPrice(Object exchangeRate, Flight flight, Object[] row) {
-        final ExchangeRateDAOImpl exchangeRateDAO = new ExchangeRateDAOImpl();
-        if (exchangeRate.equals("IRR")){
-            final USDToIRRConverter exchangeRateService = new USDToIRRConverter(exchangeRateDAO);
-            row[4] = formatPriceWithSymbol(getMoney(flight, currencyConverter(exchangeRateService)));
+        if (exchangeRate.equals("IRR")) {
+            row[4] = getFormatPriceWithSymbol(flight, new USDToIRRConverter(exchangeRateDAO));
         } else if (exchangeRate.equals("USD")) {
-            final IRRToUSDConverter exchangeRateService = new IRRToUSDConverter(exchangeRateDAO);
-            row[4] = formatPriceWithSymbol(getMoney(flight, currencyConverter(exchangeRateService)));
+            row[4] = getFormatPriceWithSymbol(flight, new IRRToUSDConverter(exchangeRateDAO));
         }
     }
+
+    private String getFormatPriceWithSymbol(Flight flight, ExchangeRateService exchangeRateService) {
+        return formatPriceWithSymbol(getMoney(flight, currencyConverter(exchangeRateService)));
+    }
+
 
     private Money getMoney(Flight flight, CurrencyConverterService currencyConverterService) {
         return currencyConverterService.convert(flight.price());
@@ -127,24 +125,28 @@ public class FlightSearchResultPanel extends JPanel {
         table.setPreferredSize(tableSize);
     }
 
-    private void setColumns(JTable table) {
-        table.getColumnModel().getColumn(0).setPreferredWidth(150);
-        table.getColumnModel().getColumn(1).setPreferredWidth(150);
-        table.getColumnModel().getColumn(2).setPreferredWidth(100);
-        table.getColumnModel().getColumn(3).setPreferredWidth(100);
-        table.getColumnModel().getColumn(4).setPreferredWidth(150);
+    private void setColumnWidths(JTable table) {
+        for (int i = 0; i < 5; i++)
+            table.getColumnModel().getColumn(i).setPreferredWidth(150);
     }
 
-    private void getSelectFlight(JTable table) {
-        table.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                int selectedRow = table.getSelectedRow();
-                if (selectedRow != -1) {
-                    // get the flight number from the selected row and store it in the field
-                    selectFlightNumber = (String) tableModel.getValueAt(selectedRow, 2);
-                }
-            }
+    private void addClickListenerToTableRows(JTable table) {
+        table.getSelectionModel().addListSelectionListener(event -> {
+            selectFlightNumberIfRowSelected(event, table.getSelectedRow());
         });
+    }
+
+    private void selectFlightNumberIfRowSelected(ListSelectionEvent event, int selectedRow) {
+        if (!event.getValueIsAdjusting() && !isRowSelected(selectedRow))
+            selectFlightNumber = getSelectFlightNumberValue(selectedRow);
+    }
+
+    private boolean isRowSelected(int selectedRow) {
+        return selectedRow == -1;
+    }
+
+    private String getSelectFlightNumberValue(int selectedRow) {
+        return (String) tableModel.getValueAt(selectedRow, 2);
     }
 
     @NotNull
@@ -152,7 +154,6 @@ public class FlightSearchResultPanel extends JPanel {
         return new CurrencyConverterServiceImpl(exchangeRateService);
     }
 
-    // get selected flights from table
     public String getSelectedFlight() {
         return selectFlightNumber;
     }
