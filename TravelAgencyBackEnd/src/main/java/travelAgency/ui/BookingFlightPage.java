@@ -2,13 +2,13 @@ package travelAgency.ui;
 
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
+import travelAgency.dao.api.ExchangeRateDAO;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightLocation;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.flight.FlightSchedule;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.city.CityService;
-import travelAgency.services.reservation.ReservationListService;
 import travelAgency.services.flight.FlightListService;
 
 import javax.swing.*;
@@ -39,14 +39,14 @@ public class BookingFlightPage extends JFrame {
 
 
     public BookingFlightPage(CityService cityService,
-                             ReservationListService reservationListService,
                              FlightListService flightListService,
-                             BookingReservation bookingReservation) {
+                             BookingReservation bookingReservation,
+                            ExchangeRateDAO exchangeRateDAO) {
 
         this.cityService = cityService;
         this.flightListService = flightListService;
         this.bookingReservation = bookingReservation;
-        flightSearchResult = new FlightSearchResultPanel(reservationListService);
+        flightSearchResult = new FlightSearchResultPanel(exchangeRateDAO);
 
         createBookingFlightPage();
     }
@@ -100,9 +100,9 @@ public class BookingFlightPage extends JFrame {
     }
 
     private void createHeaderPanelFields(JPanel headerPanel) {
-        createFromField(headerPanel);
+        createOriginField(headerPanel);
 
-        createToField(headerPanel);
+        createDestinationField(headerPanel);
 
         createDepartureField(headerPanel);
 
@@ -111,15 +111,15 @@ public class BookingFlightPage extends JFrame {
         createPassengersField(headerPanel);
     }
 
-    private void createFromField(JPanel headerPanel) {
-        originComboBox = createAndAddCityDropdownToPanel(headerPanel, "From:");
+    private void createOriginField(JPanel headerPanel) {
+        originComboBox = AddCityDropdownToPanel(headerPanel, "From:");
     }
 
-    private void createToField(JPanel headerPanel) {
-        destinationComboBox = createAndAddCityDropdownToPanel(headerPanel, "To:");
+    private void createDestinationField(JPanel headerPanel) {
+        destinationComboBox = AddCityDropdownToPanel(headerPanel, "To:");
     }
 
-    private JComboBox<String> createAndAddCityDropdownToPanel(JPanel headerPanel, String labelText) {
+    private JComboBox<String> AddCityDropdownToPanel(JPanel headerPanel, String labelText) {
         JLabel label = ui.label(labelText);
         JComboBox<String> cityDropdown = getAirportListsDropdown();
         headerPanel.add(label);
