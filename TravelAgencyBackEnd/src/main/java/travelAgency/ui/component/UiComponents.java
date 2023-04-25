@@ -118,6 +118,12 @@ public class UiComponents {
         return table;
     }
 
+    public JPanel createBoxLayoutPanel(int axis) {
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel,axis));
+        return mainPanel;
+    }
+
     public DefaultTableModel createReadOnlyTableModel(){
         return new DefaultTableModel() {
             @Override

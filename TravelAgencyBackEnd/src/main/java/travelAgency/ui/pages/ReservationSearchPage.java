@@ -2,12 +2,16 @@ package travelAgency.ui.pages;
 
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import travelAgency.services.reservation.ReservationListService;
+import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import static java.util.Arrays.stream;
 
 public class ReservationSearchPage extends JFrame implements ActionListener {
     private JPanel flightNumberPanel;
@@ -28,32 +32,36 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
         init();
     }
 
-    private void init() {
-        JPanel mainPanel = createBoxLayoutPanel();
+    private void setup() {
+        setTitle("Reservation Search");
+        setSize(900, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+    }
 
+    private void init() {
+        JPanel mainPanel = ui.createBoxLayoutPanel(BoxLayout.Y_AXIS);
+        var components = createMainPanelComponents();
+        stream(components).forEach(mainPanel::add);
+
+        add(mainPanel);
+        setVisible(true);
+    }
+
+    private Component[] createMainPanelComponents() {
         JPanel searchPanel = createSearchDropdownPanel();
 
         createReservationNumberPanelField();
 
         createFlightNumberPanelFields();
 
-        // hide fields initially
         hideFlightNumberPanel();
 
-        JPanel buttonPanel = new JPanel(new FlowLayout());
-        createAndAddButtons(buttonPanel);
+        final JPanel buttonPanel = createButtonPanel();
 
-        JScrollPane resultTableScrollPane = createResultTable();
+        JScrollPane resultTablePanel = createResultTable();
 
-        mainPanel.add(searchPanel);
-        mainPanel.add(reservationNumberPanel);
-        mainPanel.add(flightNumberPanel);
-        mainPanel.add(buttonPanel);
-        mainPanel.add(resultTableScrollPane);
-
-        add(mainPanel);
-
-        setVisible(true);
+        return new Component[]{searchPanel, reservationNumberPanel, flightNumberPanel, buttonPanel, resultTablePanel};
     }
 
     @NotNull
@@ -68,12 +76,8 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
         return new JScrollPane(resultTable);
     }
 
-    private void hideFlightNumberPanel() {
-        flightNumberPanel.setVisible(false);
-    }
-
     private void createFlightNumberPanelFields() {
-        flightNumberPanel = new JPanel(new FlowLayout());
+        flightNumberPanel = ui.flowLayoutPanel();
         flightNumberField = createFlightPanelField("Flight Number:");
         firstNameField = createFlightPanelField("First Name:");
         createAndAddBirthdayField();
@@ -81,21 +85,21 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
 
     private void createAndAddBirthdayField() {
         JLabel birthdayLabel = ui.label("Birthday (yyyy-mm-dd):");
-        birthdayField = ui.dateChooser(150,20);
+        birthdayField = ui.dateChooser(150, 20);
         flightNumberPanel.add(birthdayLabel);
         flightNumberPanel.add(birthdayField);
     }
 
     private JTextField createFlightPanelField(String fieldName) {
-       return createAndAddField(flightNumberPanel,fieldName);
+        return createAndAddField(flightNumberPanel, fieldName);
     }
 
     private void createReservationNumberPanelField() {
         reservationNumberPanel = ui.flowLayoutPanel();
-        reservationNumberField = createAndAddField(reservationNumberPanel,"Reservation Number:");
+        reservationNumberField = createAndAddField(reservationNumberPanel, "Reservation Number:");
     }
 
-    private JTextField createAndAddField(JPanel panel,String fieldName) {
+    private JTextField createAndAddField(JPanel panel, String fieldName) {
         final JLabel label = ui.label(fieldName);
         final JTextField field = ui.textInput(10);
         panel.add(label);
@@ -119,20 +123,16 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
         searchTypeComboBox.addActionListener(this);
     }
 
-    @NotNull
-    private JPanel createBoxLayoutPanel() {
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        return mainPanel;
-    }
 
-    private void createAndAddButtons(JPanel buttonPanel) {
+    private JPanel createButtonPanel() {
+        JPanel buttonPanel = new JPanel(new FlowLayout());
         createSearchButton();
         createCancelButton();
         createBackToHomeButton();
         buttonPanel.add(backButton);
         buttonPanel.add(searchButton);
         buttonPanel.add(cancelButton);
+        return buttonPanel;
     }
 
     private void createBackToHomeButton() {
@@ -151,53 +151,90 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
         searchButton.addActionListener(this);
     }
 
-    private void setup() {
-        setTitle("Reservation Search");
-        setSize(900, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == searchButton) {
-            // perform search based on selected search type
-            String searchType = (String) searchTypeComboBox.getSelectedItem();
-            if (searchType.equals("Reservation Number")) {
-                String reservationNumber = reservationNumberField.getText();
-                // perform search by reservation number
-                // ...
-            } else if (searchType.equals("Flight Number and Passenger Information")) {
-                String flightNumber = flightNumberField.getText();
-                String firstName = firstNameField.getText();
-                String birthday = birthdayField.getDateFormatString();
-                // perform search by flight number and passenger information
-                // ...
-            }
-        } else if (e.getSource() == cancelButton) {
-            // cancel selected flight
-            // ...
-        } else if (e.getSource() == backButton) {
-            // go back to home page
-            //HomePage homePage = new HomePage();
-            dispose();
-        } else if (e.getSource() == searchTypeComboBox) {
-            // handle search type selection changes
-            String selectedSearchType = (String) searchTypeComboBox.getSelectedItem();
-            if (selectedSearchType.equals("Reservation Number")) {
-
-                // hide flight number panel and passenger information fields
-                reservationNumberPanel.setVisible(true);
-                hideFlightNumberPanel();
-                repaint();
-            } else if (selectedSearchType.equals("Flight Number and Passenger Information")) {
-                System.out.println("Im here");
-                // show flight number panel and passenger information fields
-                flightNumberPanel.setVisible(true);
-                reservationNumberPanel.setVisible(false);
-                repaint();
-            }
+        final Object source = e.getSource();
+        String searchType = getSelectedSearchType();
+        if (source == searchButton) {
+            performSearch(searchType);
+        } else if (source == cancelButton) {
+            cancelSelectedFlight();
+        } else if (source == backButton) {
+            goBackToHomePage();
+        } else if (source == searchTypeComboBox) {
+            handleSearchTypeSelectionChanges(searchType);
         }
+    }
+
+    private void performSearch(String searchType) {
+        if (isSearchByReservationNumber(searchType)) {
+            performSearchByReservationNumber();
+        } else if (isSearchByFlightAndPassengerInformation(searchType)) {
+            performSearchByFlightNumberAndPassengerInformation();
+        }
+    }
+
+    private void performSearchByFlightNumberAndPassengerInformation() {
+        String flightNumber = flightNumberField.getText();
+        String firstName = firstNameField.getText();
+        String birthday = birthdayField.getDateFormatString();
+        // perform search by flight number and passenger information
+        // ...
+    }
+
+    private void performSearchByReservationNumber() {
+        String reservationNumber = reservationNumberField.getText();
+        // perform search by reservation number
+        // ...
+    }
+
+    private void goBackToHomePage() {
+        App app = new App();
+        dispose();
+    }
+
+    private void cancelSelectedFlight() {
+        // cancel selected flight
+        // ...
+    }
+
+    private void handleSearchTypeSelectionChanges(String searchType) {
+        if (isSearchByReservationNumber(searchType)) {
+            showReservationNumberPanel();
+            hideFlightNumberPanel();
+        } else if (isSearchByFlightAndPassengerInformation(searchType)) {
+            showFlightNumberPanel();
+            hideReservationNumberPanel();
+        }
+    }
+
+    private boolean isSearchByReservationNumber(String selectedSearchType) {
+        return selectedSearchType.equals("Reservation Number");
+    }
+
+    private boolean isSearchByFlightAndPassengerInformation(String searchType) {
+        return searchType.equals("Flight Number and Passenger Information");
+    }
+
+    @Nullable
+    private String getSelectedSearchType() {
+        return (String) searchTypeComboBox.getSelectedItem();
+    }
+
+    private void showReservationNumberPanel() {
+        reservationNumberPanel.setVisible(true);
+    }
+
+    private void hideFlightNumberPanel() {
+        flightNumberPanel.setVisible(false);
+    }
+
+    private void showFlightNumberPanel() {
+        flightNumberPanel.setVisible(true);
+    }
+
+    private void hideReservationNumberPanel() {
+        reservationNumberPanel.setVisible(false);
     }
 }
 
