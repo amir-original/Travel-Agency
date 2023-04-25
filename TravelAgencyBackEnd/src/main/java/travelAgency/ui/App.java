@@ -18,18 +18,19 @@ import travelAgency.services.reservation.ReservationListService;
 import travelAgency.services.reservation.ReservationListServiceImpl;
 import travelAgency.services.reservation.TicketNumberGenerator;
 import travelAgency.services.reservation.TicketNumberGeneratorImpl;
+import travelAgency.ui.pages.HomePage;
 
 public class App {
 
-    private static BookingReservation bookingReservation;
-    private static CityService cityService;
-    private static ReservationListService reservationListService;
-    private static FlightListService flightListService;
+    private  BookingReservation bookingReservation;
+    private final CityService cityService;
+    private final ReservationListService reservationListService;
+    private final FlightListService flightListService;
     private final ExchangeRateDAOImpl exchangeRateDAO;
 
     public App() {
-        exchangeRateDAO = new ExchangeRateDAOImpl();
-        cityService = new CityServiceImpl();
+        this.exchangeRateDAO = new ExchangeRateDAOImpl();
+        this.cityService = new CityServiceImpl();
         final MySQLDbConnection db = new MySQLDbConnection();
         final ReservationListRepository bookings = new ReservationListRepositoryImpl(db);
         final FlightRepository flights = new FlightRepositoryImpl(db);
@@ -52,7 +53,7 @@ public class App {
         new HomePage(reservationListService, flightListService, bookingReservation, exchangeRateDAO, cityService);
     }
 
-    private static void initBookingReservation(MySQLDbConnection db, ReservationListRepository bookings, FlightRepository flights) {
+    private void initBookingReservation(MySQLDbConnection db, ReservationListRepository bookings, FlightRepository flights) {
         PassengerRepository passengers = new PassengerRepositoryImpl(db);
         TicketNumberGenerator ticketNumberGenerator = new TicketNumberGeneratorImpl();
         final FlightAvailabilityImpl flightAvailability =

@@ -1,4 +1,4 @@
-package travelAgency.ui;
+package travelAgency.ui.pages;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.dao.api.ExchangeRateDAO;
@@ -9,6 +9,7 @@ import travelAgency.services.currency_exchange.CurrencyConverterServiceImpl;
 import travelAgency.services.currency_exchange.currency_api.ExchangeRateService;
 import travelAgency.services.currency_exchange.currency_api.IRRToUSDConverter;
 import travelAgency.services.currency_exchange.currency_api.USDToIRRConverter;
+import travelAgency.ui.component.UiComponents;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

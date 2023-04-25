@@ -1,10 +1,11 @@
-package travelAgency.ui;
+package travelAgency.ui.pages;
 
 import travelAgency.dao.api.ExchangeRateDAO;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.city.CityService;
 import travelAgency.services.reservation.ReservationListService;
 import travelAgency.services.flight.FlightListService;
+import travelAgency.ui.component.UiComponents;
 
 import javax.swing.*;
 import java.awt.*;
@@ -102,7 +103,7 @@ public class HomePage extends JFrame {
 
     private void goToBookingListPage() {
         bookingListButton.addActionListener(e -> {
-            new BookingListPage(reservationListService);
+            new ReservationSearchPage(reservationListService);
             dispose();
         });
     }

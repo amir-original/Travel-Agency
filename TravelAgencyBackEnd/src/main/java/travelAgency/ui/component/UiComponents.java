@@ -1,9 +1,10 @@
-package travelAgency.ui;
+package travelAgency.ui.component;
 
 import com.toedter.calendar.JDateChooser;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
+import travelAgency.ui.App;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -75,6 +76,10 @@ public class UiComponents {
 
     public JPanel flowLayoutPanel(int align,int hgap,int vgap){
        return panel(new FlowLayout(align,hgap,vgap));
+    }
+
+    public JPanel flowLayoutPanel(){
+        return panel(new FlowLayout());
     }
 
     public JPanel panel(LayoutManager layoutManager){

@@ -1,4 +1,4 @@
-package travelAgency.ui;
+package travelAgency.ui.pages;
 
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
@@ -8,7 +8,8 @@ import travelAgency.domain.passenger.Passenger;
 import travelAgency.domain.passenger.PassengerBuilder;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.services.BookingReservation;
-import travelAgency.services.city.CityService;
+import travelAgency.ui.App;
+import travelAgency.ui.component.UiComponents;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-public class ReservationInformationPage extends JFrame {
+public class BookingInformationPage extends JFrame {
 
 
     public static final String BOOKING_SUCCESSFUL = "Booking successful!";
@@ -25,7 +26,7 @@ public class ReservationInformationPage extends JFrame {
     private final Flight selectFlight;
     private final BookingReservation reservationListService;
     private final int travelers;
-    private UiComponents ui;
+    private final UiComponents ui;
     private JTextField passportNumber;
     private JTextField firstName;
     private JTextField lastName;
@@ -35,15 +36,13 @@ public class ReservationInformationPage extends JFrame {
     private JTextField address;
     private JTextField city;
 
-    public ReservationInformationPage(Flight flight, BookingReservation reservationListService, CityService cityService, int travelers) {
+    public BookingInformationPage(Flight flight, BookingReservation reservationListService, int travelers) {
         selectFlight = flight;
         this.reservationListService = reservationListService;
         this.travelers = travelers;
+        this.ui = new UiComponents();
         setupPage();
         createComponentsAndAddToPage();
-
-        pack();
-        setVisible(true);
     }
 
     private void setupPage() {
@@ -52,7 +51,8 @@ public class ReservationInformationPage extends JFrame {
         setSize(900, 800);
         setLayout(new BorderLayout());
         setResizable(false);
-        this.ui = new UiComponents();
+        pack();
+        setVisible(true);
     }
 
     private void createComponentsAndAddToPage() {

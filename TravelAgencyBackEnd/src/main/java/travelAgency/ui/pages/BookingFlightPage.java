@@ -1,4 +1,4 @@
-package travelAgency.ui;
+package travelAgency.ui.pages;
 
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +10,8 @@ import travelAgency.domain.flight.FlightSchedule;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.city.CityService;
 import travelAgency.services.flight.FlightListService;
+import travelAgency.ui.App;
+import travelAgency.ui.component.UiComponents;
 
 import javax.swing.*;
 import java.awt.*;
@@ -281,7 +283,7 @@ public class BookingFlightPage extends JFrame {
 
     private void goToReservationInformationPage() {
         final Flight flight = getFlight();
-        new ReservationInformationPage(flight, bookingReservation, cityService, getTravelers());
+        new BookingInformationPage(flight, bookingReservation, getTravelers());
         dispose();
     }
 
