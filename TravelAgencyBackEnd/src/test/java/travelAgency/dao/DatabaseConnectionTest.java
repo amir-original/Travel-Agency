@@ -6,7 +6,7 @@ import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
 
 import static org.assertj.core.api.Assertions.*;
 
-public class DAOTest {
+public class DatabaseConnectionTest {
 
     public static final String HOST = "jdbc:mysql://localhost:3306/wrong";
     public static final String USER = "wrong_username";

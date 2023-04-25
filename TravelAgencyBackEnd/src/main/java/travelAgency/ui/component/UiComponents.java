@@ -1,17 +1,21 @@
-package travelAgency.ui;
+package travelAgency.ui.component;
 
 import com.toedter.calendar.JDateChooser;
-import net.sourceforge.jdatepicker.JDatePicker;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
+import travelAgency.ui.App;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class UiComponents {
 
-    public JButton button(String label,int width,int height) {
+    public UiComponents() {
+    }
+
+    public JButton button(String label, int width, int height) {
         final JButton button = new JButton(label);
         button.setPreferredSize(new Dimension(width, height));
         return button;
@@ -66,10 +70,30 @@ public class UiComponents {
         return textArea;
     }
 
+    public JPanel boarderLayoutPanel(){
+        return panel(new BorderLayout());
+    }
+
+    public JPanel flowLayoutPanel(int align,int hgap,int vgap){
+       return panel(new FlowLayout(align,hgap,vgap));
+    }
+
+    public JPanel flowLayoutPanel(){
+        return panel(new FlowLayout());
+    }
+
+    public JPanel panel(LayoutManager layoutManager){
+        return new JPanel(layoutManager);
+    }
+
     public JDatePickerImpl datePicker(){
         UtilDateModel model = new UtilDateModel();
         JDatePanelImpl datePanel = new JDatePanelImpl(model);
         return new JDatePickerImpl(datePanel);
+    }
+
+    public void showMessageDialog(Component parentComponent,String message) {
+        JOptionPane.showMessageDialog(parentComponent, message);
     }
 
     public JScrollPane scrollPanel(JPanel panel){
@@ -78,6 +102,43 @@ public class UiComponents {
 
     public JTextField textInput(int columns){
         return new JTextField(columns);
+    }
+
+    private void createBackButton(JFrame frame) {
+        final JButton button = button("Back",100,30);
+        goBackToHomePageAction(button,frame);
+    }
+
+
+    public JTable createReadOnlyTable() {
+        JTable table = new JTable();
+        final DefaultTableModel tableModel = createReadOnlyTableModel();
+        table.removeAll();
+        table.setModel(tableModel);
+        return table;
+    }
+
+    public JPanel createBoxLayoutPanel(int axis) {
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel,axis));
+        return mainPanel;
+    }
+
+    public DefaultTableModel createReadOnlyTableModel(){
+        return new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+    }
+
+    private void goBackToHomePageAction(JButton button,JFrame frame) {
+        button.addActionListener(e -> {
+            final App app = new App();
+            app.run();
+            frame.dispose();
+        });
     }
 
 }

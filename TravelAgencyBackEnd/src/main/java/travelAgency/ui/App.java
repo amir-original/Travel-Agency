@@ -1,59 +1,59 @@
 package travelAgency.ui;
 
-import travelAgency.dao.database.reservation.ReservationListRepository;
-import travelAgency.dao.database.reservation.ReservationListRepositoryImpl;
+import travelAgency.dao.api.ExchangeRateDAOImpl;
 import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
 import travelAgency.dao.database.flight.FlightRepository;
 import travelAgency.dao.database.flight.FlightRepositoryImpl;
 import travelAgency.dao.database.passenger.PassengerRepository;
 import travelAgency.dao.database.passenger.PassengerRepositoryImpl;
+import travelAgency.dao.database.reservation.ReservationListRepository;
+import travelAgency.dao.database.reservation.ReservationListRepositoryImpl;
 import travelAgency.services.BookingReservation;
-import travelAgency.services.reservation.TicketNumberGenerator;
-import travelAgency.services.reservation.TicketNumberGeneratorImpl;
 import travelAgency.services.city.CityService;
 import travelAgency.services.city.CityServiceImpl;
-import travelAgency.services.reservation.ReservationListService;
-import travelAgency.services.reservation.ReservationListServiceImpl;
 import travelAgency.services.flight.FlightAvailabilityImpl;
 import travelAgency.services.flight.FlightListService;
 import travelAgency.services.flight.FlightListServiceImpl;
-
-import static java.util.List.of;
+import travelAgency.services.reservation.ReservationListService;
+import travelAgency.services.reservation.ReservationListServiceImpl;
+import travelAgency.services.reservation.TicketNumberGenerator;
+import travelAgency.services.reservation.TicketNumberGeneratorImpl;
+import travelAgency.ui.pages.HomePage;
 
 public class App {
 
-    private static BookingReservation bookingReservation;
-    private static CityService cityService;
-    private static ReservationListService reservationListService;
-    private static FlightListService flightListService;
+    private  BookingReservation bookingReservation;
+    private final CityService cityService;
+    private final ReservationListService reservationListService;
+    private final FlightListService flightListService;
+    private final ExchangeRateDAOImpl exchangeRateDAO;
 
     public App() {
-        setup();
-        run();
-    }
-
-    public static void main(String[] args) {
-        setup();
-        run();
-    }
-
-    private static void run() {
-        new HomePage(cityService, reservationListService, flightListService, bookingReservation);
-    }
-
-    private static void setup() {
-        cityService = new CityServiceImpl();
+        this.exchangeRateDAO = new ExchangeRateDAOImpl();
+        this.cityService = new CityServiceImpl();
         final MySQLDbConnection db = new MySQLDbConnection();
         final ReservationListRepository bookings = new ReservationListRepositoryImpl(db);
         final FlightRepository flights = new FlightRepositoryImpl(db);
-
         initBookingReservation(db, bookings, flights);
-
         flightListService = new FlightListServiceImpl(flights);
         reservationListService = new ReservationListServiceImpl(bookings, flightListService);
     }
 
-    private static void initBookingReservation(MySQLDbConnection db, ReservationListRepository bookings, FlightRepository flights) {
+
+    public static void main(String[] args) {
+        final App app = new App();
+        app.run();
+    }
+
+    public void run() {
+        buildHomePage();
+    }
+
+    private  void buildHomePage() {
+        new HomePage(reservationListService, flightListService, bookingReservation, exchangeRateDAO, cityService);
+    }
+
+    private void initBookingReservation(MySQLDbConnection db, ReservationListRepository bookings, FlightRepository flights) {
         PassengerRepository passengers = new PassengerRepositoryImpl(db);
         TicketNumberGenerator ticketNumberGenerator = new TicketNumberGeneratorImpl();
         final FlightAvailabilityImpl flightAvailability =

@@ -57,7 +57,7 @@ public class PassengerSQL {
 
     }
 
-    public static void fillPassengerField(Passenger passenger, PreparedStatement sql) throws SQLException {
+    public static void fillOutPassengerFields(Passenger passenger, PreparedStatement sql) throws SQLException {
         sql.setString(1, passenger.id());
         sql.setString(2, passenger.fName());
         sql.setString(3, passenger.lName());

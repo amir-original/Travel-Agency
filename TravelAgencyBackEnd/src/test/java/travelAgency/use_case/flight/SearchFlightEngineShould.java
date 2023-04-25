@@ -1,4 +1,4 @@
-package travelAgency.use_case;
+package travelAgency.use_case.flight;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;

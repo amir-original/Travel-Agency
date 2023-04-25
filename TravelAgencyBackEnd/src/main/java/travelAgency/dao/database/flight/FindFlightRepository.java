@@ -24,14 +24,14 @@ public class FindFlightRepository {
         List<Flight> flights = new LinkedList<>();
         try (final PreparedStatement query = createQuery(GET_ALL_FLIGHTS_SQL)) {
             final ResultSet resultSet = query.executeQuery();
-            buildFlightsIfExists(flights, resultSet);
+            getFlightsIfExists(flights, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return flights;
     }
 
-    private void buildFlightsIfExists(List<Flight> flights, ResultSet resultSet) throws SQLException {
+    private void getFlightsIfExists(List<Flight> flights, ResultSet resultSet) throws SQLException {
         while (resultSet.next()) {
             flights.add(buildFlight(resultSet));
         }

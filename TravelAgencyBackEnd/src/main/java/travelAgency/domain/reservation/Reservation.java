@@ -8,7 +8,7 @@ import travelAgency.domain.passenger.Passenger;
 import java.time.LocalDate;
 
 import static java.lang.String.format;
-import static travelAgency.helper.PriceFormat.formatPriceWithSymbol;
+import static travelAgency.helper.PriceFormatter.formatPriceWithSymbol;
 
 public record Reservation(@NotNull String ticketNumber,
                           @NotNull ReservationInformation reservationInformation) {

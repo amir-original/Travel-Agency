@@ -1,4 +1,4 @@
-package travelAgency.ui;
+package travelAgency.ui.pages;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.flight.currency.Currency;
@@ -7,6 +7,7 @@ import travelAgency.domain.flight.currency.Money;
 import travelAgency.domain.passenger.PassengerBuilder;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.domain.reservation.ReservationInformation;
+import travelAgency.ui.component.UiComponents;
 
 import javax.swing.*;
 import java.awt.*;

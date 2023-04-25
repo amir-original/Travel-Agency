@@ -27,7 +27,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     @Override
     public void save(Passenger passenger) {
         try (final PreparedStatement query = createQuery(INSERT_PASSENGER_SQL)) {
-            fillPassengerField(passenger, query);
+            fillOutPassengerFields(passenger, query);
             query.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,7 +44,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
         Passenger passenger = null;
         try (final PreparedStatement query = createQuery(FIND_PASSENGER_BY_ID_SQL)) {
             query.setString(1, passengerId);
-            passenger = findPassengerIfExist(query.executeQuery());
+            passenger = getPassengerIfExist(query.executeQuery());
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,7 +52,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
         return Optional.ofNullable(passenger);
     }
 
-    private Passenger findPassengerIfExist(ResultSet rs) throws SQLException {
+    private Passenger getPassengerIfExist(ResultSet rs) throws SQLException {
         Passenger result = null;
         if (rs.next()) {
             result = buildPassenger(rs);
@@ -64,14 +64,14 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     public List<Passenger> getPassengers() {
         List<Passenger> passengers = new LinkedList<>();
         try (final PreparedStatement query = createQuery(GET_ALL_PASSENGERS_SQL)) {
-            passengers = findPassengersIfExists(query.executeQuery());
+            passengers = getPassengersIfExists(query.executeQuery());
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return passengers;
     }
 
-    private List<Passenger> findPassengersIfExists(ResultSet rs) throws SQLException {
+    private List<Passenger> getPassengersIfExists(ResultSet rs) throws SQLException {
         List<Passenger> passengers = new LinkedList<>();
         while (rs.next()) {
             passengers.add(buildPassenger(rs));
