@@ -3,7 +3,6 @@ package travelAgency.services.flight;
 import travelAgency.domain.exceptions.FullyBookedException;
 import travelAgency.domain.exceptions.NotEnoughCapacityException;
 import travelAgency.domain.flight.Flight;
-import travelAgency.domain.flight.FlightScheduleValidator;
 import travelAgency.domain.reservation.ReservationInformation;
 import travelAgency.services.reservation.ReservationListService;
 
@@ -14,35 +13,35 @@ public class FlightAvailabilityImpl implements FlightAvailability {
     private final FlightListService flights;
     private final ReservationListService bookingLists;
 
-    public FlightAvailabilityImpl(FlightListService flights, ReservationListService bookingLists) {
+    public FlightAvailabilityImpl(FlightListService flights, ReservationListService reservationList) {
         this.flights = flights;
-        this.bookingLists = bookingLists;
+        this.bookingLists = reservationList;
     }
 
     @Override
-    public void checkFlightPreBooking(ReservationInformation reservation) {
-        final Flight flight = flights.findFlight(reservation.flightNumber());
-        FlightScheduleValidator flightScheduleValidator = new FlightScheduleValidator(flight.schedule());
-
-        flightScheduleValidator.validate();
-        checkCapacity(reservation);
+    public void canBooking(ReservationInformation resInfo) {
+        final Flight flight = flights.findFlight(resInfo.flightNumber());
+        flight.validateScheduleNotInPast();
+        checkFlightCapacity(resInfo);
     }
 
-    public void checkCapacity(ReservationInformation reservation) {
-        if (isSoldOutAllSeats(reservation))
+    public void checkFlightCapacity(ReservationInformation resInfo) {
+        if (isSoldOutAllSeats(resInfo))
             throw new FullyBookedException();
-        if (!hasEnoughCapacity(reservation))
+        if (!hasEnoughCapacity(resInfo))
             throw new NotEnoughCapacityException();
     }
 
-    private boolean isSoldOutAllSeats(ReservationInformation reservation) {
-        final int availableSeats = bookingLists.getAvailableSeats(reservation.flightNumber());
-        return availableSeats == NO_AVAILABLE_SEATS;
+    private boolean isSoldOutAllSeats(ReservationInformation resInfo) {
+        return getAvailableSeats(resInfo) == NO_AVAILABLE_SEATS;
     }
 
-    private boolean hasEnoughCapacity(ReservationInformation reservation) {
-        final int availableSeats = bookingLists.getAvailableSeats(reservation.flightNumber());
-        return availableSeats >= reservation.numberOfTickets();
+    private boolean hasEnoughCapacity(ReservationInformation resInfo) {
+        return getAvailableSeats(resInfo) >= resInfo.numberOfTickets();
+    }
+
+    private int getAvailableSeats(ReservationInformation resInfo) {
+        return bookingLists.getAvailableSeats(resInfo.flightNumber());
     }
 
 }

@@ -27,11 +27,11 @@ public class BookingReservation {
         this.TicketNumberGenerator = TicketNumberGenerator;
     }
 
-    public Reservation book(ReservationInformation bi) {
-        flightAvailability.checkFlightPreBooking(bi);
+    public Reservation book(ReservationInformation resInfo) {
+        flightAvailability.canBooking(resInfo);
         final String ticketNumber = TicketNumberGenerator.getTicketNumberFormat();
 
-        final Reservation reservation = bi.getReservation(ticketNumber);
+        final Reservation reservation = resInfo.getReservation(ticketNumber);
         final Passenger passenger = reservation.passenger();
 
         passengers.save(passenger);

@@ -54,4 +54,8 @@ public record Flight(@NotNull String flightNumber,
     public FlightSchedule schedule() {
         return plan.schedule();
     }
+
+    public void validateScheduleNotInPast() {
+        schedule().validate();
+    }
 }

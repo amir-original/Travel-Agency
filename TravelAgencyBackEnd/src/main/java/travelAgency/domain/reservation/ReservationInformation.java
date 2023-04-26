@@ -1,12 +1,11 @@
 package travelAgency.domain.reservation;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.exceptions.FlightNotFoundException;
+import travelAgency.domain.exceptions.InvalidNumberOfTicketsException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.passenger.Passenger;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import static java.util.stream.Stream.of;
 
@@ -20,7 +19,16 @@ public record ReservationInformation(@NotNull Flight flight,
         this.flight = flight;
         this.passenger = passenger;
         this.numberOfTickets = numberOfTickets;
-        new ReservationInformationValidator(this).validate();
+        validate();
+    }
+
+    public void validate() {
+        if (hasNoTickets())
+            throw new InvalidNumberOfTicketsException();
+    }
+
+    private boolean hasNoTickets() {
+        return numberOfTickets() <= 0;
     }
 
     public Reservation getReservation(String ticketNumber) {

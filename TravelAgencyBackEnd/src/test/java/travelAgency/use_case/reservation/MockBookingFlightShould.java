@@ -47,7 +47,7 @@ public class MockBookingFlightShould {
         final InOrder inOrder = inOrder(flightAvailability, passengers,
                 bookingLists, ticketNumberGenerator);
 
-        inOrder.verify(flightAvailability).checkFlightPreBooking(reservationInformation);
+        inOrder.verify(flightAvailability).canBooking(reservationInformation);
 
         final Reservation reservation = reservationInformation.getReservation(ticketNumberGenerator.getTicketNumberFormat());
 
@@ -76,7 +76,7 @@ public class MockBookingFlightShould {
 
     private FlightAvailabilityImpl createFindFlightsRepository() {
         final FlightAvailabilityImpl mock = mock(FlightAvailabilityImpl.class);
-        doNothing().when(mock).checkFlightPreBooking(any());
+        doNothing().when(mock).canBooking(any());
         return mock;
     }
 
