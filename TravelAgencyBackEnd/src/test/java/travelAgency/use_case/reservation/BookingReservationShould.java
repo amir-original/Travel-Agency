@@ -7,13 +7,12 @@ import travelAgency.domain.exceptions.*;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.reservation.ReservationInformation;
 import travelAgency.services.BookingReservation;
-import travelAgency.services.flight.FlightAvailability;
 import travelAgency.services.flight.FlightListService;
 import travelAgency.services.flight.FlightListServiceImpl;
 import travelAgency.services.reservation.ReservationListService;
 import travelAgency.services.reservation.ReservationListServiceImpl;
 import travelAgency.services.reservation.TicketNumberGenerator;
-import travelAgency.services.flight.FlightAvailabilityImpl;
+import travelAgency.services.flight.FlightAvailability;
 import travelAgency.use_case.fake.FakeReservationList;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakePassenger;
@@ -37,7 +36,7 @@ public class BookingReservationShould {
         FakeFlight fakeFlight = new FakeFlight();
         FlightListService flightService = new FlightListServiceImpl(fakeFlight);
         ReservationListService reservationListService = new ReservationListServiceImpl(fakeBookingList, flightService);
-        FlightAvailability flightAvailability = new FlightAvailabilityImpl(flightService, reservationListService);
+        FlightAvailability flightAvailability = new FlightAvailability(flightService, reservationListService);
         PassengerRepository passengerService = new FakePassenger();
 
         app = new BookingReservation(fakeBookingList, flightAvailability, passengerService, ticketNumberGenerator);

@@ -18,6 +18,7 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -33,8 +34,8 @@ public class BookingFlightPage extends JFrame {
     private final CityService cityService;
     private final FlightListService flightListService;
     private final BookingReservation bookingReservation;
-    private JDateChooser departureDatePicker;
-    private JDateChooser arrivalDatePicker;
+    private JDateChooser departureDateChooser;
+    private JDateChooser arrivalDateChooser;
     private JPanel resultPanel;
     private JComboBox<String> exchangeRate;
     private JSpinner passengersSpinner;
@@ -43,7 +44,7 @@ public class BookingFlightPage extends JFrame {
     public BookingFlightPage(CityService cityService,
                              FlightListService flightListService,
                              BookingReservation bookingReservation,
-                            ExchangeRateDAO exchangeRateDAO) {
+                             ExchangeRateDAO exchangeRateDAO) {
 
         this.cityService = cityService;
         this.flightListService = flightListService;
@@ -134,11 +135,11 @@ public class BookingFlightPage extends JFrame {
     }
 
     private void createDepartureField(JPanel headerPanel) {
-        departureDatePicker = createAndAddDatePickerToHeaderPanel(headerPanel, "Departure:");
+        departureDateChooser = createAndAddDatePickerToHeaderPanel(headerPanel, "Departure:");
     }
 
     private void createArrivalField(JPanel headerPanel) {
-        arrivalDatePicker = createAndAddDatePickerToHeaderPanel(headerPanel, "Arrival:");
+        arrivalDateChooser = createAndAddDatePickerToHeaderPanel(headerPanel, "Arrival:");
     }
 
     private JDateChooser createAndAddDatePickerToHeaderPanel(JPanel headerPanel, String labelText) {
@@ -205,25 +206,51 @@ public class BookingFlightPage extends JFrame {
 
     private void createSearchButton() {
         searchButton = createButton("Search");
-        addActionToSearchButton();
+        searchButtonClicked();
     }
 
-    private void addActionToSearchButton() {
+    private void searchButtonClicked() {
         searchButton.addActionListener(e -> performFlightSearchAndDisplayResults());
     }
 
     private void performFlightSearchAndDisplayResults() {
+        final List<String> errors = canSearchFlight();
+        if (!errors.isEmpty()){
+            for (String error : errors) {
+                ui.showMessageDialog(this,error);
+            }
+            return;
+        }
+
+
         displaySearchResultTitle();
 
         final Object exchangeRate = this.exchangeRate.getSelectedItem();
-
-        final List<Flight> searchFlights = flightListService.searchFlights(getFlightPlan());
-
-        flightSearchResult.showFlightsInfo(searchFlights, exchangeRate);
+        final List<Flight> searchFlights;
+        try {
+            searchFlights = flightListService.searchFlights(getFlightPlan());
+            flightSearchResult.showFlightsInfo(searchFlights, exchangeRate);
+        } catch (Exception e) {
+            ui.showMessageDialog(this, e.getMessage());
+            return;
+        }
 
         updateFlightSearchResults(flightSearchResult);
 
         enableNextButtonIfSearchResultsExist(searchFlights);
+    }
+
+    private List<String> canSearchFlight() {
+        List<String> errorMessages = new LinkedList<>();
+        if (departureDateChooser.getDate() == null || arrivalDateChooser.getDate() == null) {
+            errorMessages.add("departure and arrival date must not be null!");
+        }
+        try {
+            getFlightLocation();
+        } catch (Exception e) {
+            errorMessages.add(e.getMessage());
+        }
+        return errorMessages;
     }
 
     private void displaySearchResultTitle() {
@@ -231,12 +258,15 @@ public class BookingFlightPage extends JFrame {
         final Object destination = destinationComboBox.getSelectedItem();
         final String title = format("Showing results for %s to %s ", origin, destination);
         resultLabel.setText(title);
+      //  resultPanel.add(resultLabel);
     }
 
     private void updateFlightSearchResults(FlightSearchResultPanel flightSearchResult) {
         resultPanel.removeAll();
+        displaySearchResultTitle();
         resultPanel.add(flightSearchResult);
         resultPanel.repaint();
+
     }
 
     private void enableNextButtonIfSearchResultsExist(List<Flight> searchFlights) {
@@ -265,8 +295,8 @@ public class BookingFlightPage extends JFrame {
 
     @NotNull
     private FlightSchedule getFlightSchedule() {
-        LocalDate departure = departureDatePicker.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate arrival = arrivalDatePicker.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate departure = departureDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate arrival = arrivalDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         return new FlightSchedule(departure, arrival);
     }
 

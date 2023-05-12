@@ -3,17 +3,22 @@ package travelAgency.ui.pages;
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import travelAgency.domain.reservation.Reservation;
 import travelAgency.services.reservation.ReservationListService;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import javax.swing.*;
 
 import static java.util.Arrays.stream;
 
 public class ReservationSearchPage extends JFrame implements ActionListener {
+    private final JScrollPane resultTablePanel = createResultTable();
     private JPanel flightNumberPanel;
     private JPanel reservationNumberPanel;
     private final ReservationListService reservationListService;
@@ -59,21 +64,30 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
 
         final JPanel buttonPanel = createButtonPanel();
 
-        JScrollPane resultTablePanel = createResultTable();
 
         return new Component[]{searchPanel, reservationNumberPanel, flightNumberPanel, buttonPanel, resultTablePanel};
     }
 
     @NotNull
     private JScrollPane createResultTable() {
-        String[] columnNames = {"Reservation Number", "Passenger Name", "Flight Number", "Origin", "Destination", "Number of Tickets"};
-        Object[][] data = {
-                {"123456", "John Smith", "AA1234", "New York", "Los Angeles", 2},
-                {"654321", "Jane Doe", "UA5678", "Chicago", "San Francisco", 1}
-        };
-
-        JTable resultTable = new JTable(data, columnNames);
+        JTable resultTable = createResultTable(new Object[][]{});
         return new JScrollPane(resultTable);
+    }
+
+    @NotNull
+    private JTable createResultTable(Object[][] data) {
+        return new JTable(data, getColumnNames());
+    }
+
+    @NotNull
+    private String[] getColumnNames() {
+        return new String[]
+                {"Reservation Number",
+                        "Passenger Name",
+                        "Flight Number",
+                        "Origin",
+                        "Destination",
+                        "Number of Tickets"};
     }
 
     private void createFlightNumberPanelFields() {
@@ -167,25 +181,107 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
     }
 
     private void performSearch(String searchType) {
-        if (isSearchByReservationNumber(searchType)) {
-            performSearchByReservationNumber();
-        } else if (isSearchByFlightAndPassengerInformation(searchType)) {
+        if (isSearchByFlightAndPassengerInformation(searchType)) {
             performSearchByFlightNumberAndPassengerInformation();
+        } else if (isSearchByReservationNumber(searchType)) {
+            performSearchByReservationNumber();
         }
     }
 
     private void performSearchByFlightNumberAndPassengerInformation() {
-        String flightNumber = flightNumberField.getText();
-        String firstName = firstNameField.getText();
-        String birthday = birthdayField.getDateFormatString();
-        // perform search by flight number and passenger information
-        // ...
+        String flightNumber = flightNumberField.getText().strip();
+        String firstName = firstNameField.getText().strip();
+        final Date date = birthdayField.getDate();
+
+        if (flightNumber.isEmpty()) {
+            displayErrorMessage("flight Number must not be null or empty!");
+        } else if (firstName.isEmpty()) {
+            displayErrorMessage("passenger first name must not be null or empty!");
+        } else if (date == null) {
+            displayErrorMessage("please enter your correct birthday!");
+        } else {
+            performReservationSearch(flightNumber, firstName, date);
+        }
+    }
+
+    private void performReservationSearch(String flightNumber, String firstName, Date date) {
+        final Reservation reservation = searchReservation(flightNumber, firstName, date);
+
+        if (isReservationFound(reservation)) {
+            final Object[][] result = createReservationInfoArray(reservation);
+            updateResultTable(createResultTable(result));
+        } else {
+            displayErrorMessage("Not found Any Reservation with Entered information!");
+        }
+    }
+
+    private Reservation searchReservation(String flightNumber, String firstName, Date birthday) {
+        try {
+            final LocalDate date = convertDateToLocalDate(birthday);
+            return reservationListService.search(flightNumber, firstName, date);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private boolean isReservationFound(Reservation reservation) {
+        return reservation != null;
+    }
+
+    private LocalDate convertDateToLocalDate(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     private void performSearchByReservationNumber() {
-        String reservationNumber = reservationNumberField.getText();
-        // perform search by reservation number
-        // ...
+        String reservationNumber = reservationNumberField.getText().strip();
+
+        if (reservationNumber.isEmpty()) {
+            displayErrorMessage("please enter your reservation number");
+        } else {
+            performReservationSearch(reservationNumber);
+        }
+        
+    }
+
+    private void performReservationSearch(String reservationNumber) {
+        Reservation searchedReservation = searchReservation(reservationNumber);
+
+        if (isReservationFound(searchedReservation)) {
+            Object[][] result = createReservationInfoArray(searchedReservation);
+            updateResultTable(createResultTable(result));
+        } else {
+            displayErrorMessage("not found any reservation with entered information.");
+        }
+    }
+
+    private Reservation searchReservation(String reservationNumber) {
+        try {
+            return reservationListService.search(reservationNumber);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private void displayErrorMessage(String s) {
+        ui.showMessageDialog(this, s);
+    }
+
+    @NotNull
+    private Object[][] createReservationInfoArray(Reservation searchedReservation) {
+        return new Object[][]{
+                {searchedReservation.ticketNumber(),
+                        searchedReservation.passenger().fullName(),
+                        searchedReservation.flightNumber(),
+                        searchedReservation.flight().from(),
+                        searchedReservation.flight().to(),
+                        searchedReservation.reservationInformation().numberOfTickets()
+                }};
+    }
+
+    private void updateResultTable(JTable table) {
+        resultTablePanel.setViewportView(table);
+        resultTablePanel.repaint();
+        repaint();
     }
 
     private void goBackToHomePage() {

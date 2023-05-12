@@ -28,9 +28,9 @@ public class FakeReservationList implements ReservationListRepository {
     }
 
     @Override
-    public Optional<Reservation> findReservation(String ticketNumber) {
+    public Optional<Reservation> findReservation(String reservationNumber) {
         return bookings.stream()
-                .filter(ticket -> ticket.hasSameTicketNumber(ticketNumber))
+                .filter(ticket -> ticket.hasSameTicketNumber(reservationNumber))
                 .findFirst();
     }
 

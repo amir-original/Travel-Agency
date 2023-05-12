@@ -12,7 +12,7 @@ import travelAgency.use_case.fake.FakeTicketNumberGenerator;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.reservation.ReservationListService;
 import travelAgency.services.reservation.ReservationListServiceImpl;
-import travelAgency.services.flight.FlightAvailabilityImpl;
+import travelAgency.services.flight.FlightAvailability;
 
 import java.time.LocalDate;
 
@@ -39,7 +39,7 @@ public class ReservationListServiceShould {
         final FakeFlight flights = new FakeFlight();
         final FlightListServiceImpl flightService = new FlightListServiceImpl(flights);
 
-        final FlightAvailabilityImpl flightAvailability = new FlightAvailabilityImpl(flightService, new ReservationListServiceImpl(bookings,flightService));
+        final FlightAvailability flightAvailability = new FlightAvailability(flightService, new ReservationListServiceImpl(bookings,flightService));
         final FakePassenger passengers = new FakePassenger();
         appService = new BookingReservation(bookings, flightAvailability, passengers, ticketNumberGenerator);
         app = new ReservationListServiceImpl(bookings, flightService);

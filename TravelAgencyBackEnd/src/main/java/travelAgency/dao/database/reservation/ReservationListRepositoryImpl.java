@@ -36,8 +36,8 @@ public class ReservationListRepositoryImpl implements ReservationListRepository 
     }
 
     @Override
-    public Optional<Reservation> findReservation(String ticketNumber) {
-        return findReservationBy(ticketNumber, FIND_RESERVATION_BY_TICKET_NUMBER);
+    public Optional<Reservation> findReservation(String reservationNumber) {
+        return findReservationBy(reservationNumber, FIND_RESERVATION_BY_TICKET_NUMBER);
     }
 
     @Override

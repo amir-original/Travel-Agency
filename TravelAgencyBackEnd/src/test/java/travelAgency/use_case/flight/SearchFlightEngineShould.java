@@ -9,8 +9,7 @@ import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.currency.Money;
 import travelAgency.services.flight.FlightListService;
 import travelAgency.services.flight.FlightListServiceImpl;
-import travelAgency.services.currency_exchange.CurrencyConverterService;
-import travelAgency.services.currency_exchange.CurrencyConverterServiceImpl;
+import travelAgency.services.currency_exchange.CurrencyConverter;
 import travelAgency.services.currency_exchange.currency_api.ExchangeRateService;
 import travelAgency.services.currency_exchange.currency_api.IRRToUSDConverter;
 import travelAgency.services.currency_exchange.currency_api.USDToIRRConverter;
@@ -32,8 +31,8 @@ public class SearchFlightEngineShould {
     private static final Double ONE_RIAL_TO_DOLLAR = 0.000024;
 
     private FlightListService app;
-    private CurrencyConverterService usdToIrrConverter;
-    private CurrencyConverterService irrToUsdConverter;
+    private CurrencyConverter usdToIrrConverter;
+    private CurrencyConverter irrToUsdConverter;
 
     @BeforeEach
     void setUp() {
@@ -118,8 +117,8 @@ public class SearchFlightEngineShould {
 
 
     @NotNull
-    private CurrencyConverterService getCurrencyConverterService(ExchangeRateService rialToDollarConverter) {
-        return new CurrencyConverterServiceImpl(rialToDollarConverter);
+    private CurrencyConverter getCurrencyConverterService(ExchangeRateService rialToDollarConverter) {
+        return new CurrencyConverter(rialToDollarConverter);
     }
 
     @NotNull

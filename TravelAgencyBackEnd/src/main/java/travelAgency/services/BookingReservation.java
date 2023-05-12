@@ -5,8 +5,8 @@ import travelAgency.domain.reservation.ReservationInformation;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.dao.database.reservation.ReservationListRepository;
 import travelAgency.dao.database.passenger.PassengerRepository;
-import travelAgency.services.reservation.TicketNumberGenerator;
 import travelAgency.services.flight.FlightAvailability;
+import travelAgency.services.reservation.TicketNumberGenerator;
 
 // application service
 public class BookingReservation {
@@ -29,7 +29,7 @@ public class BookingReservation {
 
     public Reservation book(ReservationInformation resInfo) {
         flightAvailability.canBooking(resInfo);
-        final String ticketNumber = TicketNumberGenerator.getTicketNumberFormat();
+        final String ticketNumber = TicketNumberGenerator.getTicketNumber();
 
         final Reservation reservation = resInfo.getReservation(ticketNumber);
         final Passenger passenger = reservation.passenger();

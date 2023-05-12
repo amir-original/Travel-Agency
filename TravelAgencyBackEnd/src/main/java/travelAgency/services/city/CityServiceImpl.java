@@ -9,6 +9,12 @@ import java.util.stream.Stream;
 
 public class CityServiceImpl implements CityService {
 
+    private final City[] cities;
+
+    public CityServiceImpl() {
+        this.cities = City.values();
+    }
+
     @Override
     public List<String> citiesList() {
         return getCitiesStream().toList();
@@ -21,7 +27,7 @@ public class CityServiceImpl implements CityService {
 
     @NotNull
     private Stream<String> getCitiesStream() {
-        return Stream.of(City.values()).map(Enum::name);
+        return Stream.of(cities).map(Enum::name);
     }
 
     @Override

@@ -11,7 +11,7 @@ import travelAgency.dao.database.reservation.ReservationListRepositoryImpl;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.city.CityService;
 import travelAgency.services.city.CityServiceImpl;
-import travelAgency.services.flight.FlightAvailabilityImpl;
+import travelAgency.services.flight.FlightAvailability;
 import travelAgency.services.flight.FlightListService;
 import travelAgency.services.flight.FlightListServiceImpl;
 import travelAgency.services.reservation.ReservationListService;
@@ -56,8 +56,8 @@ public class App {
     private void initBookingReservation(MySQLDbConnection db, ReservationListRepository bookings, FlightRepository flights) {
         PassengerRepository passengers = new PassengerRepositoryImpl(db);
         TicketNumberGenerator ticketNumberGenerator = new TicketNumberGeneratorImpl();
-        final FlightAvailabilityImpl flightAvailability =
-                new FlightAvailabilityImpl(new FlightListServiceImpl(flights), new ReservationListServiceImpl(bookings,new FlightListServiceImpl(flights)));
+        final FlightAvailability flightAvailability =
+                new FlightAvailability(new FlightListServiceImpl(flights), new ReservationListServiceImpl(bookings,new FlightListServiceImpl(flights)));
 
         bookingReservation = new BookingReservation(bookings, flightAvailability,passengers,ticketNumberGenerator);
     }

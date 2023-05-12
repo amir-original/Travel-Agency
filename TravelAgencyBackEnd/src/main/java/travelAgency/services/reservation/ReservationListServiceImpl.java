@@ -27,6 +27,12 @@ public class ReservationListServiceImpl implements ReservationListService {
     }
 
     @Override
+    public Reservation search(String reservationNumber) {
+        return reservations.findReservation(reservationNumber)
+                .orElseThrow(ReservationNotFoundException::new);
+    }
+
+    @Override
     public void cancel(String ticketNumber) {
         final Reservation reservation = reservations.findReservation(ticketNumber)
                 .orElseThrow(ReservationNotFoundException::new);

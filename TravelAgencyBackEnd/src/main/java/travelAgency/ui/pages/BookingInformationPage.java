@@ -16,6 +16,8 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class BookingInformationPage extends JFrame {
 
@@ -43,6 +45,8 @@ public class BookingInformationPage extends JFrame {
         this.ui = new UiComponents();
         setupPage();
         createComponentsAndAddToPage();
+        pack();
+        setVisible(true);
     }
 
     private void setupPage() {
@@ -51,8 +55,6 @@ public class BookingInformationPage extends JFrame {
         setSize(900, 800);
         setLayout(new BorderLayout());
         setResizable(false);
-        pack();
-        setVisible(true);
     }
 
     private void createComponentsAndAddToPage() {
@@ -137,8 +139,8 @@ public class BookingInformationPage extends JFrame {
 
     private void createButtons() {
         JPanel buttonPanel = new JPanel(new FlowLayout());
-        createBookButton(buttonPanel);
         createBackButton(buttonPanel);
+        createBookButton(buttonPanel);
         add(buttonPanel, BorderLayout.SOUTH);
 
     }
@@ -151,14 +153,43 @@ public class BookingInformationPage extends JFrame {
 
     private void bookActionToBookButton(JButton bookButton) {
         bookButton.addActionListener(e -> {
-            try {
-                final Reservation reservation = bookReservation();
-                processSuccessfulBooking(reservation);
-            } catch (Exception exception) {
-                exception.printStackTrace();
-                showMessageDialog(BOOKING_FAIL);
+            List<String> errors = canBookingReservation();
+            if (!errors.isEmpty()) {
+                errors.forEach(this::showMessageDialog);
+                return;
             }
+            attemptReservationBooking();
         });
+    }
+
+    private void attemptReservationBooking() {
+        try {
+            final ReservationInformation reservationInformation = getReservationInformation();
+            final Reservation reservation = bookReservation(reservationInformation);
+            processSuccessfulBooking(reservation);
+        } catch (Exception exception) {
+            showMessageDialog(BOOKING_FAIL);
+        }
+    }
+
+    private List<String> canBookingReservation() {
+        List<String> errors = new LinkedList<>();
+        if (selectFlight == null) {
+            errors.add("no flight available!");
+        }
+        if (travelers <= 0) {
+            errors.add("number of ticket should be greeter than 0");
+        }
+        if (birthdayPicker.getDate() == null) {
+            errors.add("birthday field must not be null!");
+        }
+
+        try {
+            final Passenger passenger = getPassenger();
+        } catch (Exception e) {
+            errors.add(e.getMessage());
+        }
+        return errors;
     }
 
     private void processSuccessfulBooking(Reservation reservation) {
@@ -168,8 +199,8 @@ public class BookingInformationPage extends JFrame {
         dispose();
     }
 
-    private Reservation bookReservation() {
-        return reservationListService.book(getReservationInformation());
+    private Reservation bookReservation(ReservationInformation reservationInformation) {
+        return reservationListService.book(reservationInformation);
     }
 
     @NotNull

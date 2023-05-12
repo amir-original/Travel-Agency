@@ -8,7 +8,7 @@ import travelAgency.services.flight.FlightListService;
 import travelAgency.services.flight.FlightListServiceImpl;
 import travelAgency.services.reservation.ReservationListServiceImpl;
 import travelAgency.services.reservation.TicketNumberGenerator;
-import travelAgency.services.flight.FlightAvailabilityImpl;
+import travelAgency.services.flight.FlightAvailability;
 import travelAgency.use_case.fake.FakeReservationList;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakePassenger;
@@ -27,8 +27,8 @@ public class BookingReservationPassengerInfoShould {
         TicketNumberGenerator ticketNumberGenerator = new FakeTicketNumberGenerator();
         FakeReservationList fakeBookingList = new FakeReservationList();
         final FlightListService flights = new FlightListServiceImpl(new FakeFlight());
-        final FlightAvailabilityImpl flightAvailability =
-                new FlightAvailabilityImpl(flights, new ReservationListServiceImpl(fakeBookingList,flights));
+        final FlightAvailability flightAvailability =
+                new FlightAvailability(flights, new ReservationListServiceImpl(fakeBookingList,flights));
         app = new BookingReservation(fakeBookingList, flightAvailability,
                 new FakePassenger(), ticketNumberGenerator);
     }

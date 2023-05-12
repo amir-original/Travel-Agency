@@ -1,6 +1,7 @@
 package travelAgency.dao.api;
 
 public final class ExchangeRates {
+
     private final double usdToIrr;
     private final double irrToUsd;
 

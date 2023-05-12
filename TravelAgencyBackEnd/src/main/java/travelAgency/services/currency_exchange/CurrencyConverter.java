@@ -5,15 +5,14 @@ import travelAgency.domain.flight.currency.Currency;
 import travelAgency.domain.flight.currency.Money;
 import travelAgency.services.currency_exchange.currency_api.ExchangeRateService;
 
-public class CurrencyConverterServiceImpl implements CurrencyConverterService {
+public class CurrencyConverter {
 
     private final ExchangeRateService rateService;
 
-    public CurrencyConverterServiceImpl(ExchangeRateService rateService) {
+    public CurrencyConverter(ExchangeRateService rateService) {
         this.rateService = rateService;
     }
 
-    @Override
     public Money convert(Money money) {
         money.check();
 
@@ -23,9 +22,8 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
     @NotNull
     private Money convertToTargetCurrency(Money money) {
         final double convertedAmount = money.amount() * rateService.diffAmount();
-        final Currency targetCurrency = rateService.targetCurrency();
 
-        return new Money(convertedAmount, targetCurrency);
+        return new Money(convertedAmount, rateService.targetCurrency());
     }
 
     private boolean hasSameBaseCurrency(Money money) {

@@ -4,8 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import travelAgency.dao.api.ExchangeRateDAO;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.currency.Money;
-import travelAgency.services.currency_exchange.CurrencyConverterService;
-import travelAgency.services.currency_exchange.CurrencyConverterServiceImpl;
+import travelAgency.services.currency_exchange.CurrencyConverter;
 import travelAgency.services.currency_exchange.currency_api.ExchangeRateService;
 import travelAgency.services.currency_exchange.currency_api.IRRToUSDConverter;
 import travelAgency.services.currency_exchange.currency_api.USDToIRRConverter;
@@ -106,7 +105,7 @@ public class FlightSearchResultPanel extends JPanel {
     }
 
 
-    private Money getMoney(Flight flight, CurrencyConverterService currencyConverterService) {
+    private Money getMoney(Flight flight, CurrencyConverter currencyConverterService) {
         return currencyConverterService.convert(flight.price());
     }
 
@@ -151,8 +150,8 @@ public class FlightSearchResultPanel extends JPanel {
     }
 
     @NotNull
-    private CurrencyConverterServiceImpl currencyConverter(ExchangeRateService exchangeRateService) {
-        return new CurrencyConverterServiceImpl(exchangeRateService);
+    private CurrencyConverter currencyConverter(ExchangeRateService exchangeRateService) {
+        return new CurrencyConverter(exchangeRateService);
     }
 
     public String getSelectedFlight() {

@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Optional.ofNullable;
 import static travelAgency.dao.database.flight.FlightSQL.*;
 
 public class FindFlightRepository {
@@ -31,9 +32,10 @@ public class FindFlightRepository {
         return flights;
     }
 
-    private void getFlightsIfExists(List<Flight> flights, ResultSet resultSet) throws SQLException {
-        while (resultSet.next()) {
-            flights.add(buildFlight(resultSet));
+    private void getFlightsIfExists(List<Flight> flights, ResultSet rs) throws SQLException {
+        while (rs.next()) {
+            final Flight flight = buildFlight(rs);
+            flights.add(flight);
         }
     }
 
@@ -41,18 +43,18 @@ public class FindFlightRepository {
         Flight flight = null;
         try (final PreparedStatement query = createQuery(FIND_FLIGHT_BY_FLIGHT_NUMBER_SQL)) {
             query.setString(1, flightNumber);
-            final ResultSet resultSet = query.executeQuery();
-            flight = getFlightIfExist(resultSet);
+            final ResultSet rs = query.executeQuery();
+            flight = getFlightIfExist(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return Optional.ofNullable(flight);
+        return ofNullable(flight);
     }
 
-    private Flight getFlightIfExist(ResultSet resultSet) throws SQLException {
+    private Flight getFlightIfExist(ResultSet rs) throws SQLException {
         Flight flight = null;
-        if (resultSet.next()) {
-            flight = buildFlight(resultSet);
+        if (rs.next()) {
+            flight = buildFlight(rs);
         }
         return flight;
     }

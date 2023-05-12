@@ -11,7 +11,7 @@ import travelAgency.dao.database.reservation.ReservationListRepository;
 import travelAgency.dao.database.passenger.PassengerRepository;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.reservation.TicketNumberGenerator;
-import travelAgency.services.flight.FlightAvailabilityImpl;
+import travelAgency.services.flight.FlightAvailability;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
@@ -22,7 +22,7 @@ public class MockBookingFlightShould {
 
     public static final String TICKET_NUMBER = "78456587";
     private BookingReservation app;
-    private FlightAvailabilityImpl flightAvailability;
+    private FlightAvailability flightAvailability;
     private PassengerRepository passengers;
     private ReservationListRepository bookingLists;
     private TicketNumberGenerator ticketNumberGenerator;
@@ -49,7 +49,7 @@ public class MockBookingFlightShould {
 
         inOrder.verify(flightAvailability).canBooking(reservationInformation);
 
-        final Reservation reservation = reservationInformation.getReservation(ticketNumberGenerator.getTicketNumberFormat());
+        final Reservation reservation = reservationInformation.getReservation(ticketNumberGenerator.getTicketNumber());
 
         inOrder.verify(passengers).save(reservationInformation.passenger());
         inOrder.verify(bookingLists).book(reservation);
@@ -74,8 +74,8 @@ public class MockBookingFlightShould {
         return mock;
     }
 
-    private FlightAvailabilityImpl createFindFlightsRepository() {
-        final FlightAvailabilityImpl mock = mock(FlightAvailabilityImpl.class);
+    private FlightAvailability createFindFlightsRepository() {
+        final FlightAvailability mock = mock(FlightAvailability.class);
         doNothing().when(mock).canBooking(any());
         return mock;
     }
@@ -83,7 +83,7 @@ public class MockBookingFlightShould {
     @NotNull
     private TicketNumberGenerator createMockTicketGenerator() {
         TicketNumberGenerator ticketNumberGenerator = mock(TicketNumberGenerator.class);
-        when(ticketNumberGenerator.getTicketNumberFormat()).thenReturn("AA-7845-65874");
+        when(ticketNumberGenerator.getTicketNumber()).thenReturn("AA-7845-65874");
         return ticketNumberGenerator;
     }
 
