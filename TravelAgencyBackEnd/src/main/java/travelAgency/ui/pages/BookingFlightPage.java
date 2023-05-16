@@ -215,42 +215,54 @@ public class BookingFlightPage extends JFrame {
 
     private void performFlightSearchAndDisplayResults() {
         final List<String> errors = canSearchFlight();
-        if (!errors.isEmpty()){
-            for (String error : errors) {
-                ui.showMessageDialog(this,error);
-            }
-            return;
+        if (!errors.isEmpty()) {
+            displayErrors(errors);
+        } else {
+            executeFlightSearch();
         }
+    }
 
+    private void displayErrors(List<String> errors) {
+        for (String error : errors) {
+            displayErrorMessage(error);
+        }
+    }
 
+    private void executeFlightSearch() {
         displaySearchResultTitle();
-
         final Object exchangeRate = this.exchangeRate.getSelectedItem();
+        performFlightSearch(exchangeRate);
+    }
+
+    private void performFlightSearch(Object exchangeRate) {
         final List<Flight> searchFlights;
         try {
             searchFlights = flightListService.searchFlights(getFlightPlan());
             flightSearchResult.showFlightsInfo(searchFlights, exchangeRate);
+            updateFlightSearchResults(flightSearchResult);
+            enableNextButtonIfSearchResultsExist(searchFlights);
         } catch (Exception e) {
-            ui.showMessageDialog(this, e.getMessage());
-            return;
+            displayErrorMessage(e.getMessage());
         }
-
-        updateFlightSearchResults(flightSearchResult);
-
-        enableNextButtonIfSearchResultsExist(searchFlights);
     }
 
     private List<String> canSearchFlight() {
         List<String> errorMessages = new LinkedList<>();
         if (departureDateChooser.getDate() == null || arrivalDateChooser.getDate() == null) {
-            errorMessages.add("departure and arrival date must not be null!");
+            errorMessages.add("Departure and arrival date must not be null!");
+        }else{
+            validateFlightLocation(errorMessages);
         }
+
+        return errorMessages;
+    }
+
+    private void validateFlightLocation(List<String> errorMessages) {
         try {
-            getFlightLocation();
+            createFlightLocation();
         } catch (Exception e) {
             errorMessages.add(e.getMessage());
         }
-        return errorMessages;
     }
 
     private void displaySearchResultTitle() {
@@ -258,15 +270,14 @@ public class BookingFlightPage extends JFrame {
         final Object destination = destinationComboBox.getSelectedItem();
         final String title = format("Showing results for %s to %s ", origin, destination);
         resultLabel.setText(title);
-      //  resultPanel.add(resultLabel);
+        resultPanel.add(resultLabel);
     }
 
     private void updateFlightSearchResults(FlightSearchResultPanel flightSearchResult) {
         resultPanel.removeAll();
-        displaySearchResultTitle();
+        //displaySearchResultTitle();
         resultPanel.add(flightSearchResult);
         resultPanel.repaint();
-
     }
 
     private void enableNextButtonIfSearchResultsExist(List<Flight> searchFlights) {
@@ -288,20 +299,21 @@ public class BookingFlightPage extends JFrame {
 
     @NotNull
     private FlightPlan getFlightPlan() {
-        final FlightLocation location = getFlightLocation();
+        final FlightLocation location = createFlightLocation();
         final FlightSchedule schedule = getFlightSchedule();
         return new FlightPlan(location, schedule);
     }
 
     @NotNull
     private FlightSchedule getFlightSchedule() {
-        LocalDate departure = departureDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate arrival = arrivalDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        final ZoneId zone = ZoneId.systemDefault();
+        LocalDate departure = departureDateChooser.getDate().toInstant().atZone(zone).toLocalDate();
+        LocalDate arrival = arrivalDateChooser.getDate().toInstant().atZone(zone).toLocalDate();
         return new FlightSchedule(departure, arrival);
     }
 
     @NotNull
-    private FlightLocation getFlightLocation() {
+    private FlightLocation createFlightLocation() {
         final String from = (String) originComboBox.getSelectedItem();
         String to = (String) destinationComboBox.getSelectedItem();
         return new FlightLocation(cityService.getCity(from), cityService.getCity(to));
@@ -329,7 +341,7 @@ public class BookingFlightPage extends JFrame {
 
     private void validateFlightSelection(String selectedFlight) {
         if (selectedFlight == null)
-            ui.showMessageDialog(this, "Please select a flight to proceed.");
+            displayErrorMessage("Please select a flight to proceed.");
     }
 
     private JButton createButton(String buttonName) {
@@ -353,6 +365,10 @@ public class BookingFlightPage extends JFrame {
     private void createResultPanel() {
         resultPanel = ui.flowLayoutPanel(FlowLayout.CENTER, 20, 10);
         resultPanel.setPreferredSize(new Dimension(800, 400));
+    }
+
+    private void displayErrorMessage(String error) {
+        ui.showMessageDialog(this,"Error: "+ error);
     }
 }
 

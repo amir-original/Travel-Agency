@@ -22,6 +22,10 @@ public class BoardingPass extends JDialog {
 
     private final UiComponents ui = new UiComponents();
 
+    public BoardingPass(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
     public void printTicket() {
         setupDialog();
 
@@ -71,40 +75,5 @@ public class BoardingPass extends JDialog {
         setResizable(false);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-    }
-
-    public BoardingPass(Reservation reservation) {
-        this.reservation = reservation;
-    }
-
-    public static void main(String[] args) {
-        Reservation bookingInformation = new Reservation("A87-745-854",
-                new ReservationInformation(flight().build(),passenger().build(),5));
-        final BoardingPass dialog = new BoardingPass(bookingInformation);
-        dialog.printTicket();
-        dialog.setVisible(true);
-    }
-
-    public static FlightBuilder flight() {
-        return FlightBuilder.flight()
-                .withFlightNumber("0321")
-                .withTotalCapacity(40)
-                .withPrice(new Money(145, Currency.USD))
-                .from(TEHRAN)
-                .to(PARIS)
-                .departureAt(LocalDate.now())
-                .arrivalAt(LocalDate.now().plusDays(1));
-    }
-
-    public static PassengerBuilder passenger() {
-        return PassengerBuilder.passenger()
-                .withId("55")
-                .firstName("Sara")
-                .lastName("Baiati")
-                .withBirthday(of(1999, 4, 5))
-                .ofCity(TEHRAN.name())
-                .withAddress("Iran,TEHRAN")
-                .withZipcode("1145789")
-                .withPhoneNumber("989907994339");
     }
 }

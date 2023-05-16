@@ -82,11 +82,12 @@ public class FlightSearchResultPanel extends JPanel {
     }
 
     private void addFlightToRow(Object exchangeRate, Flight flight) {
-        Object[] row = new Object[5];
+        Object[] row = new Object[6];
         row[0] = flight.from();
         row[1] = flight.to();
         row[2] = flight.flightNumber();
         row[3] = flight.totalCapacity();
+        row[4] = flight.departure().toString();
         initPrice(exchangeRate, flight, row);
         tableModel.addRow(row);
         tableModel.fireTableDataChanged();
@@ -94,9 +95,9 @@ public class FlightSearchResultPanel extends JPanel {
 
     private void initPrice(Object exchangeRate, Flight flight, Object[] row) {
         if (exchangeRate.equals("IRR")) {
-            row[4] = getFormatPriceWithSymbol(flight, new USDToIRRConverter(exchangeRateDAO));
+            row[5] = getFormatPriceWithSymbol(flight, new USDToIRRConverter(exchangeRateDAO));
         } else if (exchangeRate.equals("USD")) {
-            row[4] = getFormatPriceWithSymbol(flight, new IRRToUSDConverter(exchangeRateDAO));
+            row[5] = getFormatPriceWithSymbol(flight, new IRRToUSDConverter(exchangeRateDAO));
         }
     }
 
@@ -114,6 +115,7 @@ public class FlightSearchResultPanel extends JPanel {
         tableModel.addColumn("Destination");
         tableModel.addColumn("Flight Number");
         tableModel.addColumn("Available Seats");
+        tableModel.addColumn("Date");
         tableModel.addColumn("Price");
     }
 
@@ -126,8 +128,8 @@ public class FlightSearchResultPanel extends JPanel {
     }
 
     private void setColumnWidths(JTable table) {
-        for (int i = 0; i < 5; i++)
-            table.getColumnModel().getColumn(i).setPreferredWidth(150);
+        for (int i = 0; i < 6; i++)
+            table.getColumnModel().getColumn(i).setPreferredWidth(180);
     }
 
     private void addClickListenerToTableRows(JTable table) {

@@ -154,15 +154,15 @@ public class BookingInformationPage extends JFrame {
     private void bookActionToBookButton(JButton bookButton) {
         bookButton.addActionListener(e -> {
             List<String> errors = canBookingReservation();
-            if (!errors.isEmpty()) {
+            if (errors.isEmpty()) {
+                processReservationBooking();
+            } else {
                 errors.forEach(this::showMessageDialog);
-                return;
             }
-            attemptReservationBooking();
         });
     }
 
-    private void attemptReservationBooking() {
+    private void processReservationBooking() {
         try {
             final ReservationInformation reservationInformation = getReservationInformation();
             final Reservation reservation = bookReservation(reservationInformation);
@@ -176,16 +176,13 @@ public class BookingInformationPage extends JFrame {
         List<String> errors = new LinkedList<>();
         if (selectFlight == null) {
             errors.add("no flight available!");
-        }
-        if (travelers <= 0) {
+        }else if (travelers <= 0) {
             errors.add("number of ticket should be greeter than 0");
-        }
-        if (birthdayPicker.getDate() == null) {
+        } else if (birthdayPicker.getDate() == null) {
             errors.add("birthday field must not be null!");
         }
-
         try {
-            final Passenger passenger = getPassenger();
+            getPassenger();
         } catch (Exception e) {
             errors.add(e.getMessage());
         }
