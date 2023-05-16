@@ -12,10 +12,11 @@ import static travelAgency.domain.city.City.TEHRAN;
 
 public class FakeFlightPlanBuilder  {
 
+    public static final LocalDate NOW = LocalDate.now();
     private City from = TEHRAN;
     private City to = PARIS;
-    private LocalDate departure = LocalDate.now();
-    private LocalDate arrival = LocalDate.now().plusDays(1);
+    private LocalDate departure = NOW;
+    private LocalDate arrival = NOW.plusDays(1);
 
     public static FakeFlightPlanBuilder flightPlan(){
         return new FakeFlightPlanBuilder();

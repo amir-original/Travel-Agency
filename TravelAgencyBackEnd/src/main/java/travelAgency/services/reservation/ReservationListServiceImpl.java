@@ -1,7 +1,9 @@
 package travelAgency.services.reservation;
 
 import travelAgency.dao.database.reservation.ReservationListRepository;
+import travelAgency.domain.exceptions.FlightNotFoundException;
 import travelAgency.domain.exceptions.ReservationNotFoundException;
+import travelAgency.domain.flight.Flight;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.services.flight.FlightListService;
 
@@ -33,6 +35,11 @@ public class ReservationListServiceImpl implements ReservationListService {
     }
 
     @Override
+    public Flight findFlight(String flightNumber) throws FlightNotFoundException {
+        return flights.findFlight(flightNumber);
+    }
+
+    @Override
     public void cancel(String ticketNumber) {
         final Reservation reservation = reservations.findReservation(ticketNumber)
                 .orElseThrow(ReservationNotFoundException::new);
@@ -42,7 +49,7 @@ public class ReservationListServiceImpl implements ReservationListService {
 
     @Override
     public int getAvailableSeats(String flightNumber) {
-        return flights.getTotalCapacity(flightNumber) - getTotalBookedSeats(flightNumber);
+        return findFlight(flightNumber).totalCapacity() - getTotalBookedSeats(flightNumber);
     }
 
     @Override

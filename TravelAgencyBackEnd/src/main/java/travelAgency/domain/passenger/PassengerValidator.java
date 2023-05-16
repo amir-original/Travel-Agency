@@ -26,7 +26,7 @@ public class PassengerValidator {
     }
 
     private boolean isNotValidPhoneNumberFormat() {
-        return !Pattern.matches("^((\\+98)|(0)|(98)9)\\d{9}$", passenger.phoneNumber());
+        return !Pattern.matches("^((\\+98)|(0)|(98))9\\d{9}$", passenger.phoneNumber());
     }
 
     private boolean isNameBlank() {

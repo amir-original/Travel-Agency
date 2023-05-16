@@ -1,5 +1,6 @@
 package travelAgency.ui;
 
+import org.jetbrains.annotations.NotNull;
 import travelAgency.dao.api.ExchangeRateDAOImpl;
 import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
 import travelAgency.dao.database.flight.FlightRepository;
@@ -24,19 +25,37 @@ public class App {
 
     private  BookingReservation bookingReservation;
     private final CityService cityService;
-    private final ReservationListService reservationListService;
-    private final FlightListService flightListService;
+    private  ReservationListService reservationListService;
+    private  FlightListService flightListService;
     private final ExchangeRateDAOImpl exchangeRateDAO;
 
     public App() {
+        final MySQLDbConnection db = new MySQLDbConnection();
+        initBookingReservation(db);
+
         this.exchangeRateDAO = new ExchangeRateDAOImpl();
         this.cityService = new CityServiceImpl();
-        final MySQLDbConnection db = new MySQLDbConnection();
-        final ReservationListRepository bookings = new ReservationListRepositoryImpl(db);
+    }
+
+    private void initBookingReservation(MySQLDbConnection db) {
+        final ReservationListRepository bookings = createReservationListService(db);
+
+        PassengerRepository passengers = new PassengerRepositoryImpl(db);
+
+        TicketNumberGenerator ticketNumberGenerator = new TicketNumberGeneratorImpl();
+
+        final FlightAvailability flightAvailability = new FlightAvailability(reservationListService);
+
+        bookingReservation = new BookingReservation(bookings, flightAvailability, passengers, ticketNumberGenerator);
+    }
+
+    @NotNull
+    private ReservationListRepository createReservationListService(MySQLDbConnection db) {
         final FlightRepository flights = new FlightRepositoryImpl(db);
-        initBookingReservation(db, bookings, flights);
         flightListService = new FlightListServiceImpl(flights);
+        ReservationListRepository bookings = new ReservationListRepositoryImpl(db);
         reservationListService = new ReservationListServiceImpl(bookings, flightListService);
+        return bookings;
     }
 
 
@@ -49,16 +68,8 @@ public class App {
         buildHomePage();
     }
 
-    private  void buildHomePage() {
+    private void buildHomePage() {
         new HomePage(reservationListService, flightListService, bookingReservation, exchangeRateDAO, cityService);
     }
 
-    private void initBookingReservation(MySQLDbConnection db, ReservationListRepository bookings, FlightRepository flights) {
-        PassengerRepository passengers = new PassengerRepositoryImpl(db);
-        TicketNumberGenerator ticketNumberGenerator = new TicketNumberGeneratorImpl();
-        final FlightAvailability flightAvailability =
-                new FlightAvailability(new FlightListServiceImpl(flights), new ReservationListServiceImpl(bookings,new FlightListServiceImpl(flights)));
-
-        bookingReservation = new BookingReservation(bookings, flightAvailability,passengers,ticketNumberGenerator);
-    }
 }

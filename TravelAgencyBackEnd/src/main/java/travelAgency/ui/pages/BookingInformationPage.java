@@ -182,7 +182,7 @@ public class BookingInformationPage extends JFrame {
             errors.add("birthday field must not be null!");
         }
         try {
-            getPassenger();
+            createPassenger();
         } catch (Exception e) {
             errors.add(e.getMessage());
         }
@@ -202,10 +202,10 @@ public class BookingInformationPage extends JFrame {
 
     @NotNull
     private ReservationInformation getReservationInformation() {
-        return new ReservationInformation(selectFlight, getPassenger(), travelers);
+        return new ReservationInformation(selectFlight, createPassenger(), travelers);
     }
 
-    private Passenger getPassenger() {
+    private Passenger createPassenger() {
         return PassengerBuilder
                 .passenger()
                 .withId(passportNumber.getText())

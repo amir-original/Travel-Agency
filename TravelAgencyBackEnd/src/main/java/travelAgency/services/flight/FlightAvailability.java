@@ -9,17 +9,14 @@ import travelAgency.services.reservation.ReservationListService;
 public class FlightAvailability {
 
     private static final int NO_AVAILABLE_SEATS = 0;
-
-    private final FlightListService flights;
     private final ReservationListService bookingLists;
 
-    public FlightAvailability(FlightListService flights, ReservationListService reservationList) {
-        this.flights = flights;
+    public FlightAvailability(ReservationListService reservationList) {
         this.bookingLists = reservationList;
     }
 
     public void canBooking(ReservationInformation resInfo) {
-        final Flight flight = flights.findFlight(resInfo.flightNumber());
+        final Flight flight = bookingLists.findFlight(resInfo.flightNumber());
         flight.validateScheduleNotInPast();
         checkFlightCapacity(resInfo);
     }
@@ -46,5 +43,4 @@ public class FlightAvailability {
     private int getAvailableSeats(ReservationInformation resInfo) {
         return bookingLists.getAvailableSeats(resInfo.flightNumber());
     }
-
 }

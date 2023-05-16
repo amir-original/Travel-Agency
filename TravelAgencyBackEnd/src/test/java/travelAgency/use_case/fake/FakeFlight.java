@@ -21,8 +21,10 @@ public class FakeFlight implements FlightRepository {
 
     private final List<Flight> flights;
 
+    public static final LocalDate NOW = LocalDate.now();
+
     {
-        final LocalDate yesterday = LocalDate.now().minusDays(1);
+        final LocalDate yesterday = NOW.minusDays(1);
 
         final List<Flight> list = of(
                 flight().withFlightNumber("8054").withPrice(new Money(560, USD)).build(),
@@ -68,8 +70,8 @@ public class FakeFlight implements FlightRepository {
                 .withPrice(new Money(100,USD))
                 .from(TEHRAN)
                 .to(PARIS)
-                .departureAt(LocalDate.now())
-                .arrivalAt(LocalDate.now().plusDays(1));
+                .departureAt(NOW)
+                .arrivalAt(NOW.plusDays(1));
     }
 
     public static Flight flight(String flightNumber) {

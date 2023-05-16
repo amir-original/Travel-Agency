@@ -28,7 +28,7 @@ public class BookingReservationPassengerInfoShould {
         FakeReservationList fakeBookingList = new FakeReservationList();
         final FlightListService flights = new FlightListServiceImpl(new FakeFlight());
         final FlightAvailability flightAvailability =
-                new FlightAvailability(flights, new ReservationListServiceImpl(fakeBookingList,flights));
+                new FlightAvailability(new ReservationListServiceImpl(fakeBookingList,flights));
         app = new BookingReservation(fakeBookingList, flightAvailability,
                 new FakePassenger(), ticketNumberGenerator);
     }

@@ -39,7 +39,7 @@ public class ReservationListServiceShould {
         final FakeFlight flights = new FakeFlight();
         final FlightListServiceImpl flightService = new FlightListServiceImpl(flights);
 
-        final FlightAvailability flightAvailability = new FlightAvailability(flightService, new ReservationListServiceImpl(bookings,flightService));
+        final FlightAvailability flightAvailability = new FlightAvailability(new ReservationListServiceImpl(bookings,flightService));
         final FakePassenger passengers = new FakePassenger();
         appService = new BookingReservation(bookings, flightAvailability, passengers, ticketNumberGenerator);
         app = new ReservationListServiceImpl(bookings, flightService);

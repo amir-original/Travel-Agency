@@ -23,8 +23,8 @@ public class BookingReservation {
 
         this.bookingLists = bookingLists;
         this.passengers = passengers;
-        this.flightAvailability =  flightAvailability;
         this.TicketNumberGenerator = TicketNumberGenerator;
+        this.flightAvailability =  flightAvailability;
     }
 
     public Reservation book(ReservationInformation resInfo) {
