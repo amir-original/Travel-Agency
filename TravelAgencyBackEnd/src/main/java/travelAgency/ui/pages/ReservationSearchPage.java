@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
 
 import static java.util.Arrays.stream;
 
@@ -29,6 +30,8 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
     private JButton searchButton, cancelButton, backButton;
     private JComboBox<String> searchTypeComboBox;
     private final UiComponents ui;
+    private JTable jTable;
+    private String reservationNumber;
 
     public ReservationSearchPage(ReservationListService reservationListService) {
         this.reservationListService = reservationListService;
@@ -76,7 +79,7 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
 
     @NotNull
     private JTable createResultTable(Object[][] data) {
-        return new JTable(data, getColumnNames());
+        return jTable = new JTable(data, getColumnNames());
     }
 
     @NotNull
@@ -205,14 +208,9 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
     }
 
     private void performReservationSearch(String flightNumber, String firstName, Date date) {
-        final Reservation reservation = searchReservation(flightNumber, firstName, date);
+        final Reservation searchedReservation = searchReservation(flightNumber, firstName, date);
 
-        if (isReservationFound(reservation)) {
-            final Object[][] result = createReservationInfoArray(reservation);
-            updateResultTable(createResultTable(result));
-        } else {
-            displayErrorMessage("Not found Any Reservation with Entered information!");
-        }
+        handleReservationSearchResult(searchedReservation);
     }
 
     private Reservation searchReservation(String flightNumber, String firstName, Date birthday) {
@@ -240,18 +238,28 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
         } else {
             performReservationSearch(reservationNumber);
         }
-        
+
     }
 
     private void performReservationSearch(String reservationNumber) {
         Reservation searchedReservation = searchReservation(reservationNumber);
 
+        handleReservationSearchResult(searchedReservation);
+    }
+
+    private void handleReservationSearchResult(Reservation searchedReservation) {
         if (isReservationFound(searchedReservation)) {
-            Object[][] result = createReservationInfoArray(searchedReservation);
-            updateResultTable(createResultTable(result));
+            processFoundReservation(searchedReservation);
         } else {
-            displayErrorMessage("not found any reservation with entered information.");
+            displayErrorMessage("Not found Any Reservation with Entered information!");
         }
+    }
+
+    private void processFoundReservation(Reservation searchedReservation) {
+        Object[][] result = createReservationInfoArray(searchedReservation);
+        final JTable resultTable = createResultTable(result);
+        updateResultTable(resultTable);
+        EnableCancelButton(resultTable);
     }
 
     private Reservation searchReservation(String reservationNumber) {
@@ -263,7 +271,11 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
     }
 
     private void displayErrorMessage(String s) {
-        ui.showMessageDialog(this, s);
+        ui.showMessageDialog(this, "Error: " + s);
+    }
+
+    private void displaySuccessMessage(String s) {
+        ui.showMessageDialog(this, "Success: " + s);
     }
 
     @NotNull
@@ -284,14 +296,57 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
         repaint();
     }
 
+    private void EnableCancelButton(JTable table) {
+        cancelButton.setEnabled(true);
+        addClickListenerToTableRows(table);
+    }
+
     private void goBackToHomePage() {
         App app = new App();
+        app.run();
         dispose();
     }
 
     private void cancelSelectedFlight() {
-        // cancel selected flight
-        // ...
+        if (reservationNumber == null || reservationNumber.isEmpty()) {
+            displayErrorMessage("Please select a reservation before canceling a flight.");
+        } else {
+            handleCancellationProcess();
+        }
+    }
+
+    private void handleCancellationProcess() {
+        try {
+            reservationListService.cancel(reservationNumber);
+            removeResultTable();
+            displaySuccessMessage("Cancellation successes!");
+        } catch (Exception e) {
+            displayErrorMessage("Cancellation failed!");
+        }
+    }
+
+    private void removeResultTable() {
+        updateResultTable(createResultTable(new Object[][]{}));
+    }
+
+    private void addClickListenerToTableRows(JTable table) {
+        table.getSelectionModel().addListSelectionListener(event -> {
+            selectReservationNumberIfRowSelected(event, table.getSelectedRow());
+        });
+    }
+
+    private void selectReservationNumberIfRowSelected(ListSelectionEvent event, int selectedRow) {
+        if (!event.getValueIsAdjusting() && !isRowSelected(selectedRow))
+            reservationNumber = getSelectReservationNumberValue(selectedRow);
+    }
+
+    private boolean isRowSelected(int selectedRow) {
+        return selectedRow == -1;
+    }
+
+    private String getSelectReservationNumberValue(int selectedRow) {
+        final int reservationColumn = 0;
+        return (String) jTable.getValueAt(selectedRow, reservationColumn);
     }
 
     private void handleSearchTypeSelectionChanges(String searchType) {
