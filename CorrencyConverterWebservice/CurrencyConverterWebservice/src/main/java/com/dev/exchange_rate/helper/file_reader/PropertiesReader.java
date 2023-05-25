@@ -1,11 +1,12 @@
-package travelAgency.helper;
+package com.dev.exchange_rate.helper.file_reader;
+
+import com.dev.exchange_rate.helper.InvalidPropertiesFileException;
+import com.dev.exchange_rate.helper.MissingPropertyException;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Objects;
 import java.util.Properties;
 
 import static java.util.Objects.requireNonNull;

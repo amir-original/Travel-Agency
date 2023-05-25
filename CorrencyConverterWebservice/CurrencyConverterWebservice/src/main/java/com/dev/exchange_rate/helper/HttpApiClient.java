@@ -1,4 +1,4 @@
-package travelAgency.helper;
+package com.dev.exchange_rate.helper;
 
 public interface HttpApiClient {
     HttpHandlerApiClient target(String baseUri);

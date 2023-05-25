@@ -1,16 +1,23 @@
 package com.dev.exchange_rate.domain;
 
-public enum Rate {
+public enum Currency {
     IRR("rial"),
     USD("dollar"),
-    EURO("euro");
+    EUR("euro");
 
     private final String name;
-    Rate(String name) {
+    Currency(String name) {
         this.name = name;
     }
 
     private String toName(){
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Currency{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

@@ -1,4 +1,4 @@
-package travelAgency.helper;
+package com.dev.exchange_rate.helper;
 
 import com.google.gson.Gson;
 
@@ -15,6 +15,10 @@ public class HttpHandlerApiClient implements HttpApiClient {
     private final Gson gson;
 
     private HttpRequest.Builder method;
+
+    public HttpHandlerApiClient(Gson gson) {
+        this.gson = gson;
+    }
 
     public HttpHandlerApiClient() {
         this.gson = new Gson();

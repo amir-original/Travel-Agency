@@ -1,0 +1,14 @@
+package com.dev.exchange_rate.exceptions;
+
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.ExceptionMapper;
+
+import java.security.interfaces.RSAKey;
+
+public class ExchangeRateExceptionMapper implements ExceptionMapper<ExchangeRateNotFoundException> {
+
+    @Override
+    public Response toResponse(ExchangeRateNotFoundException exception) {
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
+}
