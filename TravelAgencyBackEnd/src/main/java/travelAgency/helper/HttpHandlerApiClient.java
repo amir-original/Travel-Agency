@@ -20,6 +20,10 @@ public class HttpHandlerApiClient implements HttpApiClient {
         this.gson = new Gson();
     }
 
+    public HttpHandlerApiClient(Gson gson) {
+        this.gson = gson;
+    }
+
     @Override
     public HttpHandlerApiClient target(String baseUri) {
         try {

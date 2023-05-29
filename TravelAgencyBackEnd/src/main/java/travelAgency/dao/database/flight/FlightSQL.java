@@ -17,7 +17,7 @@ import static travelAgency.domain.flight.FlightBuilder.flight;
 
 public class FlightSQL {
 
-    public static final String INSERT_FLIGHT_SQL = """
+     static final String INSERT_FLIGHT_SQL = """
             INSERT INTO flights (flight_number,
             from_city,
             to_city,
@@ -28,11 +28,11 @@ public class FlightSQL {
             currency)
              VALUES (?,?,?,?,?,?,?,?)
             """;
-    public static final String DELETE_FLIGHT_SQL
+     static final String DELETE_FLIGHT_SQL
             = "DELETE FROM flights WHERE flight_number = ?";
-    public static final String GET_ALL_FLIGHTS_SQL
+     static final String GET_ALL_FLIGHTS_SQL
             = "SELECT * FROM flights";
-    public static final String FIND_FLIGHT_BY_FLIGHT_NUMBER_SQL
+     static final String FIND_FLIGHT_BY_FLIGHT_NUMBER_SQL
             = "SELECT * FROM flights WHERE flight_number = ?";
 
     public static void filledOutFlightFields(Flight flight, PreparedStatement query) throws SQLException {

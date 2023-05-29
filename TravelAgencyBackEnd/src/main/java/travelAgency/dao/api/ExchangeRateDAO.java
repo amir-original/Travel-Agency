@@ -1,6 +1,10 @@
 package travelAgency.dao.api;
 
+import travelAgency.domain.flight.currency.Currency;
+
+import java.util.Optional;
+
 public interface ExchangeRateDAO {
-    double usdToIrr();
-    double irrToUsd();
+    Optional<ExchangeRate> retrieveExchangeRate(Currency by);
+    double getExchangeRate(Currency from,Currency to);
 }

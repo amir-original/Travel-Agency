@@ -3,11 +3,10 @@ package travelAgency.ui.pages;
 import org.jetbrains.annotations.NotNull;
 import travelAgency.dao.api.ExchangeRateDAO;
 import travelAgency.domain.flight.Flight;
+import travelAgency.domain.flight.currency.Currency;
 import travelAgency.domain.flight.currency.Money;
-import travelAgency.services.currency_exchange.CurrencyConverter;
-import travelAgency.services.currency_exchange.currency_api.ExchangeRateService;
-import travelAgency.services.currency_exchange.currency_api.IRRToUSDConverter;
-import travelAgency.services.currency_exchange.currency_api.USDToIRRConverter;
+import travelAgency.services.currency_exchange.currency_api.ExchangeRateConverter;
+import travelAgency.services.currency_exchange.currency_api.ExchangeRateServiceImpl;
 import travelAgency.ui.component.UiComponents;
 
 import javax.swing.*;
@@ -17,21 +16,20 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-import static travelAgency.helper.PriceFormatter.formatPriceWithSymbol;
-
 
 public class FlightSearchResultPanel extends JPanel {
 
-    private final ExchangeRateDAO exchangeRateDAO;
+    private final ExchangeRateConverter exchangeRateConverter;
     private DefaultTableModel tableModel;
     private String selectFlightNumber;
     private final UiComponents ui = new UiComponents();
 
     public FlightSearchResultPanel(ExchangeRateDAO exchangeRateDAO) {
-        this.exchangeRateDAO = exchangeRateDAO;
+        exchangeRateConverter =
+                new ExchangeRateConverter(new ExchangeRateServiceImpl(exchangeRateDAO));
     }
 
-    public void showFlightsInfo(List<Flight> searchFlights, Object exchangeRate) {
+    public void showFlightsInfo(List<Flight> searchFlights, Currency exchangeRate) {
 
         setLayout(new BorderLayout());
 
@@ -76,38 +74,28 @@ public class FlightSearchResultPanel extends JPanel {
         return table;
     }
 
-    private void addFlightsToTable(List<Flight> searchFlights, Object exchangeRate) {
+    private void addFlightsToTable(List<Flight> searchFlights, Currency exchangeRate) {
         for (Flight flight : searchFlights)
             addFlightToRow(exchangeRate, flight);
     }
 
-    private void addFlightToRow(Object exchangeRate, Flight flight) {
+    private void addFlightToRow(Currency exchangeRate, Flight flight) {
         Object[] row = new Object[6];
         row[0] = flight.from();
         row[1] = flight.to();
         row[2] = flight.flightNumber();
         row[3] = flight.totalCapacity();
         row[4] = flight.departure().toString();
-        initPrice(exchangeRate, flight, row);
+        row[5] = getFormatPriceWithSymbol(flight,exchangeRate);
         tableModel.addRow(row);
         tableModel.fireTableDataChanged();
     }
 
-    private void initPrice(Object exchangeRate, Flight flight, Object[] row) {
-        if (exchangeRate.equals("IRR")) {
-            row[5] = getFormatPriceWithSymbol(flight, new USDToIRRConverter(exchangeRateDAO));
-        } else if (exchangeRate.equals("USD")) {
-            row[5] = getFormatPriceWithSymbol(flight, new IRRToUSDConverter(exchangeRateDAO));
-        }
-    }
-
-    private String getFormatPriceWithSymbol(Flight flight, ExchangeRateService exchangeRateService) {
-        return formatPriceWithSymbol(getMoney(flight, currencyConverter(exchangeRateService)));
-    }
-
-
-    private Money getMoney(Flight flight, CurrencyConverter currencyConverterService) {
-        return currencyConverterService.convert(flight.price());
+    private String getFormatPriceWithSymbol(Flight flight,Currency target) {
+        final double amount = flight.price().amount();
+        final Currency from = flight.price().currency();
+        final Money money = exchangeRateConverter.convert(amount, from, target);
+        return money.formatMoneyWithSymbol();
     }
 
     private void setupTableHeader() {
@@ -149,11 +137,6 @@ public class FlightSearchResultPanel extends JPanel {
 
     private String getSelectFlightNumberValue(int selectedRow) {
         return (String) tableModel.getValueAt(selectedRow, 2);
-    }
-
-    @NotNull
-    private CurrencyConverter currencyConverter(ExchangeRateService exchangeRateService) {
-        return new CurrencyConverter(exchangeRateService);
     }
 
     public String getSelectedFlight() {

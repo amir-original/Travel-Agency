@@ -7,6 +7,7 @@ import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightLocation;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.flight.FlightSchedule;
+import travelAgency.domain.flight.currency.Currency;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.city.CityService;
 import travelAgency.services.flight.FlightListService;
@@ -185,7 +186,7 @@ public class BookingFlightPage extends JFrame {
 
     private void createCurrencyConverterField(JPanel footerPanel) {
         final JLabel converterLabel = ui.label("Currency");
-        final String[] values = {"IRR", "USD"};
+        final String[] values = {Currency.IRR.name(), Currency.USD.name()};
         exchangeRate = ui.dropdown(values, 100, 30);
         footerPanel.add(converterLabel);
         footerPanel.add(exchangeRate);
@@ -230,11 +231,12 @@ public class BookingFlightPage extends JFrame {
 
     private void executeFlightSearch() {
         displaySearchResultTitle();
-        final Object exchangeRate = this.exchangeRate.getSelectedItem();
-        performFlightSearch(exchangeRate);
+        final String exchangeRate = (String) this.exchangeRate.getSelectedItem();
+        final Currency currency = Currency.valueOf(exchangeRate);
+        performFlightSearch(currency);
     }
 
-    private void performFlightSearch(Object exchangeRate) {
+    private void performFlightSearch(travelAgency.domain.flight.currency.Currency exchangeRate) {
         final List<Flight> searchFlights;
         try {
             searchFlights = flightListService.searchFlights(getFlightPlan());
