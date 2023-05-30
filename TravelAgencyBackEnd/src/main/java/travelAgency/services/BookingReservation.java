@@ -17,8 +17,7 @@ public class BookingReservation {
     public final TicketNumberGenerator TicketNumberGenerator;
 
     public BookingReservation(ReservationListRepository bookingLists,
-                              FlightAvailability flightAvailability,
-                              PassengerRepository passengers,
+                              PassengerRepository passengers, FlightAvailability flightAvailability,
                               TicketNumberGenerator TicketNumberGenerator) {
 
         this.bookingLists = bookingLists;

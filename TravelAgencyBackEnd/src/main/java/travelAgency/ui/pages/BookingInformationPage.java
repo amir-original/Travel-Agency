@@ -2,12 +2,12 @@ package travelAgency.ui.pages;
 
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
+import travelAgency.controller.ReservationController;
 import travelAgency.domain.reservation.ReservationInformation;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.domain.passenger.PassengerBuilder;
 import travelAgency.domain.reservation.Reservation;
-import travelAgency.services.BookingReservation;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
 
@@ -26,7 +26,7 @@ public class BookingInformationPage extends JFrame {
     public static final String BOOKING_FAIL = "Booking Fail!";
 
     private final Flight selectFlight;
-    private final BookingReservation reservationListService;
+    private final ReservationController reservationController;
     private final int travelers;
     private final UiComponents ui;
     private JTextField passportNumber;
@@ -38,9 +38,11 @@ public class BookingInformationPage extends JFrame {
     private JTextField address;
     private JTextField city;
 
-    public BookingInformationPage(Flight flight, BookingReservation reservationListService, int travelers) {
+    public BookingInformationPage(Flight flight,
+                                  ReservationController reservationController,
+                                  int travelers) {
         selectFlight = flight;
-        this.reservationListService = reservationListService;
+        this.reservationController = reservationController;
         this.travelers = travelers;
         this.ui = new UiComponents();
         setupPage();
@@ -174,6 +176,20 @@ public class BookingInformationPage extends JFrame {
 
     private List<String> canBookingReservation() {
         List<String> errors = new LinkedList<>();
+        validateFields(errors);
+        validatePassenger(errors);
+        return errors;
+    }
+
+    private void validatePassenger(List<String> errors) {
+        try {
+            createPassenger();
+        } catch (Exception e) {
+            errors.add(e.getMessage());
+        }
+    }
+
+    private void validateFields(List<String> errors) {
         if (selectFlight == null) {
             errors.add("no flight available!");
         }else if (travelers <= 0) {
@@ -181,12 +197,6 @@ public class BookingInformationPage extends JFrame {
         } else if (birthdayPicker.getDate() == null) {
             errors.add("birthday field must not be null!");
         }
-        try {
-            createPassenger();
-        } catch (Exception e) {
-            errors.add(e.getMessage());
-        }
-        return errors;
     }
 
     private void processSuccessfulBooking(Reservation reservation) {
@@ -197,7 +207,7 @@ public class BookingInformationPage extends JFrame {
     }
 
     private Reservation bookReservation(ReservationInformation reservationInformation) {
-        return reservationListService.book(reservationInformation);
+        return reservationController.book(reservationInformation);
     }
 
     @NotNull

@@ -30,8 +30,12 @@ public class ExchangeRateConverter {
     }
 
     private void canConvert(double amount) {
-        if (amount < 0)
+        if (isNegative(amount))
             throw new IllegalArgumentException("amount must be greater than zero!");
+    }
+
+    private boolean isNegative(double amount) {
+        return amount < 0;
     }
 
     private Money createMoney(double amount, Currency currency) {

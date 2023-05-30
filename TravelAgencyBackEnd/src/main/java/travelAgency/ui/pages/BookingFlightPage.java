@@ -2,15 +2,15 @@ package travelAgency.ui.pages;
 
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
-import travelAgency.dao.api.ExchangeRateDAO;
+import travelAgency.controller.ReservationController;
+import travelAgency.controller.ExchangeRateConverterController;
+import travelAgency.controller.FlightController;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightLocation;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.flight.FlightSchedule;
 import travelAgency.domain.flight.currency.Currency;
-import travelAgency.services.BookingReservation;
 import travelAgency.services.city.CityService;
-import travelAgency.services.flight.FlightListService;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
 
@@ -33,8 +33,8 @@ public class BookingFlightPage extends JFrame {
 
     private UiComponents ui;
     private final CityService cityService;
-    private final FlightListService flightListService;
-    private final BookingReservation bookingReservation;
+    private final FlightController flightController;
+    private final ReservationController reservationController;
     private JDateChooser departureDateChooser;
     private JDateChooser arrivalDateChooser;
     private JPanel resultPanel;
@@ -42,15 +42,15 @@ public class BookingFlightPage extends JFrame {
     private JSpinner passengersSpinner;
 
 
-    public BookingFlightPage(CityService cityService,
-                             FlightListService flightListService,
-                             BookingReservation bookingReservation,
-                             ExchangeRateDAO exchangeRateDAO) {
+    public BookingFlightPage(ReservationController reservationController,
+                             FlightController flightController,
+                             ExchangeRateConverterController rateConverterController,
+                             CityService cityService) {
 
         this.cityService = cityService;
-        this.flightListService = flightListService;
-        this.bookingReservation = bookingReservation;
-        flightSearchResult = new FlightSearchResultPanel(exchangeRateDAO);
+        this.flightController = flightController;
+        this.reservationController = reservationController;
+        this.flightSearchResult = new FlightSearchResultPanel(rateConverterController);
 
         createBookingFlightPage();
     }
@@ -239,7 +239,7 @@ public class BookingFlightPage extends JFrame {
     private void performFlightSearch(travelAgency.domain.flight.currency.Currency exchangeRate) {
         final List<Flight> searchFlights;
         try {
-            searchFlights = flightListService.searchFlights(getFlightPlan());
+            searchFlights = flightController.searchFlights(getFlightPlan());
             flightSearchResult.showFlightsInfo(searchFlights, exchangeRate);
             updateFlightSearchResults(flightSearchResult);
             enableNextButtonIfSearchResultsExist(searchFlights);
@@ -252,7 +252,7 @@ public class BookingFlightPage extends JFrame {
         List<String> errorMessages = new LinkedList<>();
         if (departureDateChooser.getDate() == null || arrivalDateChooser.getDate() == null) {
             errorMessages.add("Departure and arrival date must not be null!");
-        }else{
+        } else {
             validateFlightLocation(errorMessages);
         }
 
@@ -322,28 +322,29 @@ public class BookingFlightPage extends JFrame {
     }
 
     private void goToNextPageAction() {
-        nextButton.addActionListener(e -> goToReservationInformationPage());
+        nextButton.addActionListener(e -> goToBookingInformationPage());
     }
 
-    private void goToReservationInformationPage() {
-        final Flight flight = getFlight();
-        new BookingInformationPage(flight, bookingReservation, getTravelers());
-        dispose();
+    private void goToBookingInformationPage() {
+        final String selectedFlight = flightSearchResult.getSelectedFlight();
+        if (isFlightSelected(selectedFlight)) {
+            final Flight flight = getFlightBy(selectedFlight);
+            new BookingInformationPage(flight, reservationController, getTravelers());
+            dispose();
+        } else
+            displayErrorMessage("Please select a flight to proceed.");
     }
 
     private int getTravelers() {
         return (int) passengersSpinner.getValue();
     }
 
-    private Flight getFlight() {
-        final String selectedFlight = flightSearchResult.getSelectedFlight();
-        validateFlightSelection(selectedFlight);
-        return flightListService.findFlight(selectedFlight);
+    private Flight getFlightBy(String selectedFlightNumber) {
+        return flightController.findFlight(selectedFlightNumber);
     }
 
-    private void validateFlightSelection(String selectedFlight) {
-        if (selectedFlight == null)
-            displayErrorMessage("Please select a flight to proceed.");
+    private boolean isFlightSelected(String selectedFlight) {
+        return selectedFlight != null;
     }
 
     private JButton createButton(String buttonName) {
@@ -370,7 +371,7 @@ public class BookingFlightPage extends JFrame {
     }
 
     private void displayErrorMessage(String error) {
-        ui.showMessageDialog(this,"Error: "+ error);
+        ui.showMessageDialog(this, "Error: " + error);
     }
 }
 

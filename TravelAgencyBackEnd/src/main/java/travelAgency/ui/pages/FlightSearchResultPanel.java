@@ -1,6 +1,7 @@
 package travelAgency.ui.pages;
 
 import org.jetbrains.annotations.NotNull;
+import travelAgency.controller.ExchangeRateConverterController;
 import travelAgency.dao.api.ExchangeRateDAO;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.currency.Currency;
@@ -19,14 +20,13 @@ import java.util.List;
 
 public class FlightSearchResultPanel extends JPanel {
 
-    private final ExchangeRateConverter exchangeRateConverter;
+    private final ExchangeRateConverterController rateConverterController;
     private DefaultTableModel tableModel;
     private String selectFlightNumber;
     private final UiComponents ui = new UiComponents();
 
-    public FlightSearchResultPanel(ExchangeRateDAO exchangeRateDAO) {
-        exchangeRateConverter =
-                new ExchangeRateConverter(new ExchangeRateServiceImpl(exchangeRateDAO));
+    public FlightSearchResultPanel(ExchangeRateConverterController rateConverterController) {
+        this.rateConverterController = rateConverterController;
     }
 
     public void showFlightsInfo(List<Flight> searchFlights, Currency exchangeRate) {
@@ -86,15 +86,15 @@ public class FlightSearchResultPanel extends JPanel {
         row[2] = flight.flightNumber();
         row[3] = flight.totalCapacity();
         row[4] = flight.departure().toString();
-        row[5] = getFormatPriceWithSymbol(flight,exchangeRate);
+        row[5] = getFormatPriceWithSymbol(flight, exchangeRate);
         tableModel.addRow(row);
         tableModel.fireTableDataChanged();
     }
 
-    private String getFormatPriceWithSymbol(Flight flight,Currency target) {
+    private String getFormatPriceWithSymbol(Flight flight, Currency target) {
         final double amount = flight.price().amount();
         final Currency from = flight.price().currency();
-        final Money money = exchangeRateConverter.convert(amount, from, target);
+        final Money money = rateConverterController.convert(amount, from, target);
         return money.formatMoneyWithSymbol();
     }
 

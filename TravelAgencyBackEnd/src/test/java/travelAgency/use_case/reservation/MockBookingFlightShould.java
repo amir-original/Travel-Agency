@@ -33,7 +33,7 @@ public class MockBookingFlightShould {
         bookingLists = createTicketService();
         flightAvailability = createFindFlightsRepository();
         ticketNumberGenerator = createMockTicketGenerator();
-        app = new BookingReservation(bookingLists, flightAvailability, passengers, ticketNumberGenerator);
+        app = new BookingReservation(bookingLists, passengers, flightAvailability, ticketNumberGenerator);
     }
 
     @Test

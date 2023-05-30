@@ -1,10 +1,9 @@
 package travelAgency.ui.pages;
 
-import travelAgency.dao.api.ExchangeRateDAO;
-import travelAgency.services.BookingReservation;
+import travelAgency.controller.ReservationController;
+import travelAgency.controller.ExchangeRateConverterController;
+import travelAgency.controller.FlightController;
 import travelAgency.services.city.CityService;
-import travelAgency.services.reservation.ReservationListService;
-import travelAgency.services.flight.FlightListService;
 import travelAgency.ui.component.UiComponents;
 
 import javax.swing.*;
@@ -15,27 +14,24 @@ import java.time.format.DateTimeFormatter;
 public class HomePage extends JFrame {
 
     private final CityService cityService;
-    private final ReservationListService reservationListService;
-    private final FlightListService flightListService;
-    private final BookingReservation bookingReservation;
-    private final ExchangeRateDAO exchangeRateDAO;
+    private final ReservationController reservationController;
+    private final FlightController flightController;
+    private final ExchangeRateConverterController rateConverterController;
     private JButton bookingFlightButton, bookingListButton;
 
     private final UiComponents uiComponents = new UiComponents();
 
 
-    public HomePage(ReservationListService reservationListService,
-                    FlightListService flightListService,
-                    BookingReservation bookingReservation,
-                    ExchangeRateDAO exchangeRateDAO,
+    public HomePage(ReservationController reservationController,
+                    FlightController flightController,
+                    ExchangeRateConverterController rateConverterController,
                     CityService cityService) {
 
-        this.cityService = cityService;
-        this.reservationListService = reservationListService;
-        this.flightListService = flightListService;
-        this.bookingReservation = bookingReservation;
+        this.reservationController = reservationController;
+        this.flightController = flightController;
         createHomePage();
-        this.exchangeRateDAO = exchangeRateDAO;
+        this.rateConverterController = rateConverterController;
+        this.cityService = cityService;
     }
 
 
@@ -103,14 +99,14 @@ public class HomePage extends JFrame {
 
     private void goToBookingListPage() {
         bookingListButton.addActionListener(e -> {
-            new ReservationSearchPage(reservationListService);
+            new ReservationSearchPage(reservationController);
             dispose();
         });
     }
 
     private void goToFlightBookingPage() {
         bookingFlightButton.addActionListener(e -> {
-            new BookingFlightPage(cityService, flightListService,bookingReservation, exchangeRateDAO);
+            new BookingFlightPage(reservationController, flightController, rateConverterController,cityService);
             dispose();
         });
     }

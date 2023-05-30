@@ -3,8 +3,8 @@ package travelAgency.ui.pages;
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import travelAgency.controller.ReservationController;
 import travelAgency.domain.reservation.Reservation;
-import travelAgency.services.reservation.ReservationListService;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
 
@@ -19,10 +19,10 @@ import javax.swing.event.ListSelectionEvent;
 import static java.util.Arrays.stream;
 
 public class ReservationSearchPage extends JFrame implements ActionListener {
-    private final JScrollPane resultTablePanel = createResultTable();
+    private final ReservationController reservationController;
+    private final JScrollPane resultTablePanel;
     private JPanel flightNumberPanel;
     private JPanel reservationNumberPanel;
-    private final ReservationListService reservationListService;
     private JTextField reservationNumberField;
     private JTextField flightNumberField;
     private JTextField firstNameField;
@@ -33,8 +33,9 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
     private JTable jTable;
     private String reservationNumber;
 
-    public ReservationSearchPage(ReservationListService reservationListService) {
-        this.reservationListService = reservationListService;
+    public ReservationSearchPage(ReservationController reservationController) {
+        this.reservationController = reservationController;
+        this.resultTablePanel = createResultTable();
         this.ui = new UiComponents();
         setup();
         init();
@@ -51,7 +52,6 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
         JPanel mainPanel = ui.createBoxLayoutPanel(BoxLayout.Y_AXIS);
         var components = createMainPanelComponents();
         stream(components).forEach(mainPanel::add);
-
         add(mainPanel);
         setVisible(true);
     }
@@ -216,7 +216,7 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
     private Reservation searchReservation(String flightNumber, String firstName, Date birthday) {
         try {
             final LocalDate date = convertDateToLocalDate(birthday);
-            return reservationListService.search(flightNumber, firstName, date);
+            return reservationController.search(flightNumber, firstName, date);
         } catch (Exception e) {
             return null;
         }
@@ -264,7 +264,7 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
 
     private Reservation searchReservation(String reservationNumber) {
         try {
-            return reservationListService.search(reservationNumber);
+            return reservationController.search(reservationNumber);
         } catch (Exception e) {
             return null;
         }
@@ -317,7 +317,7 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
 
     private void handleCancellationProcess() {
         try {
-            reservationListService.cancel(reservationNumber);
+            reservationController.cancel(reservationNumber);
             removeResultTable();
             displaySuccessMessage("Cancellation successes!");
         } catch (Exception e) {
