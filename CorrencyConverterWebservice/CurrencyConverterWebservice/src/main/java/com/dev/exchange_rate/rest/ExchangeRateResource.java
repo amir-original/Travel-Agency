@@ -1,15 +1,15 @@
 package com.dev.exchange_rate.rest;
 
-import com.dev.exchange_rate.dao.JsonExchangeRateDao;
+import com.dev.exchange_rate.dao.ConnectionConfigurationImpl;
+import com.dev.exchange_rate.dao.MySQLConnectionGateway;
+import com.dev.exchange_rate.dao.MySQLExchangeRateRepository;
 import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.domain.ExchangeRate;
 import com.dev.exchange_rate.exceptions.ExchangeRateNotFoundException;
+import com.dev.exchange_rate.helper.file_reader.PropertiesReader;
 import com.dev.exchange_rate.service.ExchangeRateService;
 import com.dev.exchange_rate.service.ExchangeRateServiceImpl;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -19,7 +19,11 @@ public class ExchangeRateResource {
     private final ExchangeRateService exchangeRateService;
 
     public ExchangeRateResource() {
-        this.exchangeRateService = new ExchangeRateServiceImpl(new JsonExchangeRateDao());
+        PropertiesReader propertiesReader = new PropertiesReader("db_config.properties");
+        ConnectionConfigurationImpl configuration = new ConnectionConfigurationImpl(propertiesReader);
+        MySQLConnectionGateway connection = new MySQLConnectionGateway(configuration);
+        MySQLExchangeRateRepository exchangeRateRepository = new MySQLExchangeRateRepository(connection);
+        this.exchangeRateService = new ExchangeRateServiceImpl(exchangeRateRepository);
     }
 
     @GET
@@ -31,5 +35,14 @@ public class ExchangeRateResource {
         ExchangeRate exchangeRate = exchangeRateService.retrieveExchangeRate(currency);
 
         return Response.ok(exchangeRate).build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("")
+    public Response addExchangeRate(ExchangeRate exchangeRate) {
+        exchangeRateService.addExchangeRate(exchangeRate);
+        return Response.status(Response.Status.CREATED).build();
     }
 }

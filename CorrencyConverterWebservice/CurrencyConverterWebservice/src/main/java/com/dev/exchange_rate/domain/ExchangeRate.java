@@ -1,5 +1,10 @@
 package com.dev.exchange_rate.domain;
 
+import com.dev.exchange_rate.helper.LocalDateTimeDeserializer;
+import com.dev.exchange_rate.helper.LocalDateTimeSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,17 +13,33 @@ import java.util.Objects;
 
 public class ExchangeRate {
 
-    private final Currency baseCurrency;
+    private int id;
+    private Currency baseCurrency;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDate date;
 
-    private final LocalDate date;
-
-    private final Map<Currency, Double> rates;
+    private Map<Currency, Double> rates;
 
 
     public ExchangeRate(Currency baseCurrency, LocalDate date) {
         this.baseCurrency = baseCurrency;
         this.date = date;
         this.rates = new LinkedHashMap<>();
+    }
+
+    public ExchangeRate(int id, Currency baseCurrency, LocalDate date, Map<Currency, Double> rates) {
+        this.id = id;
+        this.baseCurrency = baseCurrency;
+        this.date = date;
+        this.rates = rates;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public ExchangeRate() {
     }
 
     public void addRate(Currency currency, double diffAmount) {

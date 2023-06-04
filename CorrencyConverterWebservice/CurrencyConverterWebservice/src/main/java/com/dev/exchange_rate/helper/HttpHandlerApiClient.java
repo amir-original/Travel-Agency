@@ -41,6 +41,13 @@ public class HttpHandlerApiClient implements HttpApiClient {
         return getResponse(body, responseType);
     }
 
+    @Override
+    public HttpResponse<String> POST(String jsonData) {
+        HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString(jsonData);
+        HttpRequest request = method.header("content-type","application/json").POST(bodyPublisher).build();
+        return getHttpResponse(request);
+    }
+
     public <T> T getResponse(String json, Type responseType) {
         return gson.fromJson(json, responseType);
     }
