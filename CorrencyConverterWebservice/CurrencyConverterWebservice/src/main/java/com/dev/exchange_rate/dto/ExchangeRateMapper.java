@@ -1,4 +1,7 @@
-package com.dev.exchange_rate.domain;
+package com.dev.exchange_rate.dto;
+
+import com.dev.exchange_rate.domain.ExchangeRate;
+import com.dev.exchange_rate.domain.ExchangeRateBuilder;
 
 public class ExchangeRateMapper {
 

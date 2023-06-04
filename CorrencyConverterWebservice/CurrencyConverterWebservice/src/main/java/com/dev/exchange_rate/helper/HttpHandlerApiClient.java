@@ -36,9 +36,13 @@ public class HttpHandlerApiClient implements HttpApiClient {
 
     @Override
     public <T> T GET(Class<T> responseType) {
-        final HttpRequest httpRequest = method.GET().build();
-        final String body = getHttpResponse(httpRequest).body();
-        return getResponse(body, responseType);
+        HttpResponse<String> httpResponse = GET();
+        return getResponse(httpResponse.body(), responseType);
+    }
+
+    public HttpResponse<String> GET(){
+        HttpRequest httpRequest = method.GET().build();
+        return getHttpResponse(httpRequest);
     }
 
     @Override

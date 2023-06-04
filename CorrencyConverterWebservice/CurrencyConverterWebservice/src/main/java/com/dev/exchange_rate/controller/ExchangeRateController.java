@@ -1,7 +1,7 @@
 package com.dev.exchange_rate.controller;
 
-import com.dev.exchange_rate.domain.ExchangeRateDto;
-import com.dev.exchange_rate.domain.ExchangeRateMapper;
+import com.dev.exchange_rate.dto.ExchangeRateDto;
+import com.dev.exchange_rate.dto.ExchangeRateMapper;
 import com.dev.exchange_rate.exceptions.CurrencyNotFoundException;
 import com.dev.exchange_rate.repository.ExchangeRateRepository;
 import com.dev.exchange_rate.domain.Currency;

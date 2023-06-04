@@ -1,4 +1,6 @@
-package com.dev.exchange_rate.domain;
+package com.dev.exchange_rate.dto;
+
+import com.dev.exchange_rate.domain.Currency;
 
 import java.time.LocalDate;
 import java.util.Map;

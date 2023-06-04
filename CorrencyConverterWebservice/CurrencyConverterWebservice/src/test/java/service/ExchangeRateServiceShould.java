@@ -2,15 +2,15 @@ package service;
 
 import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.domain.ExchangeRate;
-import com.dev.exchange_rate.domain.ExchangeRateBuilder;
 import com.dev.exchange_rate.exceptions.ExchangeRateNotFoundException;
 import com.dev.exchange_rate.service.ExchangeRateService;
 import com.dev.exchange_rate.service.ExchangeRateServiceImpl;
+import fake.FakeExchangeRateRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import fake.FakeExchangeRateRepository;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -44,24 +44,21 @@ public class ExchangeRateServiceShould {
 
     @Test
     void add_new_exchange_rate() {
-        LocalDate date = LocalDate.of(2023, 4, 5);
-        ExchangeRate exchangeRate = new ExchangeRateBuilder().setBaseCurrency(Currency.CNY).setDate(date).createExchangeRate();
-        exchangeRate.addRate(Currency.USD, 0.14);
-        exchangeRate.addRate(Currency.EUR, 0.13);
-        exchangeRate.addRate(Currency.IRR, 5970.44);
+        ExchangeRate exchangeRate = getExchangeRate();
 
         assertThatNoException().isThrownBy(() -> exchangeRateService.addExchangeRate(exchangeRate));
-        assertThatNoException().isThrownBy(()->{
+        assertThatNoException().isThrownBy(() -> {
             ExchangeRate fetchedExchangeRate = exchangeRateService.retrieveExchangeRate(Currency.CNY);
             assertThat(fetchedExchangeRate.getBaseCurrency()).isEqualTo(Currency.CNY);
         });
     }
 
-    @Test
-    void test_currency() {
-        String name = "xcs";
-
-        Currency irr = Currency.valueOf(name.toUpperCase());
-        System.out.println(irr);
+    private static ExchangeRate getExchangeRate() {
+        LocalDate date = LocalDate.of(2023, 4, 5);
+        Map<Currency, Double> rates = Map.of(
+                Currency.USD, 0.14,
+                Currency.EUR, 0.13,
+                Currency.IRR, 5970.44);
+        return new ExchangeRate(Currency.CNY, date, rates);
     }
 }

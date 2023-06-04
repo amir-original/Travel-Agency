@@ -1,5 +1,6 @@
-package com.dev.exchange_rate.domain;
+package com.dev.exchange_rate.dto;
 
+import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.helper.LocalDateDeserializer;
 import com.dev.exchange_rate.helper.LocalDateSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -14,10 +15,7 @@ public class ExchangeRateDto {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate date;
-    private Map<Currency, Double> rates;
-
-    public ExchangeRateDto() {
-    }
+    private final Map<Currency, Double> rates;
 
     public ExchangeRateDto(Currency baseCurrency, LocalDate date, Map<Currency, Double> rates) {
         this.baseCurrency = baseCurrency;

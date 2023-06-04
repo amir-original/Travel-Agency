@@ -18,7 +18,8 @@ public class MySQLConnectionGateway implements DbConnection {
             if (connection != null) {
                 return connection;
             }
-            connection = DriverManager.getConnection(configuration.url(),
+            connection = DriverManager.getConnection(
+                    configuration.url(),
                     configuration.username(),
                     configuration.password());
             return connection;
