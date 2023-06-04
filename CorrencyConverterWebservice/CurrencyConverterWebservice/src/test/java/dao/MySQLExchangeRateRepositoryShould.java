@@ -1,10 +1,10 @@
 package dao;
 
-import com.dev.exchange_rate.dao.*;
+import com.dev.exchange_rate.domain.ExchangeRateBuilder;
+import com.dev.exchange_rate.repository.*;
 import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.domain.ExchangeRate;
 import com.dev.exchange_rate.helper.file_reader.PropertiesReader;
-import fake.FakeExchangeRateRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -48,7 +48,7 @@ public class MySQLExchangeRateRepositoryShould {
     }
 
     private ExchangeRate addNewExchangeRateInDb() {
-        ExchangeRate exchangeRate = new ExchangeRate(Currency.EUR, LocalDate.now());
+        ExchangeRate exchangeRate = new ExchangeRateBuilder().setBaseCurrency(Currency.EUR).setDate(LocalDate.now()).createExchangeRate();
         exchangeRate.addRate(Currency.IRR,45382.27);
         exchangeRate.addRate(Currency.USD,1.07);
         exchangeRateRepository.addExchangeRate(exchangeRate);

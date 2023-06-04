@@ -1,4 +1,4 @@
-package com.dev.exchange_rate.dao;
+package com.dev.exchange_rate.repository;
 
 import com.dev.exchange_rate.helper.file_reader.PropertiesReader;
 

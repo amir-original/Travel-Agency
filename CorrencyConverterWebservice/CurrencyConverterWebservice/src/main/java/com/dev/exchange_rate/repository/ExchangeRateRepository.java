@@ -1,4 +1,4 @@
-package com.dev.exchange_rate.dao;
+package com.dev.exchange_rate.repository;
 
 import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.domain.ExchangeRate;

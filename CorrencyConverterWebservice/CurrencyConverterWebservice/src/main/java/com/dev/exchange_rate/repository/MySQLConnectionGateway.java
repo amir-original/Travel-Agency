@@ -1,6 +1,4 @@
-package com.dev.exchange_rate.dao;
-
-import com.mysql.jdbc.Driver;
+package com.dev.exchange_rate.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

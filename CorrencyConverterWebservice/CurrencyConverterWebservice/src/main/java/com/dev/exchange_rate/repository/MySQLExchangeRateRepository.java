@@ -1,7 +1,9 @@
-package com.dev.exchange_rate.dao;
+package com.dev.exchange_rate.repository;
 
 import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.domain.ExchangeRate;
+import com.dev.exchange_rate.domain.ExchangeRateBuilder;
+import com.dev.exchange_rate.helper.file_reader.LocalDateTypeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -21,7 +23,8 @@ public class MySQLExchangeRateRepository implements ExchangeRateRepository {
 
     public MySQLExchangeRateRepository(DbConnection connection) {
         this.connection = connection;
-        this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.gson = new GsonBuilder().registerTypeAdapter(LocalDate.class,new LocalDateTypeAdapter())
+                .setPrettyPrinting().create();
         createTable();
     }
 
@@ -97,7 +100,7 @@ public class MySQLExchangeRateRepository implements ExchangeRateRepository {
         TypeToken<Map<Currency, Double>> type = new TypeToken<>() {
         };
         Map<Currency, Double> mapRate = gson.fromJson(rates, type.getType());
-        return new ExchangeRate(id, currency, date, mapRate);
+        return new ExchangeRateBuilder().setId(id).setBaseCurrency(currency).setDate(date).setRates(mapRate).createExchangeRate();
     }
 
     public void createTable() {

@@ -2,7 +2,7 @@ package com.dev.exchange_rate.service;
 
 import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.domain.ExchangeRate;
-import com.dev.exchange_rate.dao.ExchangeRateRepository;
+import com.dev.exchange_rate.repository.ExchangeRateRepository;
 import com.dev.exchange_rate.exceptions.ExchangeRateNotFoundException;
 
 public class ExchangeRateServiceImpl implements ExchangeRateService {

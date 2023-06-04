@@ -2,6 +2,7 @@ package rest;
 
 import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.domain.ExchangeRate;
+import com.dev.exchange_rate.domain.ExchangeRateBuilder;
 import com.dev.exchange_rate.helper.HttpApiClient;
 import com.dev.exchange_rate.helper.HttpHandlerApiClient;
 import com.dev.exchange_rate.helper.file_reader.LocalDateTypeAdapter;
@@ -52,7 +53,7 @@ public class CurrencyConverterApiTest {
 
     @Test
     void send_post_request_to_add_new_exchange_rate() {
-        ExchangeRate exchangeRate = new ExchangeRate(Currency.EUR, LocalDate.now());
+        ExchangeRate exchangeRate = new ExchangeRateBuilder().setBaseCurrency(Currency.EUR).setDate(LocalDate.now()).createExchangeRate();
         exchangeRate.addRate(Currency.IRR,45382.27);
         exchangeRate.addRate(Currency.USD,1.07);
 
@@ -78,7 +79,7 @@ public class CurrencyConverterApiTest {
         try(BufferedWriter fileWriter = Files.newBufferedWriter(absolutePath, StandardOpenOption.APPEND)) {
             // Get the absolute path to the file
             Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter()).setPrettyPrinting().create();
-            ExchangeRate exchangeRate = new ExchangeRate(Currency.EUR, LocalDate.now());
+            ExchangeRate exchangeRate = new ExchangeRateBuilder().setBaseCurrency(Currency.EUR).setDate(LocalDate.now()).createExchangeRate();
             exchangeRate.addRate(Currency.IRR,45382.27);
             exchangeRate.addRate(Currency.USD,1.07);;
             String s = gson.toJson(exchangeRate);

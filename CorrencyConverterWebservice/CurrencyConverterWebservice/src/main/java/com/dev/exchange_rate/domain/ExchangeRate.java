@@ -1,12 +1,11 @@
 package com.dev.exchange_rate.domain;
 
-import com.dev.exchange_rate.helper.LocalDateTimeDeserializer;
-import com.dev.exchange_rate.helper.LocalDateTimeSerializer;
+import com.dev.exchange_rate.helper.LocalDateDeserializer;
+import com.dev.exchange_rate.helper.LocalDateSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.time.LocalDate;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -15,17 +14,16 @@ public class ExchangeRate {
 
     private int id;
     private Currency baseCurrency;
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate date;
-
     private Map<Currency, Double> rates;
 
 
-    public ExchangeRate(Currency baseCurrency, LocalDate date) {
+    public ExchangeRate(Currency baseCurrency, LocalDate date, Map<Currency, Double> rates) {
         this.baseCurrency = baseCurrency;
         this.date = date;
-        this.rates = new LinkedHashMap<>();
+        this.rates = rates;
     }
 
     public ExchangeRate(int id, Currency baseCurrency, LocalDate date, Map<Currency, Double> rates) {
@@ -85,7 +83,4 @@ public class ExchangeRate {
                 '}';
     }
 
-    public boolean hasSameBaseCurrency(Currency baseCurrency) {
-        return this.baseCurrency.equals(baseCurrency);
-    }
 }
