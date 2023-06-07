@@ -27,6 +27,7 @@ import static java.lang.String.format;
 public class BookingFlightPage extends JFrame {
 
     private final FlightSearchResultPanel flightSearchResult;
+    private final ExchangeRateConverterController rateConverterController;
     private JLabel resultLabel;
     private JComboBox<String> originComboBox, destinationComboBox;
     private JButton backButton, searchButton, nextButton;
@@ -50,7 +51,8 @@ public class BookingFlightPage extends JFrame {
         this.cityService = cityService;
         this.flightController = flightController;
         this.reservationController = reservationController;
-        this.flightSearchResult = new FlightSearchResultPanel(rateConverterController);
+        this.rateConverterController = rateConverterController;
+        this.flightSearchResult = new FlightSearchResultPanel(this.rateConverterController);
 
         createBookingFlightPage();
     }
@@ -186,8 +188,8 @@ public class BookingFlightPage extends JFrame {
 
     private void createCurrencyConverterField(JPanel footerPanel) {
         final JLabel converterLabel = ui.label("Currency");
-        final String[] values = {Currency.IRR.name(), Currency.USD.name()};
-        exchangeRate = ui.dropdown(values, 100, 30);
+        final String[] currencies = rateConverterController.currencies();
+        exchangeRate = ui.dropdown(currencies, 100, 30);
         footerPanel.add(converterLabel);
         footerPanel.add(exchangeRate);
     }

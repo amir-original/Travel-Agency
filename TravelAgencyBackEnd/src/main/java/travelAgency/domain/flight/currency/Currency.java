@@ -1,7 +1,8 @@
 package travelAgency.domain.flight.currency;
 
 public enum Currency {
-    USD("usd", "$"), IRR("irr", "ريال");
+    USD("usd", "$"), IRR("irr", "ريال"),
+    EUR("eur","€");
 
     private final String name;
     private final String symbol;
