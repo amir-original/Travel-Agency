@@ -17,13 +17,16 @@ public class PropertiesReader {
     private final Properties properties;
 
     public PropertiesReader(String fileName) {
-        this.resourcePath = fileName + ".properties";
-        properties = new Properties();
-        loadProperties();
+        this.resourcePath = fileName;
+        this.properties = new Properties();
     }
 
     public String getProperty(String key) {
-        return properties.getProperty(key);
+        loadProperties();
+        if (properties.containsKey(key)) {
+            return properties.getProperty(key);
+        }
+        throw new IllegalArgumentException("Property with key '" + key + "' doesn't exist.");
     }
 
     private void loadProperties() {

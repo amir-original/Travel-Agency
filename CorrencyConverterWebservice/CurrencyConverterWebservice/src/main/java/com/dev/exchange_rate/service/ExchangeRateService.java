@@ -6,4 +6,6 @@ import com.dev.exchange_rate.exceptions.ExchangeRateNotFoundException;
 
 public interface ExchangeRateService {
     ExchangeRate retrieveExchangeRate(Currency baseCurrency) throws ExchangeRateNotFoundException;
+
+    void addExchangeRate(ExchangeRate exchangeRate) ;
 }

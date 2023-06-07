@@ -2,20 +2,25 @@ package com.dev.exchange_rate.service;
 
 import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.domain.ExchangeRate;
-import com.dev.exchange_rate.dao.ExchangeRateDao;
+import com.dev.exchange_rate.repository.ExchangeRateRepository;
 import com.dev.exchange_rate.exceptions.ExchangeRateNotFoundException;
 
 public class ExchangeRateServiceImpl implements ExchangeRateService {
 
-    private final ExchangeRateDao exchangeRateDao;
+    private final ExchangeRateRepository exchangeRateRepository;
 
-    public ExchangeRateServiceImpl(ExchangeRateDao exchangeRateDao) {
-        this.exchangeRateDao = exchangeRateDao;
+    public ExchangeRateServiceImpl(ExchangeRateRepository exchangeRateRepository) {
+        this.exchangeRateRepository = exchangeRateRepository;
     }
 
     @Override
     public ExchangeRate retrieveExchangeRate(Currency baseCurrency) throws ExchangeRateNotFoundException {
-        return exchangeRateDao.retrieveExchangeRate(baseCurrency)
+        return exchangeRateRepository.retrieveExchangeRate(baseCurrency)
                 .orElseThrow(ExchangeRateNotFoundException::new);
+    }
+
+    @Override
+    public void addExchangeRate(ExchangeRate exchangeRate) {
+        exchangeRateRepository.addExchangeRate(exchangeRate);
     }
 }
