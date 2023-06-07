@@ -1,14 +1,14 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="CurrencyConverterWebservice:war">
+  <artifact type="war" name="ExchangeRateWebservice:war">
     <output-path>$PROJECT_DIR$/target</output-path>
     <properties id="maven-jee-properties">
       <options>
-        <module>CurrencyConverterWebservice</module>
+        <module>ExchangeRateWebservice</module>
         <packaging>war</packaging>
       </options>
     </properties>
     <root id="archive" name="CurrencyConverterWebservice-1.0.war">
-      <element id="artifact" artifact-name="CurrencyConverterWebservice:war exploded" />
+      <element id="artifact" artifact-name="ExchangeRateWebservice:war exploded" />
     </root>
   </artifact>
 </component>

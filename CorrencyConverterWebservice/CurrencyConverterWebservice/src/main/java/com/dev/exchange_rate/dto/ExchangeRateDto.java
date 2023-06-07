@@ -15,12 +15,15 @@ public class ExchangeRateDto {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate date;
-    private final Map<Currency, Double> rates;
+    private Map<Currency, Double> rates;
 
     public ExchangeRateDto(Currency baseCurrency, LocalDate date, Map<Currency, Double> rates) {
         this.baseCurrency = baseCurrency;
         this.date = date;
         this.rates = rates;
+    }
+
+    public ExchangeRateDto() {
     }
 
     public Currency getBaseCurrency() {

@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CurrencyConverterApiTest {
 
     private static final String BASE_URL
-            = "http://localhost:16162/CurrencyConverterWebservice-1.0/api/base_currency/";
+            = "http://localhost:8080/CurrencyConverterWebservice-1.0/api/base_currency/";
     private HttpApiClient client;
     private Gson gson;
 
@@ -52,7 +52,6 @@ public class CurrencyConverterApiTest {
         ExchangeRateDto exchangeRate = getExchangeRateDto();
 
         String jsonRate = gson.toJson(exchangeRate);
-        System.out.println(jsonRate);
         HttpResponse<String> httpResponse = client.target(BASE_URL).POST(jsonRate);
 
         assertThat(httpResponse.statusCode()).isEqualTo(201);
