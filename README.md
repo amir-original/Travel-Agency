@@ -1,7 +1,9 @@
-#Travel Agency System
-This project is a travel agency system Defined by [sepehrNamdar](https://github.com/sepehrNamdar).
-It aims to provide a comprehensive solution for clients to plan their trips, book reservations, manage their bookings, and perform currency conversions.
+# Travel Agency System
 ---
+**This project is a travel agency system Defined by [sepehrNamdar](https://github.com/sepehrNamdar) as a kata to practice the principles of software development in java programming language.**
+It aims to provide a comprehensive solution for clients to plan their trips, book reservations, manage their bookings, and perform currency conversions.
+
+**Description:**
 
 The Travel Agency System is a comprehensive Java-based 
 application that enables clients to search for flights, 
