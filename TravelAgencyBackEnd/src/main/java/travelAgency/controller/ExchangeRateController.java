@@ -2,23 +2,22 @@ package travelAgency.controller;
 
 import travelAgency.domain.flight.currency.Currency;
 import travelAgency.domain.flight.currency.Money;
-import travelAgency.services.currency_exchange.currency_api.ExchangeRateConverter;
+import travelAgency.services.currency_conversion.CurrencyConverter;
 
 import java.util.Arrays;
-import java.util.List;
 
-public class ExchangeRateConverterController {
+public class ExchangeRateController {
 
-    private final ExchangeRateConverter exchangeRateConverter;
+    private final CurrencyConverter currencyConverter;
     private final Currency[] currencies;
 
-    public ExchangeRateConverterController(ExchangeRateConverter exchangeRateConverter) {
-        this.exchangeRateConverter = exchangeRateConverter;
+    public ExchangeRateController(CurrencyConverter currencyConverter) {
+        this.currencyConverter = currencyConverter;
         this.currencies = Currency.values();
     }
 
     public Money convert(double amount, Currency from, Currency to){
-        return exchangeRateConverter.convert(amount,from,to);
+        return currencyConverter.convert(amount,from,to);
     }
 
     public String[] currencies(){

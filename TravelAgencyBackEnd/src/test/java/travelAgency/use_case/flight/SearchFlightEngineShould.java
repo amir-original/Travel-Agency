@@ -4,11 +4,10 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.dao.api.ExchangeRateDAO;
-import travelAgency.domain.flight.currency.Currency;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.currency.Money;
-import travelAgency.services.currency_exchange.currency_api.ExchangeRateConverter;
-import travelAgency.services.currency_exchange.currency_api.ExchangeRateServiceImpl;
+import travelAgency.services.currency_conversion.CurrencyConverter;
+import travelAgency.services.currency_conversion.ExchangeRateServiceImpl;
 import travelAgency.services.flight.FlightListService;
 import travelAgency.services.flight.FlightListServiceImpl;
 import travelAgency.use_case.fake.FakeFlight;
@@ -31,13 +30,13 @@ public class SearchFlightEngineShould {
     private static final Double ONE_RIAL_TO_DOLLAR = 0.000024;
 
     private FlightListService app;
-    private ExchangeRateConverter exchangeRateConverter;
+    private CurrencyConverter currencyConverter;
 
     @BeforeEach
     void setUp() {
         app = new FlightListServiceImpl(new FakeFlight());
         final ExchangeRateDAO exchangeRateDAO = mockExchangeRateDAO();
-        exchangeRateConverter = new ExchangeRateConverter(new ExchangeRateServiceImpl(exchangeRateDAO));
+        currencyConverter = new CurrencyConverter(new ExchangeRateServiceImpl(exchangeRateDAO));
     }
 
     @Test
@@ -79,7 +78,7 @@ public class SearchFlightEngineShould {
 
         assertAll(
                 () -> assertThat(flights).contains(flight),
-                () -> assertThat(exchangeRateConverter.convert(flight.price().amount(), USD, IRR)).isEqualTo(expectedMoney)
+                () -> assertThat(currencyConverter.convert(flight.price().amount(), USD, IRR)).isEqualTo(expectedMoney)
         );
     }
 
@@ -89,7 +88,7 @@ public class SearchFlightEngineShould {
 
         final double amount = flightPrice.amount();
 
-        final double convertedMoney = exchangeRateConverter.convert(amount, IRR, USD).amount();
+        final double convertedMoney = currencyConverter.convert(amount, IRR, USD).amount();
 
         assertThat(convertedMoney).isEqualTo(20.88);
     }
@@ -97,7 +96,7 @@ public class SearchFlightEngineShould {
     @Test
     void return_the_amount_itself_when_base_and_currency_is_the_same() {
         final int amount = 45;
-        final Money convertedMoney = exchangeRateConverter.convert(amount, USD, USD);
+        final Money convertedMoney = currencyConverter.convert(amount, USD, USD);
         assertThat(convertedMoney.amount()).isEqualTo(amount);
         assertThat(convertedMoney.currency()).isEqualTo(USD);
     }
@@ -105,7 +104,7 @@ public class SearchFlightEngineShould {
     @Test
     void throw_IllegalArgumentException_when_converted_negative_amount() {
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> exchangeRateConverter.convert(-500, USD,IRR));
+                .isThrownBy(() -> currencyConverter.convert(-500, USD,IRR));
     }
 
 

@@ -1,7 +1,7 @@
 package travelAgency.ui.pages;
 
 import travelAgency.controller.ReservationController;
-import travelAgency.controller.ExchangeRateConverterController;
+import travelAgency.controller.ExchangeRateController;
 import travelAgency.controller.FlightController;
 import travelAgency.services.city.CityService;
 import travelAgency.ui.component.UiComponents;
@@ -16,7 +16,7 @@ public class HomePage extends JFrame {
     private final CityService cityService;
     private final ReservationController reservationController;
     private final FlightController flightController;
-    private final ExchangeRateConverterController rateConverterController;
+    private final ExchangeRateController rateConverterController;
     private JButton bookingFlightButton, bookingListButton;
 
     private final UiComponents uiComponents = new UiComponents();
@@ -24,7 +24,7 @@ public class HomePage extends JFrame {
 
     public HomePage(ReservationController reservationController,
                     FlightController flightController,
-                    ExchangeRateConverterController rateConverterController,
+                    ExchangeRateController rateConverterController,
                     CityService cityService) {
 
         this.reservationController = reservationController;

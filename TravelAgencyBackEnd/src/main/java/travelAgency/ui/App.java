@@ -1,7 +1,7 @@
 package travelAgency.ui;
 
 import travelAgency.controller.ReservationController;
-import travelAgency.controller.ExchangeRateConverterController;
+import travelAgency.controller.ExchangeRateController;
 import travelAgency.controller.FlightController;
 import travelAgency.ServiceContainer;
 import travelAgency.services.city.CityService;
@@ -12,13 +12,13 @@ public class App {
 
     private final ReservationController reservationController;
     private final FlightController flightController;
-    private final ExchangeRateConverterController rateConverterController;
+    private final ExchangeRateController rateConverterController;
     private final CityService cityService;
 
     public App() {
         final ServiceContainer serviceContainer = new ServiceContainer();
         reservationController = serviceContainer.reservationController();
-        this.rateConverterController = serviceContainer.exchangeRateConverterController();
+        this.rateConverterController = serviceContainer.exchangeRateController();
         this.flightController = serviceContainer.flightController();
         this.cityService = new CityServiceImpl();
     }

@@ -1,4 +1,4 @@
-package travelAgency.services.currency_exchange.currency_api;
+package travelAgency.services.currency_conversion;
 
 import travelAgency.dao.api.ExchangeRate;
 import travelAgency.dao.api.ExchangeRateDAO;

@@ -1,18 +1,18 @@
-package travelAgency.services.currency_exchange.currency_api;
+package travelAgency.services.currency_conversion;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.flight.currency.Currency;
 import travelAgency.domain.flight.currency.Money;
 
-public class ExchangeRateConverter {
+public class CurrencyConverter {
     private final ExchangeRateService exchangeRateService;
 
-    public ExchangeRateConverter(ExchangeRateService exchangeRateService) {
+    public CurrencyConverter(ExchangeRateService exchangeRateService) {
         this.exchangeRateService = exchangeRateService;
     }
 
     public Money convert(double amount, Currency from, Currency to) {
-        canConvert(amount);
+        ensureCanConvert(amount);
 
         return hasSameCurrency(from, to) ? createMoney(amount, to) :
                 convertPrice(amount, from, to);
@@ -29,7 +29,7 @@ public class ExchangeRateConverter {
         return from == to;
     }
 
-    private void canConvert(double amount) {
+    private void ensureCanConvert(double amount) {
         if (isNegative(amount))
             throw new IllegalArgumentException("amount must be greater than zero!");
     }

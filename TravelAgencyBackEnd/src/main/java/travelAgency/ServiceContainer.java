@@ -2,7 +2,7 @@ package travelAgency;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.controller.ReservationController;
-import travelAgency.controller.ExchangeRateConverterController;
+import travelAgency.controller.ExchangeRateController;
 import travelAgency.controller.FlightController;
 import travelAgency.dao.api.ExchangeRateDAO;
 import travelAgency.dao.api.ExchangeRateDAOImpl;
@@ -13,9 +13,9 @@ import travelAgency.dao.database.passenger.PassengerRepository;
 import travelAgency.dao.database.passenger.PassengerRepositoryImpl;
 import travelAgency.dao.database.reservation.ReservationListRepository;
 import travelAgency.dao.database.reservation.ReservationListRepositoryImpl;
-import travelAgency.services.currency_exchange.currency_api.ExchangeRateConverter;
-import travelAgency.services.currency_exchange.currency_api.ExchangeRateService;
-import travelAgency.services.currency_exchange.currency_api.ExchangeRateServiceImpl;
+import travelAgency.services.currency_conversion.CurrencyConverter;
+import travelAgency.services.currency_conversion.ExchangeRateService;
+import travelAgency.services.currency_conversion.ExchangeRateServiceImpl;
 import travelAgency.services.flight.FlightAvailability;
 import travelAgency.services.flight.FlightListServiceImpl;
 import travelAgency.services.reservation.ReservationListServiceImpl;
@@ -32,8 +32,8 @@ public class ServiceContainer {
                 ,getFlightListService());
     }
 
-    public ExchangeRateConverterController exchangeRateConverterController(){
-        return new ExchangeRateConverterController(getExchangeRateConverter());
+    public ExchangeRateController exchangeRateController(){
+        return new ExchangeRateController(getExchangeRateConverter());
     }
 
     public FlightController flightController() {
@@ -79,8 +79,8 @@ public class ServiceContainer {
     }
 
     @NotNull
-    private ExchangeRateConverter getExchangeRateConverter() {
-        return new ExchangeRateConverter(getExchangeRateService());
+    private CurrencyConverter getExchangeRateConverter() {
+        return new CurrencyConverter(getExchangeRateService());
     }
 
     @NotNull

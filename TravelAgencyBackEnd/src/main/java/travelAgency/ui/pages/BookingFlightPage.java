@@ -3,7 +3,7 @@ package travelAgency.ui.pages;
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
 import travelAgency.controller.ReservationController;
-import travelAgency.controller.ExchangeRateConverterController;
+import travelAgency.controller.ExchangeRateController;
 import travelAgency.controller.FlightController;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightLocation;
@@ -27,7 +27,7 @@ import static java.lang.String.format;
 public class BookingFlightPage extends JFrame {
 
     private final FlightSearchResultPanel flightSearchResult;
-    private final ExchangeRateConverterController rateConverterController;
+    private final ExchangeRateController rateConverterController;
     private JLabel resultLabel;
     private JComboBox<String> originComboBox, destinationComboBox;
     private JButton backButton, searchButton, nextButton;
@@ -45,7 +45,7 @@ public class BookingFlightPage extends JFrame {
 
     public BookingFlightPage(ReservationController reservationController,
                              FlightController flightController,
-                             ExchangeRateConverterController rateConverterController,
+                             ExchangeRateController rateConverterController,
                              CityService cityService) {
 
         this.cityService = cityService;

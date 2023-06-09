@@ -1,15 +1,12 @@
-package travelAgency.use_case.currency_exchange;
+package travelAgency.use_case.currency_conversion;
 
 import org.assertj.core.api.Assertions;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.dao.api.ExchangeRateDAOImpl;
 import travelAgency.dao.api.WebServiceConnectionFailureException;
-import travelAgency.domain.flight.currency.Currency;
-import travelAgency.services.currency_exchange.currency_api.ExchangeRateConverter;
-import travelAgency.services.currency_exchange.currency_api.ExchangeRateService;
-import travelAgency.services.currency_exchange.currency_api.ExchangeRateServiceImpl;
+import travelAgency.services.currency_conversion.ExchangeRateService;
+import travelAgency.services.currency_conversion.ExchangeRateServiceImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static travelAgency.domain.flight.currency.Currency.IRR;
