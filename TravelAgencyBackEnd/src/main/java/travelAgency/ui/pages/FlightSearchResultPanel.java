@@ -2,12 +2,11 @@ package travelAgency.ui.pages;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.controller.ExchangeRateConverterController;
-import travelAgency.dao.api.ExchangeRateDAO;
+import travelAgency.controller.FlightController;
 import travelAgency.domain.flight.Flight;
+import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.flight.currency.Currency;
 import travelAgency.domain.flight.currency.Money;
-import travelAgency.services.currency_exchange.currency_api.ExchangeRateConverter;
-import travelAgency.services.currency_exchange.currency_api.ExchangeRateServiceImpl;
 import travelAgency.ui.component.UiComponents;
 
 import javax.swing.*;
@@ -21,15 +20,18 @@ import java.util.List;
 public class FlightSearchResultPanel extends JPanel {
 
     private final ExchangeRateConverterController rateConverterController;
+    private final FlightController flightController;
     private DefaultTableModel tableModel;
-    private String selectFlightNumber;
+    private String selectedFlightNumber;
     private final UiComponents ui = new UiComponents();
 
-    public FlightSearchResultPanel(ExchangeRateConverterController rateConverterController) {
+    public FlightSearchResultPanel(ExchangeRateConverterController rateConverterController,
+                                   FlightController flightController) {
         this.rateConverterController = rateConverterController;
+        this.flightController = flightController;
     }
 
-    public void showFlightsInfo(List<Flight> searchFlights, Currency exchangeRate) {
+    public void showFlightsInfo(FlightPlan searchedFlightPlan, Currency exchangeRate) {
 
         setLayout(new BorderLayout());
 
@@ -38,20 +40,24 @@ public class FlightSearchResultPanel extends JPanel {
         removeAll();
         add(new JScrollPane(table), BorderLayout.CENTER);
 
-        addFlightsToTable(searchFlights, exchangeRate);
+        populateTableWithFlightInfo(searchedFlightPlan, exchangeRate);
 
-        addClickListenerToTableRows(table);
-
-        disableCellEditing(table);
-
-        setCellAlignment(table);
-
-        setColumnWidths(table);
+        configureTable(table);
 
         setup(table);
 
-        repaint();
-        revalidate();
+        updateUi();
+    }
+
+    @NotNull
+    private JTable createTableAndSetModel() {
+        JTable table = new JTable();
+        tableModel = ui.createReadOnlyTableModel();
+        setupTableHeader();
+        table.setModel(tableModel);
+        disableCellEditing(table);
+        setCellAlignment(table);
+        return table;
     }
 
     private void disableCellEditing(JTable table) {
@@ -64,14 +70,20 @@ public class FlightSearchResultPanel extends JPanel {
         table.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
     }
 
-    @NotNull
-    private JTable createTableAndSetModel() {
-        JTable table = new JTable();
-        tableModel = ui.createReadOnlyTableModel();
-        setupTableHeader();
-        table.removeAll();
-        table.setModel(tableModel);
-        return table;
+    private void populateTableWithFlightInfo(FlightPlan searchedFlightPlan, Currency exchangeRate) {
+        final List<Flight> flights = flightController.searchFlights(searchedFlightPlan);
+        addFlightsToTable(flights, exchangeRate);
+        tableModel.fireTableDataChanged();
+    }
+
+    private void configureTable(JTable table) {
+        configureTableInteraction(table);
+        setColumnWidths(table);
+    }
+
+    private void updateUi() {
+        repaint();
+        revalidate();
     }
 
     private void addFlightsToTable(List<Flight> searchFlights, Currency exchangeRate) {
@@ -84,14 +96,13 @@ public class FlightSearchResultPanel extends JPanel {
         row[0] = flight.from();
         row[1] = flight.to();
         row[2] = flight.flightNumber();
-        row[3] = flight.totalCapacity();
+        row[3] = flightController.getAvailableSeats(flight.flightNumber());
         row[4] = flight.departure().toString();
-        row[5] = getFormatPriceWithSymbol(flight, exchangeRate);
+        row[5] = formatPriceWithSymbol(flight, exchangeRate);
         tableModel.addRow(row);
-        tableModel.fireTableDataChanged();
     }
 
-    private String getFormatPriceWithSymbol(Flight flight, Currency target) {
+    private String formatPriceWithSymbol(Flight flight, Currency target) {
         final double amount = flight.price().amount();
         final Currency from = flight.price().currency();
         final Money money = rateConverterController.convert(amount, from, target);
@@ -112,7 +123,6 @@ public class FlightSearchResultPanel extends JPanel {
         tableSize.height = table.getRowHeight() * tableModel.getRowCount();
         tableSize.width = table.getColumnModel().getTotalColumnWidth();
         table.setPreferredSize(tableSize);
-        table.setPreferredSize(tableSize);
     }
 
     private void setColumnWidths(JTable table) {
@@ -120,7 +130,7 @@ public class FlightSearchResultPanel extends JPanel {
             table.getColumnModel().getColumn(i).setPreferredWidth(180);
     }
 
-    private void addClickListenerToTableRows(JTable table) {
+    private void configureTableInteraction(JTable table) {
         table.getSelectionModel().addListSelectionListener(event -> {
             selectFlightNumberIfRowSelected(event, table.getSelectedRow());
         });
@@ -128,7 +138,7 @@ public class FlightSearchResultPanel extends JPanel {
 
     private void selectFlightNumberIfRowSelected(ListSelectionEvent event, int selectedRow) {
         if (!event.getValueIsAdjusting() && !isRowSelected(selectedRow))
-            selectFlightNumber = getSelectFlightNumberValue(selectedRow);
+            selectedFlightNumber = getSelectFlightNumberValue(selectedRow);
     }
 
     private boolean isRowSelected(int selectedRow) {
@@ -140,7 +150,7 @@ public class FlightSearchResultPanel extends JPanel {
     }
 
     public String getSelectedFlight() {
-        return selectFlightNumber;
+        return selectedFlightNumber;
     }
 }
 

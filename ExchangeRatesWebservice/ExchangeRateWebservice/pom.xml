@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.dev.exchange_rate</groupId>
-    <artifactId>CurrencyConverterWebservice</artifactId>
+    <artifactId>ExchangeRatesWebservice</artifactId>
     <version>1.0</version>
-    <name>CurrencyConverterWebservice</name>
+    <name>ExchangeRatesWebservice</name>
     <packaging>war</packaging>
 
     <properties>

@@ -52,7 +52,7 @@ public class BookingFlightPage extends JFrame {
         this.flightController = flightController;
         this.reservationController = reservationController;
         this.rateConverterController = rateConverterController;
-        this.flightSearchResult = new FlightSearchResultPanel(this.rateConverterController);
+        this.flightSearchResult = new FlightSearchResultPanel(this.rateConverterController,flightController);
 
         createBookingFlightPage();
     }
@@ -242,7 +242,7 @@ public class BookingFlightPage extends JFrame {
         final List<Flight> searchFlights;
         try {
             searchFlights = flightController.searchFlights(getFlightPlan());
-            flightSearchResult.showFlightsInfo(searchFlights, exchangeRate);
+            flightSearchResult.showFlightsInfo(getFlightPlan(), exchangeRate);
             updateFlightSearchResults(flightSearchResult);
             enableNextButtonIfSearchResultsExist(searchFlights);
         } catch (Exception e) {
