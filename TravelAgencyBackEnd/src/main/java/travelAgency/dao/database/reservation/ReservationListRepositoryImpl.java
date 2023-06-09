@@ -1,6 +1,7 @@
 package travelAgency.dao.database.reservation;
 
 import org.jetbrains.annotations.NotNull;
+import travelAgency.exceptions.MainSQLException;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.dao.database.db_config.DbConnection;
 
@@ -31,7 +32,7 @@ public class ReservationListRepositoryImpl implements ReservationListRepository 
             fillOutReservationFields(reservation, query);
             query.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new MainSQLException(e.getMessage());
         }
     }
 
@@ -53,7 +54,7 @@ public class ReservationListRepositoryImpl implements ReservationListRepository 
             final ResultSet resultSet = query.executeQuery();
             reservation = getReservationIfExist(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new MainSQLException(e.getMessage());
         }
         return Optional.ofNullable(reservation);
     }
@@ -73,7 +74,7 @@ public class ReservationListRepositoryImpl implements ReservationListRepository 
             final ResultSet resultSet = query.executeQuery();
             findReservationsIfExists(result, resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new MainSQLException(e.getMessage());
         }
         return result;
     }
@@ -90,7 +91,7 @@ public class ReservationListRepositoryImpl implements ReservationListRepository 
             query.setString(1, ticketNumber);
             query.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new MainSQLException(e.getMessage());
         }
     }
 

@@ -1,6 +1,6 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.domain.exceptions.FlightNotFoundException;
+import travelAgency.exceptions.FlightNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightBuilder;
 import travelAgency.dao.database.flight.FlightRepository;

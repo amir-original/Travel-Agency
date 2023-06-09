@@ -22,15 +22,7 @@ public class PassengerSQL {
     
     public static final String INSERT_PASSENGER_SQL = """
             insert into 
-            passengers(
-            passenger_id,
-            first_name,
-            last_name,
-            birthday,
-            city,
-            address,
-            zipcode,
-            phone_number)
+            passengers(passenger_id,first_name,last_name, birthday, city,address,zipcode,phone_number)
              values (?,?,?,?,?,?,?,?);
             """;
     public static final String TRIGGER_NAME

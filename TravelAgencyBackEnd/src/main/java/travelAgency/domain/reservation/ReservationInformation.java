@@ -1,7 +1,7 @@
 package travelAgency.domain.reservation;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.exceptions.InvalidNumberOfTicketsException;
+import travelAgency.exceptions.InvalidNumberOfTicketsException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.passenger.Passenger;
 

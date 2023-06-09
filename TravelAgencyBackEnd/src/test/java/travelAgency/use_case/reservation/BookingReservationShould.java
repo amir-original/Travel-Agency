@@ -3,7 +3,7 @@ package travelAgency.use_case.reservation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.dao.database.passenger.PassengerRepository;
-import travelAgency.domain.exceptions.*;
+import travelAgency.exceptions.*;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.reservation.ReservationInformation;
 import travelAgency.services.BookingReservation;

@@ -1,5 +1,6 @@
 package travelAgency.dao.database.flight;
 
+import travelAgency.exceptions.MainSQLException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.dao.database.db_config.DbConnection;
 
@@ -27,7 +28,7 @@ public class FindFlightRepository {
             final ResultSet resultSet = query.executeQuery();
             getFlightsIfExists(flights, resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+           throw new MainSQLException(e.getMessage());
         }
         return flights;
     }
@@ -40,13 +41,13 @@ public class FindFlightRepository {
     }
 
     public Optional<Flight> findFlight(String flightNumber) {
-        Flight flight = null;
+        Flight flight;
         try (final PreparedStatement query = createQuery(FIND_FLIGHT_BY_FLIGHT_NUMBER_SQL)) {
             query.setString(1, flightNumber);
             final ResultSet rs = query.executeQuery();
             flight = getFlightIfExist(rs);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new MainSQLException(e.getMessage());
         }
         return ofNullable(flight);
     }

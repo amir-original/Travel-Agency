@@ -2,8 +2,7 @@ package travelAgency.use_case.reservation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.exceptions.*;
-import travelAgency.domain.flight.currency.Currency;
+import travelAgency.exceptions.*;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.flight.FlightListService;
 import travelAgency.services.flight.FlightListServiceImpl;
@@ -14,9 +13,6 @@ import travelAgency.use_case.fake.FakeReservationList;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakePassenger;
 import travelAgency.use_case.fake.FakeTicketNumberGenerator;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertAll;

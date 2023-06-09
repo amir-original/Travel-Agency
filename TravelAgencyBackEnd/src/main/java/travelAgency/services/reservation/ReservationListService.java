@@ -1,9 +1,9 @@
 package travelAgency.services.reservation;
 
-import travelAgency.domain.exceptions.FlightNotFoundException;
+import travelAgency.exceptions.FlightNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.reservation.Reservation;
-import travelAgency.domain.exceptions.ReservationNotFoundException;
+import travelAgency.exceptions.ReservationNotFoundException;
 
 import java.time.LocalDate;
 

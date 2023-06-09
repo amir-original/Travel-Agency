@@ -1,7 +1,7 @@
 package travelAgency.domain.flight;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.exceptions.PastFlightScheduleException;
+import travelAgency.exceptions.PastFlightScheduleException;
 
 import java.time.LocalDate;
 

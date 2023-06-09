@@ -1,7 +1,7 @@
 package travelAgency.services.flight;
 
-import travelAgency.domain.exceptions.FullyBookedException;
-import travelAgency.domain.exceptions.NotEnoughCapacityException;
+import travelAgency.exceptions.FullyBookedException;
+import travelAgency.exceptions.NotEnoughCapacityException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.reservation.ReservationInformation;
 import travelAgency.services.reservation.ReservationListService;

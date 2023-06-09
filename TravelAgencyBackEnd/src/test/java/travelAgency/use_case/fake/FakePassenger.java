@@ -1,6 +1,6 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.domain.exceptions.PassengerNotFoundException;
+import travelAgency.exceptions.PassengerNotFoundException;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.domain.passenger.PassengerBuilder;
 import travelAgency.dao.database.passenger.PassengerRepository;

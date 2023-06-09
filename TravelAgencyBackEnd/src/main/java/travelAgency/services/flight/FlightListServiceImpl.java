@@ -1,6 +1,6 @@
 package travelAgency.services.flight;
 
-import travelAgency.domain.exceptions.FlightNotFoundException;
+import travelAgency.exceptions.FlightNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.dao.database.flight.FlightRepository;

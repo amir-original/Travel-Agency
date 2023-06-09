@@ -4,7 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.flight.Flight;
-import travelAgency.dao.database.flight.SQLFlightInsertionException;
+import travelAgency.exceptions.SQLFlightInsertionException;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
 import travelAgency.dao.database.flight.FlightRepository;

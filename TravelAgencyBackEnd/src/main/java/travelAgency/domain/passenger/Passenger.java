@@ -1,10 +1,8 @@
 package travelAgency.domain.passenger;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.exceptions.*;
 
 import java.time.LocalDate;
-import java.util.regex.Pattern;
 
 public record Passenger(@NotNull String id,
                         @NotNull String fName,

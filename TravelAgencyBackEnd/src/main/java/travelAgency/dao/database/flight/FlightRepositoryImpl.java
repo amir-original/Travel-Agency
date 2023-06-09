@@ -1,5 +1,7 @@
 package travelAgency.dao.database.flight;
 
+import travelAgency.exceptions.MainSQLException;
+import travelAgency.exceptions.SQLFlightInsertionException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.dao.database.db_config.DbConnection;
 
@@ -44,7 +46,7 @@ public class FlightRepositoryImpl implements FlightRepository {
             query.setString(1, flight.flightNumber());
             query.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new MainSQLException(e.getMessage());
         }
     }
 

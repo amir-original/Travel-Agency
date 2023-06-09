@@ -2,7 +2,7 @@ package travelAgency.use_case.reservation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.exceptions.ReservationNotFoundException;
+import travelAgency.exceptions.ReservationNotFoundException;
 import travelAgency.services.flight.FlightListServiceImpl;
 import travelAgency.services.reservation.TicketNumberGenerator;
 import travelAgency.use_case.fake.FakeReservationList;

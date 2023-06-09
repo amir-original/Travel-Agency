@@ -1,4 +1,4 @@
-package travelAgency.dao.database.flight;
+package travelAgency.exceptions;
 
 public class SQLFlightInsertionException extends RuntimeException {
 

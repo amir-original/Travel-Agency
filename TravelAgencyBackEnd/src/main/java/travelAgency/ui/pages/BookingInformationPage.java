@@ -29,7 +29,7 @@ public class BookingInformationPage extends JFrame {
     private final ReservationController reservationController;
     private final int travelers;
     private final UiComponents ui;
-    private JTextField passportNumber;
+    private JTextField identityNumber;
     private JTextField firstName;
     private JTextField lastName;
     private JDateChooser birthdayPicker;
@@ -95,7 +95,7 @@ public class BookingInformationPage extends JFrame {
     }
 
     private void createPassportNumberField(JPanel inputPanel) {
-        passportNumber = createField(inputPanel, "Passport Number:");
+        identityNumber = createField(inputPanel, "Identity Number:");
     }
 
     private void createFirstNameField(JPanel inputPanel) {
@@ -218,7 +218,7 @@ public class BookingInformationPage extends JFrame {
     private Passenger createPassenger() {
         return PassengerBuilder
                 .passenger()
-                .withId(passportNumber.getText())
+                .withId(identityNumber.getText())
                 .firstName(firstName.getText())
                 .lastName(lastName.getText())
                 .withPhoneNumber(phoneNumber.getText())

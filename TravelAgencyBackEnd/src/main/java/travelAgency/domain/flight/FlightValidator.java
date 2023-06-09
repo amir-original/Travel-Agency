@@ -1,6 +1,6 @@
 package travelAgency.domain.flight;
 
-import travelAgency.domain.exceptions.InvalidFlightNumberException;
+import travelAgency.exceptions.InvalidFlightNumberException;
 
 public class FlightValidator {
 

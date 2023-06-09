@@ -3,7 +3,7 @@ package travelAgency.dao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.exceptions.PassengerNotFoundException;
+import travelAgency.exceptions.PassengerNotFoundException;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
 import travelAgency.dao.database.passenger.PassengerRepositoryImpl;

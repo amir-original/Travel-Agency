@@ -32,13 +32,7 @@ public class FlightSearchResultPanel extends JPanel {
     }
 
     public void showFlightsInfo(FlightPlan searchedFlightPlan, Currency exchangeRate) {
-
-        setLayout(new BorderLayout());
-
-        JTable table = createTableAndSetModel();
-
-        removeAll();
-        add(new JScrollPane(table), BorderLayout.CENTER);
+        JTable table = setupLayoutAndTable();
 
         populateTableWithFlightInfo(searchedFlightPlan, exchangeRate);
 
@@ -47,6 +41,16 @@ public class FlightSearchResultPanel extends JPanel {
         setup(table);
 
         updateUi();
+    }
+
+    @NotNull
+    private JTable setupLayoutAndTable() {
+        removeAll();
+        setLayout(new BorderLayout());
+
+        JTable table = createTableAndSetModel();
+        add(new JScrollPane(table), BorderLayout.CENTER);
+        return table;
     }
 
     @NotNull

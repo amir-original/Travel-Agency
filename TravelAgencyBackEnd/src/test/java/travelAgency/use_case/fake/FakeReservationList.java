@@ -1,7 +1,7 @@
 package travelAgency.use_case.fake;
 
 import travelAgency.domain.reservation.Reservation;
-import travelAgency.domain.exceptions.ReservationNotFoundException;
+import travelAgency.exceptions.ReservationNotFoundException;
 import travelAgency.dao.database.reservation.ReservationListRepository;
 
 import java.util.LinkedList;

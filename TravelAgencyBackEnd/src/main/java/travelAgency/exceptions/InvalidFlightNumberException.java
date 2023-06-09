@@ -1,4 +1,4 @@
-package travelAgency.domain.exceptions;
+package travelAgency.exceptions;
 
 public class InvalidFlightNumberException extends RuntimeException {
 }

@@ -1,5 +1,6 @@
 package travelAgency.dao.database.passenger;
 
+import travelAgency.exceptions.MainSQLException;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.dao.database.db_config.DbConnection;
 
@@ -30,7 +31,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
             fillOutPassengerFields(passenger, query);
             query.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new MainSQLException(e.getMessage());
         }
     }
 
@@ -41,13 +42,13 @@ public class PassengerRepositoryImpl implements PassengerRepository {
 
     @Override
     public Optional<Passenger> findPassengerById(String passengerId) {
-        Passenger passenger = null;
+        Passenger passenger;
         try (final PreparedStatement query = createQuery(FIND_PASSENGER_BY_ID_SQL)) {
             query.setString(1, passengerId);
             passenger = getPassengerIfExist(query.executeQuery());
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new MainSQLException(e.getMessage());
         }
         return Optional.ofNullable(passenger);
     }
@@ -62,11 +63,11 @@ public class PassengerRepositoryImpl implements PassengerRepository {
 
     @Override
     public List<Passenger> getPassengers() {
-        List<Passenger> passengers = new LinkedList<>();
+        List<Passenger> passengers;
         try (final PreparedStatement query = createQuery(GET_ALL_PASSENGERS_SQL)) {
             passengers = getPassengersIfExists(query.executeQuery());
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new MainSQLException(e.getMessage());
         }
         return passengers;
     }
@@ -84,7 +85,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
         try (final PreparedStatement query = createQuery(CREATE_DELETED_TRIGGER)) {
             query.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new MainSQLException(e.getMessage());
         }
     }
 
@@ -92,7 +93,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
         try (final PreparedStatement query = createQuery(DROP_TRIGGER)) {
             query.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new MainSQLException(e.getMessage());
         }
     }
 

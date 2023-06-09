@@ -1,6 +1,6 @@
 package travelAgency.domain.passenger;
 
-import travelAgency.domain.exceptions.*;
+import travelAgency.exceptions.*;
 
 import java.util.regex.Pattern;
 
