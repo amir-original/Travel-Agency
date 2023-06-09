@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static java.time.LocalDate.of;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MySQLExchangeRateRepositoryShould {
@@ -44,11 +45,16 @@ public class MySQLExchangeRateRepositoryShould {
 
         assertThat(exchangeRate).isNotEmpty();
         assertThat(exchangeRate.get().getBaseCurrency()).isEqualTo(Currency.EUR);
+        assertThat(exchangeRate.get().getDate()).isEqualTo(of(2023, 4, 6));
         exchangeRateRepository.remove(rate);
     }
 
     private ExchangeRate addNewExchangeRateInDb() {
-        ExchangeRate exchangeRate = new ExchangeRateBuilder().setBaseCurrency(Currency.EUR).setDate(LocalDate.now()).createExchangeRate();
+        LocalDate date = of(2023, 4, 6);
+        ExchangeRate exchangeRate = new ExchangeRateBuilder()
+                .setBaseCurrency(Currency.EUR).setDate(date)
+                .createExchangeRate();
+
         exchangeRate.addRate(Currency.IRR,45382.27);
         exchangeRate.addRate(Currency.USD,1.07);
         exchangeRateRepository.addExchangeRate(exchangeRate);
