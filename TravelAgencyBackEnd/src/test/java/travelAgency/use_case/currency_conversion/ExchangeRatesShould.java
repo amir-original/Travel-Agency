@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import travelAgency.dao.api.ExchangeRateDAOImpl;
 import travelAgency.dao.api.WebServiceConnectionFailureException;
 import travelAgency.services.currency_conversion.ExchangeRateService;
-import travelAgency.services.currency_conversion.ExchangeRateServiceImpl;
+import travelAgency.services.currency_conversion.ExchangeRateProvider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static travelAgency.domain.flight.currency.Currency.IRR;
@@ -20,7 +20,7 @@ public class ExchangeRatesShould {
     @BeforeEach
     void setUp() {
         ExchangeRateDAOImpl exchangeRateDAO = new ExchangeRateDAOImpl();
-        exchangeRateService = new ExchangeRateServiceImpl(exchangeRateDAO);
+        exchangeRateService = new ExchangeRateProvider(exchangeRateDAO);
     }
 
     @Test
@@ -31,9 +31,9 @@ public class ExchangeRatesShould {
 
     @Test
     void connect_to_webservice_and_get_currency_rate() {
-        assertThat(exchangeRateService.getRate(USD,IRR)).isEqualTo(427000D);
+        assertThat(exchangeRateService.getRateFor(USD,IRR)).isEqualTo(427000D);
 
-        assertThat(exchangeRateService.getRate(IRR,USD)).isEqualTo(0.000024);
+        assertThat(exchangeRateService.getRateFor(IRR,USD)).isEqualTo(0.000024);
     }
 
 

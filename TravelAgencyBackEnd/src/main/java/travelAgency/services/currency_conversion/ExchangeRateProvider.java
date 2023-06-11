@@ -5,11 +5,11 @@ import travelAgency.dao.api.ExchangeRateDAO;
 import travelAgency.dao.api.ExchangeRateNotFoundException;
 import travelAgency.domain.flight.currency.Currency;
 
-public class ExchangeRateServiceImpl implements ExchangeRateService {
+public class ExchangeRateProvider implements ExchangeRateService {
 
     private final ExchangeRateDAO exchangeRateDAO;
 
-    public ExchangeRateServiceImpl(ExchangeRateDAO exchangeRateDAO) {
+    public ExchangeRateProvider(ExchangeRateDAO exchangeRateDAO) {
         this.exchangeRateDAO = exchangeRateDAO;
     }
 
@@ -20,7 +20,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     }
 
     @Override
-    public double getRate(Currency from, Currency to) {
+    public double getRateFor(Currency from, Currency to) {
         return exchangeRateDAO.getExchangeRate(from,to);
     }
 }

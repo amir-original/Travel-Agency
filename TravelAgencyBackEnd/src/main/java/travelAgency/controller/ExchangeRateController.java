@@ -4,23 +4,21 @@ import travelAgency.domain.flight.currency.Currency;
 import travelAgency.domain.flight.currency.Money;
 import travelAgency.services.currency_conversion.CurrencyConverter;
 
-import java.util.Arrays;
-
 public class ExchangeRateController {
 
     private final CurrencyConverter currencyConverter;
-    private final Currency[] currencies;
+    private final String[] currencies;
 
     public ExchangeRateController(CurrencyConverter currencyConverter) {
         this.currencyConverter = currencyConverter;
-        this.currencies = Currency.values();
+        this.currencies = Currency.currencies();
     }
 
-    public Money convert(double amount, Currency from, Currency to){
-        return currencyConverter.convert(amount,from,to);
+    public Money convert(Money money, Currency targetCurrency){
+        return currencyConverter.convert(money,targetCurrency);
     }
 
     public String[] currencies(){
-        return Arrays.stream(currencies).map(Enum::name).filter(s -> !s.equals("CHF")).toArray(String[]::new);
+        return currencies;
     }
 }

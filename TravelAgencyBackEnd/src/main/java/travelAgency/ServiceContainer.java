@@ -15,7 +15,7 @@ import travelAgency.dao.database.reservation.ReservationListRepository;
 import travelAgency.dao.database.reservation.ReservationListRepositoryImpl;
 import travelAgency.services.currency_conversion.CurrencyConverter;
 import travelAgency.services.currency_conversion.ExchangeRateService;
-import travelAgency.services.currency_conversion.ExchangeRateServiceImpl;
+import travelAgency.services.currency_conversion.ExchangeRateProvider;
 import travelAgency.services.flight.FlightAvailability;
 import travelAgency.services.flight.FlightListServiceImpl;
 import travelAgency.services.reservation.ReservationListServiceImpl;
@@ -85,7 +85,7 @@ public class ServiceContainer {
 
     @NotNull
     private ExchangeRateService getExchangeRateService() {
-        return new ExchangeRateServiceImpl(getExchangeRateDAO());
+        return new ExchangeRateProvider(getExchangeRateDAO());
     }
 
     @NotNull

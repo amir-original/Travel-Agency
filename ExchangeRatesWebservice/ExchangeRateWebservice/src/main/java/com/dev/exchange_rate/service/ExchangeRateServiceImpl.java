@@ -19,6 +19,8 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
                 .orElseThrow(ExchangeRateNotFoundException::new);
     }
 
+
+
     @Override
     public void addExchangeRate(ExchangeRate exchangeRate) {
         exchangeRateRepository.addExchangeRate(exchangeRate);

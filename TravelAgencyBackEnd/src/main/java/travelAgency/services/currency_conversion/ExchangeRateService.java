@@ -5,5 +5,5 @@ import travelAgency.domain.flight.currency.Currency;
 
 public interface ExchangeRateService {
     ExchangeRate getExchangeRate(Currency currency);
-    double getRate(Currency from, Currency to);
+    double getRateFor(Currency from, Currency to);
 }

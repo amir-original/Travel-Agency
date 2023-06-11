@@ -5,37 +5,29 @@ import travelAgency.domain.flight.currency.Currency;
 import travelAgency.domain.flight.currency.Money;
 
 public class CurrencyConverter {
-    private final ExchangeRateService exchangeRateService;
 
-    public CurrencyConverter(ExchangeRateService exchangeRateService) {
-        this.exchangeRateService = exchangeRateService;
+    private final ExchangeRateService exchangeRateProvider;
+
+    public CurrencyConverter(ExchangeRateService exchangeRateProvider) {
+        this.exchangeRateProvider = exchangeRateProvider;
     }
 
-    public Money convert(double amount, Currency from, Currency to) {
-        ensureCanConvert(amount);
-
-        return hasSameCurrency(from, to) ? createMoney(amount, to) :
-                convertPrice(amount, from, to);
+    public Money convert(Money money, Currency targetCurrency) {
+        return hasSameCurrency(money.currency(), targetCurrency) ? money :
+                convertPrice(money, targetCurrency);
     }
 
     @NotNull
-    private Money convertPrice(double amount, Currency from, Currency to) {
-        final double diffAmount = exchangeRateService.getRate(from, to);
-        final double convertedAmount = amount * diffAmount;
-        return createMoney(convertedAmount, to);
+    private Money convertPrice(Money money, Currency targetCurrency) {
+        final double rate = exchangeRateProvider
+                .getRateFor(money.currency(), targetCurrency);
+
+        final double convertedAmount = money.amount() * rate;
+        return createMoney(convertedAmount, targetCurrency);
     }
 
     private boolean hasSameCurrency(Currency from, Currency to) {
         return from == to;
-    }
-
-    private void ensureCanConvert(double amount) {
-        if (isNegative(amount))
-            throw new IllegalArgumentException("amount must be greater than zero!");
-    }
-
-    private boolean isNegative(double amount) {
-        return amount < 0;
     }
 
     private Money createMoney(double amount, Currency currency) {

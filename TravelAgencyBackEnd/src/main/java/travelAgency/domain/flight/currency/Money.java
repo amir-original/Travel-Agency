@@ -5,12 +5,8 @@ import travelAgency.helper.PriceFormatter;
 public record Money(double amount, Currency currency) {
 
     public Money {
-        check();
-    }
-
-    public void check() {
-        if (isNegative(amount()))
-            throw new IllegalArgumentException("the price value must not be a negative number");
+        if (isNegative(amount))
+            throw new IllegalArgumentException("the price amount must not be a negative number");
     }
 
     public String formatMoneyWithSymbol(){

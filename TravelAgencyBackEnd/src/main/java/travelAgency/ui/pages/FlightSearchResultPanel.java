@@ -107,9 +107,7 @@ public class FlightSearchResultPanel extends JPanel {
     }
 
     private String formatPriceWithSymbol(Flight flight, Currency target) {
-        final double amount = flight.price().amount();
-        final Currency from = flight.price().currency();
-        final Money money = rateConverterController.convert(amount, from, target);
+        final Money money = rateConverterController.convert(flight.price(), target);
         return money.formatMoneyWithSymbol();
     }
 

@@ -7,7 +7,7 @@ import travelAgency.dao.api.ExchangeRateDAO;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.currency.Money;
 import travelAgency.services.currency_conversion.CurrencyConverter;
-import travelAgency.services.currency_conversion.ExchangeRateServiceImpl;
+import travelAgency.services.currency_conversion.ExchangeRateProvider;
 import travelAgency.services.flight.FlightListService;
 import travelAgency.services.flight.FlightListServiceImpl;
 import travelAgency.use_case.fake.FakeFlight;
@@ -36,7 +36,7 @@ public class SearchFlightEngineShould {
     void setUp() {
         app = new FlightListServiceImpl(new FakeFlight());
         final ExchangeRateDAO exchangeRateDAO = mockExchangeRateDAO();
-        currencyConverter = new CurrencyConverter(new ExchangeRateServiceImpl(exchangeRateDAO));
+        currencyConverter = new CurrencyConverter(new ExchangeRateProvider(exchangeRateDAO));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class SearchFlightEngineShould {
 
         assertAll(
                 () -> assertThat(flights).contains(flight),
-                () -> assertThat(currencyConverter.convert(flight.price().amount(), USD, IRR)).isEqualTo(expectedMoney)
+                () -> assertThat(currencyConverter.convert(flight.price(), IRR)).isEqualTo(expectedMoney)
         );
     }
 
@@ -86,25 +86,23 @@ public class SearchFlightEngineShould {
     void converted_price_from_rial_to_dollar() {
         Money flightPrice = new Money(870000, IRR);
 
-        final double amount = flightPrice.amount();
-
-        final double convertedMoney = currencyConverter.convert(amount, IRR, USD).amount();
+        final double convertedMoney = currencyConverter.convert(flightPrice, USD).amount();
 
         assertThat(convertedMoney).isEqualTo(20.88);
     }
 
     @Test
     void return_the_amount_itself_when_base_and_currency_is_the_same() {
-        final int amount = 45;
-        final Money convertedMoney = currencyConverter.convert(amount, USD, USD);
-        assertThat(convertedMoney.amount()).isEqualTo(amount);
+        final Money money = new Money(45,USD);
+        final Money convertedMoney = currencyConverter.convert(money, USD);
+        assertThat(convertedMoney.amount()).isEqualTo(money.amount());
         assertThat(convertedMoney.currency()).isEqualTo(USD);
     }
 
     @Test
     void throw_IllegalArgumentException_when_converted_negative_amount() {
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> currencyConverter.convert(-500, USD,IRR));
+                .isThrownBy(() -> currencyConverter.convert(new Money(-500, USD),IRR));
     }
 
 
