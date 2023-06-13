@@ -5,7 +5,7 @@ import travelAgency.services.reservation.TicketNumberGenerator;
 public class FakeTicketNumberGenerator implements TicketNumberGenerator {
 
     @Override
-    public String getTicketNumber() {
+    public String generateTicketNumber() {
         return "AA-7845-65874";
     }
 }

@@ -1,5 +1,6 @@
 package travelAgency.use_case.fake;
 
+import travelAgency.domain.vo.Phone;
 import travelAgency.exceptions.PassengerNotFoundException;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.domain.passenger.PassengerBuilder;
@@ -64,7 +65,7 @@ public class FakePassenger implements PassengerRepository {
                 .ofCity(TEHRAN.name())
                 .withAddress("Iran,TEHRAN")
                 .withZipcode("1145789")
-                .withPhoneNumber("989907994339");
+                .withPhoneNumber(Phone.of("09907994339"));
     }
 
     public static Passenger passenger(String passengerId) {

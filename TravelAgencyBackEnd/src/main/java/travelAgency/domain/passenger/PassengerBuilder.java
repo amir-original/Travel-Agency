@@ -1,5 +1,7 @@
 package travelAgency.domain.passenger;
 
+import travelAgency.domain.vo.Phone;
+
 import java.time.LocalDate;
 
 public class PassengerBuilder {
@@ -11,7 +13,7 @@ public class PassengerBuilder {
     private String city;
     private String address;
     private String zipcode ;
-    private String phoneNumber;
+    private Phone phoneNumber;
 
     public static PassengerBuilder passenger() {
         return new PassengerBuilder();
@@ -52,7 +54,7 @@ public class PassengerBuilder {
         return this;
     }
 
-    public PassengerBuilder withPhoneNumber(String phoneNumber) {
+    public PassengerBuilder withPhoneNumber(Phone phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
     }

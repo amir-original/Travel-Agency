@@ -19,14 +19,6 @@ public class PassengerValidator {
             throw new IllegalArgumentException("the zipcode must not be null or empty!");
         if (passenger.address().isBlank())
             throw new IllegalArgumentException("the address must not be null or empty!");
-        if (passenger.phoneNumber().isBlank())
-            throw new IllegalArgumentException("the phoneNumber must not be null or empty!");
-        if (isNotValidPhoneNumberFormat())
-            throw new InvalidPhoneNumberException();
-    }
-
-    private boolean isNotValidPhoneNumberFormat() {
-        return !Pattern.matches("^((\\+98)|(0)|(98))9\\d{9}$", passenger.phoneNumber());
     }
 
     private boolean isNameBlank() {

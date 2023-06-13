@@ -1,6 +1,7 @@
 package travelAgency.domain.passenger;
 
 import org.jetbrains.annotations.NotNull;
+import travelAgency.domain.vo.Phone;
 
 import java.time.LocalDate;
 
@@ -11,7 +12,7 @@ public record Passenger(@NotNull String id,
                         @NotNull String city,
                         @NotNull String address,
                         @NotNull String zipcode,
-                        @NotNull String phoneNumber) {
+                        Phone phoneNumber) {
 
     public Passenger(@NotNull String id,
                      @NotNull String fName,
@@ -20,7 +21,7 @@ public record Passenger(@NotNull String id,
                      @NotNull String city,
                      @NotNull String address,
                      @NotNull String zipcode,
-                     @NotNull String phoneNumber) {
+                     Phone phoneNumber) {
         this.id = id;
         this.fName = fName;
         this.lName = lName;

@@ -6,8 +6,7 @@ import travelAgency.domain.city.City;
 import java.time.LocalDate;
 import java.util.List;
 
-public record FlightPlan(@NotNull FlightLocation location,
-                         @NotNull FlightSchedule schedule) {
+public record FlightPlan(@NotNull FlightLocation location, @NotNull FlightSchedule schedule) {
 
     public boolean hasSameFlightPlan(FlightPlan flightPlan) {
         return flightPlan.equals(this);

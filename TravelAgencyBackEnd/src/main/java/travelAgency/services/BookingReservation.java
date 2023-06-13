@@ -28,7 +28,7 @@ public class BookingReservation {
 
     public Reservation book(ReservationInformation resInfo) {
         flightAvailability.canBooking(resInfo);
-        final String ticketNumber = TicketNumberGenerator.getTicketNumber();
+        final String ticketNumber = TicketNumberGenerator.generateTicketNumber();
 
         final Reservation reservation = resInfo.getReservation(ticketNumber);
         final Passenger passenger = reservation.passenger();

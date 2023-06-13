@@ -2,6 +2,8 @@ package travelAgency.use_case.reservation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import travelAgency.domain.passenger.Passenger;
+import travelAgency.domain.vo.Phone;
 import travelAgency.exceptions.*;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.flight.FlightListService;
@@ -160,8 +162,7 @@ public class BookingReservationPassengerInfoShould {
     }
 
     private void getReservationWithPhoneNumber(String phoneNumber) {
-        app.book(bookingInformation()
-                .withPassenger(passenger().withPhoneNumber(phoneNumber).build())
-                .build());
+        final Passenger passenger = passenger().withPhoneNumber(Phone.of(phoneNumber)).build();
+        app.book(bookingInformation().withPassenger(passenger).build());
     }
 }

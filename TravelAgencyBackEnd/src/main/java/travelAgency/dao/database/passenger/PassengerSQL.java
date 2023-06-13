@@ -1,7 +1,7 @@
 package travelAgency.dao.database.passenger;
 
-import travelAgency.domain.city.City;
 import travelAgency.domain.passenger.Passenger;
+import travelAgency.domain.vo.Phone;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -44,7 +44,7 @@ public class PassengerSQL {
                 .withZipcode(rs.getString("zipcode"))
                 .ofCity(rs.getString("city"))
                 .withAddress(rs.getString("address"))
-                .withPhoneNumber(rs.getString("phone_number"))
+                .withPhoneNumber(Phone.of(rs.getString("phone_number")))
                 .build();
 
     }
@@ -57,7 +57,7 @@ public class PassengerSQL {
         sql.setString(5, passenger.city());
         sql.setString(6, passenger.address());
         sql.setString(7, passenger.zipcode());
-        sql.setString(8, passenger.phoneNumber());
+        sql.setString(8, passenger.phoneNumber().getNumber());
     }
 
     private static Date convertToSQLDate(LocalDate localDate) {
