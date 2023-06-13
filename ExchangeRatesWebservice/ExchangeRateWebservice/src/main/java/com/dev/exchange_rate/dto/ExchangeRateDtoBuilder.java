@@ -25,7 +25,7 @@ public class ExchangeRateDtoBuilder {
         return this;
     }
 
-    public ExchangeRateDto createExchangeRateDto() {
+    public ExchangeRateDto create() {
         return new ExchangeRateDto(baseCurrency, date, rates);
     }
 }

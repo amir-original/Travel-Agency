@@ -5,8 +5,8 @@ import travelAgency.controller.ExchangeRateController;
 import travelAgency.controller.FlightController;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
-import travelAgency.domain.flight.currency.Currency;
-import travelAgency.domain.flight.currency.Money;
+import travelAgency.domain.rate.currency.Currency;
+import travelAgency.domain.rate.currency.Money;
 import travelAgency.ui.component.UiComponents;
 
 import javax.swing.*;

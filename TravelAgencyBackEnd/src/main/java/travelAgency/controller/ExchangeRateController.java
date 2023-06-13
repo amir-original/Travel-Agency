@@ -1,7 +1,7 @@
 package travelAgency.controller;
 
-import travelAgency.domain.flight.currency.Currency;
-import travelAgency.domain.flight.currency.Money;
+import travelAgency.domain.rate.currency.Currency;
+import travelAgency.domain.rate.currency.Money;
 import travelAgency.services.currency_conversion.CurrencyConverter;
 
 public class ExchangeRateController {

@@ -1,6 +1,7 @@
 package com.dev.exchange_rate.provider;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -20,6 +21,8 @@ public class JackJsonProvider implements ContextResolver<ObjectMapper> {
         MAPPER.disable(MapperFeature.USE_GETTERS_AS_SETTERS);
         MAPPER.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         MAPPER.setDateFormat(df);
+        MAPPER.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
+        MAPPER.disable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
     }
 
     @Override

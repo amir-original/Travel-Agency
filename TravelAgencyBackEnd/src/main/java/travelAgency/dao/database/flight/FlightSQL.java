@@ -2,9 +2,9 @@ package travelAgency.dao.database.flight;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.city.City;
-import travelAgency.domain.flight.currency.Currency;
+import travelAgency.domain.rate.currency.Currency;
 import travelAgency.domain.flight.Flight;
-import travelAgency.domain.flight.currency.Money;
+import travelAgency.domain.rate.currency.Money;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;

@@ -1,6 +1,6 @@
-package travelAgency.dao.api;
+package travelAgency.domain.rate;
 
-import travelAgency.domain.flight.currency.Currency;
+import travelAgency.domain.rate.currency.Currency;
 
 import java.time.LocalDate;
 import java.util.Map;

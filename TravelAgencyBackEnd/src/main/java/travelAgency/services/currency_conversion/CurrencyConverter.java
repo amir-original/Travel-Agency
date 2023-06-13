@@ -1,8 +1,8 @@
 package travelAgency.services.currency_conversion;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.flight.currency.Currency;
-import travelAgency.domain.flight.currency.Money;
+import travelAgency.domain.rate.currency.Currency;
+import travelAgency.domain.rate.currency.Money;
 
 public class CurrencyConverter {
 

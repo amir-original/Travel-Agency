@@ -9,7 +9,7 @@ import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightLocation;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.flight.FlightSchedule;
-import travelAgency.domain.flight.currency.Currency;
+import travelAgency.domain.rate.currency.Currency;
 import travelAgency.services.city.CityService;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
@@ -238,7 +238,7 @@ public class BookingFlightPage extends JFrame {
         performFlightSearch(currency);
     }
 
-    private void performFlightSearch(travelAgency.domain.flight.currency.Currency exchangeRate) {
+    private void performFlightSearch(travelAgency.domain.rate.currency.Currency exchangeRate) {
         final List<Flight> searchFlights;
         try {
             searchFlights = flightController.searchFlights(getFlightPlan());

@@ -2,7 +2,7 @@ package travelAgency.domain.flight;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.city.City;
-import travelAgency.domain.flight.currency.Money;
+import travelAgency.domain.rate.currency.Money;
 
 import java.time.LocalDate;
 

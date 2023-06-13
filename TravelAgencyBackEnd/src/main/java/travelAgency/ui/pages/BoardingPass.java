@@ -1,20 +1,13 @@
 package travelAgency.ui.pages;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.flight.currency.Currency;
-import travelAgency.domain.flight.FlightBuilder;
-import travelAgency.domain.flight.currency.Money;
-import travelAgency.domain.passenger.PassengerBuilder;
 import travelAgency.domain.reservation.Reservation;
-import travelAgency.domain.reservation.ReservationInformation;
 import travelAgency.ui.component.UiComponents;
 
 import javax.swing.*;
 import java.awt.*;
-import java.time.LocalDate;
 
 import static java.time.LocalDate.of;
-import static travelAgency.domain.city.City.*;
 
 public class BoardingPass extends JDialog {
 

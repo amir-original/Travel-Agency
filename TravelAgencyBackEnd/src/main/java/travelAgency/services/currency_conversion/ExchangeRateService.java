@@ -1,7 +1,7 @@
 package travelAgency.services.currency_conversion;
 
-import travelAgency.dao.api.ExchangeRate;
-import travelAgency.domain.flight.currency.Currency;
+import travelAgency.domain.rate.ExchangeRate;
+import travelAgency.domain.rate.currency.Currency;
 
 public interface ExchangeRateService {
     ExchangeRate getExchangeRate(Currency currency);

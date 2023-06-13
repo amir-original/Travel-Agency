@@ -2,6 +2,7 @@ package com.dev.exchange_rate.rest;
 
 import com.dev.exchange_rate.ServiceContainer;
 import com.dev.exchange_rate.controller.ExchangeRateController;
+import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.dto.ExchangeRateDto;
 import com.dev.exchange_rate.exceptions.CurrencyNotFoundException;
 import com.dev.exchange_rate.exceptions.ExchangeRateNotFoundException;
@@ -22,7 +23,7 @@ public class ExchangeRateResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{base_currency}")
-    public Response getExchangeRates(@PathParam("base_currency") String baseCurrency)
+    public Response getExchangeRates(@PathParam("base_currency") Currency baseCurrency)
             throws ExchangeRateNotFoundException, CurrencyNotFoundException {
         ExchangeRateDto exchangeRateDto = controller.retrieveExchangeRate(baseCurrency);
 

@@ -41,7 +41,7 @@ public class ExchangeRateApiTest {
     @Test
     void get_status_code_200_when_retrieve_exchange_rate_information_by_get_request() {
         var response = client.target(BASE_URL + "IRR").GET();
-        ExchangeRate exchangeRate = client.target(BASE_URL + "IRR").GET(ExchangeRate.class);
+        ExchangeRateDto exchangeRate = client.target(BASE_URL + "IRR").GET(ExchangeRateDto.class);
 
         assertThat(response.statusCode()).isEqualTo(200);
         assertThat(exchangeRate.getBaseCurrency()).isEqualTo(Currency.IRR);
@@ -74,6 +74,6 @@ public class ExchangeRateApiTest {
                 .setBaseCurrency(Currency.EUR)
                 .setDate(LocalDate.now())
                 .setRates(rates)
-                .createExchangeRateDto();
+                .create();
     }
 }

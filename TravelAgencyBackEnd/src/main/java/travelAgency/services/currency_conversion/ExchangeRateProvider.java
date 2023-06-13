@@ -1,9 +1,9 @@
 package travelAgency.services.currency_conversion;
 
-import travelAgency.dao.api.ExchangeRate;
+import travelAgency.domain.rate.ExchangeRate;
 import travelAgency.dao.api.ExchangeRateDAO;
 import travelAgency.dao.api.ExchangeRateNotFoundException;
-import travelAgency.domain.flight.currency.Currency;
+import travelAgency.domain.rate.currency.Currency;
 
 public class ExchangeRateProvider implements ExchangeRateService {
 

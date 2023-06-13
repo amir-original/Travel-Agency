@@ -1,5 +1,7 @@
 package com.dev.exchange_rate.domain;
 
+import com.dev.exchange_rate.exceptions.NullBaseCurrencyException;
+import com.dev.exchange_rate.exceptions.NullExchangeRateDateException;
 import com.dev.exchange_rate.helper.LocalDateDeserializer;
 import com.dev.exchange_rate.helper.LocalDateSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -21,8 +23,12 @@ public class ExchangeRate {
 
 
     public ExchangeRate(Currency baseCurrency, LocalDate date, Map<Currency, Double> rates) {
+        if (baseCurrency == null) throw new NullBaseCurrencyException();
         this.baseCurrency = baseCurrency;
+
+        if (date == null) throw new NullExchangeRateDateException();
         this.date = date;
+
         this.rates = rates;
     }
 

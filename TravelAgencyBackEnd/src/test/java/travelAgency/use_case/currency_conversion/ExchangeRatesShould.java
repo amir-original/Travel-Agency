@@ -9,8 +9,8 @@ import travelAgency.services.currency_conversion.ExchangeRateService;
 import travelAgency.services.currency_conversion.ExchangeRateProvider;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static travelAgency.domain.flight.currency.Currency.IRR;
-import static travelAgency.domain.flight.currency.Currency.USD;
+import static travelAgency.domain.rate.currency.Currency.IRR;
+import static travelAgency.domain.rate.currency.Currency.USD;
 
 public class ExchangeRatesShould {
 

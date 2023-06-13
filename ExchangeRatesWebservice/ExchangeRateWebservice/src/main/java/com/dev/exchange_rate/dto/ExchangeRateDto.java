@@ -11,7 +11,6 @@ import java.util.Map;
 
 public class ExchangeRateDto {
     private Currency baseCurrency;
-
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate date;
@@ -23,15 +22,16 @@ public class ExchangeRateDto {
         this.rates = rates;
     }
 
+    public ExchangeRateDto(Currency baseCurrency, LocalDate date) {
+        this.baseCurrency = baseCurrency;
+        this.date = date;
+    }
+
     public ExchangeRateDto() {
     }
 
     public Currency getBaseCurrency() {
         return baseCurrency;
-    }
-
-    public void setBaseCurrency(Currency baseCurrency) {
-        this.baseCurrency = baseCurrency;
     }
 
     public LocalDate getDate() {

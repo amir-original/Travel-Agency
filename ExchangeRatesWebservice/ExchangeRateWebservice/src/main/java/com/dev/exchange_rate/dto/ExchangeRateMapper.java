@@ -18,6 +18,6 @@ public class ExchangeRateMapper {
                 .setBaseCurrency(exchangeRate.getBaseCurrency())
                 .setDate(exchangeRate.getDate())
                 .setRates(exchangeRate.getRates())
-                .createExchangeRateDto();
+                .create();
     }
 }
