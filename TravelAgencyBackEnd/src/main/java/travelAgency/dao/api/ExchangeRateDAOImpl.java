@@ -3,8 +3,9 @@ package travelAgency.dao.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.rate.currency.Currency;
 import travelAgency.domain.rate.ExchangeRate;
+import travelAgency.domain.rate.currency.Currency;
+import travelAgency.helper.CurrencySerializer;
 import travelAgency.helper.HttpHandlerApiClient;
 import travelAgency.helper.LocalDateAdapter;
 import travelAgency.helper.PropertiesReader;
@@ -20,7 +21,10 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO {
 
     public ExchangeRateDAOImpl() {
         readConfig();
-        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .registerTypeAdapter(Currency.class, new CurrencySerializer())
+                .setPrettyPrinting().create();
         request = new HttpHandlerApiClient(gson);
     }
 
@@ -50,7 +54,7 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO {
 
     @NotNull
     private String getFullUrl(Currency currency) {
-        return this.baseUri + currency.name();
+        return this.baseUri + currency.value();
     }
 
     private void readConfig() {

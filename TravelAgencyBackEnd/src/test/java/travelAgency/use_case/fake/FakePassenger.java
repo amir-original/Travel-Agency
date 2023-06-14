@@ -1,11 +1,13 @@
 package travelAgency.use_case.fake;
 
+import travelAgency.domain.passenger.PassengerBuilder;
 import travelAgency.domain.vo.FullName;
 import travelAgency.domain.vo.PassengerId;
 import travelAgency.domain.vo.Phone;
+import travelAgency.domain.vo.ResidentialAddress;
 import travelAgency.exceptions.PassengerNotFoundException;
 import travelAgency.domain.passenger.Passenger;
-import travelAgency.domain.passenger.PassengerBuilder;
+import travelAgency.domain.passenger.PassengerDtoBuilder;
 import travelAgency.dao.database.passenger.PassengerRepository;
 
 import java.util.LinkedList;
@@ -23,9 +25,9 @@ public class FakePassenger implements PassengerRepository {
     {
         final PassengerBuilder passenger = FakePassenger.passenger();
         final List<Passenger> passengerList = List.of(
-                passenger.withId(PassengerId.of("4444556622")).fullName(FullName.of("ali","bahrami")).build(),
-                passenger.withId(PassengerId.of("2211334565")).fullName(FullName.of("mona","jalili")).build(),
-                passenger.withId(PassengerId.of("1221456578")).fullName(FullName.of("amir","amiri")).ofCity(RASHT.name()).build(),
+                passenger.withId(PassengerId.of("4444556622")).withFullName(FullName.of("ali","bahrami")).build(),
+                passenger.withId(PassengerId.of("2211334565")).withFullName(FullName.of("mona","jalili")).build(),
+                passenger.withId(PassengerId.of("1221456578")).withFullName(FullName.of("amir","amiri")).build(),
                 passenger.withId(PassengerId.of("5544556699")).build()
         );
         passengers = new LinkedList<>(passengerList);
@@ -59,13 +61,13 @@ public class FakePassenger implements PassengerRepository {
     }
 
     public static PassengerBuilder passenger() {
+        final var residential = ResidentialAddress.of(TEHRAN.name(),
+                "Iran,TEHRAN", "1145789655");
         return PassengerBuilder.passenger()
                 .withId(PassengerId.of("5544556699"))
-                .fullName(FullName.of("Sara","Baiati"))
-                .withBirthday(of(1999, 4, 5))
-                .ofCity(TEHRAN.name())
-                .withAddress("Iran,TEHRAN")
-                .withZipcode("1145789")
+                .withFullName(FullName.of("Sara","Baiati"))
+                .birthday(of(1999, 4, 5))
+                .withResidential(residential)
                 .withPhoneNumber(Phone.of("09907994339"));
     }
 

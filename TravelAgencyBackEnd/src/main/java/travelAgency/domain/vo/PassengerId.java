@@ -17,7 +17,7 @@ public class PassengerId {
             throw new InvalidPassengerIdException();
         }
 
-        if (isDigits(passengerId)){
+        if (!isDigits(passengerId)){
             throw new InvalidPassengerIdException();
         }
 
@@ -29,7 +29,7 @@ public class PassengerId {
     }
 
     private boolean isDigits(String passengerId) {
-        return passengerId.matches("(\\d){9}");
+        return passengerId.matches("(\\d){10}");
     }
 
     public static PassengerId of(String id){

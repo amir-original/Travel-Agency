@@ -31,11 +31,8 @@ public class ExchangeRatesShould {
 
     @Test
     void connect_to_webservice_and_get_currency_rate() {
-        assertThat(exchangeRateService.getRateFor(USD,IRR)).isEqualTo(427000D);
+        assertThat(exchangeRateService.getRateFor(USD,IRR)).isEqualTo(42419.016);
 
         assertThat(exchangeRateService.getRateFor(IRR,USD)).isEqualTo(0.000024);
     }
-
-
-
 }

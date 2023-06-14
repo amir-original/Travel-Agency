@@ -1,16 +1,19 @@
 package travelAgency.domain.rate.currency;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import travelAgency.exceptions.CurrencyNotFoundException;
+
 import java.util.Arrays;
 
 public enum Currency {
     USD("usd", "$"), IRR("irr", "ريال"),
     EUR("eur","€");
 
-    private final String name;
+    private final String value;
     private final String symbol;
 
-    Currency(String name, String symbol) {
-        this.name = name;
+    Currency(String value, String symbol) {
+        this.value = value;
         this.symbol = symbol;
     }
 
@@ -20,6 +23,10 @@ public enum Currency {
                 .toArray(String[]::new);
     }
 
+    public String value(){
+        return value;
+    }
+
     public String getSymbol() {
         return symbol;
     }
@@ -27,7 +34,7 @@ public enum Currency {
     @Override
     public String toString() {
         return "Currency{" +
-                "name='" + name + '\'' +
+                "name='" + value + '\'' +
                 ", symbol='" + symbol + '\'' +
                 '}';
     }

@@ -11,7 +11,7 @@ public enum Currency {
     EUR("eur"),
     CNY("cny");
 
-    private String key;
+    private final String key;
 
     Currency(String key) {
         this.key = key;

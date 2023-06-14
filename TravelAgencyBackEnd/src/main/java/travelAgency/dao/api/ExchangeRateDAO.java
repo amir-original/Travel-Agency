@@ -1,7 +1,7 @@
 package travelAgency.dao.api;
 
-import travelAgency.domain.rate.currency.Currency;
 import travelAgency.domain.rate.ExchangeRate;
+import travelAgency.domain.rate.currency.Currency;
 
 import java.util.Optional;
 

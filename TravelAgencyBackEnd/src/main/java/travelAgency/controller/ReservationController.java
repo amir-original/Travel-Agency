@@ -2,6 +2,10 @@ package travelAgency.controller;
 
 import travelAgency.dao.database.passenger.PassengerRepository;
 import travelAgency.dao.database.reservation.ReservationListRepository;
+import travelAgency.domain.PassengerMapper;
+import travelAgency.domain.flight.Flight;
+import travelAgency.domain.passenger.Passenger;
+import travelAgency.domain.passenger.PassengerDto;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.domain.reservation.ReservationInformation;
 import travelAgency.services.BookingReservation;
@@ -43,5 +47,14 @@ public class ReservationController {
 
     public Reservation search(String reservationNumber) {
         return reservationListService.search(reservationNumber);
+    }
+
+    public Reservation book(Flight flight, PassengerDto passengerDto, int travelers) {
+        final PassengerMapper passengerMapper = new PassengerMapper();
+        final Passenger passenger = passengerMapper.toEntity(passengerDto);
+        final ReservationInformation reservationInformation
+                = new ReservationInformation(flight, passenger, travelers);
+
+        return bookingReservation.book(reservationInformation);
     }
 }

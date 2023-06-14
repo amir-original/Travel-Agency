@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.domain.vo.FullName;
 import travelAgency.domain.vo.Phone;
+import travelAgency.domain.vo.ResidentialAddress;
 import travelAgency.exceptions.*;
 import travelAgency.services.BookingReservation;
 import travelAgency.services.flight.FlightListService;
@@ -63,11 +64,11 @@ public class BookingReservationPassengerInfoShould {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(bookingInformation()
-                                .withPassenger(passenger().fullName(FullName.of("","rahmani")).build())
+                                .withPassenger(passenger().withFullName(FullName.of("","rahmani")).build())
                                 .build())),
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(bookingInformation()
-                                .withPassenger(passenger().fullName(FullName.of("   ","rahmani")).build())
+                                .withPassenger(passenger().withFullName(FullName.of("   ","rahmani")).build())
                                 .build()))
         );
     }
@@ -77,11 +78,11 @@ public class BookingReservationPassengerInfoShould {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(bookingInformation()
-                                .withPassenger(passenger().fullName(FullName.of("ali","")).build())
+                                .withPassenger(passenger().withFullName(FullName.of("ali","")).build())
                                 .build())),
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(bookingInformation()
-                                .withPassenger(passenger().fullName(FullName.of("ali","   ")).build())
+                                .withPassenger(passenger().withFullName(FullName.of("ali","   ")).build())
                                 .build()))
         );
     }
@@ -92,12 +93,12 @@ public class BookingReservationPassengerInfoShould {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(bookingInformation()
-                                .withPassenger(passenger().fullName(FullName.of(null,"rahmani")).build())
+                                .withPassenger(passenger().withFullName(FullName.of(null,"rahmani")).build())
                                 .build())),
 
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(bookingInformation()
-                                .withPassenger(passenger().fullName(FullName.of("ali",null)).build())
+                                .withPassenger(passenger().withFullName(FullName.of("ali",null)).build())
                                 .build()))
         );
     }
@@ -106,7 +107,7 @@ public class BookingReservationPassengerInfoShould {
     void throw_IllegalArgumentException_when_passenger_birthday_is_null() {
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> app.book(bookingInformation()
-                        .withPassenger(passenger().withBirthday(null).build())
+                        .withPassenger(passenger().birthday(null).build())
                         .build()));
     }
 
@@ -114,14 +115,22 @@ public class BookingReservationPassengerInfoShould {
     void throw_IllegalArgumentException_when_passenger_zipcode_is_null_or_empty() {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
-                        .isThrownBy(() -> app.book(bookingInformation().
-                                withPassenger(passenger().withZipcode(null).build())
-                                .build())),
+                        .isThrownBy(() -> {
+                            final ResidentialAddress residential =
+                                    ResidentialAddress.of("Tehran","tehran,pruzi",null);
+                            app.book(bookingInformation().
+                                    withPassenger(passenger().withResidential(residential).build())
+                                    .build());
+                        }),
 
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
-                        .isThrownBy(() -> app.book(bookingInformation()
-                                .withPassenger(passenger().withZipcode("").build())
-                                .build()))
+                        .isThrownBy(() -> {
+                            final ResidentialAddress of =
+                                    ResidentialAddress.of("Tehran","tehran,pruzi","");
+                            app.book(bookingInformation()
+                                    .withPassenger(passenger().withResidential(of).build())
+                                    .build());
+                        })
         );
     }
 
@@ -129,15 +138,22 @@ public class BookingReservationPassengerInfoShould {
     void throw_IllegalArgumentException_when_passengers_address_is_empty() {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
-                        .isThrownBy(() -> app.book(bookingInformation().
-                                withPassenger(passenger()
-                                        .withAddress(null).build())
-                                .build())),
+                        .isThrownBy(() -> {
+                            final ResidentialAddress residential =
+                                    ResidentialAddress.of("Tehran",null,"1234567890");
+                            app.book(bookingInformation().
+                                    withPassenger(passenger().withResidential(residential).build())
+                                    .build());
+                        }),
 
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
-                        .isThrownBy(() -> app.book(bookingInformation()
-                                .withPassenger(passenger().withAddress("").build())
-                                .build()))
+                        .isThrownBy(() -> {
+                            final ResidentialAddress address =
+                                    ResidentialAddress.of("Tehran"," ","1234567890");
+                            app.book(bookingInformation()
+                                    .withPassenger(passenger().withResidential(address).build())
+                                    .build());
+                        })
         );
     }
 

@@ -3,14 +3,11 @@ package travelAgency.ui.pages;
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
 import travelAgency.controller.ReservationController;
+import travelAgency.domain.passenger.PassengerDto;
 import travelAgency.domain.reservation.ReservationInformation;
 import travelAgency.domain.flight.Flight;
-import travelAgency.domain.passenger.Passenger;
-import travelAgency.domain.passenger.PassengerBuilder;
+import travelAgency.domain.passenger.PassengerDtoBuilder;
 import travelAgency.domain.reservation.Reservation;
-import travelAgency.domain.vo.FullName;
-import travelAgency.domain.vo.PassengerId;
-import travelAgency.domain.vo.Phone;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
 
@@ -169,8 +166,7 @@ public class BookingInformationPage extends JFrame {
 
     private void processReservationBooking() {
         try {
-            final ReservationInformation reservationInformation = getReservationInformation();
-            final Reservation reservation = bookReservation(reservationInformation);
+            final Reservation reservation = reservationController.book(selectFlight, createPassenger(), travelers);
             processSuccessfulBooking(reservation);
         } catch (Exception exception) {
             showMessageDialog(BOOKING_FAIL);
@@ -209,21 +205,13 @@ public class BookingInformationPage extends JFrame {
         dispose();
     }
 
-    private Reservation bookReservation(ReservationInformation reservationInformation) {
-        return reservationController.book(reservationInformation);
-    }
-
-    @NotNull
-    private ReservationInformation getReservationInformation() {
-        return new ReservationInformation(selectFlight, createPassenger(), travelers);
-    }
-
-    private Passenger createPassenger() {
-        return PassengerBuilder
+    private PassengerDto createPassenger() {
+        return PassengerDtoBuilder
                 .passenger()
-                .withId(PassengerId.of(identityNumber.getText()))
-                .fullName(FullName.of(firstName.getText(),lastName.getText()))
-                .withPhoneNumber(Phone.of(phoneNumber.getText()))
+                .withId(identityNumber.getText())
+                .firstName(firstName.getText())
+                .lastName(lastName.getText())
+                .withPhoneNumber(phoneNumber.getText())
                 .withAddress(address.getText())
                 .withZipcode(postalCode.getText())
                 .ofCity(city.getText())

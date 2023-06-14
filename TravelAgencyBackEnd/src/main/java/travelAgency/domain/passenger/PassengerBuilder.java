@@ -1,19 +1,18 @@
 package travelAgency.domain.passenger;
 
+import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.vo.FullName;
 import travelAgency.domain.vo.PassengerId;
 import travelAgency.domain.vo.Phone;
+import travelAgency.domain.vo.ResidentialAddress;
 
 import java.time.LocalDate;
 
 public class PassengerBuilder {
-
-    private PassengerId id;
+    private PassengerId passengerId;
     private FullName fullName;
     private LocalDate birthday;
-    private String city;
-    private String address;
-    private String zipcode;
+    private ResidentialAddress residential;
     private Phone phoneNumber;
 
     public static PassengerBuilder passenger() {
@@ -21,42 +20,31 @@ public class PassengerBuilder {
     }
 
     public PassengerBuilder withId(PassengerId id) {
-        this.id = id;
+        this.passengerId = id;
         return this;
     }
 
-    public PassengerBuilder fullName(FullName fullName) {
+    public PassengerBuilder withFullName(FullName fullName){
         this.fullName = fullName;
         return this;
     }
 
-    public PassengerBuilder withBirthday(LocalDate date) {
+    public PassengerBuilder birthday(LocalDate date){
         this.birthday = date;
         return this;
     }
 
-    public PassengerBuilder withAddress(String address) {
-        this.address = address;
+    public PassengerBuilder withResidential(ResidentialAddress residential){
+        this.residential = residential;
         return this;
     }
 
-    public PassengerBuilder ofCity(String city) {
-        this.city = city;
-        return this;
-    }
-
-    public PassengerBuilder withZipcode(String zipcode) {
-        this.zipcode = zipcode;
-        return this;
-    }
-
-    public PassengerBuilder withPhoneNumber(Phone phoneNumber) {
+    public PassengerBuilder withPhoneNumber(Phone phoneNumber){
         this.phoneNumber = phoneNumber;
         return this;
     }
 
-    public Passenger build() {
-        return new Passenger(id, fullName, birthday, city, address, zipcode, phoneNumber);
+    public Passenger build(){
+        return new Passenger(passengerId,fullName,birthday,residential,phoneNumber);
     }
-
 }

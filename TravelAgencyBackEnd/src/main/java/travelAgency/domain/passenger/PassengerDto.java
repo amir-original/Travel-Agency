@@ -30,4 +30,36 @@ public class PassengerDto {
         this.zipcode = zipcode;
         this.phoneNumber = phoneNumber;
     }
+
+    public String getNationalCode() {
+        return nationalCode;
+    }
+
+    public String getfName() {
+        return fName;
+    }
+
+    public String getlName() {
+        return lName;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 }

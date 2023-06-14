@@ -8,7 +8,7 @@ public class FullName {
 
     private FullName(String fName, String lName) {
         if (isNull(fName, lName)) {
-            throw new IllegalArgumentException("fullName and lastName should not be null!");
+            throw new IllegalArgumentException("firstName and lastName should not be null!");
         }
         if (fName.isBlank() || lName.isBlank())
             throw new IllegalArgumentException("the name must not be null or empty!");

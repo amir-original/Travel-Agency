@@ -60,7 +60,7 @@ public record Reservation(@NotNull String ticketNumber,
                                 From : %s  📍 ---------------------------------------------- ✈  To: %s
                         Departure: %s                    Arrival: %s                 Price: %s     
                         """,
-                passenger().fullName(),
+                passenger().fullName().getText(),
                 flightNumber(),
                 ticketNumber,
                 flight().from(),
