@@ -8,6 +8,8 @@ import travelAgency.domain.flight.Flight;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.domain.passenger.PassengerBuilder;
 import travelAgency.domain.reservation.Reservation;
+import travelAgency.domain.vo.FullName;
+import travelAgency.domain.vo.PassengerId;
 import travelAgency.domain.vo.Phone;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
@@ -219,9 +221,8 @@ public class BookingInformationPage extends JFrame {
     private Passenger createPassenger() {
         return PassengerBuilder
                 .passenger()
-                .withId(identityNumber.getText())
-                .firstName(firstName.getText())
-                .lastName(lastName.getText())
+                .withId(PassengerId.of(identityNumber.getText()))
+                .fullName(FullName.of(firstName.getText(),lastName.getText()))
                 .withPhoneNumber(Phone.of(phoneNumber.getText()))
                 .withAddress(address.getText())
                 .withZipcode(postalCode.getText())

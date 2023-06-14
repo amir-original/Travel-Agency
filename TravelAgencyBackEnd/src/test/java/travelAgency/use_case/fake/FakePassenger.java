@@ -1,5 +1,7 @@
 package travelAgency.use_case.fake;
 
+import travelAgency.domain.vo.FullName;
+import travelAgency.domain.vo.PassengerId;
 import travelAgency.domain.vo.Phone;
 import travelAgency.exceptions.PassengerNotFoundException;
 import travelAgency.domain.passenger.Passenger;
@@ -21,10 +23,10 @@ public class FakePassenger implements PassengerRepository {
     {
         final PassengerBuilder passenger = FakePassenger.passenger();
         final List<Passenger> passengerList = List.of(
-                passenger.withId("44").firstName("ali").lastName("bahrami").build(),
-                passenger.withId("22").firstName("mona").lastName("jalili").build(),
-                passenger.withId("12").firstName("amir").lastName("amiri").ofCity(RASHT.name()).build(),
-                passenger.withId("55").build()
+                passenger.withId(PassengerId.of("4444556622")).fullName(FullName.of("ali","bahrami")).build(),
+                passenger.withId(PassengerId.of("2211334565")).fullName(FullName.of("mona","jalili")).build(),
+                passenger.withId(PassengerId.of("1221456578")).fullName(FullName.of("amir","amiri")).ofCity(RASHT.name()).build(),
+                passenger.withId(PassengerId.of("5544556699")).build()
         );
         passengers = new LinkedList<>(passengerList);
     }
@@ -42,7 +44,7 @@ public class FakePassenger implements PassengerRepository {
     @Override
     public Optional<Passenger> findPassengerById(String passengerId) {
         return passengers.stream()
-                .filter(passenger -> passenger.id().equals(passengerId))
+                .filter(passenger -> passenger.getId().equals(passengerId))
                 .findFirst();
     }
 
@@ -58,9 +60,8 @@ public class FakePassenger implements PassengerRepository {
 
     public static PassengerBuilder passenger() {
         return PassengerBuilder.passenger()
-                .withId("55")
-                .firstName("Sara")
-                .lastName("Baiati")
+                .withId(PassengerId.of("5544556699"))
+                .fullName(FullName.of("Sara","Baiati"))
                 .withBirthday(of(1999, 4, 5))
                 .ofCity(TEHRAN.name())
                 .withAddress("Iran,TEHRAN")

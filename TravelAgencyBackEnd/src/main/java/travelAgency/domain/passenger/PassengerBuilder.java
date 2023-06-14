@@ -1,36 +1,32 @@
 package travelAgency.domain.passenger;
 
+import travelAgency.domain.vo.FullName;
+import travelAgency.domain.vo.PassengerId;
 import travelAgency.domain.vo.Phone;
 
 import java.time.LocalDate;
 
 public class PassengerBuilder {
 
-    private String id ;
-    private String fName;
-    private String lName ;
+    private PassengerId id;
+    private FullName fullName;
     private LocalDate birthday;
     private String city;
     private String address;
-    private String zipcode ;
+    private String zipcode;
     private Phone phoneNumber;
 
     public static PassengerBuilder passenger() {
         return new PassengerBuilder();
     }
 
-    public PassengerBuilder withId(String id) {
+    public PassengerBuilder withId(PassengerId id) {
         this.id = id;
         return this;
     }
 
-    public PassengerBuilder firstName(String firstName) {
-        this.fName = firstName;
-        return this;
-    }
-
-    public PassengerBuilder lastName(String lastName) {
-        this.lName = lastName;
+    public PassengerBuilder fullName(FullName fullName) {
+        this.fullName = fullName;
         return this;
     }
 
@@ -60,7 +56,7 @@ public class PassengerBuilder {
     }
 
     public Passenger build() {
-        return new Passenger(id, fName, lName, birthday, city, address, zipcode, phoneNumber);
+        return new Passenger(id, fullName, birthday, city, address, zipcode, phoneNumber);
     }
 
 }

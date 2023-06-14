@@ -3,6 +3,7 @@ package travelAgency.dao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import travelAgency.domain.vo.PassengerId;
 import travelAgency.exceptions.PassengerNotFoundException;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
@@ -26,11 +27,12 @@ public class PassengerRepositoryShould {
 
     @Test
     void save_passenger_info_and_fetch_passenger_with_id() {
-        final Passenger passenger = FakePassenger.passenger().withId("87").build();
+        final Passenger passenger = FakePassenger.passenger()
+                .withId(PassengerId.of("8787684512")).build();
 
         api.save(passenger);
 
-        final Optional<Passenger> fetchedPassenger = api.findPassengerById(passenger.id());
+        final Optional<Passenger> fetchedPassenger = api.findPassengerById(passenger.getId());
 
        fetchedPassenger.orElseThrow(PassengerNotFoundException::new);
 

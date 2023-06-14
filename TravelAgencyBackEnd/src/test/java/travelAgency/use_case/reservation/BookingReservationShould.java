@@ -118,9 +118,9 @@ public class BookingReservationShould {
 
     private void insertTenBookingFlight() {
         app.book(bookingInformation().withTravelers(4).build());
-        app.book(bookingInformation().withPassenger(passenger("55")).withTravelers(2).build());
-        app.book(bookingInformation().withPassenger(passenger("44")).withTravelers(1).build());
-        app.book(bookingInformation().withPassenger(passenger("22")).withTravelers(3).build());
+        app.book(bookingInformation().withPassenger(passenger("5544556699")).withTravelers(2).build());
+        app.book(bookingInformation().withPassenger(passenger("4444556622")).withTravelers(1).build());
+        app.book(bookingInformation().withPassenger(passenger("2211334565")).withTravelers(3).build());
 
     }
 }

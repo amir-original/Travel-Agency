@@ -3,6 +3,7 @@ package travelAgency.use_case.reservation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.passenger.Passenger;
+import travelAgency.domain.vo.FullName;
 import travelAgency.domain.vo.Phone;
 import travelAgency.exceptions.*;
 import travelAgency.services.BookingReservation;
@@ -62,11 +63,11 @@ public class BookingReservationPassengerInfoShould {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(bookingInformation()
-                                .withPassenger(passenger().firstName("").build())
+                                .withPassenger(passenger().fullName(FullName.of("","rahmani")).build())
                                 .build())),
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(bookingInformation()
-                                .withPassenger(passenger().firstName("   ").build())
+                                .withPassenger(passenger().fullName(FullName.of("   ","rahmani")).build())
                                 .build()))
         );
     }
@@ -76,11 +77,11 @@ public class BookingReservationPassengerInfoShould {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(bookingInformation()
-                                .withPassenger(passenger().lastName("").build())
+                                .withPassenger(passenger().fullName(FullName.of("ali","")).build())
                                 .build())),
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(bookingInformation()
-                                .withPassenger(passenger().lastName("   ").build())
+                                .withPassenger(passenger().fullName(FullName.of("ali","   ")).build())
                                 .build()))
         );
     }
@@ -91,12 +92,12 @@ public class BookingReservationPassengerInfoShould {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(bookingInformation()
-                                .withPassenger(passenger().lastName(null).build())
+                                .withPassenger(passenger().fullName(FullName.of(null,"rahmani")).build())
                                 .build())),
 
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(bookingInformation()
-                                .withPassenger(passenger().firstName(null).build())
+                                .withPassenger(passenger().fullName(FullName.of("ali",null)).build())
                                 .build()))
         );
     }

@@ -93,8 +93,8 @@ public class ReservationListServiceShould {
 
     private void insertMultipleBooking() {
         appService.book(bookingInformation().withTravelers(5).build());
-        appService.book(bookingInformation().withPassenger(passenger("44")).withTravelers(1).build());
-        appService.book(bookingInformation().withPassenger(passenger("55")).withTravelers(3).build());
-        appService.book(bookingInformation().withPassenger(passenger("22")).withTravelers(4).build());
+        appService.book(bookingInformation().withPassenger(passenger("4444556622")).withTravelers(1).build());
+        appService.book(bookingInformation().withPassenger(passenger("5544556699")).withTravelers(3).build());
+        appService.book(bookingInformation().withPassenger(passenger("2211334565")).withTravelers(4).build());
     }
 }

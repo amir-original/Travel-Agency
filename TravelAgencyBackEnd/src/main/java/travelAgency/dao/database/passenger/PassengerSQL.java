@@ -1,6 +1,8 @@
 package travelAgency.dao.database.passenger;
 
 import travelAgency.domain.passenger.Passenger;
+import travelAgency.domain.vo.FullName;
+import travelAgency.domain.vo.PassengerId;
 import travelAgency.domain.vo.Phone;
 
 import java.sql.Date;
@@ -36,10 +38,11 @@ public class PassengerSQL {
 
 
     public static Passenger buildPassenger(ResultSet rs) throws SQLException {
+        final String firstName = rs.getString("first_name");
+        final String lastName = rs.getString("last_name");
         return passenger()
-                .withId(rs.getString("passenger_id"))
-                .firstName(rs.getString("first_name"))
-                .lastName(rs.getString("last_name"))
+                .withId(PassengerId.of(rs.getString("passenger_id")))
+                .fullName(FullName.of(firstName, lastName))
                 .withBirthday(rs.getDate("birthday").toLocalDate())
                 .withZipcode(rs.getString("zipcode"))
                 .ofCity(rs.getString("city"))
@@ -50,9 +53,9 @@ public class PassengerSQL {
     }
 
     public static void fillOutPassengerFields(Passenger passenger, PreparedStatement sql) throws SQLException {
-        sql.setString(1, passenger.id());
-        sql.setString(2, passenger.fName());
-        sql.setString(3, passenger.lName());
+        sql.setString(1, passenger.passengerId().getId());
+        sql.setString(2, passenger.fullName().getFirstName());
+        sql.setString(3, passenger.fullName().getLastName());
         sql.setDate(4, convertToSQLDate(passenger.birthday()));
         sql.setString(5, passenger.city());
         sql.setString(6, passenger.address());

@@ -1,30 +1,30 @@
 package travelAgency.domain.passenger;
 
 import org.jetbrains.annotations.NotNull;
+import travelAgency.domain.flight.Flight;
+import travelAgency.domain.vo.FullName;
+import travelAgency.domain.vo.PassengerId;
 import travelAgency.domain.vo.Phone;
 
 import java.time.LocalDate;
 
-public record Passenger(@NotNull String id,
-                        @NotNull String fName,
-                        @NotNull String lName,
+public record Passenger(@NotNull PassengerId passengerId,
+                        @NotNull FullName fullName,
                         @NotNull LocalDate birthday,
                         @NotNull String city,
                         @NotNull String address,
                         @NotNull String zipcode,
-                        Phone phoneNumber) {
+                        @NotNull Phone phoneNumber) {
 
-    public Passenger(@NotNull String id,
-                     @NotNull String fName,
-                     @NotNull String lName,
+    public Passenger(@NotNull PassengerId passengerId,
+                     @NotNull FullName fullName,
                      @NotNull LocalDate birthday,
                      @NotNull String city,
                      @NotNull String address,
                      @NotNull String zipcode,
-                     Phone phoneNumber) {
-        this.id = id;
-        this.fName = fName;
-        this.lName = lName;
+                     @NotNull Phone phoneNumber) {
+        this.passengerId = passengerId;
+        this.fullName = fullName;
         this.birthday = birthday;
         this.city = city;
         this.address = address;
@@ -35,10 +35,10 @@ public record Passenger(@NotNull String id,
     }
 
     public boolean canMatchWith(String passengerFirstName, LocalDate PassengerBirthday) {
-        return fName().equals(passengerFirstName) && birthday().equals(PassengerBirthday);
+        return fullName().getFirstName().equals(passengerFirstName) && birthday().equals(PassengerBirthday);
     }
 
-    public String fullName() {
-        return fName + " " + lName;
+    public String getId() {
+        return passengerId.getId();
     }
 }

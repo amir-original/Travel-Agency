@@ -1,6 +1,7 @@
 package travelAgency.domain.reservation;
 
 import org.jetbrains.annotations.NotNull;
+import travelAgency.domain.vo.PassengerId;
 import travelAgency.exceptions.InvalidNumberOfTicketsException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.passenger.Passenger;
@@ -47,7 +48,7 @@ public record ReservationInformation(@NotNull Flight flight,
         return flight.flightNumber();
     }
 
-    public String passengerId() {
-        return passenger.id();
+    public PassengerId passengerId() {
+        return passenger.passengerId();
     }
 }
