@@ -1,4 +1,4 @@
-package travelAgency.domain.vo;
+package travelAgency.domain.passenger;
 
 import java.util.Objects;
 
@@ -33,7 +33,7 @@ public class FullName {
         return lastName;
     }
 
-    public String getText() {
+    public String toText() {
         return firstName + " " + lastName;
     }
 

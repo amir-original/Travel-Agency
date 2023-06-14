@@ -1,54 +1,34 @@
 package travelAgency.domain.reservation;
 
-import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.vo.PassengerId;
-import travelAgency.exceptions.InvalidNumberOfTicketsException;
-import travelAgency.domain.flight.Flight;
-import travelAgency.domain.passenger.Passenger;
+import travelAgency.domain.passenger.PassengerDto;
 
-import java.time.LocalDate;
+public final class ReservationInformation {
 
-import static java.util.stream.Stream.of;
+    private final FlightDto flight;
+    private final PassengerDto passengerDto;
+    private final int numberOfTickets;
 
-public record ReservationInformation(@NotNull Flight flight,
-                                     @NotNull Passenger passenger,
-                                     int numberOfTickets) {
-
-    public ReservationInformation(@NotNull Flight flight,
-                                  @NotNull Passenger passenger,
+    public ReservationInformation(FlightDto flight,
+                                  PassengerDto passengerDto,
                                   int numberOfTickets) {
         this.flight = flight;
-        this.passenger = passenger;
+        this.passengerDto = passengerDto;
         this.numberOfTickets = numberOfTickets;
-        validate();
     }
 
-    public void validate() {
-        if (hasNoTickets())
-            throw new InvalidNumberOfTicketsException();
+    public FlightDto getFlight() {
+        return flight;
     }
 
-    private boolean hasNoTickets() {
-        return numberOfTickets() <= 0;
+    public PassengerDto getPassengerDto() {
+        return passengerDto;
     }
 
-    public Reservation getReservation(String ticketNumber) {
-        return new Reservation(ticketNumber, this);
+    public int getNumberOfTickets() {
+        return numberOfTickets;
     }
 
-    public boolean canMatchWith(String flightNumber,
-                                String passengerFirstName,
-                                LocalDate passengerBirthday) {
-
-        return flight.hasSameFlightNumber(flightNumber) &&
-                passenger.canMatchWith(passengerFirstName, passengerBirthday);
-    }
-
-    public String flightNumber() {
-        return flight.flightNumber();
-    }
-
-    public PassengerId passengerId() {
-        return passenger.passengerId();
+    public String getFlightNumber() {
+        return flight.getFlightNumber();
     }
 }

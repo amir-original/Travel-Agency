@@ -10,22 +10,22 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class HttpHandlerApiClient implements HttpApiClient {
+public class HttpRequestHandler implements HttpApiClient {
 
     private final Gson gson;
 
     private HttpRequest.Builder method;
 
-    public HttpHandlerApiClient() {
+    public HttpRequestHandler() {
         this.gson = new Gson();
     }
 
-    public HttpHandlerApiClient(Gson gson) {
+    public HttpRequestHandler(Gson gson) {
         this.gson = gson;
     }
 
     @Override
-    public HttpHandlerApiClient target(String baseUri) {
+    public HttpRequestHandler target(String baseUri) {
         try {
             requestBuilder().uri(new URI(baseUri));
             return this;

@@ -38,7 +38,7 @@ public class ReservationListRepositoryShould {
 
         final Reservation reservation = insertBooking();
 
-        final Optional<Reservation> ticket = bookingLists.findReservation(reservation.ticketNumber());
+        final Optional<Reservation> ticket = bookingLists.findReservation(reservation.reservationNumber());
 
         if (ticket.isEmpty()) {
             fail("findReservation not found!");
@@ -51,16 +51,16 @@ public class ReservationListRepositoryShould {
     void cancel_a_booking() {
         final Reservation reservation = insertBooking();
 
-        bookingLists.cancel(reservation.ticketNumber());
+        bookingLists.cancel(reservation.reservationNumber());
 
-        final boolean isEmpty = bookingLists.findReservation(reservation.ticketNumber()).isEmpty();
+        final boolean isEmpty = bookingLists.findReservation(reservation.reservationNumber()).isEmpty();
 
         assertThat(isEmpty).isTrue();
     }
 
     @NotNull
     private Reservation insertBooking() {
-        final Reservation reservation = FakeReservationList.flightTicket("78456587");
+        final Reservation reservation = FakeReservationList.getReservation("AA-7845-65874");
 
         flights.addFlight(flight(reservation.flightNumber()));
         passengers.save(reservation.passenger());

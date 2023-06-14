@@ -9,13 +9,24 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public final class Flight {
-    private final @NotNull String flightNumber;
+
+    @NotNull
+    private final String flightNumber;
+
     private final int totalCapacity;
+
+    @NotNull
     private final Money price;
-    private final @NotNull FlightPlan plan;
+
+    @NotNull
+    private final FlightPlan plan;
+    private FlightStatus status = FlightStatus.SCHEDULED;
 
 
-    public Flight(@NotNull String flightNumber, int totalCapacity, Money price, @NotNull FlightPlan plan) {
+    private Flight(@NotNull String flightNumber,
+                   @NotNull FlightPlan plan,
+                   int totalCapacity,
+                   @NotNull Money price) {
         if (flightNumber.isBlank() || flightNumber.length() < 3)
             throw new InvalidFlightNumberException();
 
@@ -23,6 +34,10 @@ public final class Flight {
         this.totalCapacity = totalCapacity;
         this.price = price;
         this.plan = plan;
+    }
+
+    public static Flight addWith(String flightNumber, FlightPlan flightPlan, int totalCapacity, Money price) {
+        return new Flight(flightNumber, flightPlan, totalCapacity, price);
     }
 
     public boolean match(Flight flight) {
@@ -35,6 +50,10 @@ public final class Flight {
 
     public boolean hasSameFlightPlan(FlightPlan searchFlightPlan) {
         return plan.hasSameFlightPlan(searchFlightPlan);
+    }
+
+    public void markAsDeparted() {
+        status = FlightStatus.DEPARTED;
     }
 
     public City to() {
@@ -61,7 +80,7 @@ public final class Flight {
         schedule().validate();
     }
 
-    public @NotNull String flightNumber() {
+    public String flightNumber() {
         return flightNumber;
     }
 
@@ -73,8 +92,12 @@ public final class Flight {
         return price;
     }
 
-    public @NotNull FlightPlan plan() {
+    public FlightPlan plan() {
         return plan;
+    }
+
+    public FlightStatus status() {
+        return status;
     }
 
     @Override
@@ -101,5 +124,4 @@ public final class Flight {
                 "price=" + price + ", " +
                 "plan=" + plan + ']';
     }
-
 }

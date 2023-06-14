@@ -10,6 +10,7 @@ import travelAgency.domain.flight.FlightLocation;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.flight.FlightSchedule;
 import travelAgency.domain.rate.currency.Currency;
+import travelAgency.domain.reservation.FlightDto;
 import travelAgency.services.city.CityService;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
@@ -330,7 +331,7 @@ public class BookingFlightPage extends JFrame {
     private void goToBookingInformationPage() {
         final String selectedFlight = flightSearchResult.getSelectedFlight();
         if (isFlightSelected(selectedFlight)) {
-            final Flight flight = getFlightBy(selectedFlight);
+            final FlightDto flight = getFlightBy(selectedFlight);
             new BookingInformationPage(flight, reservationController, getTravelers());
             dispose();
         } else
@@ -341,7 +342,7 @@ public class BookingFlightPage extends JFrame {
         return (int) passengersSpinner.getValue();
     }
 
-    private Flight getFlightBy(String selectedFlightNumber) {
+    private FlightDto getFlightBy(String selectedFlightNumber) {
         return flightController.findFlight(selectedFlightNumber);
     }
 

@@ -1,9 +1,11 @@
 package travelAgency.services.reservation;
 
 import travelAgency.dao.database.reservation.ReservationListRepository;
+import travelAgency.domain.flight.FlightStatus;
+import travelAgency.domain.reservation.FlightDto;
+import travelAgency.exceptions.CanNotCancelReservationException;
 import travelAgency.exceptions.FlightNotFoundException;
 import travelAgency.exceptions.ReservationNotFoundException;
-import travelAgency.domain.flight.Flight;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.services.flight.FlightListService;
 
@@ -15,6 +17,8 @@ public class ReservationListServiceImpl implements ReservationListService {
     private final ReservationListRepository reservations;
     private final SearchReservationEngine searchEngine;
     private final FlightListService flights;
+
+
 
 
     public ReservationListServiceImpl(ReservationListRepository reservations, FlightListService flights) {
@@ -35,7 +39,7 @@ public class ReservationListServiceImpl implements ReservationListService {
     }
 
     @Override
-    public Flight findFlight(String flightNumber) throws FlightNotFoundException {
+    public FlightDto findFlight(String flightNumber) throws FlightNotFoundException {
         return flights.findFlight(flightNumber);
     }
 
@@ -44,12 +48,16 @@ public class ReservationListServiceImpl implements ReservationListService {
         final Reservation reservation = reservations.findReservation(reservationNumber)
                 .orElseThrow(ReservationNotFoundException::new);
 
-        reservations.cancel(reservation.ticketNumber());
+        if (reservation.flight().status().equals(FlightStatus.DEPARTED))
+                throw new CanNotCancelReservationException();
+
+        reservations.cancel(reservation.reservationNumber());
     }
 
     @Override
     public int getAvailableSeats(String flightNumber) {
-        return findFlight(flightNumber).totalCapacity() - getTotalBookedSeats(flightNumber);
+        return findFlight(flightNumber).getTotalCapacity()
+                - getTotalBookedSeats(flightNumber);
     }
 
     @Override

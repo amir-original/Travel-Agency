@@ -1,13 +1,12 @@
 package travelAgency.use_case.fake;
 
 import travelAgency.domain.passenger.PassengerBuilder;
-import travelAgency.domain.vo.FullName;
-import travelAgency.domain.vo.PassengerId;
-import travelAgency.domain.vo.Phone;
-import travelAgency.domain.vo.ResidentialAddress;
+import travelAgency.domain.passenger.FullName;
+import travelAgency.domain.passenger.PassengerId;
+import travelAgency.domain.passenger.PhoneNumber;
+import travelAgency.domain.passenger.ResidentialAddress;
 import travelAgency.exceptions.PassengerNotFoundException;
 import travelAgency.domain.passenger.Passenger;
-import travelAgency.domain.passenger.PassengerDtoBuilder;
 import travelAgency.dao.database.passenger.PassengerRepository;
 
 import java.util.LinkedList;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.time.LocalDate.of;
-import static travelAgency.domain.city.City.RASHT;
 import static travelAgency.domain.city.City.TEHRAN;
 
 public class FakePassenger implements PassengerRepository {
@@ -25,10 +23,10 @@ public class FakePassenger implements PassengerRepository {
     {
         final PassengerBuilder passenger = FakePassenger.passenger();
         final List<Passenger> passengerList = List.of(
-                passenger.withId(PassengerId.of("4444556622")).withFullName(FullName.of("ali","bahrami")).build(),
-                passenger.withId(PassengerId.of("2211334565")).withFullName(FullName.of("mona","jalili")).build(),
-                passenger.withId(PassengerId.of("1221456578")).withFullName(FullName.of("amir","amiri")).build(),
-                passenger.withId(PassengerId.of("5544556699")).build()
+                passenger.withId(PassengerId.withId("4444556622")).withFullName(FullName.of("ali","bahrami")).build(),
+                passenger.withId(PassengerId.withId("2211334565")).withFullName(FullName.of("mona","jalili")).build(),
+                passenger.withId(PassengerId.withId("1221456578")).withFullName(FullName.of("amir","amiri")).build(),
+                passenger.withId(PassengerId.withId("5544556699")).build()
         );
         passengers = new LinkedList<>(passengerList);
     }
@@ -64,11 +62,11 @@ public class FakePassenger implements PassengerRepository {
         final var residential = ResidentialAddress.of(TEHRAN.name(),
                 "Iran,TEHRAN", "1145789655");
         return PassengerBuilder.passenger()
-                .withId(PassengerId.of("5544556699"))
+                .withId(PassengerId.withId("5544556699"))
                 .withFullName(FullName.of("Sara","Baiati"))
                 .birthday(of(1999, 4, 5))
                 .withResidential(residential)
-                .withPhoneNumber(Phone.of("09907994339"));
+                .withPhoneNumber(PhoneNumber.of("09907994339"));
     }
 
     public static Passenger passenger(String passengerId) {

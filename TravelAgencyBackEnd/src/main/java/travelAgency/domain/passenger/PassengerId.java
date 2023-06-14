@@ -1,23 +1,24 @@
-package travelAgency.domain.vo;
+package travelAgency.domain.passenger;
 
-import travelAgency.domain.passenger.Passenger;
 import travelAgency.exceptions.InvalidPassengerIdException;
 
 import java.util.Objects;
+
+import static java.util.Objects.isNull;
 
 public class PassengerId {
 
     private final String id;
 
     private PassengerId(String passengerId) {
-        if (passengerId == null) {
+        if (isNull(passengerId)) {
             throw new InvalidPassengerIdException("passenger passengerId should not be null!");
         }
         if (isValidLength(passengerId)){
             throw new InvalidPassengerIdException();
         }
 
-        if (!isDigits(passengerId)){
+        if (isNotValidFormat(passengerId)){
             throw new InvalidPassengerIdException();
         }
 
@@ -28,11 +29,15 @@ public class PassengerId {
         return passengerId.length() != 10;
     }
 
-    private boolean isDigits(String passengerId) {
+    private boolean isNotValidFormat(String passengerId){
+        return !isValidFormat(passengerId);
+    }
+
+    private boolean isValidFormat(String passengerId) {
         return passengerId.matches("(\\d){10}");
     }
 
-    public static PassengerId of(String id){
+    public static PassengerId withId(String id){
         return new PassengerId(id);
     }
 

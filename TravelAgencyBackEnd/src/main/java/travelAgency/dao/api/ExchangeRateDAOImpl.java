@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.rate.ExchangeRate;
 import travelAgency.domain.rate.currency.Currency;
 import travelAgency.helper.CurrencySerializer;
-import travelAgency.helper.HttpHandlerApiClient;
+import travelAgency.helper.HttpRequestHandler;
 import travelAgency.helper.LocalDateAdapter;
 import travelAgency.helper.PropertiesReader;
 
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class ExchangeRateDAOImpl implements ExchangeRateDAO {
 
     public static final String API = "app.api.pro.rest_exchange_rate.url";
-    private final HttpHandlerApiClient request;
+    private final HttpRequestHandler request;
     private String baseUri;
 
     public ExchangeRateDAOImpl() {
@@ -25,7 +25,7 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO {
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .registerTypeAdapter(Currency.class, new CurrencySerializer())
                 .setPrettyPrinting().create();
-        request = new HttpHandlerApiClient(gson);
+        request = new HttpRequestHandler(gson);
     }
 
     @Override

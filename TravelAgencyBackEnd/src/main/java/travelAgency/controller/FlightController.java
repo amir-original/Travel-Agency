@@ -2,6 +2,7 @@ package travelAgency.controller;
 
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
+import travelAgency.domain.reservation.FlightDto;
 import travelAgency.services.flight.FlightListService;
 import travelAgency.services.reservation.ReservationListService;
 
@@ -21,7 +22,7 @@ public class FlightController {
         return flightListService.searchFlights(flightPlan);
     }
 
-    public Flight findFlight(String flightNumber) {
+    public FlightDto findFlight(String flightNumber) {
         return flightListService.findFlight(flightNumber);
     }
 

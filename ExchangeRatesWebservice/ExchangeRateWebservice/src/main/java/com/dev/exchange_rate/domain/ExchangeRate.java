@@ -22,7 +22,7 @@ public class ExchangeRate {
     private Map<Currency, Double> rates;
 
 
-    public ExchangeRate(Currency baseCurrency, LocalDate date, Map<Currency, Double> rates) {
+    private ExchangeRate(int id , Currency baseCurrency, LocalDate date, Map<Currency, Double> rates) {
         if (baseCurrency == null) throw new NullBaseCurrencyException();
         this.baseCurrency = baseCurrency;
 
@@ -32,11 +32,8 @@ public class ExchangeRate {
         this.rates = rates;
     }
 
-    public ExchangeRate(int id, Currency baseCurrency, LocalDate date, Map<Currency, Double> rates) {
-        this.id = id;
-        this.baseCurrency = baseCurrency;
-        this.date = date;
-        this.rates = rates;
+    public static ExchangeRate create(int id, Currency baseCurrency, LocalDate date, Map<Currency, Double> rates) {
+        return new ExchangeRate(id,baseCurrency,date,rates);
     }
 
     public int getId() {

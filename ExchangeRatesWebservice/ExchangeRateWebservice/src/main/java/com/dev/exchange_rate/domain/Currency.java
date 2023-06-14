@@ -27,13 +27,16 @@ public enum Currency {
         throw new CurrencyNotFoundException("Invalid Currency");
     }
 
+    @JsonValue
+    public String getValue(){
+        return key.toUpperCase();
+    }
+
+    public String getKey() {
+        return key;
+    }
     @Override
     public String toString() {
         return super.toString();
-    }
-
-    @JsonValue
-    public String getKey() {
-        return key;
     }
 }

@@ -68,7 +68,8 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
         final JPanel buttonPanel = createButtonPanel();
 
 
-        return new Component[]{searchPanel, reservationNumberPanel, flightNumberPanel, buttonPanel, resultTablePanel};
+        return new Component[]
+                {searchPanel, reservationNumberPanel, flightNumberPanel, buttonPanel, resultTablePanel};
     }
 
     @NotNull
@@ -90,7 +91,7 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
                         "Flight Number",
                         "Origin",
                         "Destination",
-                        "Number of Tickets"};
+                        "Number Of Tickets"};
     }
 
     private void createFlightNumberPanelFields() {
@@ -281,12 +282,12 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
     @NotNull
     private Object[][] createReservationInfoArray(Reservation searchedReservation) {
         return new Object[][]{
-                {searchedReservation.ticketNumber(),
-                        searchedReservation.passenger().fullName(),
+                {       searchedReservation.reservationNumber(),
+                        searchedReservation.passenger().fullName().toText(),
                         searchedReservation.flightNumber(),
                         searchedReservation.flight().from(),
                         searchedReservation.flight().to(),
-                        searchedReservation.reservationInformation().numberOfTickets()
+                        searchedReservation.travelers()
                 }};
     }
 

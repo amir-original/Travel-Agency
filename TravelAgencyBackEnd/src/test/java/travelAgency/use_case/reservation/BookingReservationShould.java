@@ -3,27 +3,29 @@ package travelAgency.use_case.reservation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.dao.database.passenger.PassengerRepository;
-import travelAgency.exceptions.*;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.reservation.ReservationInformation;
+import travelAgency.exceptions.FullyBookedException;
+import travelAgency.exceptions.InvalidFlightNumberException;
+import travelAgency.exceptions.NotEnoughCapacityException;
+import travelAgency.exceptions.PastFlightScheduleException;
 import travelAgency.services.BookingReservation;
+import travelAgency.services.flight.FlightAvailability;
 import travelAgency.services.flight.FlightListService;
 import travelAgency.services.flight.FlightListServiceImpl;
 import travelAgency.services.reservation.ReservationListService;
 import travelAgency.services.reservation.ReservationListServiceImpl;
-import travelAgency.services.reservation.TicketNumberGenerator;
-import travelAgency.services.flight.FlightAvailability;
-import travelAgency.use_case.fake.FakeReservationList;
+import travelAgency.services.reservation.ReservationNumberGenerator;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakePassenger;
-import travelAgency.use_case.fake.FakeTicketNumberGenerator;
+import travelAgency.use_case.fake.FakeReservationList;
+import travelAgency.use_case.fake.FakeReservationNumber;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static travelAgency.domain.city.City.TEHRAN;
-import static travelAgency.use_case.fake.FakeReservationInformationBuilder.bookingInformation;
 import static travelAgency.use_case.fake.FakeFlight.flight;
-import static travelAgency.use_case.fake.FakePassenger.passenger;
+import static travelAgency.use_case.fake.FakeReservationInformationBuilder.reservationInformation;
 
 public class BookingReservationShould {
 
@@ -31,21 +33,22 @@ public class BookingReservationShould {
 
     @BeforeEach
     void setUp() {
-        TicketNumberGenerator ticketNumberGenerator = new FakeTicketNumberGenerator();
+        ReservationNumberGenerator reservationNumber = new FakeReservationNumber();
         FakeReservationList fakeBookingList = new FakeReservationList();
         FakeFlight fakeFlight = new FakeFlight();
         FlightListService flightService = new FlightListServiceImpl(fakeFlight);
-        ReservationListService reservationListService = new ReservationListServiceImpl(fakeBookingList, flightService);
+        ReservationListService reservationListService
+                = new ReservationListServiceImpl(fakeBookingList, flightService);
         FlightAvailability flightAvailability = new FlightAvailability(reservationListService);
         PassengerRepository passengerService = new FakePassenger();
 
-        app = new BookingReservation(fakeBookingList, passengerService, flightAvailability, ticketNumberGenerator);
+        app = new BookingReservation(fakeBookingList, passengerService, flightAvailability, reservationNumber);
     }
 
 
     @Test
     void book_a_flight_without_throw_any_exception() {
-        final ReservationInformation reservationInformation = bookingInformation().build();
+        final ReservationInformation reservationInformation = reservationInformation().build();
 
         assertThatNoException().isThrownBy(() -> app.book(reservationInformation));
     }
@@ -54,12 +57,12 @@ public class BookingReservationShould {
     @Test
     void throw_InvalidFlightNumberException_when_flight_number_is_empty_or_less_than_3_length() {
         assertThatExceptionOfType(InvalidFlightNumberException.class)
-                .isThrownBy(() -> app.book(bookingInformation()
+                .isThrownBy(() -> app.book(reservationInformation()
                         .withFlight(flight().withFlightNumber("").build())
                         .build()));
 
         assertThatExceptionOfType(InvalidFlightNumberException.class)
-                .isThrownBy(() -> app.book(bookingInformation()
+                .isThrownBy(() -> app.book(reservationInformation()
                         .withFlight(flight().withFlightNumber("45").build())
                         .build()));
     }
@@ -67,7 +70,7 @@ public class BookingReservationShould {
     @Test
     void throw_PastFlightScheduleException_when_book_flight_with_past_departure_date() {
         assertThatExceptionOfType(PastFlightScheduleException.class)
-                .isThrownBy(() -> app.book(bookingInformation()
+                .isThrownBy(() -> app.book(reservationInformation()
                         .withFlight(flight("4784"))
                         .build()));
     }
@@ -75,7 +78,7 @@ public class BookingReservationShould {
     @Test
     void throw_PastFlightScheduleException_when_book_flight_with_past_arrival_date() {
         assertThatExceptionOfType(PastFlightScheduleException.class)
-                .isThrownBy(() -> app.book(bookingInformation()
+                .isThrownBy(() -> app.book(reservationInformation()
                         .withFlight(flight("5120"))
                         .build()));
     }
@@ -85,7 +88,7 @@ public class BookingReservationShould {
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> {
                     final Flight flight = flight().from(TEHRAN).to(TEHRAN).build();
-                    app.book(bookingInformation().withFlight(flight).build());
+                    app.book(reservationInformation().withFlight(flight).build());
                 });
     }
 
@@ -94,33 +97,25 @@ public class BookingReservationShould {
         bookingAllSeats();
 
         assertThatExceptionOfType(FullyBookedException.class)
-                .isThrownBy(() -> app.book(bookingInformation().build()));
+                .isThrownBy(() -> app.book(reservationInformation().build()));
     }
 
     @Test
     void throw_NotEnoughCapacityException_if_there_are_not_enough_seats_available_when_booking_a_flight() {
-        booking30seats();
+        bookSeats(30);
 
         assertThatExceptionOfType(NotEnoughCapacityException.class)
-                .isThrownBy(() -> app.book(bookingInformation().withTravelers(5).build()));
+                .isThrownBy(() -> app.book(reservationInformation().withTravelers(5).build()));
     }
 
     private void bookingAllSeats() {
-        booking30seats();
-        app.book(bookingInformation().withTravelers(4).build());
+        bookSeats(34);
     }
 
-    private void booking30seats() {
-        insertTenBookingFlight();
-        insertTenBookingFlight();
-        insertTenBookingFlight();
-    }
-
-    private void insertTenBookingFlight() {
-        app.book(bookingInformation().withTravelers(4).build());
-        app.book(bookingInformation().withPassenger(passenger("5544556699")).withTravelers(2).build());
-        app.book(bookingInformation().withPassenger(passenger("4444556622")).withTravelers(1).build());
-        app.book(bookingInformation().withPassenger(passenger("2211334565")).withTravelers(3).build());
-
+    private void bookSeats(int numSeats) {
+        // Book the specified number of seats for the initial reservation
+        for (int i = 0; i < numSeats; i++) {
+            app.book(reservationInformation().withTravelers(1).build());
+        }
     }
 }

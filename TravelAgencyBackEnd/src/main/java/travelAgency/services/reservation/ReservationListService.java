@@ -1,5 +1,6 @@
 package travelAgency.services.reservation;
 
+import travelAgency.domain.reservation.FlightDto;
 import travelAgency.exceptions.FlightNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.reservation.Reservation;
@@ -12,7 +13,7 @@ public interface ReservationListService {
     void cancel(String reservationNumber) throws ReservationNotFoundException;
     Reservation search(String flightNumber, String passengerFirstName, LocalDate PassengerBirthday);
     Reservation search(String reservationNumber)  throws ReservationNotFoundException;
-    Flight findFlight(String flightNumber) throws FlightNotFoundException;
+    FlightDto findFlight(String flightNumber) throws FlightNotFoundException;
     int getTotalBookedSeats(String flightNumber);
     int getAvailableSeats(String flightNumber);
 }

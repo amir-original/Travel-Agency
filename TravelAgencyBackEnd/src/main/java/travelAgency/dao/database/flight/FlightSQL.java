@@ -60,7 +60,7 @@ public class FlightSQL {
 
     @NotNull
     private static Money getPrice(ResultSet resultSet) throws SQLException {
-        return new Money(resultSet.getLong("price"),
+        return Money.of(resultSet.getLong("price"),
                 getCurrency(resultSet.getString("currency")));
     }
 

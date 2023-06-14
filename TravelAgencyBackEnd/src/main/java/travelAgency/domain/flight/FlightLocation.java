@@ -9,6 +9,10 @@ public record FlightLocation(@NotNull City from, @NotNull City to) {
         validate(from,to);
     }
 
+    public static FlightLocation with(City from, City to) {
+        return new FlightLocation(from,to);
+    }
+
     public void validate(City from,City to) {
         if (from.equals(to))
             throw new IllegalArgumentException("Flights location must not be the same!");

@@ -5,8 +5,10 @@ import travelAgency.domain.reservation.ReservationInformation;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.dao.database.reservation.ReservationListRepository;
 import travelAgency.dao.database.passenger.PassengerRepository;
+import travelAgency.domain.reservation.ReservationMapper;
+import travelAgency.domain.reservation.ReservationNumber;
 import travelAgency.services.flight.FlightAvailability;
-import travelAgency.services.reservation.TicketNumberGenerator;
+import travelAgency.services.reservation.ReservationNumberGenerator;
 
 // application service
 public class BookingReservation {
@@ -14,25 +16,27 @@ public class BookingReservation {
     private final ReservationListRepository bookingLists;
     private final PassengerRepository passengers;
     private final FlightAvailability flightAvailability;
-    public final TicketNumberGenerator TicketNumberGenerator;
+    public final ReservationNumberGenerator ReservationNumber;
+    private final ReservationMapper reservationMapper;
 
     public BookingReservation(ReservationListRepository bookingLists,
                               PassengerRepository passengers, FlightAvailability flightAvailability,
-                              TicketNumberGenerator TicketNumberGenerator) {
+                              ReservationNumberGenerator ReservationNumber) {
 
         this.bookingLists = bookingLists;
         this.passengers = passengers;
-        this.TicketNumberGenerator = TicketNumberGenerator;
+        this.ReservationNumber = ReservationNumber;
         this.flightAvailability =  flightAvailability;
+        reservationMapper = new ReservationMapper();
     }
 
     public Reservation book(ReservationInformation resInfo) {
-        flightAvailability.canBooking(resInfo);
-        final String ticketNumber = TicketNumberGenerator.generateTicketNumber();
+        final ReservationNumber reservationNumber = ReservationNumber.generateReservationNumber();
+        final Reservation reservation = reservationMapper.toEntity(resInfo, reservationNumber);
 
-        final Reservation reservation = resInfo.getReservation(ticketNumber);
         final Passenger passenger = reservation.passenger();
 
+        flightAvailability.canBooking(reservation);
         passengers.save(passenger);
         bookingLists.book(reservation);
         return reservation;

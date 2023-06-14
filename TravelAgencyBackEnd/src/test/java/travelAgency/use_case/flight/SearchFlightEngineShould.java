@@ -74,7 +74,7 @@ public class SearchFlightEngineShould {
 
         final Flight flight = flight("0321");
 
-        Money expectedMoney = new Money(4270000.00, IRR);
+        Money expectedMoney = Money.of(4270000.00, IRR);
 
         assertAll(
                 () -> assertThat(flights).contains(flight),
@@ -84,7 +84,7 @@ public class SearchFlightEngineShould {
 
     @Test
     void converted_price_from_rial_to_dollar() {
-        Money flightPrice = new Money(870000, IRR);
+        Money flightPrice = Money.of(870000, IRR);
 
         final double convertedMoney = currencyConverter.convert(flightPrice, USD).amount();
 
@@ -93,7 +93,7 @@ public class SearchFlightEngineShould {
 
     @Test
     void return_the_amount_itself_when_base_and_currency_is_the_same() {
-        final Money money = new Money(45,USD);
+        final Money money = Money.of(45,USD);
         final Money convertedMoney = currencyConverter.convert(money, USD);
         assertThat(convertedMoney.amount()).isEqualTo(money.amount());
         assertThat(convertedMoney.currency()).isEqualTo(USD);
@@ -102,7 +102,7 @@ public class SearchFlightEngineShould {
     @Test
     void throw_IllegalArgumentException_when_converted_negative_amount() {
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> currencyConverter.convert(new Money(-500, USD),IRR));
+                .isThrownBy(() -> currencyConverter.convert(Money.of(-500, USD),IRR));
     }
 
 

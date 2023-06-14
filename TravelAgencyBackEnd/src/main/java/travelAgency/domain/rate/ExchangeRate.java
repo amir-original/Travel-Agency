@@ -18,20 +18,8 @@ public class ExchangeRate {
         this.rates = rates;
     }
 
-    public void addRate(Currency currency,double amount){
-        rates.put(currency,amount);
-    }
-
-    public Currency getBaseCurrency() {
-        return baseCurrency;
-    }
-
     public LocalDate getDate() {
         return date;
-    }
-
-    public Map<Currency, Double> getRates() {
-        return rates;
     }
 
     public double getRate(Currency to) {

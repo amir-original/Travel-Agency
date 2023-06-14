@@ -1,5 +1,7 @@
 package travelAgency.services.flight;
 
+import travelAgency.domain.reservation.FlightDto;
+import travelAgency.domain.reservation.FlightMapper;
 import travelAgency.exceptions.FlightNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
@@ -10,9 +12,11 @@ import java.util.List;
 public class FlightListServiceImpl implements FlightListService {
 
     private final FlightRepository flights;
+    private final FlightMapper flightMapper;
 
     public FlightListServiceImpl(FlightRepository flights) {
         this.flights = flights;
+        flightMapper = new FlightMapper();
     }
 
     @Override
@@ -23,14 +27,16 @@ public class FlightListServiceImpl implements FlightListService {
     }
 
     @Override
-    public Flight findFlight(String flightNumber) {
-        return flights.findFlight(flightNumber)
+    public FlightDto findFlight(String flightNumber) {
+        final Flight flight = flights.findFlight(flightNumber)
                 .orElseThrow(FlightNotFoundException::new);
+
+        return flightMapper.toViewDto(flight);
     }
 
     @Override
     public int getTotalCapacity(String flightNumber) {
-        return findFlight(flightNumber).totalCapacity();
+        return findFlight(flightNumber).getTotalCapacity();
     }
 
 }

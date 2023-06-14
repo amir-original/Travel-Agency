@@ -1,11 +1,5 @@
 package travelAgency.domain.passenger;
 
-import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.vo.FullName;
-import travelAgency.domain.vo.PassengerId;
-import travelAgency.domain.vo.Phone;
-import travelAgency.domain.vo.ResidentialAddress;
-
 import java.time.LocalDate;
 
 public class PassengerBuilder {
@@ -13,7 +7,7 @@ public class PassengerBuilder {
     private FullName fullName;
     private LocalDate birthday;
     private ResidentialAddress residential;
-    private Phone phoneNumber;
+    private PhoneNumber phoneNumber;
 
     public static PassengerBuilder passenger() {
         return new PassengerBuilder();
@@ -39,7 +33,7 @@ public class PassengerBuilder {
         return this;
     }
 
-    public PassengerBuilder withPhoneNumber(Phone phoneNumber){
+    public PassengerBuilder withPhoneNumber(PhoneNumber phoneNumber){
         this.phoneNumber = phoneNumber;
         return this;
     }

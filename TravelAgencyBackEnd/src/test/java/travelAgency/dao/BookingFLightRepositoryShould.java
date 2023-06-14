@@ -36,7 +36,7 @@ public class BookingFLightRepositoryShould {
     @Test
     void book_information() {
         var flightTicket = insertSingleTicket();
-        Optional<Reservation> fetchedTicket = api.findReservation(flightTicket.ticketNumber());
+        Optional<Reservation> fetchedTicket = api.findReservation(flightTicket.reservationNumber());
         assertThat(fetchedTicket).isEqualTo(fetchedTicket);
     }
 
@@ -57,7 +57,8 @@ public class BookingFLightRepositoryShould {
     }
 
     private Reservation insertSingleTicket() {
-        final Reservation reservation = FakeReservationList.flightTicket("78456587");
+        final Reservation reservation =
+                FakeReservationList.getReservation("AA-7845-65874");
         passengerApi.save(reservation.passenger());
         api.book(reservation);
         return reservation;

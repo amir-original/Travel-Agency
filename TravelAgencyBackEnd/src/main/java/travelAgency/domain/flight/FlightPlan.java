@@ -8,6 +8,10 @@ import java.util.List;
 
 public record FlightPlan(@NotNull FlightLocation location, @NotNull FlightSchedule schedule) {
 
+    public static FlightPlan of(FlightLocation flightLocation, FlightSchedule flightSchedule) {
+        return new FlightPlan(flightLocation,flightSchedule);
+    }
+
     public boolean hasSameFlightPlan(FlightPlan flightPlan) {
         return flightPlan.equals(this);
     }
@@ -27,4 +31,5 @@ public record FlightPlan(@NotNull FlightLocation location, @NotNull FlightSchedu
     public LocalDate arrival() {
         return schedule.arrival();
     }
+
 }

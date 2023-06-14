@@ -31,6 +31,6 @@ public class CurrencyConverter {
     }
 
     private Money createMoney(double amount, Currency currency) {
-        return new Money(amount, currency);
+        return Money.of(amount, currency);
     }
 }

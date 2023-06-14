@@ -3,30 +3,31 @@ package travelAgency.use_case.currency_conversion;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import travelAgency.dao.api.ExchangeRateDAO;
 import travelAgency.dao.api.ExchangeRateDAOImpl;
+import travelAgency.dao.api.ExchangeRateNotFoundException;
 import travelAgency.dao.api.WebServiceConnectionFailureException;
-import travelAgency.services.currency_conversion.ExchangeRateService;
 import travelAgency.services.currency_conversion.ExchangeRateProvider;
+import travelAgency.services.currency_conversion.ExchangeRateService;
+import travelAgency.use_case.fake.FakeExchangeRate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static travelAgency.domain.rate.currency.Currency.IRR;
-import static travelAgency.domain.rate.currency.Currency.USD;
+import static travelAgency.domain.rate.currency.Currency.*;
 
-public class ExchangeRatesShould {
-
+public class ExchangeRateServiceRealWorldShould {
 
     private ExchangeRateService exchangeRateService;
 
     @BeforeEach
     void setUp() {
-        ExchangeRateDAOImpl exchangeRateDAO = new ExchangeRateDAOImpl();
+        ExchangeRateDAO exchangeRateDAO = new ExchangeRateDAOImpl();
         exchangeRateService = new ExchangeRateProvider(exchangeRateDAO);
     }
 
     @Test
-    void throw_WebServiceConnectionFailureException_when_can_not_connect_to_server() {
+    void throw_WebServiceConnectionFailureException_can_not_connect_to_webservice() {
         Assertions.assertThatExceptionOfType(WebServiceConnectionFailureException.class)
-                .isThrownBy(() -> exchangeRateService.getExchangeRate(IRR));
+                .isThrownBy(() -> exchangeRateService.getRateFor(EUR,USD));
     }
 
     @Test

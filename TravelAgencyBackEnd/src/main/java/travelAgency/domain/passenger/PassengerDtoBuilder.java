@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class PassengerDtoBuilder {
 
-    private String id;
+    private String nationalCode;
     private String firstName;
     private String lastName;
     private LocalDate birthday;
@@ -17,8 +17,8 @@ public class PassengerDtoBuilder {
         return new PassengerDtoBuilder();
     }
 
-    public PassengerDtoBuilder withId(String id) {
-        this.id = id;
+    public PassengerDtoBuilder withNationalCode(String nationalCode) {
+        this.nationalCode = nationalCode;
         return this;
     }
 
@@ -58,7 +58,7 @@ public class PassengerDtoBuilder {
     }
 
     public PassengerDto build() {
-        return new PassengerDto(id, firstName,lastName, birthday, city, address, zipcode, phoneNumber);
+        return new PassengerDto(nationalCode, firstName,lastName, birthday, city, address, zipcode, phoneNumber);
     }
 
 }

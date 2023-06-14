@@ -1,57 +1,80 @@
 package travelAgency.domain.reservation;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.vo.PassengerId;
-import travelAgency.exceptions.InvalidTicketNumberException;
+import travelAgency.exceptions.InvalidNumberOfTicketsException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.passenger.Passenger;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import static java.lang.String.format;
-import static travelAgency.helper.PriceFormatter.formatPriceWithSymbol;
 
-public record Reservation(@NotNull String ticketNumber,
-                          @NotNull ReservationInformation reservationInformation) {
+public final class Reservation {
+    private final @NotNull ReservationNumber reservationNumber;
+    private final @NotNull Flight flight;
+    private final @NotNull Passenger passenger;
+    private final int numberOfTickets;
 
-    public Reservation {
-        validate(ticketNumber);
+
+    private Reservation(@NotNull ReservationNumber initReservationNumber,
+                        @NotNull Flight flight,
+                        @NotNull Passenger passenger,
+                        int numberOfTickets) {
+
+        if (hasNoTickets(numberOfTickets)) throw new InvalidNumberOfTicketsException();
+
+        this.reservationNumber = initReservationNumber;
+        this.flight = flight;
+        this.passenger = passenger;
+        this.numberOfTickets = numberOfTickets;
     }
 
-    private void validate(String ticketNumber) {
-        if (ticketNumber.isBlank()) throw new InvalidTicketNumberException();
+    public static Reservation make(ReservationNumber reservationNumber, Flight flight, Passenger passenger, int numberOfTickets) {
+        return new Reservation(reservationNumber,flight,passenger,numberOfTickets);
     }
 
-    public boolean canMatchWith(String flightNumber, String passengerFirstName, LocalDate passengerBirthday) {
-        return reservationInformation.canMatchWith(flightNumber, passengerFirstName, passengerBirthday);
+    private boolean hasNoTickets(int numberOfTickets) {
+        return numberOfTickets <= 0;
+    }
+
+    public boolean canMatchWith(String flightNumber,
+                                String passengerFirstName,
+                                LocalDate passengerBirthday) {
+        return flight.hasSameFlightNumber(flightNumber) &&
+                passenger.canMatchWith(passengerFirstName, passengerBirthday);
     }
 
     public boolean canMatchWith(String searchFlightNumber) {
-        return flight().hasSameFlightNumber(searchFlightNumber);
+        return flight.hasSameFlightNumber(searchFlightNumber);
     }
 
     public boolean hasSameTicketNumber(String ticketNumber) {
-        return this.ticketNumber.equals(ticketNumber);
+        return this.reservationNumber.toText().equals(ticketNumber);
     }
 
     public Flight flight() {
-        return reservationInformation.flight();
+        return flight;
     }
 
     public String flightNumber() {
-        return reservationInformation.flightNumber();
+        return flight.flightNumber();
     }
 
     public String passengerId() {
-        return reservationInformation.passengerId().getId();
+        return passenger.passengerId().getId();
     }
 
     public int travelers() {
-        return reservationInformation.numberOfTickets();
+        return numberOfTickets;
     }
 
     public Passenger passenger() {
-        return reservationInformation.passenger();
+        return passenger;
+    }
+
+    public @NotNull String reservationNumber() {
+        return reservationNumber.toText();
     }
 
     public String buildTicket() {
@@ -60,13 +83,37 @@ public record Reservation(@NotNull String ticketNumber,
                                 From : %s  📍 ---------------------------------------------- ✈  To: %s
                         Departure: %s                    Arrival: %s                 Price: %s     
                         """,
-                passenger().fullName().getText(),
+                passenger.fullName().toText(),
                 flightNumber(),
-                ticketNumber,
-                flight().from(),
-                flight().to(),
-                flight().departure(),
-                flight().arrival(),
-                formatPriceWithSymbol(flight().price()));
+                reservationNumber.toText(),
+                flight.from(),
+                flight.to(),
+                flight.departure(),
+                flight.arrival(),
+                flight.price().formatMoneyWithSymbol());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reservation that = (Reservation) o;
+        return numberOfTickets == that.numberOfTickets &&
+                reservationNumber.equals(that.reservationNumber) && flight.equals(that.flight) && passenger.equals(that.passenger);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(reservationNumber, flight, passenger, numberOfTickets);
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "reservationNumber='" + reservationNumber + '\'' +
+                ", flight=" + flight +
+                ", passenger=" + passenger +
+                ", numberOfTickets=" + numberOfTickets +
+                '}';
     }
 }

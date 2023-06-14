@@ -1,5 +1,9 @@
 package travelAgency.use_case.fake;
 
+import travelAgency.domain.passenger.PassengerDto;
+import travelAgency.domain.passenger.PassengerMapper;
+import travelAgency.domain.reservation.FlightDto;
+import travelAgency.domain.reservation.FlightMapper;
 import travelAgency.domain.reservation.ReservationInformation;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.passenger.Passenger;
@@ -18,7 +22,7 @@ public class FakeReservationInformationBuilder {
 
     private int numberOfTickets = 2;
 
-    public static FakeReservationInformationBuilder bookingInformation() {
+    public static FakeReservationInformationBuilder reservationInformation() {
         return new FakeReservationInformationBuilder();
     }
 
@@ -43,7 +47,12 @@ public class FakeReservationInformationBuilder {
     }
 
     public ReservationInformation build() {
-        return new ReservationInformation(flight, passenger, numberOfTickets);
+        final FlightMapper flightMapper = new FlightMapper();
+        final PassengerMapper passengerMapper = new PassengerMapper();
+
+        final FlightDto flightDto = flightMapper.toViewDto(flight);
+        final PassengerDto passengerDto = passengerMapper.toViewDto(passenger);
+        return new ReservationInformation(flightDto, passengerDto, numberOfTickets);
     }
 
 }

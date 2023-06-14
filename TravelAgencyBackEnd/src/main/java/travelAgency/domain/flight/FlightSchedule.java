@@ -10,6 +10,10 @@ import static java.time.LocalDate.now;
 public record FlightSchedule(@NotNull LocalDate departure, @NotNull LocalDate arrival) {
     private static final LocalDate NOW = now();
 
+    public static FlightSchedule with(LocalDate departureDate, LocalDate arrivalDate) {
+        return new FlightSchedule(departureDate,arrivalDate);
+    }
+
     public void validate() {
         if (isPassed())
             throw new PastFlightScheduleException();

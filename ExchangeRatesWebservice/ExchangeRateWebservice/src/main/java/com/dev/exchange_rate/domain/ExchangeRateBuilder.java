@@ -35,6 +35,6 @@ public class ExchangeRateBuilder {
     }
 
     public ExchangeRate createExchangeRate() {
-        return new ExchangeRate(id,baseCurrency, date,rates);
+        return ExchangeRate.create(id,baseCurrency, date,rates);
     }
 }

@@ -3,10 +3,10 @@ package travelAgency.ui.pages;
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
 import travelAgency.controller.ReservationController;
-import travelAgency.domain.passenger.PassengerDto;
+import travelAgency.domain.passenger.*;
+import travelAgency.domain.reservation.FlightDto;
 import travelAgency.domain.reservation.ReservationInformation;
 import travelAgency.domain.flight.Flight;
-import travelAgency.domain.passenger.PassengerDtoBuilder;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
@@ -25,9 +25,9 @@ public class BookingInformationPage extends JFrame {
     public static final String BOOKING_SUCCESSFUL = "Booking successful!";
     public static final String BOOKING_FAIL = "Booking Fail!";
 
-    private final Flight selectFlight;
+    private final FlightDto selectedFlight;
     private final ReservationController reservationController;
-    private final int travelers;
+    private final int numberOfTickets;
     private final UiComponents ui;
     private JTextField identityNumber;
     private JTextField firstName;
@@ -38,12 +38,12 @@ public class BookingInformationPage extends JFrame {
     private JTextField address;
     private JTextField city;
 
-    public BookingInformationPage(Flight flight,
+    public BookingInformationPage(FlightDto flight,
                                   ReservationController reservationController,
                                   int travelers) {
-        selectFlight = flight;
+        selectedFlight = flight;
         this.reservationController = reservationController;
-        this.travelers = travelers;
+        this.numberOfTickets = travelers;
         this.ui = new UiComponents();
         setupPage();
         createComponentsAndAddToPage();
@@ -107,7 +107,7 @@ public class BookingInformationPage extends JFrame {
     }
 
     private void createBirthdayField(JPanel inputPanel) {
-        JLabel birthdayLabel = ui.label("Date of Birth:");
+        JLabel birthdayLabel = ui.label("Date withNationalCode Birth:");
         birthdayPicker = ui.dateChooser(150, 30);
         inputPanel.add(birthdayLabel);
         inputPanel.add(birthdayPicker);
@@ -115,7 +115,7 @@ public class BookingInformationPage extends JFrame {
     }
 
     private void createPhoneNumberField(JPanel inputPanel) {
-        phoneNumber = createField(inputPanel, "Phone Number:");
+        phoneNumber = createField(inputPanel, "PhoneNumber Number:");
     }
 
     private void createPostalCodeField(JPanel inputPanel) {
@@ -166,11 +166,19 @@ public class BookingInformationPage extends JFrame {
 
     private void processReservationBooking() {
         try {
-            final Reservation reservation = reservationController.book(selectFlight, createPassenger(), travelers);
+            final Reservation reservation = bookReservation();
             processSuccessfulBooking(reservation);
         } catch (Exception exception) {
             showMessageDialog(BOOKING_FAIL);
         }
+    }
+
+    private Reservation bookReservation() {
+        final PassengerDto passenger = createPassenger();
+        final ReservationInformation reservationInformation =
+                new ReservationInformation(selectedFlight,passenger,numberOfTickets);
+
+        return reservationController.book(reservationInformation);
     }
 
     private List<String> canBookingReservation() {
@@ -189,10 +197,10 @@ public class BookingInformationPage extends JFrame {
     }
 
     private void validateFields(List<String> errors) {
-        if (selectFlight == null) {
+        if (selectedFlight == null) {
             errors.add("no flight available!");
-        }else if (travelers <= 0) {
-            errors.add("number of ticket should be greeter than 0");
+        } else if (numberOfTickets <= 0) {
+            errors.add("number withNationalCode ticket should be greeter than 0");
         } else if (birthdayPicker.getDate() == null) {
             errors.add("birthday field must not be null!");
         }
@@ -208,13 +216,13 @@ public class BookingInformationPage extends JFrame {
     private PassengerDto createPassenger() {
         return PassengerDtoBuilder
                 .passenger()
-                .withId(identityNumber.getText())
                 .firstName(firstName.getText())
                 .lastName(lastName.getText())
+                .withNationalCode(identityNumber.getText())
                 .withPhoneNumber(phoneNumber.getText())
+                .ofCity(city.getText())
                 .withAddress(address.getText())
                 .withZipcode(postalCode.getText())
-                .ofCity(city.getText())
                 .withBirthday(getLocalDate(birthdayPicker.getDate()))
                 .build();
     }

@@ -1,9 +1,6 @@
-package travelAgency;
+package travelAgency.controller;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.controller.ReservationController;
-import travelAgency.controller.ExchangeRateController;
-import travelAgency.controller.FlightController;
 import travelAgency.dao.api.ExchangeRateDAO;
 import travelAgency.dao.api.ExchangeRateDAOImpl;
 import travelAgency.dao.database.db_config.DbConnection;
@@ -19,7 +16,7 @@ import travelAgency.services.currency_conversion.ExchangeRateProvider;
 import travelAgency.services.flight.FlightAvailability;
 import travelAgency.services.flight.FlightListServiceImpl;
 import travelAgency.services.reservation.ReservationListServiceImpl;
-import travelAgency.services.reservation.TicketNumberGeneratorImpl;
+import travelAgency.services.reservation.ReservationNumberImpl;
 
 public class ServiceContainer {
 
@@ -69,8 +66,8 @@ public class ServiceContainer {
     }
 
     @NotNull
-    private TicketNumberGeneratorImpl getTicketNumberGenerator() {
-        return new TicketNumberGeneratorImpl();
+    private ReservationNumberImpl getTicketNumberGenerator() {
+        return new ReservationNumberImpl();
     }
 
     @NotNull

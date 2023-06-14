@@ -1,25 +1,43 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.domain.reservation.Reservation;
-import travelAgency.exceptions.ReservationNotFoundException;
+import org.jetbrains.annotations.NotNull;
 import travelAgency.dao.database.reservation.ReservationListRepository;
+import travelAgency.domain.flight.Flight;
+import travelAgency.domain.passenger.Passenger;
+import travelAgency.domain.reservation.Reservation;
+import travelAgency.domain.reservation.ReservationNumber;
+import travelAgency.exceptions.ReservationNotFoundException;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import static travelAgency.use_case.fake.FakeReservationInformationBuilder.bookingInformation;
+import static travelAgency.use_case.fake.FakeFlight.flight;
+import static travelAgency.use_case.fake.FakePassenger.passenger;
 
 public class FakeReservationList implements ReservationListRepository {
+    private static final String EXIST_FLIGHT_NUMBER = "0321";
+    private static final String NOT_EXIST_FLIGHT_NUMBER = "Not Found Flight Number";
 
+    private final Flight flight = flight(EXIST_FLIGHT_NUMBER);
+
+    private final Passenger passenger = passenger().build();
+
+    private int numberOfTickets = 2;
     private final List<Reservation> bookings = new LinkedList<>();
 
     {
         bookings.addAll(List.of(
-                new Reservation("78456587", bookingInformation().build()),
-                new Reservation("84146521", bookingInformation().build()),
-                new Reservation("64125521", bookingInformation().build())
+                makeReservation("AA-7845-65874"),
+                makeReservation("AA-8525-32121"),
+                makeReservation("AA-2145-45652")
         ));
+    }
+
+    @NotNull
+    private Reservation makeReservation(String s) {
+        final ReservationNumber reservationNumber = ReservationNumber.ofString(s);
+        return Reservation.make(reservationNumber, flight, passenger, numberOfTickets);
     }
 
     @Override
@@ -50,7 +68,7 @@ public class FakeReservationList implements ReservationListRepository {
     @Override
     public void cancel(String ticketNumber) {
         bookings.stream()
-                .filter(flightTicket -> flightTicket.ticketNumber().equals(ticketNumber))
+                .filter(flightTicket -> flightTicket.reservationNumber().equals(ticketNumber))
                 .findFirst()
                 .ifPresent(bookings::remove);
     }
@@ -60,9 +78,9 @@ public class FakeReservationList implements ReservationListRepository {
         this.bookings.clear();
     }
 
-    public static Reservation flightTicket(String ticketNumber){
+    public static Reservation getReservation(String reservationNumber){
         return new FakeReservationList()
-                .findReservation(ticketNumber)
+                .findReservation(reservationNumber)
                 .orElseThrow(ReservationNotFoundException::new);
     }
 

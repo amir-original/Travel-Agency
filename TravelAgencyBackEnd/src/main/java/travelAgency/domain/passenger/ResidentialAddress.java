@@ -1,23 +1,22 @@
-package travelAgency.domain.vo;
+package travelAgency.domain.passenger;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-
-import static java.util.Objects.isNull;
 
 public class ResidentialAddress {
     private final String city;
     private final String address;
     private final String zipcode;
 
-    private ResidentialAddress(String city, String address, String zipcode) {
-        if (isNull(city) || isNull(address) || isNull(zipcode))
-            throw new IllegalArgumentException("place of resident should not be null!");
+    private ResidentialAddress(@NotNull String city,
+                               @NotNull String address,
+                               @NotNull String zipcode) {
         if (city.isBlank() || address.isBlank() || zipcode.isBlank())
-            throw new IllegalArgumentException("place of resident should not be empty!");
-        if (address.length()<=10)
+            throw new IllegalArgumentException("place withNationalCode resident should not be empty!");
+        if (isAddressLengthGreaterThanTen(address))
             throw new IllegalArgumentException("address should be greater than 10 length!");
-
-        if (!zipcode.matches("(\\d){10}"))
+        if (isNotValidZipcodeFormat(zipcode))
             throw new IllegalArgumentException("zipcode length should be have equal 10");
 
         this.address = address;
@@ -25,8 +24,16 @@ public class ResidentialAddress {
         this.zipcode = zipcode;
     }
 
-    public static ResidentialAddress of(String city,String address,String zipcode){
-        return new ResidentialAddress(city,address,zipcode);
+    private boolean isAddressLengthGreaterThanTen(String address) {
+        return address.length() <= 10;
+    }
+
+    private boolean isNotValidZipcodeFormat(String zipcode) {
+        return !zipcode.matches("(\\d){10}");
+    }
+
+    public static ResidentialAddress of(String city, String address, String zipcode) {
+        return new ResidentialAddress(city, address, zipcode);
     }
 
     public String getCity() {

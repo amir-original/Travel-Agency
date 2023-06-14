@@ -55,8 +55,8 @@ public class FlightBuilder {
     }
 
     public Flight build() {
-        return new Flight(flightNumber, totalCapacity, price,
-                new FlightPlan(new FlightLocation(from, to),
-                        new FlightSchedule(departure, arrival)));
+        return Flight.addWith(flightNumber, new FlightPlan(new FlightLocation(from, to),
+                new FlightSchedule(departure, arrival)), totalCapacity, price
+        );
     }
 }

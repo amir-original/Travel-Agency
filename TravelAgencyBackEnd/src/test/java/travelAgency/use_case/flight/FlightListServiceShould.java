@@ -2,6 +2,8 @@ package travelAgency.use_case.flight;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import travelAgency.domain.reservation.FlightDto;
+import travelAgency.domain.reservation.FlightMapper;
 import travelAgency.exceptions.FlightNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
@@ -23,10 +25,12 @@ public class FlightListServiceShould {
 
     private static final String NOT_EXIST_FLIGHT_NUMBER = "fwefefef";
     private FlightListService app;
+    private FlightMapper flightMapper;
 
     @BeforeEach
     void setUp() {
         app = new FlightListServiceImpl(new FakeFlight());
+        flightMapper = new FlightMapper();
     }
 
     @Test
@@ -49,7 +53,10 @@ public class FlightListServiceShould {
     @Test
     void find_flight_with_flight_number() {
         final String flightNumber = "0321";
-        assertThat(app.findFlight(flightNumber)).isEqualTo(flight(flightNumber));
+        final FlightDto flightDto = app.findFlight(flightNumber);
+
+        final Flight flight = flightMapper.toEntity(flightDto);
+        assertThat(flight).isEqualTo(flight(flightNumber));
     }
 
     @Test

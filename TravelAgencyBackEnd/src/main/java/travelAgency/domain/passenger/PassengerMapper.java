@@ -1,33 +1,27 @@
-package travelAgency.domain;
+package travelAgency.domain.passenger;
 
-import travelAgency.domain.passenger.Passenger;
-import travelAgency.domain.passenger.PassengerDto;
-import travelAgency.domain.passenger.PassengerDtoBuilder;
-import travelAgency.domain.vo.FullName;
-import travelAgency.domain.vo.PassengerId;
-import travelAgency.domain.vo.Phone;
-import travelAgency.domain.vo.ResidentialAddress;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 
-import static travelAgency.domain.vo.ResidentialAddress.of;
+import static travelAgency.domain.passenger.ResidentialAddress.of;
 
 public class PassengerMapper{
 
 
-    public Passenger toEntity(PassengerDto dto) {
+    public Passenger toEntity(@NotNull PassengerDto dto) {
         final String nationalCode = dto.getNationalCode();
-        final PassengerId passengerId = PassengerId.of(nationalCode);
+        final PassengerId passengerId = PassengerId.withId(nationalCode);
         final ResidentialAddress residentialAddress = of(dto.getCity(), dto.getAddress(), dto.getZipcode());
         final FullName fullName = FullName.of(dto.getfName(), dto.getlName());
         final LocalDate birthday = dto.getBirthday();
-        final Phone phone = Phone.of(dto.getPhoneNumber());
-        return new Passenger(passengerId,fullName, birthday,residentialAddress,phone);
+        final PhoneNumber phoneNumber = PhoneNumber.of(dto.getPhoneNumber());
+        return new Passenger(passengerId,fullName, birthday,residentialAddress, phoneNumber);
     }
 
-    public PassengerDto toViewDto(Passenger entity) {
+    public PassengerDto toViewDto(@NotNull Passenger entity) {
         return PassengerDtoBuilder.passenger()
-                .withId(entity.getId())
+                .withNationalCode(entity.getId())
                 .firstName(entity.fullName().getFirstName())
                 .lastName(entity.fullName().getLastName())
                 .ofCity(entity.residential().getCity())

@@ -1,18 +1,16 @@
 package travelAgency.dao.database.passenger;
 
 import travelAgency.domain.passenger.Passenger;
-import travelAgency.domain.vo.FullName;
-import travelAgency.domain.vo.PassengerId;
-import travelAgency.domain.vo.Phone;
-import travelAgency.domain.vo.ResidentialAddress;
+import travelAgency.domain.passenger.FullName;
+import travelAgency.domain.passenger.PassengerId;
+import travelAgency.domain.passenger.PhoneNumber;
+import travelAgency.domain.passenger.ResidentialAddress;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-
-import static travelAgency.domain.passenger.PassengerDtoBuilder.passenger;
 
 public class PassengerSQL {
     public static final String CREATE_DELETED_TRIGGER = """
@@ -39,7 +37,7 @@ public class PassengerSQL {
 
 
     public static Passenger buildPassenger(ResultSet rs) throws SQLException {
-        final PassengerId passengerId = PassengerId.of(rs.getString("passenger_id"));
+        final PassengerId passengerId = PassengerId.withId(rs.getString("passenger_id"));
         final String firstName = rs.getString("first_name");
         final String lastName = rs.getString("last_name");
         final FullName fullName = FullName.of(firstName, lastName);
@@ -47,7 +45,7 @@ public class PassengerSQL {
         final String zipcode = rs.getString("zipcode");
         final String city = rs.getString("city");
         final String address = rs.getString("address");
-        final Phone phoneNumber = Phone.of(rs.getString("phone_number"));
+        final PhoneNumber phoneNumber = PhoneNumber.of(rs.getString("phone_number"));
         final ResidentialAddress residentialAddress = ResidentialAddress.of(city, address, zipcode);
         return new Passenger(passengerId,fullName,birthday,residentialAddress,phoneNumber);
 

@@ -2,10 +2,6 @@ package travelAgency.controller;
 
 import travelAgency.dao.database.passenger.PassengerRepository;
 import travelAgency.dao.database.reservation.ReservationListRepository;
-import travelAgency.domain.PassengerMapper;
-import travelAgency.domain.flight.Flight;
-import travelAgency.domain.passenger.Passenger;
-import travelAgency.domain.passenger.PassengerDto;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.domain.reservation.ReservationInformation;
 import travelAgency.services.BookingReservation;
@@ -13,7 +9,7 @@ import travelAgency.services.flight.FlightAvailability;
 import travelAgency.services.flight.FlightListService;
 import travelAgency.services.reservation.ReservationListService;
 import travelAgency.services.reservation.ReservationListServiceImpl;
-import travelAgency.services.reservation.TicketNumberGenerator;
+import travelAgency.services.reservation.ReservationNumberGenerator;
 
 import java.time.LocalDate;
 
@@ -25,10 +21,10 @@ public class ReservationController {
     public ReservationController(ReservationListRepository reservations,
                                  PassengerRepository passengers,
                                  FlightAvailability flightAvailability,
-                                 TicketNumberGenerator ticketNumberGenerator,
+                                 ReservationNumberGenerator reservationNumber,
                                  FlightListService flightsService) {
         this.bookingReservation =
-                new BookingReservation(reservations, passengers, flightAvailability, ticketNumberGenerator);
+                new BookingReservation(reservations, passengers, flightAvailability, reservationNumber);
         this.reservationListService = new ReservationListServiceImpl(reservations, flightsService);
     }
 
@@ -47,14 +43,5 @@ public class ReservationController {
 
     public Reservation search(String reservationNumber) {
         return reservationListService.search(reservationNumber);
-    }
-
-    public Reservation book(Flight flight, PassengerDto passengerDto, int travelers) {
-        final PassengerMapper passengerMapper = new PassengerMapper();
-        final Passenger passenger = passengerMapper.toEntity(passengerDto);
-        final ReservationInformation reservationInformation
-                = new ReservationInformation(flight, passenger, travelers);
-
-        return bookingReservation.book(reservationInformation);
     }
 }
