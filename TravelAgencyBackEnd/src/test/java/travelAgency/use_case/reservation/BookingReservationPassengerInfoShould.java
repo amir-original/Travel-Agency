@@ -20,7 +20,7 @@ import travelAgency.use_case.fake.FakeReservationNumber;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static travelAgency.use_case.fake.FakeReservationInformationBuilder.reservationInformation;
+import static travelAgency.use_case.fake.FakeReservationInformation.reservationInformation;
 import static travelAgency.use_case.fake.FakePassenger.passenger;
 
 public class BookingReservationPassengerInfoShould {

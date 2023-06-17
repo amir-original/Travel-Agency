@@ -1,11 +1,7 @@
-package travelAgency.domain.reservation;
+package travelAgency.domain.flight;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.city.City;
-import travelAgency.domain.flight.Flight;
-import travelAgency.domain.flight.FlightLocation;
-import travelAgency.domain.flight.FlightPlan;
-import travelAgency.domain.flight.FlightSchedule;
 import travelAgency.domain.rate.currency.Currency;
 import travelAgency.domain.rate.currency.Money;
 

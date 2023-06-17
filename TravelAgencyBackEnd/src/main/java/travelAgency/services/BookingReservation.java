@@ -27,7 +27,7 @@ public class BookingReservation {
         this.passengers = passengers;
         this.ReservationNumber = ReservationNumber;
         this.flightAvailability =  flightAvailability;
-        reservationMapper = new ReservationMapper();
+        this.reservationMapper = new ReservationMapper();
     }
 
     public Reservation book(ReservationInformation resInfo) {
@@ -36,7 +36,7 @@ public class BookingReservation {
 
         final Passenger passenger = reservation.passenger();
 
-        flightAvailability.canBooking(reservation);
+        flightAvailability.ensureCanBooking(reservation);
         passengers.save(passenger);
         bookingLists.book(reservation);
         return reservation;

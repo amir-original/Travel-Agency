@@ -2,7 +2,7 @@ package travelAgency.controller;
 
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
-import travelAgency.domain.reservation.FlightDto;
+import travelAgency.domain.flight.FlightDto;
 import travelAgency.services.flight.FlightListService;
 import travelAgency.services.reservation.ReservationListService;
 

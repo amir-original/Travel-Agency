@@ -2,7 +2,7 @@ package travelAgency.services.flight;
 
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
-import travelAgency.domain.reservation.FlightDto;
+import travelAgency.domain.flight.FlightDto;
 
 import java.util.List;
 

@@ -10,7 +10,7 @@ import travelAgency.domain.flight.FlightLocation;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.flight.FlightSchedule;
 import travelAgency.domain.rate.currency.Currency;
-import travelAgency.domain.reservation.FlightDto;
+import travelAgency.domain.flight.FlightDto;
 import travelAgency.services.city.CityService;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;

@@ -16,7 +16,7 @@ public class FlightAvailability {
         this.bookingLists = reservationList;
     }
 
-    public void canBooking(Reservation reservation) {
+    public void ensureCanBooking(Reservation reservation) {
         final Flight flight = reservation.flight();
         flight.validateScheduleNotInPast();
         checkFlightCapacity(reservation);

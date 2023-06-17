@@ -17,7 +17,7 @@ import travelAgency.services.flight.FlightAvailability;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
-import static travelAgency.use_case.fake.FakeReservationInformationBuilder.reservationInformation;
+import static travelAgency.use_case.fake.FakeReservationInformation.reservationInformation;
 import static travelAgency.use_case.fake.FakeReservationList.getReservation;
 
 public class BookingReservationTasksInOrderTestCase {
@@ -55,7 +55,7 @@ public class BookingReservationTasksInOrderTestCase {
 
         final Passenger passenger = reservation.passenger();
 
-        inOrder.verify(flightAvailability).canBooking(reservation);
+        inOrder.verify(flightAvailability).ensureCanBooking(reservation);
         inOrder.verify(passengers).save(passenger);
         inOrder.verify(bookingLists).book(reservation);
     }
@@ -81,7 +81,7 @@ public class BookingReservationTasksInOrderTestCase {
 
     private FlightAvailability createFindFlightsRepository() {
         final FlightAvailability mock = mock(FlightAvailability.class);
-        doNothing().when(mock).canBooking(any());
+        doNothing().when(mock).ensureCanBooking(any());
         return mock;
     }
 

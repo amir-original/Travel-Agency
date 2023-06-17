@@ -2,8 +2,8 @@ package travelAgency.use_case.flight;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.reservation.FlightDto;
-import travelAgency.domain.reservation.FlightMapper;
+import travelAgency.domain.flight.FlightDto;
+import travelAgency.domain.flight.FlightMapper;
 import travelAgency.exceptions.FlightNotFoundException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;

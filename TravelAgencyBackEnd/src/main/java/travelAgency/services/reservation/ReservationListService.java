@@ -1,8 +1,7 @@
 package travelAgency.services.reservation;
 
-import travelAgency.domain.reservation.FlightDto;
+import travelAgency.domain.flight.FlightDto;
 import travelAgency.exceptions.FlightNotFoundException;
-import travelAgency.domain.flight.Flight;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.exceptions.ReservationNotFoundException;
 

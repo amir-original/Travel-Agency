@@ -21,7 +21,7 @@ import java.time.LocalDate;
 import static java.time.LocalDate.of;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static travelAgency.use_case.fake.FakeReservationInformationBuilder.reservationInformation;
+import static travelAgency.use_case.fake.FakeReservationInformation.reservationInformation;
 import static travelAgency.use_case.fake.FakeFlight.flight;
 import static travelAgency.use_case.fake.FakePassenger.passenger;
 

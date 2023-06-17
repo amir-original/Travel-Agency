@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static travelAgency.domain.city.City.TEHRAN;
 import static travelAgency.use_case.fake.FakeFlight.flight;
-import static travelAgency.use_case.fake.FakeReservationInformationBuilder.reservationInformation;
+import static travelAgency.use_case.fake.FakeReservationInformation.reservationInformation;
 
 public class BookingReservationShould {
 

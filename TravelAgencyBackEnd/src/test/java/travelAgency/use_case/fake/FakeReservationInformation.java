@@ -2,8 +2,8 @@ package travelAgency.use_case.fake;
 
 import travelAgency.domain.passenger.PassengerDto;
 import travelAgency.domain.passenger.PassengerMapper;
-import travelAgency.domain.reservation.FlightDto;
-import travelAgency.domain.reservation.FlightMapper;
+import travelAgency.domain.flight.FlightDto;
+import travelAgency.domain.flight.FlightMapper;
 import travelAgency.domain.reservation.ReservationInformation;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.passenger.Passenger;
@@ -11,7 +11,7 @@ import travelAgency.domain.passenger.Passenger;
 import static travelAgency.use_case.fake.FakeFlight.flight;
 import static travelAgency.use_case.fake.FakePassenger.passenger;
 
-public class FakeReservationInformationBuilder {
+public class FakeReservationInformation {
 
     private static final String EXIST_FLIGHT_NUMBER = "0321";
     private static final String NOT_EXIST_FLIGHT_NUMBER = "Not Found Flight Number";
@@ -22,26 +22,26 @@ public class FakeReservationInformationBuilder {
 
     private int numberOfTickets = 2;
 
-    public static FakeReservationInformationBuilder reservationInformation() {
-        return new FakeReservationInformationBuilder();
+    public static FakeReservationInformation reservationInformation() {
+        return new FakeReservationInformation();
     }
 
-    public FakeReservationInformationBuilder withFlight(Flight flight) {
+    public FakeReservationInformation withFlight(Flight flight) {
         this.flight = flight;
         return this;
     }
 
-    public FakeReservationInformationBuilder withNotFoundFlight() {
+    public FakeReservationInformation withNotFoundFlight() {
         this.flight = flight(NOT_EXIST_FLIGHT_NUMBER);
         return this;
     }
 
-    public FakeReservationInformationBuilder withPassenger(Passenger passenger) {
+    public FakeReservationInformation withPassenger(Passenger passenger) {
         this.passenger = passenger;
         return this;
     }
 
-    public FakeReservationInformationBuilder withTravelers(int numberOfTickets) {
+    public FakeReservationInformation withTravelers(int numberOfTickets) {
         this.numberOfTickets = numberOfTickets;
         return this;
     }

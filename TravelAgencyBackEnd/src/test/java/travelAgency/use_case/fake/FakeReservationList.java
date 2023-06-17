@@ -17,7 +17,6 @@ import static travelAgency.use_case.fake.FakePassenger.passenger;
 
 public class FakeReservationList implements ReservationListRepository {
     private static final String EXIST_FLIGHT_NUMBER = "0321";
-    private static final String NOT_EXIST_FLIGHT_NUMBER = "Not Found Flight Number";
 
     private final Flight flight = flight(EXIST_FLIGHT_NUMBER);
 

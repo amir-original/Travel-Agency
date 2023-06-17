@@ -1,5 +1,6 @@
 package travelAgency.domain.reservation;
 
+import travelAgency.domain.flight.FlightDto;
 import travelAgency.domain.passenger.PassengerDto;
 
 public final class ReservationInformation {

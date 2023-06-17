@@ -1,6 +1,7 @@
 package travelAgency.domain.reservation;
 
 import travelAgency.domain.flight.Flight;
+import travelAgency.domain.flight.FlightMapper;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.domain.passenger.PassengerMapper;
 

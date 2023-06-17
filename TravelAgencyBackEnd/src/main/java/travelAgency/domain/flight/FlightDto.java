@@ -1,14 +1,14 @@
-package travelAgency.domain.reservation;
+package travelAgency.domain.flight;
 
 public class FlightDto {
-    private  String flightNumber;
-    private  String from;
-    private  String to;
-    private  String departureDate;
-    private  String arrivalDate;
-    private  int totalCapacity;
-    private  double price;
-    private  String Currency;
+    String flightNumber;
+    String from;
+    final String departureDate;
+    final String arrivalDate;
+    String to;
+    final int totalCapacity;
+    final double price;
+    String Currency;
 
     public FlightDto(String flightNumber,
                      String from, String to,
@@ -36,16 +36,8 @@ public class FlightDto {
         return totalCapacity;
     }
 
-    public void setTotalCapacity(int totalCapacity) {
-        this.totalCapacity = totalCapacity;
-    }
-
     public double getPrice() {
         return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public String getCurrency() {
@@ -76,15 +68,8 @@ public class FlightDto {
         return departureDate;
     }
 
-    public void setDepartureDate(String departureDate) {
-        this.departureDate = departureDate;
-    }
-
     public String getArrivalDate() {
         return arrivalDate;
     }
 
-    public void setArrivalDate(String arrivalDate) {
-        this.arrivalDate = arrivalDate;
-    }
 }
