@@ -37,17 +37,17 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO {
     @Override
     public double getExchangeRate(Currency from, Currency to) {
         return retrieveExchangeRate(from)
-                .orElseThrow(ExchangeRateNotFoundException::new)
+                .orElseThrow(CouldNotFoundExchangeRate::new)
                 .getRate(to);
     }
 
     private ExchangeRate fetchExchangeRate(Currency currency) {
         ExchangeRate result;
+        final String fullUrl = getFullUrl(currency);
         try {
-            final String fullUrl = getFullUrl(currency);
             result = request.target(fullUrl).GET(ExchangeRate.class);
         } catch (Exception e) {
-            throw new WebServiceConnectionFailureException("Failed to connect to the exchange rate web service.");
+            throw CouldNotConnectToExchangeRateWebService.withUrl(fullUrl);
         }
         return result;
     }

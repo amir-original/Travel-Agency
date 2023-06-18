@@ -1,7 +1,7 @@
 package travelAgency.use_case.fake;
 
 import travelAgency.dao.api.ExchangeRateDAO;
-import travelAgency.dao.api.ExchangeRateNotFoundException;
+import travelAgency.dao.api.CouldNotFoundExchangeRate;
 import travelAgency.domain.rate.ExchangeRate;
 import travelAgency.domain.rate.currency.Currency;
 
@@ -34,7 +34,7 @@ public class FakeExchangeRate implements ExchangeRateDAO {
     @Override
     public double getExchangeRate(Currency from, Currency to) {
         return retrieveExchangeRate(from)
-                .orElseThrow(ExchangeRateNotFoundException::new)
+                .orElseThrow(CouldNotFoundExchangeRate::new)
                 .getRate(to);
     }
 }

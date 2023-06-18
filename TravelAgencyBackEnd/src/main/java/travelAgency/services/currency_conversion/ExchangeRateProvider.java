@@ -2,7 +2,7 @@ package travelAgency.services.currency_conversion;
 
 import travelAgency.domain.rate.ExchangeRate;
 import travelAgency.dao.api.ExchangeRateDAO;
-import travelAgency.dao.api.ExchangeRateNotFoundException;
+import travelAgency.dao.api.CouldNotFoundExchangeRate;
 import travelAgency.domain.rate.currency.Currency;
 
 public class ExchangeRateProvider implements ExchangeRateService {
@@ -16,7 +16,7 @@ public class ExchangeRateProvider implements ExchangeRateService {
     @Override
     public ExchangeRate getExchangeRate(Currency currency) {
         return exchangeRateDAO.retrieveExchangeRate(currency)
-                .orElseThrow(ExchangeRateNotFoundException::new);
+                .orElseThrow(CouldNotFoundExchangeRate::new);
     }
 
     @Override

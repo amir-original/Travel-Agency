@@ -4,14 +4,13 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.dao.api.ExchangeRateDAO;
-import travelAgency.dao.api.ExchangeRateDAOImpl;
-import travelAgency.dao.api.ExchangeRateNotFoundException;
-import travelAgency.dao.api.WebServiceConnectionFailureException;
+import travelAgency.dao.api.CouldNotFoundExchangeRate;
 import travelAgency.services.currency_conversion.ExchangeRateService;
 import travelAgency.services.currency_conversion.ExchangeRateProvider;
 import travelAgency.use_case.fake.FakeExchangeRate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static travelAgency.domain.rate.currency.Currency.*;
 
 public class ExchangeRateServiceShould {
@@ -26,8 +25,8 @@ public class ExchangeRateServiceShould {
     }
 
     @Test
-    void throw_ExchangeRateNotFoundException_when_currency_is_not_exist() {
-        Assertions.assertThatExceptionOfType(ExchangeRateNotFoundException.class)
+    void throw_CouldNotFoundExchangeRate_when_currency_is_not_exist() {
+        assertThatExceptionOfType(CouldNotFoundExchangeRate.class)
                 .isThrownBy(() -> exchangeRateService.getRateFor(EUR,USD));
     }
 
