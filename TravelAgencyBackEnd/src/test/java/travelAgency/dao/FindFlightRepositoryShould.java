@@ -1,9 +1,11 @@
 package travelAgency.dao;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.flight.Flight;
+import travelAgency.exceptions.CouldNotFoundFlight;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
 import travelAgency.dao.database.flight.FlightRepository;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class FindFlightRepositoryShould {
 
@@ -53,7 +56,14 @@ public class FindFlightRepositoryShould {
 
         api.deleteFlight(flight);
 
-        assertThat(api.findFlight(flightNumber).isEmpty()).isTrue();
+        assertThatExceptionOfType(CouldNotFoundFlight.class)
+                .isThrownBy(()->api.findFlight(flightNumber));
+    }
+
+    @Test
+    void throw_CouldNotFoundFlight_when_find_flight_that_is_not_exist() {
+        assertThatExceptionOfType(CouldNotFoundFlight.class)
+                .isThrownBy(()->api.findFlight("Not Found Flight Number"));
     }
 
     private Flight insertSingleFlight(String flightNumber) {

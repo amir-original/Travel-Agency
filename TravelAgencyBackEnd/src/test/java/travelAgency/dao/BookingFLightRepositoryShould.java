@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.domain.flight.Flight;
+import travelAgency.exceptions.CouldNotBookReservation;
+import travelAgency.exceptions.CouldNotFoundReservation;
 import travelAgency.use_case.fake.FakeReservationList;
 import travelAgency.dao.database.reservation.ReservationListRepository;
 import travelAgency.dao.database.reservation.ReservationListRepositoryImpl;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static travelAgency.use_case.fake.FakeFlight.flight;
 
 public class BookingFLightRepositoryShould {
@@ -51,8 +54,18 @@ public class BookingFLightRepositoryShould {
         assertThat(tickets.size()).isEqualTo(1);
     }
 
+    @Test
+    void throw_CouldNotBookReservation_when_reservation_number_is_duplicate() {
+        insertSingleTicket();
+        final Reservation reservation = FakeReservationList.getReservation("AA-7845-65874");
+
+        assertThatExceptionOfType(CouldNotBookReservation.class)
+                .isThrownBy(() -> api.book(reservation));
+    }
+
     private void insertSingleFlight() {
         final Flight flight = flight("0321");
+
         flightApi.addFlight(flight);
     }
 

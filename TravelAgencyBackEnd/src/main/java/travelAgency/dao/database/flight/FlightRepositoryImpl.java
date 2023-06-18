@@ -1,11 +1,13 @@
 package travelAgency.dao.database.flight;
 
-import travelAgency.exceptions.MainSQLException;
-import travelAgency.exceptions.SQLFlightInsertionException;
-import travelAgency.domain.flight.Flight;
 import travelAgency.dao.database.db_config.DbConnection;
+import travelAgency.domain.flight.Flight;
+import travelAgency.exceptions.CouldNotDeleteFlight;
+import travelAgency.exceptions.CouldNotStoreFlight;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +38,7 @@ public class FlightRepositoryImpl implements FlightRepository {
             filledOutFlightFields(flight, query);
             query.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLFlightInsertionException(e.getMessage());
+            throw CouldNotStoreFlight.becauseItIsDuplicate();
         }
     }
 
@@ -46,7 +48,7 @@ public class FlightRepositoryImpl implements FlightRepository {
             query.setString(1, flight.flightNumber());
             query.executeUpdate();
         } catch (SQLException e) {
-            throw new MainSQLException(e.getMessage());
+            throw CouldNotDeleteFlight.withFlightNumber(flight.flightNumber());
         }
     }
 

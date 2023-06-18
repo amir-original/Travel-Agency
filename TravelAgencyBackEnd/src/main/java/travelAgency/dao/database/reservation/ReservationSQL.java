@@ -25,14 +25,14 @@ public class ReservationSQL {
                 join passengers as p on t.passenger_id = p.passenger_id
             """;
 
-    public static final String FIND_RESERVATION_BY_TICKET_NUMBER =
+    public static final String FIND_RESERVATION_BY_RESERVATION_NUMBER =
             GET_ALL_RESERVATIONS + " WHERE t.ticket_number = ?";
 
     public static final String CANCEL_RESERVATION =
             "DELETE FROM reservation WHERE ticket_number=?";
 
     public static String FIND_RESERVATION_BY_FLIGHT_NUMBER =
-            FIND_RESERVATION_BY_TICKET_NUMBER + "WHERE f.flight_number = ?";
+            FIND_RESERVATION_BY_RESERVATION_NUMBER + "WHERE f.flight_number = ?";
 
 
     public static void fillOutReservationFields(Reservation reservation, PreparedStatement query) throws SQLException {

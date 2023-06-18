@@ -4,7 +4,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.flight.Flight;
-import travelAgency.exceptions.SQLFlightInsertionException;
+import travelAgency.exceptions.CouldNotDeleteFlight;
+import travelAgency.exceptions.CouldNotFoundFlight;
+import travelAgency.exceptions.CouldNotStoreFlight;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
 import travelAgency.dao.database.flight.FlightRepository;
@@ -41,14 +43,13 @@ public class FlightRepositoryShould {
     }
 
     @Test
-    void delete_flight() {
+    void throw_CouldNotFoundFlight_when_delete_flight() {
         final Flight flight = insertSingleFlight();
 
         api.deleteFlight(flight);
 
-        final Optional<Flight> fetchedFlight = api.findFlight(flight.flightNumber());
-
-        assertThat(fetchedFlight.isPresent()).isFalse();
+        assertThatExceptionOfType(CouldNotFoundFlight.class)
+                .isThrownBy(()-> api.findFlight(flight.flightNumber()));
     }
 
     @Test
@@ -72,11 +73,10 @@ public class FlightRepositoryShould {
     }
 
     @Test
-    void throw_SQLFlightInsertionException_when_insert_duplicated_data() {
+    void throw_CouldNotStoreFlight_when_insert_duplicated_data() {
         insertSingleFlight();
 
-        assertThatExceptionOfType(SQLFlightInsertionException.class).isThrownBy(this::insertSingleFlight);
-
+        assertThatExceptionOfType(CouldNotStoreFlight.class).isThrownBy(this::insertSingleFlight);
     }
 
     private void insertMultipleFlights() {

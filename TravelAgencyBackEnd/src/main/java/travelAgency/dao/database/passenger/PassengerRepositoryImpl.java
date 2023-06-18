@@ -1,5 +1,7 @@
 package travelAgency.dao.database.passenger;
 
+import travelAgency.exceptions.CouldNotFoundPassenger;
+import travelAgency.exceptions.CouldNotSavePassenger;
 import travelAgency.exceptions.MainSQLException;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.dao.database.db_config.DbConnection;
@@ -31,7 +33,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
             fillOutPassengerFields(passenger, query);
             query.executeUpdate();
         } catch (SQLException e) {
-            throw new MainSQLException(e.getMessage());
+            throw CouldNotSavePassenger.becauseItIsDuplicate();
         }
     }
 
@@ -46,19 +48,17 @@ public class PassengerRepositoryImpl implements PassengerRepository {
         try (final PreparedStatement query = createQuery(FIND_PASSENGER_BY_ID_SQL)) {
             query.setString(1, passengerId);
             passenger = getPassengerIfExist(query.executeQuery());
-
         } catch (SQLException e) {
-            throw new MainSQLException(e.getMessage());
+            throw CouldNotFoundPassenger.withPassengerId(passengerId);
         }
-        return Optional.ofNullable(passenger);
+        return Optional.of(passenger);
     }
 
     private Passenger getPassengerIfExist(ResultSet rs) throws SQLException {
-        Passenger result = null;
-        if (rs.next()) {
-            result = buildPassenger(rs);
+        if (!rs.next()) {
+            throw new SQLException();
         }
-        return result;
+        return buildPassenger(rs);
     }
 
     @Override

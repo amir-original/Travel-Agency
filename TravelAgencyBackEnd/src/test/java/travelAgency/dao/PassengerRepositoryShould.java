@@ -4,6 +4,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.passenger.PassengerId;
+import travelAgency.exceptions.CouldNotFoundPassenger;
+import travelAgency.exceptions.CouldNotSavePassenger;
 import travelAgency.exceptions.PassengerNotFoundException;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
@@ -47,12 +49,18 @@ public class PassengerRepositoryShould {
     }
 
     @Test
-    void throw_NotFoundAnyPassengerException_when_passenger_is_not_found() {
-        final Optional<Passenger> fetchedPassenger = api.findPassengerById("00");
+    void throw_CouldNotSavePassenger_when_tried_to_save_duplicate_passenger() {
+        final Passenger passenger = fakePassenger.findPassengerById("4444556622").get();
+        api.save(passenger);
 
-        assertThatExceptionOfType(PassengerNotFoundException.class)
-                .isThrownBy(() -> fetchedPassenger.orElseThrow(PassengerNotFoundException::new));
+        assertThatExceptionOfType(CouldNotSavePassenger.class)
+                .isThrownBy(()-> api.save(passenger));
+    }
 
+    @Test
+    void throw_CouldNotFindPassenger_when_provide_not_Exist_passenger_id() {
+        assertThatExceptionOfType(CouldNotFoundPassenger.class)
+                .isThrownBy(()->api.findPassengerById("notFound"));
     }
 
     private void insertMultiplePassengers() {

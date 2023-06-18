@@ -1,6 +1,8 @@
 package travelAgency.dao.database.reservation;
 
 import org.jetbrains.annotations.NotNull;
+import travelAgency.exceptions.CouldNotBookReservation;
+import travelAgency.exceptions.CouldNotFoundReservation;
 import travelAgency.exceptions.MainSQLException;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.dao.database.db_config.DbConnection;
@@ -32,25 +34,25 @@ public class ReservationListRepositoryImpl implements ReservationListRepository 
             fillOutReservationFields(reservation, query);
             query.executeUpdate();
         } catch (SQLException e) {
-            throw new MainSQLException(e.getMessage());
+            throw CouldNotBookReservation.becauseItIsDuplicate();
         }
     }
 
     @Override
     public Optional<Reservation> findReservation(String reservationNumber) {
-        return findReservationBy(reservationNumber, FIND_RESERVATION_BY_TICKET_NUMBER);
+        return findBy(reservationNumber, FIND_RESERVATION_BY_RESERVATION_NUMBER);
     }
 
     @Override
     public Optional<Reservation> findReservationByFlightNumber(String flightNumber) {
-        return findReservationBy(flightNumber, FIND_RESERVATION_BY_FLIGHT_NUMBER);
+        return findBy(flightNumber, FIND_RESERVATION_BY_FLIGHT_NUMBER);
     }
 
     @NotNull
-    private Optional<Reservation> findReservationBy(String flightNumber, String sql) {
-        Reservation reservation = null;
+    private Optional<Reservation> findBy(String reservationNumber, String sql) {
+        Reservation reservation;
         try (final PreparedStatement query = createQuery(sql)) {
-            query.setString(1, flightNumber);
+            query.setString(1, reservationNumber);
             final ResultSet resultSet = query.executeQuery();
             reservation = getReservationIfExist(resultSet);
         } catch (SQLException e) {

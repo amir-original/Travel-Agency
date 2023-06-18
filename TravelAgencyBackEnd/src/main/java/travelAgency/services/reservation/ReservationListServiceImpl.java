@@ -3,6 +3,7 @@ package travelAgency.services.reservation;
 import travelAgency.dao.database.reservation.ReservationListRepository;
 import travelAgency.domain.flight.FlightDto;
 import travelAgency.exceptions.CanNotCancelReservationException;
+import travelAgency.exceptions.CouldNotFoundReservation;
 import travelAgency.exceptions.FlightNotFoundException;
 import travelAgency.exceptions.ReservationNotFoundException;
 import travelAgency.domain.reservation.Reservation;
@@ -34,7 +35,7 @@ public class ReservationListServiceImpl implements ReservationListService {
     @Override
     public Reservation search(String reservationNumber) {
         return reservations.findReservation(reservationNumber)
-                .orElseThrow(ReservationNotFoundException::new);
+                .orElseThrow(CouldNotFoundReservation::new);
     }
 
     @Override
