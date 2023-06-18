@@ -8,7 +8,7 @@ import travelAgency.exceptions.CouldNotFoundPassenger;
 import travelAgency.exceptions.CouldNotSavePassenger;
 import travelAgency.exceptions.PassengerNotFoundException;
 import travelAgency.domain.passenger.Passenger;
-import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
+import travelAgency.dao.database.db_config.mysql.MySQLDbConnection;
 import travelAgency.dao.database.passenger.PassengerRepositoryImpl;
 import travelAgency.use_case.fake.FakePassenger;
 

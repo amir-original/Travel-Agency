@@ -4,11 +4,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.flight.Flight;
-import travelAgency.exceptions.CouldNotDeleteFlight;
 import travelAgency.exceptions.CouldNotFoundFlight;
 import travelAgency.exceptions.CouldNotStoreFlight;
 import travelAgency.use_case.fake.FakeFlight;
-import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
+import travelAgency.dao.database.db_config.mysql.MySQLDbConnection;
 import travelAgency.dao.database.flight.FlightRepository;
 import travelAgency.dao.database.flight.FlightRepositoryImpl;
 

@@ -8,7 +8,7 @@ import travelAgency.domain.reservation.Reservation;
 import travelAgency.use_case.fake.FakeReservationList;
 import travelAgency.dao.database.reservation.ReservationListRepository;
 import travelAgency.dao.database.reservation.ReservationListRepositoryImpl;
-import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
+import travelAgency.dao.database.db_config.mysql.MySQLDbConnection;
 import travelAgency.dao.database.flight.FlightRepository;
 import travelAgency.dao.database.flight.FlightRepositoryImpl;
 import travelAgency.dao.database.passenger.PassengerRepository;

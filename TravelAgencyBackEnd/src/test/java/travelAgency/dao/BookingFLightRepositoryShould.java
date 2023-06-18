@@ -6,11 +6,10 @@ import org.junit.jupiter.api.Test;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.domain.flight.Flight;
 import travelAgency.exceptions.CouldNotBookReservation;
-import travelAgency.exceptions.CouldNotFoundReservation;
 import travelAgency.use_case.fake.FakeReservationList;
 import travelAgency.dao.database.reservation.ReservationListRepository;
 import travelAgency.dao.database.reservation.ReservationListRepositoryImpl;
-import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
+import travelAgency.dao.database.db_config.mysql.MySQLDbConnection;
 import travelAgency.dao.database.flight.FlightRepositoryImpl;
 import travelAgency.dao.database.passenger.PassengerRepositoryImpl;
 

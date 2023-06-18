@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import travelAgency.dao.api.ExchangeRateDAO;
 import travelAgency.dao.api.ExchangeRateDAOImpl;
 import travelAgency.dao.database.db_config.DbConnection;
-import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
+import travelAgency.dao.database.db_config.mysql.MySQLDbConnection;
 import travelAgency.dao.database.flight.FlightRepositoryImpl;
 import travelAgency.dao.database.passenger.PassengerRepository;
 import travelAgency.dao.database.passenger.PassengerRepositoryImpl;

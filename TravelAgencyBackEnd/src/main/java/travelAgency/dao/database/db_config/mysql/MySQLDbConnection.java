@@ -1,4 +1,4 @@
-package travelAgency.dao.database.db_config.mysq;
+package travelAgency.dao.database.db_config.mysql;
 
 import travelAgency.helper.PropertiesReader;
 import travelAgency.dao.database.db_config.DbConnection;
@@ -36,7 +36,7 @@ public class MySQLDbConnection implements DbConnection {
         try {
             return connection = DriverManager.getConnection(host, user, pass);
         } catch (SQLException e) {
-            throw new DatabaseConnectionException();
+            throw new CouldNotConnectToDatabase();
         }
     }
 

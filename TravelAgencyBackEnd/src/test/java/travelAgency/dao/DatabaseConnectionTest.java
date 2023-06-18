@@ -1,8 +1,8 @@
 package travelAgency.dao;
 
 import org.junit.jupiter.api.Test;
-import travelAgency.dao.database.db_config.mysq.DatabaseConnectionException;
-import travelAgency.dao.database.db_config.mysq.MySQLDbConnection;
+import travelAgency.dao.database.db_config.mysql.CouldNotConnectToDatabase;
+import travelAgency.dao.database.db_config.mysql.MySQLDbConnection;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -24,9 +24,9 @@ public class DatabaseConnectionTest {
     }
 
     @Test
-    void throw_Exception_when_enter_wrong_db_config() {
+    void throw_CouldNotConnectToDatabase_when_enter_wrong_db_config() {
         final MySQLDbConnection dbConnection = new MySQLDbConnection(HOST, USER, PASS);
 
-        assertThatExceptionOfType(DatabaseConnectionException.class).isThrownBy(dbConnection::getConnection);
+        assertThatExceptionOfType(CouldNotConnectToDatabase.class).isThrownBy(dbConnection::getConnection);
     }
 }
