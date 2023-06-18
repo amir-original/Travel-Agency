@@ -1,7 +1,6 @@
 package travelAgency.services.reservation;
 
 import travelAgency.dao.database.reservation.ReservationListRepository;
-import travelAgency.domain.flight.FlightStatus;
 import travelAgency.domain.flight.FlightDto;
 import travelAgency.exceptions.CanNotCancelReservationException;
 import travelAgency.exceptions.FlightNotFoundException;
@@ -48,7 +47,7 @@ public class ReservationListServiceImpl implements ReservationListService {
         final Reservation reservation = reservations.findReservation(reservationNumber)
                 .orElseThrow(ReservationNotFoundException::new);
 
-        if (reservation.flight().status().equals(FlightStatus.DEPARTED))
+        if (reservation.flight().isDeparted())
                 throw new CanNotCancelReservationException();
 
         reservations.cancel(reservation.reservationNumber());

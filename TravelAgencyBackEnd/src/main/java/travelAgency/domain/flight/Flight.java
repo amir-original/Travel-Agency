@@ -96,8 +96,8 @@ public final class Flight {
         return plan;
     }
 
-    public FlightStatus status() {
-        return status;
+    public boolean isDeparted() {
+        return status.equals(FlightStatus.DEPARTED);
     }
 
     @Override
