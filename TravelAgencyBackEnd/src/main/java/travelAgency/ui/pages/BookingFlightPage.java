@@ -60,11 +60,13 @@ public class BookingFlightPage extends JFrame {
 
     private void createBookingFlightPage() {
         setupPage();
-
         JPanel mainPanel = createMainPanel();
-
         createComponents(mainPanel);
 
+        updateUi();
+    }
+
+    private void updateUi() {
         pack();
         setVisible(true);
     }

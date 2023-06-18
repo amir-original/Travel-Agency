@@ -11,28 +11,23 @@ import static java.time.LocalDate.of;
 
 public class BoardingPass extends JDialog {
 
-    private final Reservation reservation;
-
     private final UiComponents ui = new UiComponents();
 
-    public BoardingPass(Reservation reservation) {
-        this.reservation = reservation;
-    }
-
-    public void printTicket() {
+    public void printTicket(Reservation reservation) {
         setupDialog();
 
+        final String ticket = reservation.buildTicket();
         JPanel panel = createPanel();
-
-        JLabel header =  ui.h1Label("Boarding Pass", SwingConstants.CENTER);
-
-        JTextArea ticketInformation = ui.disableTextArea(reservation.buildTicket());
-
         JButton closeButton = createCloseButton();
+        JLabel header = createHeaderLabel("Boarding Pass");
+        JTextArea ticketTextArea = ui.disableTextArea(ticket);
 
-        addComponentsToPanel(panel, header, ticketInformation, closeButton);
-
+        addComponentsToPanel(panel, header, ticketTextArea, closeButton);
         addPanelToDialog(panel);
+    }
+
+    private JLabel createHeaderLabel(String txt) {
+        return ui.h1Label(txt, SwingConstants.CENTER);
     }
 
     private void addPanelToDialog(JPanel panel) {

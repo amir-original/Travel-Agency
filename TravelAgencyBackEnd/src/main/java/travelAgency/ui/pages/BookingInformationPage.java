@@ -206,9 +206,9 @@ public class BookingInformationPage extends JFrame {
     }
 
     private void processSuccessfulBooking(Reservation reservation) {
-        final BoardingPass dialog = new BoardingPass(reservation);
+        final BoardingPass boardingPass = new BoardingPass();
         showMessageDialog(BOOKING_SUCCESSFUL);
-        dialog.printTicket();
+        boardingPass.printTicket(reservation);
         dispose();
     }
 
