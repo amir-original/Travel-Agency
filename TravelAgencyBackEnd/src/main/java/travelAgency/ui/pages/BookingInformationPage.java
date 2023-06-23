@@ -3,6 +3,7 @@ package travelAgency.ui.pages;
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
 import travelAgency.controller.ReservationController;
+import travelAgency.controller.ReservationOperations;
 import travelAgency.domain.passenger.*;
 import travelAgency.domain.flight.FlightDto;
 import travelAgency.domain.reservation.ReservationInformation;
@@ -25,7 +26,7 @@ public class BookingInformationPage extends JFrame {
     public static final String BOOKING_FAIL = "Booking Fail!";
 
     private final FlightDto selectedFlight;
-    private final ReservationController reservationController;
+    private final ReservationOperations reservationController;
     private final int numberOfTickets;
     private final UiComponents ui;
     private JTextField identityNumber;
@@ -38,7 +39,7 @@ public class BookingInformationPage extends JFrame {
     private JTextField city;
 
     public BookingInformationPage(FlightDto flight,
-                                  ReservationController reservationController,
+                                  ReservationOperations reservationController,
                                   int travelers) {
         selectedFlight = flight;
         this.reservationController = reservationController;

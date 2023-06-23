@@ -1,18 +1,15 @@
 package travelAgency.ui;
 
-import travelAgency.controller.ReservationController;
-import travelAgency.controller.ExchangeRateController;
-import travelAgency.controller.FlightController;
-import travelAgency.controller.ServiceContainer;
+import travelAgency.controller.*;
 import travelAgency.services.city.CityService;
 import travelAgency.services.city.CityServiceImpl;
 import travelAgency.ui.pages.HomePage;
 
 public class App {
 
-    private final ReservationController reservationController;
-    private final FlightController flightController;
-    private final ExchangeRateController rateConverterController;
+    private final ReservationOperations reservationController;
+    private final FlightOperations flightController;
+    private final ExchangeRateOperations rateConverterController;
     private final CityService cityService;
 
     public App() {

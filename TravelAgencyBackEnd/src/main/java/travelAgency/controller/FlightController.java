@@ -8,7 +8,7 @@ import travelAgency.services.reservation.ReservationListService;
 
 import java.util.List;
 
-public class FlightController {
+public class FlightController implements FlightOperations {
 
     private final FlightListService flightListService;
     private final ReservationListService reservationListService;

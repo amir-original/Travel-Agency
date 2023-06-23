@@ -13,7 +13,7 @@ import travelAgency.services.reservation.ReservationNumberGenerator;
 
 import java.time.LocalDate;
 
-public class ReservationController {
+public class ReservationController implements ReservationOperations {
 
     private final BookingReservation bookingReservation;
     private final ReservationListService reservationListService;

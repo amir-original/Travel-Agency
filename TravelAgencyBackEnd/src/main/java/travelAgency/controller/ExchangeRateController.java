@@ -4,7 +4,7 @@ import travelAgency.domain.rate.currency.Currency;
 import travelAgency.domain.rate.currency.Money;
 import travelAgency.services.currency_conversion.CurrencyConverter;
 
-public class ExchangeRateController {
+public class ExchangeRateController implements ExchangeRateOperations {
 
     private final CurrencyConverter currencyConverter;
     private final String[] currencies;
@@ -18,7 +18,7 @@ public class ExchangeRateController {
         return currencyConverter.convert(money,targetCurrency);
     }
 
-    public String[] currencies(){
+    public String[] getCurrencies(){
         return currencies;
     }
 }

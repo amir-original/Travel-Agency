@@ -1,8 +1,6 @@
 package travelAgency.ui.pages;
 
-import travelAgency.controller.ReservationController;
-import travelAgency.controller.ExchangeRateController;
-import travelAgency.controller.FlightController;
+import travelAgency.controller.*;
 import travelAgency.services.city.CityService;
 import travelAgency.ui.component.UiComponents;
 
@@ -14,17 +12,17 @@ import java.time.format.DateTimeFormatter;
 public class HomePage extends JFrame {
 
     private final CityService cityService;
-    private final ReservationController reservationController;
-    private final FlightController flightController;
-    private final ExchangeRateController rateConverterController;
+    private final ReservationOperations reservationController;
+    private final FlightOperations flightController;
+    private final ExchangeRateOperations rateConverterController;
     private JButton bookingFlightButton, bookingListButton;
 
     private final UiComponents uiComponents = new UiComponents();
 
 
-    public HomePage(ReservationController reservationController,
-                    FlightController flightController,
-                    ExchangeRateController rateConverterController,
+    public HomePage(ReservationOperations reservationController,
+                    FlightOperations flightController,
+                    ExchangeRateOperations rateConverterController,
                     CityService cityService) {
 
         this.reservationController = reservationController;

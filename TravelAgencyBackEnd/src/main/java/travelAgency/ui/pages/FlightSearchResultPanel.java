@@ -2,7 +2,9 @@ package travelAgency.ui.pages;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.controller.ExchangeRateController;
+import travelAgency.controller.ExchangeRateOperations;
 import travelAgency.controller.FlightController;
+import travelAgency.controller.FlightOperations;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
 import travelAgency.domain.rate.currency.Currency;
@@ -19,14 +21,14 @@ import java.util.List;
 
 public class FlightSearchResultPanel extends JPanel {
 
-    private final ExchangeRateController rateConverterController;
-    private final FlightController flightController;
+    private final ExchangeRateOperations rateConverterController;
+    private final FlightOperations flightController;
     private DefaultTableModel tableModel;
     private String selectedFlightNumber;
     private final UiComponents ui = new UiComponents();
 
-    public FlightSearchResultPanel(ExchangeRateController rateConverterController,
-                                   FlightController flightController) {
+    public FlightSearchResultPanel(ExchangeRateOperations rateConverterController,
+                                   FlightOperations flightController) {
         this.rateConverterController = rateConverterController;
         this.flightController = flightController;
     }

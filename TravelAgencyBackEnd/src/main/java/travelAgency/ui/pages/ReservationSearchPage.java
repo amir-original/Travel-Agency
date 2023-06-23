@@ -4,6 +4,7 @@ import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import travelAgency.controller.ReservationController;
+import travelAgency.controller.ReservationOperations;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
@@ -19,7 +20,7 @@ import javax.swing.event.ListSelectionEvent;
 import static java.util.Arrays.stream;
 
 public class ReservationSearchPage extends JFrame implements ActionListener {
-    private final ReservationController reservationController;
+    private final ReservationOperations reservationController;
     private final JScrollPane resultTablePanel;
     private JPanel flightNumberPanel;
     private JPanel reservationNumberPanel;
@@ -33,7 +34,7 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
     private JTable jTable;
     private String reservationNumber;
 
-    public ReservationSearchPage(ReservationController reservationController) {
+    public ReservationSearchPage(ReservationOperations reservationController) {
         this.reservationController = reservationController;
         this.resultTablePanel = createResultTable();
         this.ui = new UiComponents();

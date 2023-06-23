@@ -2,9 +2,7 @@ package travelAgency.ui.pages;
 
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
-import travelAgency.controller.ReservationController;
-import travelAgency.controller.ExchangeRateController;
-import travelAgency.controller.FlightController;
+import travelAgency.controller.*;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightLocation;
 import travelAgency.domain.flight.FlightPlan;
@@ -28,15 +26,15 @@ import static java.lang.String.format;
 public class BookingFlightPage extends JFrame {
 
     private final FlightSearchResultPanel flightSearchResult;
-    private final ExchangeRateController rateConverterController;
+    private final ExchangeRateOperations rateConverterController;
     private JLabel resultLabel;
     private JComboBox<String> originComboBox, destinationComboBox;
     private JButton backButton, searchButton, nextButton;
 
     private UiComponents ui;
     private final CityService cityService;
-    private final FlightController flightController;
-    private final ReservationController reservationController;
+    private final FlightOperations flightController;
+    private final ReservationOperations reservationController;
     private JDateChooser departureDateChooser;
     private JDateChooser arrivalDateChooser;
     private JPanel resultPanel;
@@ -44,15 +42,15 @@ public class BookingFlightPage extends JFrame {
     private JSpinner passengersSpinner;
 
 
-    public BookingFlightPage(ReservationController reservationController,
-                             FlightController flightController,
-                             ExchangeRateController rateConverterController,
+    public BookingFlightPage(ReservationOperations reservationController,
+                             FlightOperations flightController,
+                             ExchangeRateOperations rateConverter,
                              CityService cityService) {
 
         this.cityService = cityService;
         this.flightController = flightController;
         this.reservationController = reservationController;
-        this.rateConverterController = rateConverterController;
+        this.rateConverterController = rateConverter;
         this.flightSearchResult = new FlightSearchResultPanel(this.rateConverterController,flightController);
 
         createBookingFlightPage();
@@ -191,7 +189,7 @@ public class BookingFlightPage extends JFrame {
 
     private void createCurrencyConverterField(JPanel footerPanel) {
         final JLabel converterLabel = ui.label("Currency");
-        final String[] currencies = rateConverterController.currencies();
+        final String[] currencies = rateConverterController.getCurrencies();
         exchangeRate = ui.dropdown(currencies, 100, 30);
         footerPanel.add(converterLabel);
         footerPanel.add(exchangeRate);

@@ -20,7 +20,7 @@ import travelAgency.services.reservation.ReservationNumberImpl;
 
 public class ServiceContainer {
 
-    public ReservationController reservationController(){
+    public ReservationOperations reservationController(){
         return new ReservationController(
                 reservationsRepository(),
                 passengerRepository(),
@@ -29,11 +29,11 @@ public class ServiceContainer {
                 ,getFlightListService());
     }
 
-    public ExchangeRateController exchangeRateController(){
+    public ExchangeRateOperations exchangeRateController(){
         return new ExchangeRateController(getExchangeRateConverter());
     }
 
-    public FlightController flightController() {
+    public FlightOperations flightController() {
         return new FlightController(getFlightListService(), getReservationListService());
     }
 
