@@ -5,7 +5,9 @@ import com.dev.exchange_rate.repository.*;
 import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.domain.ExchangeRate;
 import com.dev.exchange_rate.helper.file_reader.PropertiesReader;
+import fake.H2ExchangeRateRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -20,10 +22,10 @@ public class MySQLExchangeRateRepositoryShould {
 
     @BeforeEach
     void setUp() {
-        PropertiesReader propertiesReader = new PropertiesReader("fake_db_config.properties");
+        PropertiesReader propertiesReader = new PropertiesReader("h2_db_config.properties");
         ConnectionConfigurationImpl configuration = new ConnectionConfigurationImpl(propertiesReader);
         MySQLConnectionGateway connection = new MySQLConnectionGateway(configuration);
-        exchangeRateRepository = new MySQLExchangeRateRepository(connection);
+        exchangeRateRepository = new H2ExchangeRateRepository(connection);
     }
 
 
@@ -31,10 +33,10 @@ public class MySQLExchangeRateRepositoryShould {
     void add_new_exchange_rate_in_db() {
         ExchangeRate exchangeRate = addNewExchangeRateInDb();
 
-        List<ExchangeRate> exchangeRates = exchangeRateRepository.retrieveExchangeRates();
+        Optional<ExchangeRate> fetchedExchangeRate = exchangeRateRepository.retrieveExchangeRate(Currency.EUR);
 
-        assertThat(exchangeRates.size()).isEqualTo(1);
-        exchangeRateRepository.remove(exchangeRate);
+        assertThat(fetchedExchangeRate.isPresent()).isTrue();
+        exchangeRateRepository.remove(fetchedExchangeRate.get());
     }
 
     @Test
@@ -43,10 +45,10 @@ public class MySQLExchangeRateRepositoryShould {
 
         Optional<ExchangeRate> exchangeRate = exchangeRateRepository.retrieveExchangeRate(Currency.EUR);
 
-        assertThat(exchangeRate).isNotEmpty();
+        assertThat(exchangeRate.isPresent()).isTrue();
         assertThat(exchangeRate.get().getBaseCurrency()).isEqualTo(Currency.EUR);
         assertThat(exchangeRate.get().getDate()).isEqualTo(of(2023, 4, 6));
-        exchangeRateRepository.remove(rate);
+        exchangeRateRepository.remove(exchangeRate.get());
     }
 
     private ExchangeRate addNewExchangeRateInDb() {
@@ -60,4 +62,6 @@ public class MySQLExchangeRateRepositoryShould {
         exchangeRateRepository.addExchangeRate(exchangeRate);
         return exchangeRate;
     }
+
+
 }

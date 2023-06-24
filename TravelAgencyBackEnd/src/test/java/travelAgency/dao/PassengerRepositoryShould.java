@@ -3,6 +3,8 @@ package travelAgency.dao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import travelAgency.dao.database.db_config.ConnectionConfiguration;
+import travelAgency.dao.database.db_config.ConnectionConfigurationImpl;
 import travelAgency.domain.passenger.PassengerId;
 import travelAgency.exceptions.CouldNotFoundPassenger;
 import travelAgency.exceptions.CouldNotSavePassenger;
@@ -10,6 +12,7 @@ import travelAgency.exceptions.PassengerNotFoundException;
 import travelAgency.domain.passenger.Passenger;
 import travelAgency.dao.database.db_config.mysql.MySQLDbConnection;
 import travelAgency.dao.database.passenger.PassengerRepositoryImpl;
+import travelAgency.helper.PropertiesReader;
 import travelAgency.use_case.fake.FakePassenger;
 
 import java.util.Optional;
@@ -23,7 +26,9 @@ public class PassengerRepositoryShould {
 
     @BeforeEach
     void setUp() {
-        api = new PassengerRepositoryImpl(new MySQLDbConnection());
+        final ConnectionConfiguration configuration =
+                ConnectionConfigurationImpl.of(PropertiesReader.of("test-db-config"));
+        api = new PassengerRepositoryImpl(new MySQLDbConnection(configuration));
         fakePassenger = new FakePassenger();
     }
 

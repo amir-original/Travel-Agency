@@ -1,6 +1,6 @@
 package travelAgency.dao.database.flight;
 
-import travelAgency.dao.database.db_config.DbConnection;
+import travelAgency.dao.database.db_config.mysql.DbConnection;
 import travelAgency.domain.flight.Flight;
 import travelAgency.exceptions.CouldNotDeleteFlight;
 import travelAgency.exceptions.CouldNotStoreFlight;
@@ -23,9 +23,10 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     public FlightRepositoryImpl(DbConnection db) {
         this.db = db;
-        this.connection = db.getConnection();
+        this.connection = db.currentConnection();
         this.findFlightRepository = new FindFlightRepository(db);
     }
+
 
     @Override
     public void addFlights(List<Flight> flights) {

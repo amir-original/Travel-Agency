@@ -1,31 +1,22 @@
 package travelAgency.dao.api;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.rate.ExchangeRate;
 import travelAgency.domain.rate.currency.Currency;
-import travelAgency.helper.CurrencySerializer;
-import travelAgency.helper.HttpRequestHandler;
-import travelAgency.helper.LocalDateAdapter;
-import travelAgency.helper.PropertiesReader;
+import travelAgency.helper.*;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
-public class ExchangeRateDAOImpl implements ExchangeRateDAO {
+public class ExchangeRateApi implements ExchangeRateDAO {
 
     public static final String API = "app.api.pro.rest_exchange_rate.url";
-    private final HttpRequestHandler request;
+    private final HttpClient httpClient;
     private String baseUri;
 
-    public ExchangeRateDAOImpl() {
+
+    public ExchangeRateApi(HttpClient httpClient) {
+        this.httpClient = httpClient;
         readConfig();
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-                .registerTypeAdapter(Currency.class, new CurrencySerializer())
-                .setPrettyPrinting().create();
-        request = new HttpRequestHandler(gson);
     }
 
     @Override
@@ -35,7 +26,7 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO {
     }
 
     @Override
-    public double getExchangeRate(Currency from, Currency to) {
+    public double exchangeRateFor(Currency from, Currency to) {
         return retrieveExchangeRate(from)
                 .orElseThrow(CouldNotFoundExchangeRate::new)
                 .getRate(to);
@@ -45,7 +36,7 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO {
         ExchangeRate result;
         final String fullUrl = getFullUrl(currency);
         try {
-            result = request.target(fullUrl).GET(ExchangeRate.class);
+            result = httpClient.target(fullUrl).GET(ExchangeRate.class);
         } catch (Exception e) {
             throw CouldNotConnectToExchangeRateWebService.withUrl(fullUrl);
         }

@@ -27,6 +27,11 @@ public class ConnectionConfigurationImpl implements ConnectionConfiguration {
     }
 
     @Override
+    public String driver() {
+        return getConfig("app.datasource.driver");
+    }
+
+    @Override
     public String getConfig(String key) {
         return propertiesReader.getProperty(key);
     }

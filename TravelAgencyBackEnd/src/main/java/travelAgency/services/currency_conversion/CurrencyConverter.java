@@ -6,24 +6,22 @@ import travelAgency.domain.rate.currency.Money;
 
 public class CurrencyConverter {
 
-    private final ExchangeRateService exchangeRateProvider;
+    private final ExchangeRateProvider exchangeRateProvider;
 
-    public CurrencyConverter(ExchangeRateService exchangeRateProvider) {
+    public CurrencyConverter(ExchangeRateProvider exchangeRateProvider) {
         this.exchangeRateProvider = exchangeRateProvider;
     }
 
-    public Money convert(Money money, Currency targetCurrency) {
-        return hasSameCurrency(money.currency(), targetCurrency) ? money :
-                convertPrice(money, targetCurrency);
+    public Money convert(Money money, Currency to) {
+        return hasSameCurrency(money.currency(), to) ? money : convertPrice(money, to);
     }
 
     @NotNull
-    private Money convertPrice(Money money, Currency targetCurrency) {
-        final double rate = exchangeRateProvider
-                .getRateFor(money.currency(), targetCurrency);
+    private Money convertPrice(Money money, Currency to) {
+        final double rate = exchangeRateProvider.getRateFor(money.currency(), to);
 
         final double convertedAmount = money.amount() * rate;
-        return createMoney(convertedAmount, targetCurrency);
+        return createMoney(convertedAmount, to);
     }
 
     private boolean hasSameCurrency(Currency from, Currency to) {

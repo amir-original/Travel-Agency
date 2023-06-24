@@ -17,7 +17,22 @@ import static travelAgency.domain.flight.FlightBuilder.flight;
 
 public class FlightSQL {
 
-     static final String INSERT_FLIGHT_SQL = """
+    public static final String TABLE_SCHEMA = """
+            CREATE TABLE IF NOT EXISTS flights (
+                id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                flight_number VARCHAR(45) NOT NULL,
+                from_city VARCHAR(45) NOT NULL,
+                to_city VARCHAR(45) NOT NULL,
+                departure DATE NOT NULL,
+                arrival DATE NOT NULL DEFAULT '0000-00-00',
+                total_capacity INT(10) UNSIGNED NOT NULL,
+                price DOUBLE NOT NULL,
+                currency VARCHAR(45) NOT NULL,
+                UNIQUE KEY (flight_number),
+                UNIQUE KEY (id)
+              ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            """;
+    static final String INSERT_FLIGHT_SQL = """
             INSERT INTO flights (flight_number,
             from_city,
             to_city,
@@ -28,11 +43,11 @@ public class FlightSQL {
             currency)
              VALUES (?,?,?,?,?,?,?,?)
             """;
-     static final String DELETE_FLIGHT_SQL
+    static final String DELETE_FLIGHT_SQL
             = "DELETE FROM flights WHERE flight_number = ?";
-     static final String GET_ALL_FLIGHTS_SQL
+    static final String GET_ALL_FLIGHTS_SQL
             = "SELECT * FROM flights";
-     static final String FIND_FLIGHT_BY_FLIGHT_NUMBER_SQL
+    static final String FIND_FLIGHT_BY_FLIGHT_NUMBER_SQL
             = "SELECT * FROM flights WHERE flight_number = ?";
 
     public static void filledOutFlightFields(Flight flight, PreparedStatement query) throws SQLException {

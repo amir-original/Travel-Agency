@@ -26,13 +26,13 @@ public class FakeExchangeRate implements ExchangeRateDAO {
         rates.put(USD, new ExchangeRate(USD,date,irr));
     }
 
-    @Override
+
     public Optional<ExchangeRate> retrieveExchangeRate(Currency by) {
         return Optional.ofNullable(rates.get(by));
     }
 
     @Override
-    public double getExchangeRate(Currency from, Currency to) {
+    public double exchangeRateFor(Currency from, Currency to) {
         return retrieveExchangeRate(from)
                 .orElseThrow(CouldNotFoundExchangeRate::new)
                 .getRate(to);

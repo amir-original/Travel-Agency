@@ -7,7 +7,7 @@ import travelAgency.dao.api.ExchangeRateDAO;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.rate.currency.Money;
 import travelAgency.services.currency_conversion.CurrencyConverter;
-import travelAgency.services.currency_conversion.ExchangeRateProvider;
+import travelAgency.services.currency_conversion.ExchangeRates;
 import travelAgency.services.flight.FlightListService;
 import travelAgency.services.flight.FlightListServiceImpl;
 import travelAgency.use_case.fake.FakeFlight;
@@ -36,7 +36,7 @@ public class SearchFlightEngineShould {
     void setUp() {
         app = new FlightListServiceImpl(new FakeFlight());
         final ExchangeRateDAO exchangeRateDAO = mockExchangeRateDAO();
-        currencyConverter = new CurrencyConverter(new ExchangeRateProvider(exchangeRateDAO));
+        currencyConverter = new CurrencyConverter(new ExchangeRates(exchangeRateDAO));
     }
 
     @Test
@@ -109,8 +109,8 @@ public class SearchFlightEngineShould {
     @NotNull
     private ExchangeRateDAO mockExchangeRateDAO() {
         final ExchangeRateDAO mock = mock(ExchangeRateDAO.class);
-        when(mock.getExchangeRate(USD,IRR)).thenReturn(ONE_DOLLAR_TO_RIAL);
-        when(mock.getExchangeRate(IRR,USD)).thenReturn(ONE_RIAL_TO_DOLLAR);
+        when(mock.exchangeRateFor(USD,IRR)).thenReturn(ONE_DOLLAR_TO_RIAL);
+        when(mock.exchangeRateFor(IRR,USD)).thenReturn(ONE_RIAL_TO_DOLLAR);
         return mock;
     }
 }

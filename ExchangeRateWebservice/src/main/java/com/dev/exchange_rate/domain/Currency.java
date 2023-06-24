@@ -4,7 +4,7 @@ import com.dev.exchange_rate.exceptions.CurrencyNotFoundException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonValue;
-@JsonFormat(shape = JsonFormat.Shape.STRING)
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Currency {
     IRR("irr"),
     USD("usd"),

@@ -4,7 +4,7 @@ import travelAgency.exceptions.CouldNotFoundPassenger;
 import travelAgency.exceptions.CouldNotSavePassenger;
 import travelAgency.exceptions.MainSQLException;
 import travelAgency.domain.passenger.Passenger;
-import travelAgency.dao.database.db_config.DbConnection;
+import travelAgency.dao.database.db_config.mysql.DbConnection;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -22,8 +22,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
 
     public PassengerRepositoryImpl(DbConnection db) {
         this.db = db;
-        this.connection = db.getConnection();
-        activeDeletedTrigger();
+        this.connection = db.currentConnection();
     }
 
 

@@ -14,10 +14,11 @@ public class MySQLConnectionGateway implements DbConnection {
 
     @Override
     public Connection currentConnection() {
+        if (connection != null) {
+            return connection;
+        }
         try {
-            if (connection != null) {
-                return connection;
-            }
+            Class.forName(configuration.driver());
             connection = DriverManager.getConnection(
                     configuration.url(),
                     configuration.username(),
@@ -25,6 +26,8 @@ public class MySQLConnectionGateway implements DbConnection {
             return connection;
         } catch (SQLException e) {
             throw new DatabaseConnectionFailureException("Failed to establish a connection to the database");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 }

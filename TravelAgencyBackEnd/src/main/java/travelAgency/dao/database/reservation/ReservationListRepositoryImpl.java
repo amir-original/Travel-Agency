@@ -2,10 +2,9 @@ package travelAgency.dao.database.reservation;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.exceptions.CouldNotBookReservation;
-import travelAgency.exceptions.CouldNotFoundReservation;
 import travelAgency.exceptions.MainSQLException;
 import travelAgency.domain.reservation.Reservation;
-import travelAgency.dao.database.db_config.DbConnection;
+import travelAgency.dao.database.db_config.mysql.DbConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +24,7 @@ public class ReservationListRepositoryImpl implements ReservationListRepository 
 
     public ReservationListRepositoryImpl(DbConnection db) {
         this.db = db;
-        this.connection = db.getConnection();
+        this.connection = db.currentConnection();
     }
 
     @Override

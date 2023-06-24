@@ -3,9 +3,12 @@ package travelAgency.dao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import travelAgency.dao.database.db_config.ConnectionConfiguration;
+import travelAgency.dao.database.db_config.ConnectionConfigurationImpl;
 import travelAgency.domain.flight.Flight;
 import travelAgency.exceptions.CouldNotFoundFlight;
 import travelAgency.exceptions.CouldNotStoreFlight;
+import travelAgency.helper.PropertiesReader;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.dao.database.db_config.mysql.MySQLDbConnection;
 import travelAgency.dao.database.flight.FlightRepository;
@@ -26,7 +29,9 @@ public class FlightRepositoryShould {
 
     @BeforeEach
     void setUp() {
-        api = new FlightRepositoryImpl(new MySQLDbConnection());
+        final ConnectionConfiguration configuration =
+                ConnectionConfigurationImpl.of(PropertiesReader.of("test-db-config"));
+        api = new FlightRepositoryImpl(new MySQLDbConnection(configuration));
         api.truncate();
         fakeFlight = new FakeFlight();
     }

@@ -6,11 +6,10 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class HttpRequestHandler implements HttpApiClient {
+public class HttpRequestHandler implements HttpClient {
 
     private final Gson gson;
 
@@ -47,7 +46,7 @@ public class HttpRequestHandler implements HttpApiClient {
 
     public HttpResponse<String> getHttpResponse(HttpRequest request) {
         try {
-            return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            return java.net.http.HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

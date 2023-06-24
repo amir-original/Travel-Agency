@@ -3,7 +3,7 @@ package travelAgency.dao.database.flight;
 import travelAgency.exceptions.CouldNotFoundFlight;
 import travelAgency.exceptions.MainSQLException;
 import travelAgency.domain.flight.Flight;
-import travelAgency.dao.database.db_config.DbConnection;
+import travelAgency.dao.database.db_config.mysql.DbConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +20,7 @@ public class FindFlightRepository {
     private final Connection connection;
 
     public FindFlightRepository(DbConnection db) {
-        this.connection = db.getConnection();
+        this.connection = db.currentConnection();
     }
 
     public List<Flight> getFlights() {

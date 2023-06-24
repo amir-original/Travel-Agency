@@ -3,9 +3,12 @@ package travelAgency.dao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import travelAgency.dao.database.db_config.ConnectionConfiguration;
+import travelAgency.dao.database.db_config.ConnectionConfigurationImpl;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.domain.flight.Flight;
 import travelAgency.exceptions.CouldNotBookReservation;
+import travelAgency.helper.PropertiesReader;
 import travelAgency.use_case.fake.FakeReservationList;
 import travelAgency.dao.database.reservation.ReservationListRepository;
 import travelAgency.dao.database.reservation.ReservationListRepositoryImpl;
@@ -29,7 +32,9 @@ public class BookingFLightRepositoryShould {
 
     @BeforeEach
     void setUp() {
-        final MySQLDbConnection mysql = new MySQLDbConnection();
+        final ConnectionConfiguration configuration =
+                ConnectionConfigurationImpl.of(PropertiesReader.of("test-db-config"));
+        final MySQLDbConnection mysql = new MySQLDbConnection(configuration);
         api = new ReservationListRepositoryImpl(mysql);
         flightApi = new FlightRepositoryImpl(mysql);
         passengerApi = new PassengerRepositoryImpl(mysql);
@@ -43,14 +48,14 @@ public class BookingFLightRepositoryShould {
     }
 
     @Test
-    void fetch_all_tickets() {
+    void fetch_all_reservations() {
         insertSingleFlight();
         insertSingleTicket();
 
-        final List<Reservation> tickets = api.getReservations();
+        final List<Reservation> reservations = api.getReservations();
 
-        assertThat(tickets).isNotEmpty();
-        assertThat(tickets.size()).isEqualTo(1);
+        assertThat(reservations).isNotEmpty();
+        assertThat(reservations.size()).isEqualTo(1);
     }
 
     @Test

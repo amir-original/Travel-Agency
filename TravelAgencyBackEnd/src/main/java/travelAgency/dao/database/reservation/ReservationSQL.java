@@ -14,6 +14,17 @@ import static travelAgency.dao.database.passenger.PassengerSQL.buildPassenger;
 
 public class ReservationSQL {
 
+    public static final String TABLE_SCHEMA = """
+            CREATE TABLE IF NOT EXISTS `reservation` (
+            `id` INT UNSIGNED AUTO_INCREMENT,
+            `ticket_number` VARCHAR(45) NOT NULL,
+            `flight_number` VARCHAR(45) NOT NULL,
+            `passenger_id` varchar(174) NOT NULL,
+            `number_of_tickets` INT UNSIGNED NOT NULL,
+            PRIMARY KEY (`ticket_number`),
+            UNIQUE KEY `ticket_id_UNIQUE` (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            """;
     public static final String INSERT_RESERVATION_SQL = """
             INSERT INTO reservation
             (ticket_number,flight_number,passenger_id,number_of_tickets)

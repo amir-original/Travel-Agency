@@ -16,9 +16,14 @@ public class PropertiesReader {
     private final Properties properties;
 
     public PropertiesReader(String fileName) {
-        this.resourcePath = fileName + ".properties";
+        String validFileName = requireNonNull(fileName);
+        this.resourcePath = validFileName + ".properties";
         properties = new Properties();
         loadProperties();
+    }
+
+    public static PropertiesReader of(String fileName){
+        return new PropertiesReader(fileName);
     }
 
     public String getProperty(String key) {

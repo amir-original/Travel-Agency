@@ -2,6 +2,7 @@ package com.dev.exchange_rate.domain;
 
 import com.dev.exchange_rate.exceptions.NullBaseCurrencyException;
 import com.dev.exchange_rate.exceptions.NullExchangeRateDateException;
+import com.dev.exchange_rate.helper.CurrencySerializer;
 import com.dev.exchange_rate.helper.LocalDateDeserializer;
 import com.dev.exchange_rate.helper.LocalDateSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -13,12 +14,12 @@ import java.util.Objects;
 
 
 public class ExchangeRate {
-
     private int id;
     private Currency baseCurrency;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate date;
+
     private Map<Currency, Double> rates;
 
 
@@ -44,8 +45,8 @@ public class ExchangeRate {
     public ExchangeRate() {
     }
 
-    public void addRate(Currency currency, double diffAmount) {
-        rates.put(currency, diffAmount);
+    public void addRate(Currency currency, double rate) {
+        rates.put(currency, rate);
     }
 
     public Currency getBaseCurrency() {

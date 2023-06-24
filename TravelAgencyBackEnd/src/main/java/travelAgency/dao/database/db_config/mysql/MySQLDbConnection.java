@@ -1,43 +1,60 @@
 package travelAgency.dao.database.db_config.mysql;
 
-import travelAgency.helper.PropertiesReader;
-import travelAgency.dao.database.db_config.DbConnection;
+import travelAgency.dao.database.db_config.ConnectionConfiguration;
+import travelAgency.dao.database.flight.FlightSQL;
+import travelAgency.dao.database.passenger.PassengerSQL;
+import travelAgency.dao.database.reservation.ReservationSQL;
+import travelAgency.exceptions.CouldNotCreateFlightTable;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import static java.util.Objects.requireNonNull;
+
 public class MySQLDbConnection implements DbConnection {
-    private String host;
-    private String user;
-    private String pass;
+
+    private final ConnectionConfiguration configuration;
     private Connection connection;
 
-    public MySQLDbConnection() {
-        PropertiesReader propertiesReader = new PropertiesReader("db-config");
-        loadConfig(propertiesReader);
+    public MySQLDbConnection(ConnectionConfiguration initConfiguration) {
+        this.configuration = requireNonNull(initConfiguration);
+        createTablesIfNotExists();
     }
 
-    public MySQLDbConnection(String host, String user, String pass) {
-        this.host = host;
-        this.user = user;
-        this.pass = pass;
+    public Connection currentConnection() {
+        if (connection != null) return connection;
+
+        try {
+            Class.forName(configuration.driver());
+            connection = DriverManager.getConnection(
+                    configuration.url(),
+                    configuration.username(),
+                    configuration.password());
+            return connection;
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new CouldNotConnectToDatabase();
+        }
     }
 
-    private void loadConfig(PropertiesReader propertiesReader) {
-        host = propertiesReader.getProperty("host");
-        user = propertiesReader.getProperty("username");
-        pass = propertiesReader.getProperty("password");
+    private void createTablesIfNotExists() {
+        createTable(PassengerSQL.TABLE_SCHEMA);
+        createTable(FlightSQL.TABLE_SCHEMA);
+        createTable(ReservationSQL.TABLE_SCHEMA);
     }
 
     @Override
-    public Connection getConnection() {
-        try {
-            return connection = DriverManager.getConnection(host, user, pass);
+    public void createTable(String tableSchema) {
+        try (final PreparedStatement query = createQuery(tableSchema)) {
+            query.executeUpdate();
         } catch (SQLException e) {
-            throw new CouldNotConnectToDatabase();
+            throw new CouldNotCreateFlightTable();
         }
+    }
+
+    private PreparedStatement createQuery(String s) throws SQLException {
+        return currentConnection().prepareStatement(s);
     }
 
     @Override

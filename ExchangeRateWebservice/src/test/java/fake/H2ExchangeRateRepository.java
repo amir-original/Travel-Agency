@@ -1,19 +1,17 @@
-package com.dev.exchange_rate.repository;
+package fake;
 
 import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.domain.ExchangeRate;
 import com.dev.exchange_rate.domain.ExchangeRateBuilder;
 import com.dev.exchange_rate.helper.CurrencySerializer;
 import com.dev.exchange_rate.helper.file_reader.LocalDateTypeAdapter;
+import com.dev.exchange_rate.repository.DbConnection;
+import com.dev.exchange_rate.repository.DuplicatePrimaryKeyException;
+import com.dev.exchange_rate.repository.ExchangeRateRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -23,12 +21,12 @@ import java.util.Optional;
 
 import static com.dev.exchange_rate.repository.ExchangeRateSQL.*;
 
-public class MySQLExchangeRateRepository implements ExchangeRateRepository {
+public class H2ExchangeRateRepository implements ExchangeRateRepository {
     private final DbConnection connection;
     private final Gson gson;
 
 
-    public MySQLExchangeRateRepository(DbConnection connection) {
+    public H2ExchangeRateRepository(DbConnection connection) {
         this.connection = connection;
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class,new LocalDateTypeAdapter())
@@ -128,8 +126,9 @@ public class MySQLExchangeRateRepository implements ExchangeRateRepository {
     }
 
     private Map<Currency, Double> getMapRate(String rates) {
+        Object json = gson.fromJson(rates, Object.class);
         TypeToken<Map<Currency, Double>> type = new TypeToken<>() {};
-        return gson.fromJson(rates, type.getType());
+        return gson.fromJson((String) json, type.getType());
     }
 
     public void createTableIfNotExist() {

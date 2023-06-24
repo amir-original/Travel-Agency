@@ -13,12 +13,26 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class PassengerSQL {
+    public static final String TABLE_SCHEMA = """
+            CREATE TABLE IF NOT EXISTS `passengers` (
+              `passenger_id` varchar(174) NOT NULL,
+              `first_name` varchar(45) NOT NULL,
+              `last_name` varchar(45) NOT NULL,
+              `birthday` date NOT NULL,
+              `city` varchar(45) NOT NULL,
+              `address` varchar(300) NOT NULL,
+              `zipcode` varchar(45) NOT NULL,
+              `phone_number` varchar(45) NOT NULL,
+              PRIMARY KEY (`passenger_id`),
+              UNIQUE KEY `passenger_id_UNIQUE` (`passenger_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=latin1
+            """;
     public static final String CREATE_DELETED_TRIGGER = """
-            create trigger ticket_deleted AFTER DELETE ON `passengers`
-            FOR EACH ROW
-            BEGIN
-            	delete from tickets where tickets.passenger_id = old.passenger_id;
-            END
+            CREATE TRIGGER ticket_deleted BEFORE DELETE ON `passengers`
+               FOR EACH ROW
+               BEGIN
+                   DELETE FROM tickets WHERE tickets.passenger_id = old.passenger_id;
+               END;
             """;
     
     public static final String INSERT_PASSENGER_SQL = """

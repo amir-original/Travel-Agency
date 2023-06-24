@@ -4,7 +4,10 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import travelAgency.dao.database.db_config.ConnectionConfiguration;
+import travelAgency.dao.database.db_config.ConnectionConfigurationImpl;
 import travelAgency.domain.reservation.Reservation;
+import travelAgency.helper.PropertiesReader;
 import travelAgency.use_case.fake.FakeReservationList;
 import travelAgency.dao.database.reservation.ReservationListRepository;
 import travelAgency.dao.database.reservation.ReservationListRepositoryImpl;
@@ -28,13 +31,15 @@ public class ReservationListRepositoryShould {
 
     @BeforeEach
     void setUp() {
-        flights = new FlightRepositoryImpl(new MySQLDbConnection());
-        passengers = new PassengerRepositoryImpl(new MySQLDbConnection());
-        bookingLists = new ReservationListRepositoryImpl(new MySQLDbConnection());
+        final ConnectionConfiguration configuration =
+                ConnectionConfigurationImpl.of(PropertiesReader.of("test-db-config"));
+        flights = new FlightRepositoryImpl(new MySQLDbConnection(configuration));
+        passengers = new PassengerRepositoryImpl(new MySQLDbConnection(configuration));
+        bookingLists = new ReservationListRepositoryImpl(new MySQLDbConnection(configuration));
     }
 
     @Test
-    void book_a_flight_ticket_in_db() {
+    void book_a_reservation_in_db() {
 
         final Reservation reservation = insertBooking();
 
