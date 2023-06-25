@@ -3,7 +3,7 @@ package travelAgency.use_case.currency_conversion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.dao.api.ExchangeRateDAO;
-import travelAgency.dao.api.CouldNotFoundExchangeRate;
+import travelAgency.exceptions.CouldNotFoundExchangeRate;
 import travelAgency.services.currency_conversion.ExchangeRateProvider;
 import travelAgency.services.currency_conversion.ExchangeRates;
 import travelAgency.use_case.fake.FakeExchangeRate;
@@ -30,7 +30,7 @@ public class ExchangeRateProviderShould {
     }
 
     @Test
-    void get_exchange_rate_from_base_currency_to_target_currency() {
+    void it_retrieves_the_currency_exchange_rate() {
         assertThat(exchangeRateProvider.getRateFor(USD,IRR)).isEqualTo(42419.016);
 
         assertThat(exchangeRateProvider.getRateFor(IRR,USD)).isEqualTo(0.000024);

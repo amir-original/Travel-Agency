@@ -4,7 +4,6 @@ import travelAgency.domain.reservation.Reservation;
 import travelAgency.exceptions.FullyBookedException;
 import travelAgency.exceptions.NotEnoughCapacityException;
 import travelAgency.domain.flight.Flight;
-import travelAgency.domain.reservation.ReservationInformation;
 import travelAgency.services.reservation.ReservationListService;
 
 public class FlightAvailability {
@@ -42,6 +41,6 @@ public class FlightAvailability {
     }
 
     private int getAvailableSeats(Reservation resInfo) {
-        return bookingLists.getAvailableSeats(resInfo.flightNumber());
+        return bookingLists.availableSeats(resInfo.flightNumber());
     }
 }

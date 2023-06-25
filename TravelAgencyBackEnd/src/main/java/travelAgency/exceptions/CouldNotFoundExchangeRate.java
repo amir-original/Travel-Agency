@@ -1,4 +1,4 @@
-package travelAgency.dao.api;
+package travelAgency.exceptions;
 
 public class CouldNotFoundExchangeRate extends RuntimeException {
 }

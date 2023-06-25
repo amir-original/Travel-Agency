@@ -55,7 +55,7 @@ public class ReservationListServiceImpl implements ReservationListService {
     }
 
     @Override
-    public int getAvailableSeats(String flightNumber) {
+    public int availableSeats(String flightNumber) {
         return findFlight(flightNumber).getTotalCapacity()
                 - getTotalBookedSeats(flightNumber);
     }

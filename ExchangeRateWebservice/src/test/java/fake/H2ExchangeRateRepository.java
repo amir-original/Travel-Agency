@@ -6,7 +6,7 @@ import com.dev.exchange_rate.domain.ExchangeRateBuilder;
 import com.dev.exchange_rate.helper.CurrencySerializer;
 import com.dev.exchange_rate.helper.file_reader.LocalDateTypeAdapter;
 import com.dev.exchange_rate.repository.DbConnection;
-import com.dev.exchange_rate.repository.DuplicatePrimaryKeyException;
+import com.dev.exchange_rate.repository.CouldNotStoreExchangeRate;
 import com.dev.exchange_rate.repository.ExchangeRateRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -80,7 +80,7 @@ public class H2ExchangeRateRepository implements ExchangeRateRepository {
             setQueryParameter(exchangeRate, query);
             query.executeUpdate();
         } catch (SQLIntegrityConstraintViolationException e) {
-            throw new DuplicatePrimaryKeyException(e.getMessage());
+            throw CouldNotStoreExchangeRate.becauseItIsDuplicate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

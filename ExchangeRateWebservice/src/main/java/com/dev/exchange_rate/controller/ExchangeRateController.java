@@ -1,11 +1,9 @@
 package com.dev.exchange_rate.controller;
 
 import com.dev.exchange_rate.dto.ExchangeRateDto;
-import com.dev.exchange_rate.dto.ExchangeRateMapper;
-import com.dev.exchange_rate.exceptions.CurrencyNotFoundException;
+import com.dev.exchange_rate.exceptions.CouldNotFoundCurrency;
 import com.dev.exchange_rate.repository.ExchangeRateRepository;
 import com.dev.exchange_rate.domain.Currency;
-import com.dev.exchange_rate.domain.ExchangeRate;
 import com.dev.exchange_rate.exceptions.ExchangeRateNotFoundException;
 import com.dev.exchange_rate.service.ExchangeRateService;
 import com.dev.exchange_rate.service.ExchangeRateServiceImpl;
@@ -19,7 +17,7 @@ public class ExchangeRateController {
     }
 
     public ExchangeRateDto retrieveExchangeRate(Currency currency)
-            throws ExchangeRateNotFoundException,CurrencyNotFoundException {
+            throws ExchangeRateNotFoundException, CouldNotFoundCurrency {
 
         return exchangeRateService.retrieveExchangeRate(currency);
     }

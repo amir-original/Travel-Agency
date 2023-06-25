@@ -62,4 +62,7 @@ public final class Money {
                 "currency=" + currency + ']';
     }
 
+    public Money convert(Currency to, double rate) {
+        return new Money(amount * rate, to);
+    }
 }

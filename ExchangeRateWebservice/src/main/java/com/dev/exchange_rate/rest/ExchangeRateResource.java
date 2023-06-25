@@ -4,7 +4,7 @@ import com.dev.exchange_rate.ServiceContainer;
 import com.dev.exchange_rate.controller.ExchangeRateController;
 import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.dto.ExchangeRateDto;
-import com.dev.exchange_rate.exceptions.CurrencyNotFoundException;
+import com.dev.exchange_rate.exceptions.CouldNotFoundCurrency;
 import com.dev.exchange_rate.exceptions.ExchangeRateNotFoundException;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -23,8 +23,8 @@ public class ExchangeRateResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{base_currency}")
-    public Response getExchangeRates(@PathParam("base_currency") Currency baseCurrency)
-            throws ExchangeRateNotFoundException, CurrencyNotFoundException {
+    public Response retrieveExchangeRates(@PathParam("base_currency") Currency baseCurrency)
+            throws ExchangeRateNotFoundException, CouldNotFoundCurrency {
         ExchangeRateDto exchangeRateDto = controller.retrieveExchangeRate(baseCurrency);
 
         return Response.ok(exchangeRateDto).build();

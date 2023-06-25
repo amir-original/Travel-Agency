@@ -26,8 +26,8 @@ public class FlightController implements FlightOperations {
         return flightListService.findFlight(flightNumber);
     }
 
-    public int getAvailableSeats(String flightNumber){
-        return reservationListService.getAvailableSeats(flightNumber);
+    public int availableSeats(String flightNumber){
+        return reservationListService.availableSeats(flightNumber);
     }
 
 

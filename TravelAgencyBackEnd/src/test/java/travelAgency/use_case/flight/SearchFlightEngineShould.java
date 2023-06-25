@@ -69,7 +69,7 @@ public class SearchFlightEngineShould {
     }
 
     @Test
-    void converted_price_from_dollar_to_rial() {
+    void it_convert_an_amount_using_the_exchange_rate() {
         final List<Flight> flights = app.searchFlights(flightPlan().build());
 
         final Flight flight = flight("0321");
@@ -83,7 +83,7 @@ public class SearchFlightEngineShould {
     }
 
     @Test
-    void converted_price_from_rial_to_dollar() {
+    void it_convert_an_amount_from_irr_to_usd_by_using_the_exchange_rate() {
         Money flightPrice = Money.of(870000, IRR);
 
         final double convertedMoney = currencyConverter.convert(flightPrice, USD).amount();
@@ -92,7 +92,7 @@ public class SearchFlightEngineShould {
     }
 
     @Test
-    void return_the_amount_itself_when_base_and_currency_is_the_same() {
+    void return_the_base_amount_itself_when_base_and_target_currency_is_the_same() {
         final Money money = Money.of(45,USD);
         final Money convertedMoney = currencyConverter.convert(money, USD);
         assertThat(convertedMoney.amount()).isEqualTo(money.amount());

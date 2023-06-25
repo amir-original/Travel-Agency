@@ -3,6 +3,8 @@ package travelAgency.dao.api;
 import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.rate.ExchangeRate;
 import travelAgency.domain.rate.currency.Currency;
+import travelAgency.exceptions.CouldNotConnectToExchangeRateWebService;
+import travelAgency.exceptions.CouldNotFoundExchangeRate;
 import travelAgency.helper.*;
 
 import java.util.Optional;

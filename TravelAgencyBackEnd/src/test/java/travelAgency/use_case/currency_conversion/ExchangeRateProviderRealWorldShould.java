@@ -5,15 +5,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import travelAgency.controller.ServiceContainer;
-import travelAgency.dao.api.CouldNotConnectToExchangeRateWebService;
+import travelAgency.exceptions.CouldNotConnectToExchangeRateWebService;
 import travelAgency.dao.api.ExchangeRateDAO;
-import travelAgency.dao.api.ExchangeRateApi;
 import travelAgency.services.currency_conversion.ExchangeRates;
 import travelAgency.services.currency_conversion.ExchangeRateProvider;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static travelAgency.domain.rate.currency.Currency.*;
 
+// integration test
 public class ExchangeRateProviderRealWorldShould {
 
     private ExchangeRateProvider exchangeRateProvider;

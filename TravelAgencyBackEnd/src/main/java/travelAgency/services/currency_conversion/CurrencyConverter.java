@@ -13,22 +13,19 @@ public class CurrencyConverter {
     }
 
     public Money convert(Money money, Currency to) {
-        return hasSameCurrency(money.currency(), to) ? money : convertPrice(money, to);
+        return hasSameCurrency(money.currency(), to) ? money
+                : convertPrice(money, to);
     }
 
     @NotNull
     private Money convertPrice(Money money, Currency to) {
         final double rate = exchangeRateProvider.getRateFor(money.currency(), to);
 
-        final double convertedAmount = money.amount() * rate;
-        return createMoney(convertedAmount, to);
+        return money.convert(to,rate);
     }
 
     private boolean hasSameCurrency(Currency from, Currency to) {
         return from == to;
     }
 
-    private Money createMoney(double amount, Currency currency) {
-        return Money.of(amount, currency);
-    }
 }

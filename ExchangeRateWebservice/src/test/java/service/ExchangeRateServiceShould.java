@@ -4,16 +4,11 @@ import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.dto.ExchangeRateDto;
 import com.dev.exchange_rate.dto.ExchangeRateDtoBuilder;
 import com.dev.exchange_rate.exceptions.ExchangeRateNotFoundException;
-import com.dev.exchange_rate.exceptions.NullBaseCurrencyException;
-import com.dev.exchange_rate.exceptions.NullExchangeRateDateException;
-import com.dev.exchange_rate.helper.CurrencySerializer;
-import com.dev.exchange_rate.helper.file_reader.LocalDateTypeAdapter;
+import com.dev.exchange_rate.exceptions.BaseCurrencyNotNullException;
+import com.dev.exchange_rate.exceptions.ExchangeRateDateNotNullException;
 import com.dev.exchange_rate.service.ExchangeRateService;
 import com.dev.exchange_rate.service.ExchangeRateServiceImpl;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import fake.FakeExchangeRateRepository;
+import fake.ExchangeRateRepositoryFake;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,12 +25,12 @@ public class ExchangeRateServiceShould {
 
     @BeforeEach
     void setUp() {
-        exchangeRateService = new ExchangeRateServiceImpl(new FakeExchangeRateRepository());
+        exchangeRateService = new ExchangeRateServiceImpl(new ExchangeRateRepositoryFake());
         rateDtoBuilder = new ExchangeRateDtoBuilder();
     }
 
     @Test
-    void retrieve_base_currency_without_throw_any_exception() {
+    void it_retrieve_base_currency_without_throw_any_exception() {
         assertThatNoException().isThrownBy(() -> exchangeRateService.retrieveExchangeRate(Currency.USD));
     }
 
@@ -46,7 +41,7 @@ public class ExchangeRateServiceShould {
     }
 
     @Test
-    void retrieve_exchange_rate_by_base_currency() {
+    void it_retrieve_exchange_rate_by_base_currency() {
         assertThatNoException().isThrownBy(() -> {
             ExchangeRateDto exchangeRate = exchangeRateService.retrieveExchangeRate(Currency.USD);
             assertThat(exchangeRate.getBaseCurrency()).isEqualTo(Currency.USD);
@@ -65,22 +60,22 @@ public class ExchangeRateServiceShould {
     }
 
     @Test
-    void throw_NullBaseCurrencyException_when_base_currency_is_null() {
+    void throw_BaseCurrencyNotNullException_when_base_currency_is_null() {
         ExchangeRateDto exchangeRateDto = rateDtoBuilder
                 .setBaseCurrency(null)
                 .setDate(of(2012, 1, 5)).create();
 
-        assertThatExceptionOfType(NullBaseCurrencyException.class)
+        assertThatExceptionOfType(BaseCurrencyNotNullException.class)
                 .isThrownBy(()-> exchangeRateService.addExchangeRate(exchangeRateDto));
     }
 
     @Test
-    void throw_NullExchangeRateException_when_exchange_rate_date_is_null() {
+    void throw_ExchangeRateDateNotNullException_when_exchange_rate_date_is_null() {
         ExchangeRateDto exchangeRateDto = rateDtoBuilder
                 .setBaseCurrency(Currency.IRR)
                 .setDate(null).create();
 
-        assertThatExceptionOfType(NullExchangeRateDateException.class)
+        assertThatExceptionOfType(ExchangeRateDateNotNullException.class)
                 .isThrownBy(()-> exchangeRateService.addExchangeRate(exchangeRateDto));
     }
 

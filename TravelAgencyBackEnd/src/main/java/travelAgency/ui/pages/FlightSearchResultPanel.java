@@ -1,9 +1,7 @@
 package travelAgency.ui.pages;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.controller.ExchangeRateController;
 import travelAgency.controller.ExchangeRateOperations;
-import travelAgency.controller.FlightController;
 import travelAgency.controller.FlightOperations;
 import travelAgency.domain.flight.Flight;
 import travelAgency.domain.flight.FlightPlan;
@@ -102,7 +100,7 @@ public class FlightSearchResultPanel extends JPanel {
         row[0] = flight.from();
         row[1] = flight.to();
         row[2] = flight.flightNumber();
-        row[3] = flightController.getAvailableSeats(flight.flightNumber());
+        row[3] = flightController.availableSeats(flight.flightNumber());
         row[4] = flight.departure().toString();
         row[5] = formatPriceWithSymbol(flight, exchangeRate);
         tableModel.addRow(row);

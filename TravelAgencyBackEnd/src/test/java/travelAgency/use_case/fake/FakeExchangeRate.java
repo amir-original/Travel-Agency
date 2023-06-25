@@ -1,7 +1,7 @@
 package travelAgency.use_case.fake;
 
 import travelAgency.dao.api.ExchangeRateDAO;
-import travelAgency.dao.api.CouldNotFoundExchangeRate;
+import travelAgency.exceptions.CouldNotFoundExchangeRate;
 import travelAgency.domain.rate.ExchangeRate;
 import travelAgency.domain.rate.currency.Currency;
 

@@ -1,6 +1,6 @@
 package com.dev.exchange_rate.domain;
 
-import com.dev.exchange_rate.exceptions.CurrencyNotFoundException;
+import com.dev.exchange_rate.exceptions.CouldNotFoundCurrency;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -24,7 +24,7 @@ public enum Currency {
                 return currency;
             }
         }
-        throw new CurrencyNotFoundException("Invalid Currency");
+        throw CouldNotFoundCurrency.becauseItIsInvalid();
     }
 
     @JsonValue

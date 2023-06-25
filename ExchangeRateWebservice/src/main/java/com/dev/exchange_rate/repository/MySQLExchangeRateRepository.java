@@ -3,17 +3,13 @@ package com.dev.exchange_rate.repository;
 import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.domain.ExchangeRate;
 import com.dev.exchange_rate.domain.ExchangeRateBuilder;
+import com.dev.exchange_rate.exceptions.CouldNotFoundExchangeRate;
 import com.dev.exchange_rate.helper.CurrencySerializer;
 import com.dev.exchange_rate.helper.file_reader.LocalDateTypeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -64,7 +60,7 @@ public class MySQLExchangeRateRepository implements ExchangeRateRepository {
             ResultSet resultSet = query.executeQuery();
             result = createExchangeRateIfExist(resultSet);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw CouldNotFoundExchangeRate.withCurrency(baseCurrency);
         }
         return Optional.ofNullable(result);
     }
@@ -82,7 +78,7 @@ public class MySQLExchangeRateRepository implements ExchangeRateRepository {
             setQueryParameter(exchangeRate, query);
             query.executeUpdate();
         } catch (SQLIntegrityConstraintViolationException e) {
-            throw new DuplicatePrimaryKeyException(e.getMessage());
+            throw CouldNotStoreExchangeRate.becauseItIsDuplicate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

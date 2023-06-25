@@ -12,5 +12,5 @@ public interface FlightOperations {
 
      FlightDto findFlight(String flightNumber);
 
-     int getAvailableSeats(String flightNumber);
+     int availableSeats(String flightNumber);
 }

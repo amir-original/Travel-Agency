@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class FakeExchangeRateRepository implements ExchangeRateRepository {
+public class ExchangeRateRepositoryFake implements ExchangeRateRepository {
 
     private Map<Currency,ExchangeRate> rateMap;
 
-    public FakeExchangeRateRepository() {
+    public ExchangeRateRepositoryFake() {
         createFakeExchangeRate();
     }
 

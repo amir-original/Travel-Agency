@@ -1,4 +1,4 @@
-package travelAgency.dao.api;
+package travelAgency.exceptions;
 
 public class CouldNotConnectToExchangeRateWebService extends RuntimeException {
 

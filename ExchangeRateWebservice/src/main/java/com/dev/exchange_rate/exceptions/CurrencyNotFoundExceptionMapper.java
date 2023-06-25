@@ -5,11 +5,11 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
-public class CurrencyNotFoundExceptionMapper implements ExceptionMapper<CurrencyNotFoundException> {
+public class CurrencyNotFoundExceptionMapper implements ExceptionMapper<CouldNotFoundCurrency> {
 
 
     @Override
-    public Response toResponse(CurrencyNotFoundException exception) {
+    public Response toResponse(CouldNotFoundCurrency exception) {
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 }

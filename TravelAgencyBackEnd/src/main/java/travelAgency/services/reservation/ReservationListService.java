@@ -14,5 +14,5 @@ public interface ReservationListService {
     Reservation search(String reservationNumber)  throws ReservationNotFoundException;
     FlightDto findFlight(String flightNumber) throws FlightNotFoundException;
     int getTotalBookedSeats(String flightNumber);
-    int getAvailableSeats(String flightNumber);
+    int availableSeats(String flightNumber);
 }
