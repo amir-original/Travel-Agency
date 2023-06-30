@@ -59,6 +59,7 @@
             <artifactId>assertj-core</artifactId>
             <version>3.24.1</version>
         </dependency>
+
         <!--Json Provider-->
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -90,6 +91,12 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${dbh2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>5.3.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

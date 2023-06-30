@@ -1,72 +1,78 @@
 package rest;
 
-import com.dev.exchange_rate.domain.*;
+import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.dto.ExchangeRateDto;
 import com.dev.exchange_rate.dto.ExchangeRateDtoBuilder;
-import com.dev.exchange_rate.helper.HttpApiClient;
-import com.dev.exchange_rate.helper.HttpHandlerApiClient;
 import com.dev.exchange_rate.helper.file_reader.LocalDateTypeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import io.restassured.RestAssured;
+import io.restassured.parsing.Parser;
+import jakarta.ws.rs.core.MediaType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.*;
 
 public class ExchangeRateApiTest {
 
-    private static final String BASE_URL
-            = "http://localhost:8080/ExchangeRatesWebservice-1.0/api/base_currency/";
-    private HttpApiClient client;
+
     private Gson gson;
 
     @BeforeEach
     void setUp() {
-        this.gson = createGson();
-        client = new HttpHandlerApiClient(gson);
-    }
-
-    private Gson createGson() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        return gsonBuilder
-                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                .setPrettyPrinting().create();
+        RestAssured.baseURI = "http://localhost:16162/ExchangeRatesWebservice-1.0/api/";
+        gson = createGson();
     }
 
     @Test
     @Disabled
-    void get_status_code_200_when_retrieve_exchange_rate_information_by_get_request() {
-        var response = client.target(BASE_URL + "IRR").GET();
-        ExchangeRateDto exchangeRate = client.target(BASE_URL + "IRR").GET(ExchangeRateDto.class);
+    void it_get_status_code_ok_when_retrieve_exchange_rate_information_by_get_request() {
+        RestAssured.defaultParser = Parser.JSON;
 
-        assertThat(response.statusCode()).isEqualTo(200);
-        assertThat(exchangeRate.getBaseCurrency()).isEqualTo(Currency.IRR);
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .pathParams("rate","IRR")
+                .when()
+                .get("/latest/{rate}")
+                .then()
+                .statusCode(equalTo(200))
+                .body("baseCurrency",is("IRR"))
+                .body("rates",hasKey("USD"))
+                .body("rates",hasKey("EUR"));
     }
 
     @Test
     @Disabled
-    void get_status_code_201_after_created_new_data_successfully_by_post_request() {
+    void it_get_status_code_201_after_created_new_data_successfully_by_post_request() {
         ExchangeRateDto exchangeRate = getExchangeRateDto();
-
-        String jsonRate = gson.toJson(exchangeRate);
-        HttpResponse<String> httpResponse = client.target(BASE_URL).POST(jsonRate);
-
-        assertThat(httpResponse.statusCode()).isEqualTo(201);
+        String data = gson.toJson(exchangeRate);
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(data)
+                .when()
+                .post("latest")
+                .then()
+                .statusCode(is(201));
     }
 
     @Test
     @Disabled
-    void get_status_code_404_when_currency_is_not_found() {
+    void it_get_status_code_404_when_currency_is_not_found() {
         String notFoundCurrency = "notFound";
-        HttpResponse<String> httpResponse = client.target(BASE_URL + notFoundCurrency).GET();
-
-        assertThat(httpResponse.statusCode()).isEqualTo(404);
+       given()
+               .contentType(MediaType.APPLICATION_JSON)
+               .pathParam("rate",notFoundCurrency)
+               .when()
+               .get("latest/{rate}")
+               .then()
+               .statusCode(is(404));
     }
 
     private static ExchangeRateDto getExchangeRateDto() {
@@ -80,4 +86,12 @@ public class ExchangeRateApiTest {
                 .setRates(rates)
                 .create();
     }
+
+    private Gson createGson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        return gsonBuilder
+                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                .setPrettyPrinting().create();
+    }
+
 }

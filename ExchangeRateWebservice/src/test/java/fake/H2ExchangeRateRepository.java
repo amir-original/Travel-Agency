@@ -127,6 +127,7 @@ public class H2ExchangeRateRepository implements ExchangeRateRepository {
 
     private Map<Currency, Double> getMapRate(String rates) {
         Object json = gson.fromJson(rates, Object.class);
+
         TypeToken<Map<Currency, Double>> type = new TypeToken<>() {};
         return gson.fromJson((String) json, type.getType());
     }

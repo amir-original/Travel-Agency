@@ -1,13 +1,15 @@
 package com.dev.exchange_rate;
 
-import com.dev.exchange_rate.controller.ExchangeRateController;
 import com.dev.exchange_rate.repository.*;
 import com.dev.exchange_rate.helper.file_reader.PropertiesReader;
+import com.dev.exchange_rate.service.ExchangeRateService;
+import com.dev.exchange_rate.service.ExchangeRateServiceImpl;
 
 public class ServiceContainer {
 
-    public ExchangeRateController exchangeRateController(){
-        return new ExchangeRateController(exchangeRateRepository());
+
+    public ExchangeRateService exchangeRateService(){
+        return new ExchangeRateServiceImpl(exchangeRateRepository());
     }
 
     private ExchangeRateRepository exchangeRateRepository() {
