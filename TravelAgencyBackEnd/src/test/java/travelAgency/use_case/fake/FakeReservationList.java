@@ -47,7 +47,7 @@ public class FakeReservationList implements ReservationListRepository {
     @Override
     public Optional<Reservation> findReservation(String reservationNumber) {
         return bookings.stream()
-                .filter(ticket -> ticket.hasSameTicketNumber(reservationNumber))
+                .filter(reservation -> reservation.hasSameTicketNumber(reservationNumber))
                 .findFirst();
     }
 
@@ -65,9 +65,9 @@ public class FakeReservationList implements ReservationListRepository {
     }
 
     @Override
-    public void cancel(String ticketNumber) {
+    public void cancel(String reservationNumber) {
         bookings.stream()
-                .filter(flightTicket -> flightTicket.reservationNumber().equals(ticketNumber))
+                .filter(reservation -> reservation.reservationNumber().equals(reservationNumber))
                 .findFirst()
                 .ifPresent(bookings::remove);
     }

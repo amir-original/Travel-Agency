@@ -1,6 +1,7 @@
 package travelAgency.helper;
 
+import java.net.URI;
+
 public interface HttpClient {
-    HttpRequestHandler target(String baseUri);
-    <T> T GET(Class<T> responseType);
+    Response get(URI uri);
 }

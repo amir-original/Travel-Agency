@@ -90,7 +90,7 @@ public class ReservationListServiceShould {
     }
 
     @Test
-    void throw_ReservationNotFoundException_when_cancel_the_ticket_number_is_not_found() {
+    void throw_ReservationNotFoundException_when_cancel_the_reservation_number_is_not_found() {
         assertThatExceptionOfType(ReservationNotFoundException.class)
                 .isThrownBy(() -> app.cancel(NOT_FOUND_RESERVATION_NUMBER));
     }

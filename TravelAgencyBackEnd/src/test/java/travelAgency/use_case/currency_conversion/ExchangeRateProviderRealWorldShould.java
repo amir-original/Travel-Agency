@@ -5,14 +5,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import travelAgency.controller.ServiceContainer;
-import travelAgency.exceptions.CouldNotConnectToExchangeRateWebService;
 import travelAgency.dao.api.ExchangeRateDAO;
-import travelAgency.services.currency_conversion.ExchangeRates;
+import travelAgency.exceptions.CouldNotConnectToExchangeRateWebService;
 import travelAgency.services.currency_conversion.ExchangeRateProvider;
+import travelAgency.services.currency_conversion.ExchangeRates;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static travelAgency.domain.rate.currency.Currency.*;
 
-// integration test
+// actual test
 public class ExchangeRateProviderRealWorldShould {
 
     private ExchangeRateProvider exchangeRateProvider;
@@ -25,6 +26,7 @@ public class ExchangeRateProviderRealWorldShould {
     }
 
     @Test
+    @Disabled
     void throw_WebServiceConnectionFailureException_can_not_connect_to_webservice() {
         Assertions.assertThatExceptionOfType(CouldNotConnectToExchangeRateWebService.class)
                 .isThrownBy(() -> exchangeRateProvider.getRateFor(EUR,USD));

@@ -107,11 +107,11 @@ public class ServiceContainer {
     }
 
     private HttpClient htppClientApi() {
-        return new HttpRequestHandler(getGson());
+        return new HttpRequestHandler();
     }
 
     @NotNull
-    private Gson getGson() {
+    public Gson getGson() {
         return new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .registerTypeAdapter(Currency.class, new CurrencySerializer())

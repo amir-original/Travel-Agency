@@ -5,13 +5,11 @@ import com.dev.exchange_rate.repository.*;
 import com.dev.exchange_rate.domain.Currency;
 import com.dev.exchange_rate.domain.ExchangeRate;
 import com.dev.exchange_rate.helper.file_reader.PropertiesReader;
-import fake.H2ExchangeRateRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 import static java.time.LocalDate.of;

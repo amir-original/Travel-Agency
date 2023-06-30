@@ -2,6 +2,7 @@ package travelAgency.dao.database.reservation;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.exceptions.CouldNotBookReservation;
+import travelAgency.exceptions.CouldNotFoundReservation;
 import travelAgency.exceptions.MainSQLException;
 import travelAgency.domain.reservation.Reservation;
 import travelAgency.dao.database.db_config.mysql.DbConnection;
@@ -55,7 +56,7 @@ public class ReservationListRepositoryImpl implements ReservationListRepository 
             final ResultSet resultSet = query.executeQuery();
             reservation = getReservationIfExist(resultSet);
         } catch (SQLException e) {
-            throw new MainSQLException(e.getMessage());
+            throw new CouldNotFoundReservation(e.getMessage());
         }
         return Optional.ofNullable(reservation);
     }
@@ -87,9 +88,9 @@ public class ReservationListRepositoryImpl implements ReservationListRepository 
     }
 
     @Override
-    public void cancel(String ticketNumber) {
+    public void cancel(String reservationNumber) {
         try (final PreparedStatement query = createQuery(CANCEL_RESERVATION)) {
-            query.setString(1, ticketNumber);
+            query.setString(1, reservationNumber);
             query.executeUpdate();
         } catch (SQLException e) {
             throw new MainSQLException(e.getMessage());

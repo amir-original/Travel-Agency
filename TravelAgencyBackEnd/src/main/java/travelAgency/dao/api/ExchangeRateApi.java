@@ -7,18 +7,20 @@ import travelAgency.exceptions.CouldNotConnectToExchangeRateWebService;
 import travelAgency.exceptions.CouldNotFoundExchangeRate;
 import travelAgency.helper.*;
 
+import java.net.URI;
 import java.util.Optional;
 
 public class ExchangeRateApi implements ExchangeRateDAO {
 
     public static final String API = "app.api.pro.rest_exchange_rate.url";
     private final HttpClient httpClient;
-    private String baseUri;
+    private String baseUrl;
 
 
     public ExchangeRateApi(HttpClient httpClient) {
+        PropertiesReader propertiesReader = new PropertiesReader("app-config");
+        this.baseUrl = propertiesReader.getProperty(API);
         this.httpClient = httpClient;
-        readConfig();
     }
 
     @Override
@@ -35,22 +37,19 @@ public class ExchangeRateApi implements ExchangeRateDAO {
     }
 
     private ExchangeRate fetchExchangeRate(Currency currency) {
-        ExchangeRate result;
+        Response result;
         final String fullUrl = getFullUrl(currency);
         try {
-            result = httpClient.target(fullUrl).GET(ExchangeRate.class);
+            result = httpClient.get(URI.create(fullUrl));
         } catch (Exception e) {
             throw CouldNotConnectToExchangeRateWebService.withUrl(fullUrl);
         }
-        return result;
+        return result.readEntity(ExchangeRate.class);
     }
 
     @NotNull
     private String getFullUrl(Currency currency) {
-        return this.baseUri + currency.value();
+        return this.baseUrl + currency.value();
     }
 
-    private void readConfig() {
-        baseUri = new PropertiesReader("app-config").getProperty(API);
-    }
 }

@@ -42,7 +42,7 @@ public class BookingFLightRepositoryShould {
 
     @Test
     void book_information() {
-        var flightTicket = insertSingleTicket();
+        var flightTicket = insertSingleReservation();
         Optional<Reservation> fetchedTicket = api.findReservation(flightTicket.reservationNumber());
         assertThat(fetchedTicket).isEqualTo(fetchedTicket);
     }
@@ -50,7 +50,7 @@ public class BookingFLightRepositoryShould {
     @Test
     void fetch_all_reservations() {
         insertSingleFlight();
-        insertSingleTicket();
+        insertSingleReservation();
 
         final List<Reservation> reservations = api.getReservations();
 
@@ -60,7 +60,7 @@ public class BookingFLightRepositoryShould {
 
     @Test
     void throw_CouldNotBookReservation_when_reservation_number_is_duplicate() {
-        insertSingleTicket();
+        insertSingleReservation();
         final Reservation reservation = FakeReservationList.getReservation("AA-7845-65874");
 
         assertThatExceptionOfType(CouldNotBookReservation.class)
@@ -73,7 +73,7 @@ public class BookingFLightRepositoryShould {
         flightApi.addFlight(flight);
     }
 
-    private Reservation insertSingleTicket() {
+    private Reservation insertSingleReservation() {
         final Reservation reservation =
                 FakeReservationList.getReservation("AA-7845-65874");
         passengerApi.save(reservation.passenger());
