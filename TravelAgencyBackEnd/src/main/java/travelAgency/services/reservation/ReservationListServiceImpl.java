@@ -11,7 +11,7 @@ import travelAgency.services.flight.FlightListService;
 
 import java.time.LocalDate;
 
-public class ReservationListServiceImpl implements ReservationListService {
+public final class ReservationListServiceImpl implements ReservationListService {
 
     public static final int NO_BOOKINGS = 0;
     private final ReservationListRepository reservations;

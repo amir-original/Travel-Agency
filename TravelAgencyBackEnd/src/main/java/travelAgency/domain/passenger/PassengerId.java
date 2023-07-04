@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import static java.util.Objects.isNull;
 
-public class PassengerId {
+public final class PassengerId {
 
     private final String id;
 

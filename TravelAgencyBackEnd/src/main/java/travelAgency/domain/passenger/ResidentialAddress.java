@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class ResidentialAddress {
+public final class ResidentialAddress {
     private final String city;
     private final String address;
     private final String zipcode;

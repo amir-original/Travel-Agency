@@ -3,7 +3,7 @@ package travelAgency.services.currency_conversion;
 import travelAgency.dao.api.ExchangeRateDAO;
 import travelAgency.domain.rate.currency.Currency;
 
-public class ExchangeRates implements ExchangeRateProvider {
+public final class ExchangeRates implements ExchangeRateProvider {
 
     private final ExchangeRateDAO exchangeRateDAO;
 

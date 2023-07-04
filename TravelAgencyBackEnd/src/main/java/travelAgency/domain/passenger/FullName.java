@@ -2,7 +2,7 @@ package travelAgency.domain.passenger;
 
 import java.util.Objects;
 
-public class FullName {
+public final class FullName {
     private final String firstName;
     private final String lastName;
 

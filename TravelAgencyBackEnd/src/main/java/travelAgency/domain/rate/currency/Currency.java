@@ -1,8 +1,5 @@
 package travelAgency.domain.rate.currency;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import travelAgency.exceptions.CurrencyNotFoundException;
-
 import java.util.Arrays;
 
 public enum Currency {

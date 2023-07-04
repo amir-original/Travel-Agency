@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import travelAgency.domain.rate.currency.Currency;
 import travelAgency.domain.rate.currency.Money;
 
-public class CurrencyConverter {
+public final class CurrencyConverter {
 
     private final ExchangeRateProvider exchangeRateProvider;
 

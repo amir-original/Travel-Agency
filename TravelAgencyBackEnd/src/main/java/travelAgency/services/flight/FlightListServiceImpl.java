@@ -9,7 +9,7 @@ import travelAgency.dao.database.flight.FlightRepository;
 
 import java.util.List;
 
-public class FlightListServiceImpl implements FlightListService {
+public final class FlightListServiceImpl implements FlightListService {
 
     private final FlightRepository flights;
     private final FlightMapper flightMapper;

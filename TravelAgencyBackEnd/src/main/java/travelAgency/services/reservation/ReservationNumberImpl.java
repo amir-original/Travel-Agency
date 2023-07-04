@@ -6,7 +6,7 @@ import travelAgency.domain.reservation.ReservationNumber;
 import static java.lang.String.format;
 import static org.apache.commons.lang.RandomStringUtils.randomNumeric;
 
-public class ReservationNumberImpl implements ReservationNumberGenerator {
+public final class ReservationNumberImpl implements ReservationNumberGenerator {
 
     public static final String PREFIX = "AA";
 

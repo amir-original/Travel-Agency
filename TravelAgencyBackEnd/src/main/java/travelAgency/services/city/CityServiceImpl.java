@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
 
-public class CityServiceImpl implements CityService {
+public final class CityServiceImpl implements CityService {
 
     private final City[] cities;
 

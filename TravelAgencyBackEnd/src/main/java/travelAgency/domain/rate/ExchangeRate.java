@@ -6,7 +6,7 @@ import travelAgency.domain.rate.currency.Currency;
 import java.time.LocalDate;
 import java.util.Map;
 
-public class ExchangeRate {
+public final class ExchangeRate {
 
     private final Currency baseCurrency;
     private final LocalDate date;

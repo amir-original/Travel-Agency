@@ -11,7 +11,7 @@ import travelAgency.services.flight.FlightAvailability;
 import travelAgency.services.reservation.ReservationNumberGenerator;
 
 // application service
-public class BookingReservation {
+public final class BookingReservation {
 
     private final ReservationListRepository bookingLists;
     private final PassengerRepository passengers;

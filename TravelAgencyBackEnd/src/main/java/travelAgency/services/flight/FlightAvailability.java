@@ -6,7 +6,7 @@ import travelAgency.exceptions.NotEnoughCapacityException;
 import travelAgency.domain.flight.Flight;
 import travelAgency.services.reservation.ReservationListService;
 
-public class FlightAvailability {
+public final class FlightAvailability {
 
     private static final int NO_AVAILABLE_SEATS = 0;
     private final ReservationListService bookingLists;
