@@ -3,27 +3,29 @@ package travelAgency.use_case.reservation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.domain.reservation.Reservation;
-import travelAgency.exceptions.CanNotCancelReservationException;
+import travelAgency.exceptions.CouldNotCancelReservation;
+import travelAgency.exceptions.CouldNotFoundReservation;
 import travelAgency.exceptions.ReservationNotFoundException;
-import travelAgency.services.flight.FlightListServiceImpl;
-import travelAgency.services.reservation.ReservationNumberGenerator;
-import travelAgency.use_case.fake.FakeReservationList;
-import travelAgency.use_case.fake.FakeFlight;
-import travelAgency.use_case.fake.FakePassenger;
-import travelAgency.use_case.fake.FakeReservationNumber;
 import travelAgency.services.BookingReservation;
+import travelAgency.services.ReservationCancellation;
+import travelAgency.services.flight.FlightAvailability;
+import travelAgency.services.flight.FlightListServiceImpl;
 import travelAgency.services.reservation.ReservationListService;
 import travelAgency.services.reservation.ReservationListServiceImpl;
-import travelAgency.services.flight.FlightAvailability;
+import travelAgency.services.reservation.ReservationNumberGenerator;
+import travelAgency.use_case.fake.FakeFlight;
+import travelAgency.use_case.fake.FakePassenger;
+import travelAgency.use_case.fake.FakeReservationList;
+import travelAgency.use_case.fake.FakeReservationNumber;
 
 import java.time.LocalDate;
 
 import static java.time.LocalDate.of;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static travelAgency.use_case.fake.FakeReservationInformation.reservationInformation;
 import static travelAgency.use_case.fake.FakeFlight.flight;
 import static travelAgency.use_case.fake.FakePassenger.passenger;
+import static travelAgency.use_case.fake.FakeReservationInformation.reservationInformation;
 
 public class ReservationListServiceShould {
 
@@ -33,6 +35,7 @@ public class ReservationListServiceShould {
     public static final String NOT_FOUND_RESERVATION_NUMBER = "78456871";
     private ReservationListService app;
     private BookingReservation appService;
+    private ReservationCancellation cancellation;
 
     @BeforeEach
     void setUp() {
@@ -45,6 +48,7 @@ public class ReservationListServiceShould {
         final FakePassenger passengers = new FakePassenger();
         appService = new BookingReservation(bookings, passengers, flightAvailability, reservationNumber);
         app = new ReservationListServiceImpl(bookings, flightService);
+        cancellation = new ReservationCancellation(bookings);
     }
 
 
@@ -68,14 +72,14 @@ public class ReservationListServiceShould {
 
     @Test
     void cancel_a_book_flight_with_ticket_number() {
-        var ticket = app.search(EXIST_FLIGHT_NUMBER, SARA, SARA_BIRTHDAY);
-        final int travelers = ticket.travelers();
+        var reservation = app.search(EXIST_FLIGHT_NUMBER, SARA, SARA_BIRTHDAY);
+        final int travelers = reservation.travelers();
         final int bookingsBeforeCancel = 6;
         final int bookingsAfterCancel = bookingsBeforeCancel - travelers;
 
         assertAll(
                 () -> assertThat(app.getTotalBookedSeats(EXIST_FLIGHT_NUMBER)).isEqualTo(bookingsBeforeCancel),
-                () -> assertThatNoException().isThrownBy(() -> app.cancel(ticket.reservationNumber())),
+                () -> assertThatNoException().isThrownBy(() -> cancellation.cancelReservation(reservation.reservationNumber())),
                 () -> assertThat(app.getTotalBookedSeats(EXIST_FLIGHT_NUMBER)).isEqualTo(bookingsAfterCancel)
         );
     }
@@ -85,14 +89,14 @@ public class ReservationListServiceShould {
         final Reservation reservation = app.search("AA-7845-65874");
         reservation.flight().markAsDeparted();
 
-        assertThatExceptionOfType(CanNotCancelReservationException.class)
-                .isThrownBy(() -> app.cancel(reservation.reservationNumber()));
+        assertThatExceptionOfType(CouldNotCancelReservation.class)
+                .isThrownBy(() -> cancellation.cancelReservation(reservation.reservationNumber()));
     }
 
     @Test
-    void throw_ReservationNotFoundException_when_cancel_the_reservation_number_is_not_found() {
-        assertThatExceptionOfType(ReservationNotFoundException.class)
-                .isThrownBy(() -> app.cancel(NOT_FOUND_RESERVATION_NUMBER));
+    void throw_exception_when_cancel_the_reservation_number_is_not_found() {
+        assertThatExceptionOfType(CouldNotFoundReservation.class)
+                .isThrownBy(() -> cancellation.cancelReservation(NOT_FOUND_RESERVATION_NUMBER));
     }
 
     @Test

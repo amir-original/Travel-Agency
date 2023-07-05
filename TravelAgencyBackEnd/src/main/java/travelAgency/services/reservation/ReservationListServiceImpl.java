@@ -2,11 +2,9 @@ package travelAgency.services.reservation;
 
 import travelAgency.dao.database.reservation.ReservationListRepository;
 import travelAgency.domain.flight.FlightDto;
-import travelAgency.exceptions.CanNotCancelReservationException;
+import travelAgency.domain.reservation.Reservation;
 import travelAgency.exceptions.CouldNotFoundReservation;
 import travelAgency.exceptions.FlightNotFoundException;
-import travelAgency.exceptions.ReservationNotFoundException;
-import travelAgency.domain.reservation.Reservation;
 import travelAgency.services.flight.FlightListService;
 
 import java.time.LocalDate;
@@ -17,8 +15,6 @@ public final class ReservationListServiceImpl implements ReservationListService 
     private final ReservationListRepository reservations;
     private final SearchReservationEngine searchEngine;
     private final FlightListService flights;
-
-
 
 
     public ReservationListServiceImpl(ReservationListRepository reservations, FlightListService flights) {
@@ -41,17 +37,6 @@ public final class ReservationListServiceImpl implements ReservationListService 
     @Override
     public FlightDto findFlight(String flightNumber) throws FlightNotFoundException {
         return flights.findFlight(flightNumber);
-    }
-
-    @Override
-    public void cancel(String reservationNumber) {
-        final Reservation reservation = reservations.findReservation(reservationNumber)
-                .orElseThrow(ReservationNotFoundException::new);
-
-        if (reservation.flight().isDeparted())
-                throw new CanNotCancelReservationException();
-
-        reservations.cancel(reservation.reservationNumber());
     }
 
     @Override

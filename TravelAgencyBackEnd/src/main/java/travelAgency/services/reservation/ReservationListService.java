@@ -8,8 +8,6 @@ import travelAgency.exceptions.ReservationNotFoundException;
 import java.time.LocalDate;
 
 public interface ReservationListService {
-
-    void cancel(String reservationNumber) throws ReservationNotFoundException;
     Reservation search(String flightNumber, String passengerFirstName, LocalDate PassengerBirthday);
     Reservation search(String reservationNumber)  throws ReservationNotFoundException;
     FlightDto findFlight(String flightNumber) throws FlightNotFoundException;

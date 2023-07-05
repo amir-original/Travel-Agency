@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface ReservationListRepository {
     void book(Reservation reservation);
     void cancel(String reservationNumber);
+    void cancel(Reservation reservation);
     Optional<Reservation> findReservation(String reservationNumber);
     Optional<Reservation> findReservationByFlightNumber(String flightNumber);
     List<Reservation> getReservations();

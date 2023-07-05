@@ -98,6 +98,11 @@ public class ReservationListRepositoryImpl implements ReservationListRepository 
     }
 
     @Override
+    public void cancel(Reservation reservation) {
+        cancel(reservation.reservationNumber());
+    }
+
+    @Override
     public void truncate() {
         db.truncate(TABLE_NAME);
     }

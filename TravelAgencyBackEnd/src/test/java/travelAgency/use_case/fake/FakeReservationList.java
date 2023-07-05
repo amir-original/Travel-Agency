@@ -73,6 +73,11 @@ public class FakeReservationList implements ReservationListRepository {
     }
 
     @Override
+    public void cancel(Reservation reservation) {
+        cancel(reservation.reservationNumber());
+    }
+
+    @Override
     public void truncate() {
         this.bookings.clear();
     }
