@@ -1,7 +1,7 @@
 package travelAgency.ui.pages;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.domain.reservation.Reservation;
+import travelAgency.model.reservation.Reservation;
 import travelAgency.ui.component.UiComponents;
 
 import javax.swing.*;

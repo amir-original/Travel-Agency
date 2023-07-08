@@ -1,12 +1,12 @@
 package travelAgency.ui.pages;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.controller.ExchangeRateOperations;
-import travelAgency.controller.FlightOperations;
-import travelAgency.domain.flight.Flight;
-import travelAgency.domain.flight.FlightPlan;
-import travelAgency.domain.rate.currency.Currency;
-import travelAgency.domain.rate.currency.Money;
+import travelAgency.infrastructure.user_interface.web.controller.ExchangeRateOperations;
+import travelAgency.infrastructure.user_interface.web.controller.FlightOperations;
+import travelAgency.model.flight.Flight;
+import travelAgency.model.flight.FlightPlan;
+import travelAgency.model.rate.currency.Currency;
+import travelAgency.model.rate.currency.Money;
 import travelAgency.ui.component.UiComponents;
 
 import javax.swing.*;

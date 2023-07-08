@@ -1,14 +1,14 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.domain.city.City;
-import travelAgency.domain.flight.FlightLocation;
-import travelAgency.domain.flight.FlightPlan;
-import travelAgency.domain.flight.FlightSchedule;
+import travelAgency.model.city.City;
+import travelAgency.model.flight.FlightLocation;
+import travelAgency.model.flight.FlightPlan;
+import travelAgency.model.flight.FlightSchedule;
 
 import java.time.LocalDate;
 
-import static travelAgency.domain.city.City.PARIS;
-import static travelAgency.domain.city.City.TEHRAN;
+import static travelAgency.model.city.City.PARIS;
+import static travelAgency.model.city.City.TEHRAN;
 
 public class FakeFlightPlanBuilder  {
 

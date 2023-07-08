@@ -1,8 +1,11 @@
 package travelAgency.ui;
 
-import travelAgency.controller.*;
-import travelAgency.services.city.CityService;
-import travelAgency.services.city.CityServiceImpl;
+import travelAgency.infrastructure.*;
+import travelAgency.infrastructure.user_interface.web.controller.ExchangeRateOperations;
+import travelAgency.infrastructure.user_interface.web.controller.FlightOperations;
+import travelAgency.infrastructure.user_interface.web.controller.ReservationOperations;
+import travelAgency.application.city.CityService;
+import travelAgency.application.city.CityServiceImpl;
 import travelAgency.ui.pages.HomePage;
 
 public class App {

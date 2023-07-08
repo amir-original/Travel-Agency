@@ -2,13 +2,13 @@ package travelAgency.use_case.flight;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.flight.FlightDto;
-import travelAgency.domain.flight.FlightMapper;
+import travelAgency.application.dto.FlightDto;
+import travelAgency.application.dto.FlightMapper;
 import travelAgency.exceptions.FlightNotFoundException;
-import travelAgency.domain.flight.Flight;
-import travelAgency.domain.flight.FlightPlan;
-import travelAgency.services.flight.FlightListService;
-import travelAgency.services.flight.FlightListServiceImpl;
+import travelAgency.model.flight.Flight;
+import travelAgency.model.flight.FlightPlan;
+import travelAgency.application.flight.FlightListService;
+import travelAgency.application.flight.FlightListServiceImpl;
 import travelAgency.use_case.fake.FakeFlight;
 
 import java.util.List;
@@ -16,8 +16,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static travelAgency.domain.city.City.BAGHDAD;
-import static travelAgency.domain.city.City.LONDON;
+import static travelAgency.model.city.City.BAGHDAD;
+import static travelAgency.model.city.City.LONDON;
 import static travelAgency.use_case.fake.FakeFlight.flight;
 import static travelAgency.use_case.fake.FakeFlightPlanBuilder.flightPlan;
 

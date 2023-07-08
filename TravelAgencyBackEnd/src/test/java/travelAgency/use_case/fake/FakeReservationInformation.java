@@ -1,12 +1,12 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.domain.passenger.PassengerDto;
-import travelAgency.domain.passenger.PassengerMapper;
-import travelAgency.domain.flight.FlightDto;
-import travelAgency.domain.flight.FlightMapper;
-import travelAgency.domain.reservation.ReservationInformation;
-import travelAgency.domain.flight.Flight;
-import travelAgency.domain.passenger.Passenger;
+import travelAgency.application.dto.PassengerDto;
+import travelAgency.application.dto.PassengerMapper;
+import travelAgency.application.dto.FlightDto;
+import travelAgency.application.dto.FlightMapper;
+import travelAgency.model.reservation.ReservationInformation;
+import travelAgency.model.flight.Flight;
+import travelAgency.model.passenger.Passenger;
 
 import static travelAgency.use_case.fake.FakeFlight.flight;
 import static travelAgency.use_case.fake.FakePassenger.passenger;

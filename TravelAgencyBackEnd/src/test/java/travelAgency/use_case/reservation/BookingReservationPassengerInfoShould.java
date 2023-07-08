@@ -2,18 +2,18 @@ package travelAgency.use_case.reservation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.passenger.Passenger;
-import travelAgency.domain.passenger.FullName;
-import travelAgency.domain.passenger.PhoneNumber;
-import travelAgency.domain.passenger.ResidentialAddress;
+import travelAgency.model.passenger.Passenger;
+import travelAgency.model.passenger.FullName;
+import travelAgency.model.passenger.PhoneNumber;
+import travelAgency.model.passenger.ResidentialAddress;
 import travelAgency.exceptions.*;
-import travelAgency.services.BookingReservation;
-import travelAgency.services.flight.FlightListService;
-import travelAgency.services.flight.FlightListServiceImpl;
-import travelAgency.services.reservation.ReservationListServiceImpl;
-import travelAgency.services.reservation.ReservationNumberGenerator;
-import travelAgency.services.flight.FlightAvailability;
-import travelAgency.use_case.fake.FakeReservationList;
+import travelAgency.application.reservation.BookingReservation;
+import travelAgency.application.flight.FlightListService;
+import travelAgency.application.flight.FlightListServiceImpl;
+import travelAgency.application.reservation.ReservationListServiceImpl;
+import travelAgency.application.reservation.ReservationNumberGenerator;
+import travelAgency.application.flight.FlightAvailability;
+import travelAgency.use_case.fake.FakeReservation;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakePassenger;
 import travelAgency.use_case.fake.FakeReservationNumber;
@@ -29,7 +29,7 @@ public class BookingReservationPassengerInfoShould {
     @BeforeEach
     void setUp() {
         ReservationNumberGenerator reservationNumber = new FakeReservationNumber();
-        FakeReservationList fakeBookingList = new FakeReservationList();
+        FakeReservation fakeBookingList = new FakeReservation();
         final FlightListService flights = new FlightListServiceImpl(new FakeFlight());
         final FlightAvailability flightAvailability =
                 new FlightAvailability(new ReservationListServiceImpl(fakeBookingList,flights));

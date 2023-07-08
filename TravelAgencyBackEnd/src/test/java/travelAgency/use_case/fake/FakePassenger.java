@@ -1,20 +1,20 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.domain.passenger.PassengerBuilder;
-import travelAgency.domain.passenger.FullName;
-import travelAgency.domain.passenger.PassengerId;
-import travelAgency.domain.passenger.PhoneNumber;
-import travelAgency.domain.passenger.ResidentialAddress;
+import travelAgency.model.passenger.PassengerBuilder;
+import travelAgency.model.passenger.FullName;
+import travelAgency.model.passenger.PassengerId;
+import travelAgency.model.passenger.PhoneNumber;
+import travelAgency.model.passenger.ResidentialAddress;
 import travelAgency.exceptions.PassengerNotFoundException;
-import travelAgency.domain.passenger.Passenger;
-import travelAgency.dao.database.passenger.PassengerRepository;
+import travelAgency.model.passenger.Passenger;
+import travelAgency.model.passenger.PassengerRepository;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 import static java.time.LocalDate.of;
-import static travelAgency.domain.city.City.TEHRAN;
+import static travelAgency.model.city.City.TEHRAN;
 
 public class FakePassenger implements PassengerRepository {
 

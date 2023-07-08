@@ -1,10 +1,10 @@
 package travelAgency.use_case.fake;
 
 import travelAgency.exceptions.FlightNotFoundException;
-import travelAgency.domain.flight.Flight;
-import travelAgency.domain.flight.FlightBuilder;
-import travelAgency.dao.database.flight.FlightRepository;
-import travelAgency.domain.rate.currency.Money;
+import travelAgency.model.flight.Flight;
+import travelAgency.model.flight.FlightBuilder;
+import travelAgency.model.flight.FlightRepository;
+import travelAgency.model.rate.currency.Money;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.List.of;
-import static travelAgency.domain.city.City.PARIS;
-import static travelAgency.domain.city.City.TEHRAN;
-import static travelAgency.domain.rate.currency.Currency.USD;
+import static travelAgency.model.city.City.PARIS;
+import static travelAgency.model.city.City.TEHRAN;
+import static travelAgency.model.rate.currency.Currency.USD;
 
 
 public class FakeFlight implements FlightRepository {

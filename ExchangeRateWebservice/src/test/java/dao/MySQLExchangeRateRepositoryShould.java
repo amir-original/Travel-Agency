@@ -16,13 +16,13 @@ import static java.time.LocalDate.of;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Disabled
-// TODO this test doesn't work with h2
+// real test
 public class MySQLExchangeRateRepositoryShould {
     private ExchangeRateRepository exchangeRateRepository;
 
     @BeforeEach
     void setUp() {
-        PropertiesReader propertiesReader = new PropertiesReader("h2_db_config.properties");
+        PropertiesReader propertiesReader = new PropertiesReader("fake_db_config.properties");
         ConnectionConfigurationImpl configuration = new ConnectionConfigurationImpl(propertiesReader);
         MySQLConnectionGateway connection = new MySQLConnectionGateway(configuration);
         exchangeRateRepository = new MySQLExchangeRateRepository(connection);

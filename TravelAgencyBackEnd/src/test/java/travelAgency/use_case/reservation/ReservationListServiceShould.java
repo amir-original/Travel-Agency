@@ -2,20 +2,20 @@ package travelAgency.use_case.reservation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.reservation.Reservation;
+import travelAgency.model.reservation.Reservation;
 import travelAgency.exceptions.CouldNotCancelReservation;
 import travelAgency.exceptions.CouldNotFoundReservation;
 import travelAgency.exceptions.ReservationNotFoundException;
-import travelAgency.services.BookingReservation;
-import travelAgency.services.ReservationCancellation;
-import travelAgency.services.flight.FlightAvailability;
-import travelAgency.services.flight.FlightListServiceImpl;
-import travelAgency.services.reservation.ReservationListService;
-import travelAgency.services.reservation.ReservationListServiceImpl;
-import travelAgency.services.reservation.ReservationNumberGenerator;
+import travelAgency.application.reservation.BookingReservation;
+import travelAgency.application.reservation.ReservationCancellation;
+import travelAgency.application.flight.FlightAvailability;
+import travelAgency.application.flight.FlightListServiceImpl;
+import travelAgency.application.reservation.ReservationListService;
+import travelAgency.application.reservation.ReservationListServiceImpl;
+import travelAgency.application.reservation.ReservationNumberGenerator;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakePassenger;
-import travelAgency.use_case.fake.FakeReservationList;
+import travelAgency.use_case.fake.FakeReservation;
 import travelAgency.use_case.fake.FakeReservationNumber;
 
 import java.time.LocalDate;
@@ -40,7 +40,7 @@ public class ReservationListServiceShould {
     @BeforeEach
     void setUp() {
         ReservationNumberGenerator reservationNumber = new FakeReservationNumber();
-        final FakeReservationList bookings = new FakeReservationList();
+        final FakeReservation bookings = new FakeReservation();
         final FakeFlight flights = new FakeFlight();
         final FlightListServiceImpl flightService = new FlightListServiceImpl(flights);
 

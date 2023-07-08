@@ -1,7 +1,7 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.domain.reservation.ReservationNumber;
-import travelAgency.services.reservation.ReservationNumberGenerator;
+import travelAgency.model.reservation.ReservationNumber;
+import travelAgency.application.reservation.ReservationNumberGenerator;
 
 public class FakeReservationNumber implements ReservationNumberGenerator {
 

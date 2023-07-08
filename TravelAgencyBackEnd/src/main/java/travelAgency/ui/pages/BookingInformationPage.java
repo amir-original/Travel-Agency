@@ -2,12 +2,12 @@ package travelAgency.ui.pages;
 
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
-import travelAgency.controller.ReservationController;
-import travelAgency.controller.ReservationOperations;
-import travelAgency.domain.passenger.*;
-import travelAgency.domain.flight.FlightDto;
-import travelAgency.domain.reservation.ReservationInformation;
-import travelAgency.domain.reservation.Reservation;
+import travelAgency.application.dto.PassengerDto;
+import travelAgency.application.dto.PassengerDtoBuilder;
+import travelAgency.infrastructure.user_interface.web.controller.ReservationOperations;
+import travelAgency.application.dto.FlightDto;
+import travelAgency.model.reservation.ReservationInformation;
+import travelAgency.model.reservation.Reservation;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
 

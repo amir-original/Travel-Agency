@@ -1,10 +1,10 @@
 package travelAgency.dao;
 
 import org.junit.jupiter.api.Test;
-import travelAgency.dao.database.db_config.ConnectionConfiguration;
-import travelAgency.dao.database.db_config.ConnectionConfigurationImpl;
-import travelAgency.dao.database.db_config.mysql.MySQLDbConnection;
-import travelAgency.helper.PropertiesReader;
+import travelAgency.infrastructure.db.ConnectionConfiguration;
+import travelAgency.infrastructure.db.ConnectionConfigurationImpl;
+import travelAgency.infrastructure.db.MySQLDbConnection;
+import travelAgency.infrastructure.io.PropertiesReader;
 
 import static org.assertj.core.api.Assertions.*;
 

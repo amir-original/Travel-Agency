@@ -4,14 +4,14 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import travelAgency.controller.ServiceContainer;
-import travelAgency.dao.api.ExchangeRateDAO;
+import travelAgency.infrastructure.ServiceContainer;
+import travelAgency.application.exchange_rates.ExchangeRateDAO;
 import travelAgency.exceptions.CouldNotConnectToExchangeRateWebService;
-import travelAgency.services.currency_conversion.ExchangeRateProvider;
-import travelAgency.services.currency_conversion.ExchangeRates;
+import travelAgency.application.exchange_rates.ExchangeRateProvider;
+import travelAgency.application.exchange_rates.ExchangeRates;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static travelAgency.domain.rate.currency.Currency.*;
+import static travelAgency.model.rate.currency.Currency.*;
 
 // actual test
 public class ExchangeRateProviderRealWorldShould {

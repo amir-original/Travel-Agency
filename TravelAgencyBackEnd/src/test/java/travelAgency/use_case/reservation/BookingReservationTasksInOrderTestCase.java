@@ -4,21 +4,21 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
-import travelAgency.domain.reservation.ReservationInformation;
-import travelAgency.domain.reservation.Reservation;
-import travelAgency.domain.passenger.Passenger;
-import travelAgency.dao.database.reservation.ReservationListRepository;
-import travelAgency.dao.database.passenger.PassengerRepository;
-import travelAgency.domain.reservation.ReservationMapper;
-import travelAgency.domain.reservation.ReservationNumber;
-import travelAgency.services.BookingReservation;
-import travelAgency.services.reservation.ReservationNumberGenerator;
-import travelAgency.services.flight.FlightAvailability;
+import travelAgency.model.reservation.ReservationInformation;
+import travelAgency.model.reservation.Reservation;
+import travelAgency.model.passenger.Passenger;
+import travelAgency.model.reservation.ReservationRepository;
+import travelAgency.model.passenger.PassengerRepository;
+import travelAgency.application.dto.ReservationMapper;
+import travelAgency.model.reservation.ReservationNumber;
+import travelAgency.application.reservation.BookingReservation;
+import travelAgency.application.reservation.ReservationNumberGenerator;
+import travelAgency.application.flight.FlightAvailability;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
 import static travelAgency.use_case.fake.FakeReservationInformation.reservationInformation;
-import static travelAgency.use_case.fake.FakeReservationList.getReservation;
+import static travelAgency.use_case.fake.FakeReservation.getReservation;
 
 public class BookingReservationTasksInOrderTestCase {
 
@@ -26,7 +26,7 @@ public class BookingReservationTasksInOrderTestCase {
     private BookingReservation app;
     private FlightAvailability flightAvailability;
     private PassengerRepository passengers;
-    private ReservationListRepository bookingLists;
+    private ReservationRepository bookingLists;
     private ReservationNumberGenerator reservationNumber;
     private ReservationMapper reservationMapper;
 
@@ -66,8 +66,8 @@ public class BookingReservationTasksInOrderTestCase {
     }
 
     @NotNull
-    private ReservationListRepository reservations() {
-        final ReservationListRepository bookings = mock(ReservationListRepository.class);
+    private ReservationRepository reservations() {
+        final ReservationRepository bookings = mock(ReservationRepository.class);
         final Reservation reservation = createReservation();
         doNothing().when(bookings).book(reservation);
         return bookings;

@@ -3,9 +3,8 @@ package travelAgency.ui.pages;
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import travelAgency.controller.ReservationController;
-import travelAgency.controller.ReservationOperations;
-import travelAgency.domain.reservation.Reservation;
+import travelAgency.infrastructure.user_interface.web.controller.ReservationOperations;
+import travelAgency.model.reservation.Reservation;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
 

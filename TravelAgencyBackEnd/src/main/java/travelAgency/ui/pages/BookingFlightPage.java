@@ -2,14 +2,16 @@ package travelAgency.ui.pages;
 
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
-import travelAgency.controller.*;
-import travelAgency.domain.flight.Flight;
-import travelAgency.domain.flight.FlightLocation;
-import travelAgency.domain.flight.FlightPlan;
-import travelAgency.domain.flight.FlightSchedule;
-import travelAgency.domain.rate.currency.Currency;
-import travelAgency.domain.flight.FlightDto;
-import travelAgency.services.city.CityService;
+import travelAgency.model.flight.Flight;
+import travelAgency.model.flight.FlightLocation;
+import travelAgency.model.flight.FlightPlan;
+import travelAgency.model.flight.FlightSchedule;
+import travelAgency.model.rate.currency.Currency;
+import travelAgency.application.dto.FlightDto;
+import travelAgency.infrastructure.user_interface.web.controller.ExchangeRateOperations;
+import travelAgency.infrastructure.user_interface.web.controller.FlightOperations;
+import travelAgency.infrastructure.user_interface.web.controller.ReservationOperations;
+import travelAgency.application.city.CityService;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
 
@@ -239,7 +241,7 @@ public class BookingFlightPage extends JFrame {
         performFlightSearch(currency);
     }
 
-    private void performFlightSearch(travelAgency.domain.rate.currency.Currency exchangeRate) {
+    private void performFlightSearch(Currency exchangeRate) {
         final List<Flight> searchFlights;
         try {
             searchFlights = flightController.searchFlights(getFlightPlan());

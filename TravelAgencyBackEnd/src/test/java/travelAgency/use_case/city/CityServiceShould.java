@@ -2,9 +2,9 @@ package travelAgency.use_case.city;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.domain.city.City;
-import travelAgency.services.city.CityService;
-import travelAgency.services.city.CityServiceImpl;
+import travelAgency.model.city.City;
+import travelAgency.application.city.CityService;
+import travelAgency.application.city.CityServiceImpl;
 
 import java.util.List;
 

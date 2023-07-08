@@ -1,7 +1,9 @@
 package travelAgency.ui.pages;
 
-import travelAgency.controller.*;
-import travelAgency.services.city.CityService;
+import travelAgency.infrastructure.user_interface.web.controller.ExchangeRateOperations;
+import travelAgency.infrastructure.user_interface.web.controller.FlightOperations;
+import travelAgency.infrastructure.user_interface.web.controller.ReservationOperations;
+import travelAgency.application.city.CityService;
 import travelAgency.ui.component.UiComponents;
 
 import javax.swing.*;

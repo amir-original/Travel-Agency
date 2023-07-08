@@ -2,15 +2,15 @@ package travelAgency.use_case.currency_conversion;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.dao.api.ExchangeRateDAO;
+import travelAgency.application.exchange_rates.ExchangeRateDAO;
 import travelAgency.exceptions.CouldNotFoundExchangeRate;
-import travelAgency.services.currency_conversion.ExchangeRateProvider;
-import travelAgency.services.currency_conversion.ExchangeRates;
+import travelAgency.application.exchange_rates.ExchangeRateProvider;
+import travelAgency.application.exchange_rates.ExchangeRates;
 import travelAgency.use_case.fake.FakeExchangeRate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static travelAgency.domain.rate.currency.Currency.*;
+import static travelAgency.model.rate.currency.Currency.*;
 
 public class ExchangeRateProviderShould {
 

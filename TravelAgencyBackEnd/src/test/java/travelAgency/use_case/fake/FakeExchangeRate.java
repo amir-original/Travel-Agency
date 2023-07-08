@@ -1,17 +1,17 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.dao.api.ExchangeRateDAO;
+import travelAgency.application.exchange_rates.ExchangeRateDAO;
 import travelAgency.exceptions.CouldNotFoundExchangeRate;
-import travelAgency.domain.rate.ExchangeRate;
-import travelAgency.domain.rate.currency.Currency;
+import travelAgency.model.rate.ExchangeRate;
+import travelAgency.model.rate.currency.Currency;
 
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static travelAgency.domain.rate.currency.Currency.IRR;
-import static travelAgency.domain.rate.currency.Currency.USD;
+import static travelAgency.model.rate.currency.Currency.IRR;
+import static travelAgency.model.rate.currency.Currency.USD;
 
 public class FakeExchangeRate implements ExchangeRateDAO {
 

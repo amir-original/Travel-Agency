@@ -2,28 +2,28 @@ package travelAgency.use_case.reservation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.dao.database.passenger.PassengerRepository;
-import travelAgency.domain.flight.Flight;
-import travelAgency.domain.reservation.ReservationInformation;
+import travelAgency.model.passenger.PassengerRepository;
+import travelAgency.model.flight.Flight;
+import travelAgency.model.reservation.ReservationInformation;
 import travelAgency.exceptions.FullyBookedException;
 import travelAgency.exceptions.InvalidFlightNumberException;
 import travelAgency.exceptions.NotEnoughCapacityException;
 import travelAgency.exceptions.PastFlightScheduleException;
-import travelAgency.services.BookingReservation;
-import travelAgency.services.flight.FlightAvailability;
-import travelAgency.services.flight.FlightListService;
-import travelAgency.services.flight.FlightListServiceImpl;
-import travelAgency.services.reservation.ReservationListService;
-import travelAgency.services.reservation.ReservationListServiceImpl;
-import travelAgency.services.reservation.ReservationNumberGenerator;
+import travelAgency.application.reservation.BookingReservation;
+import travelAgency.application.flight.FlightAvailability;
+import travelAgency.application.flight.FlightListService;
+import travelAgency.application.flight.FlightListServiceImpl;
+import travelAgency.application.reservation.ReservationListService;
+import travelAgency.application.reservation.ReservationListServiceImpl;
+import travelAgency.application.reservation.ReservationNumberGenerator;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakePassenger;
-import travelAgency.use_case.fake.FakeReservationList;
+import travelAgency.use_case.fake.FakeReservation;
 import travelAgency.use_case.fake.FakeReservationNumber;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
-import static travelAgency.domain.city.City.TEHRAN;
+import static travelAgency.model.city.City.TEHRAN;
 import static travelAgency.use_case.fake.FakeFlight.flight;
 import static travelAgency.use_case.fake.FakeReservationInformation.reservationInformation;
 
@@ -34,7 +34,7 @@ public class BookingReservationShould {
     @BeforeEach
     void setUp() {
         ReservationNumberGenerator reservationNumber = new FakeReservationNumber();
-        FakeReservationList fakeBookingList = new FakeReservationList();
+        FakeReservation fakeBookingList = new FakeReservation();
         FakeFlight fakeFlight = new FakeFlight();
         FlightListService flightService = new FlightListServiceImpl(fakeFlight);
         ReservationListService reservationListService
