@@ -5,10 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import travelAgency.infrastructure.ServiceContainer;
-import travelAgency.application.exchange_rates.ExchangeRateDAO;
+import travelAgency.infrastructure.libraries.ExchangeRateDAO;
 import travelAgency.exceptions.CouldNotConnectToExchangeRateWebService;
-import travelAgency.application.exchange_rates.ExchangeRateProvider;
-import travelAgency.application.exchange_rates.ExchangeRates;
+import travelAgency.infrastructure.libraries.ExchangeRateProvider;
+import travelAgency.infrastructure.libraries.FindExchangeRate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static travelAgency.model.rate.currency.Currency.*;
@@ -22,7 +22,7 @@ public class ExchangeRateProviderRealWorldShould {
     void setUp() {
         final ServiceContainer serviceContainer = new ServiceContainer();
         final ExchangeRateDAO exchangeRateDAO = serviceContainer.getExchangeRateDAO();
-        exchangeRateProvider = new ExchangeRates(exchangeRateDAO);
+        exchangeRateProvider = new FindExchangeRate(exchangeRateDAO);
     }
 
     @Test

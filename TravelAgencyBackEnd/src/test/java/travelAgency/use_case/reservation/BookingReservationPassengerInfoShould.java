@@ -7,12 +7,12 @@ import travelAgency.model.passenger.FullName;
 import travelAgency.model.passenger.PhoneNumber;
 import travelAgency.model.passenger.ResidentialAddress;
 import travelAgency.exceptions.*;
-import travelAgency.application.reservation.BookingReservation;
-import travelAgency.application.flight.FlightListService;
-import travelAgency.application.flight.FlightListServiceImpl;
-import travelAgency.application.reservation.ReservationListServiceImpl;
-import travelAgency.application.reservation.ReservationNumberGenerator;
-import travelAgency.application.flight.FlightAvailability;
+import travelAgency.application.use_case.BookingReservation;
+import travelAgency.application.use_case.FindFlightService;
+import travelAgency.application.use_case.FindFind;
+import travelAgency.application.use_case.FindReservation;
+import travelAgency.application.use_case.ReservationNumberGenerator;
+import travelAgency.application.use_case.FlightAvailability;
 import travelAgency.use_case.fake.FakeReservation;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakePassenger;
@@ -30,11 +30,11 @@ public class BookingReservationPassengerInfoShould {
     void setUp() {
         ReservationNumberGenerator reservationNumber = new FakeReservationNumber();
         FakeReservation fakeBookingList = new FakeReservation();
-        final FlightListService flights = new FlightListServiceImpl(new FakeFlight());
-        final FlightAvailability flightAvailability =
-                new FlightAvailability(new ReservationListServiceImpl(fakeBookingList,flights));
-        app = new BookingReservation(fakeBookingList, new FakePassenger(), flightAvailability,
-                reservationNumber);
+        final FindFlightService flights = new FindFind(new FakeFlight());
+        final FindReservation findReservation = new FindReservation(new FakeReservation(),flights);
+        FakePassenger passengers = new FakePassenger();
+
+        app = new BookingReservation(fakeBookingList, passengers, findReservation, reservationNumber);
     }
 
     @Test

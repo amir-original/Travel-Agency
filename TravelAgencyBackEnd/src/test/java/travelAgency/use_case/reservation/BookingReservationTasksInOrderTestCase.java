@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
+import travelAgency.application.use_case.*;
 import travelAgency.model.reservation.ReservationInformation;
 import travelAgency.model.reservation.Reservation;
 import travelAgency.model.passenger.Passenger;
@@ -11,9 +12,6 @@ import travelAgency.model.reservation.ReservationRepository;
 import travelAgency.model.passenger.PassengerRepository;
 import travelAgency.application.dto.ReservationMapper;
 import travelAgency.model.reservation.ReservationNumber;
-import travelAgency.application.reservation.BookingReservation;
-import travelAgency.application.reservation.ReservationNumberGenerator;
-import travelAgency.application.flight.FlightAvailability;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
@@ -22,9 +20,9 @@ import static travelAgency.use_case.fake.FakeReservation.getReservation;
 
 public class BookingReservationTasksInOrderTestCase {
 
-    public static final String TICKET_NUMBER = "AA-7845-65874";
+    public static final String RESERVATION_NUMBER = "AA-7845-65874";
     private BookingReservation app;
-    private FlightAvailability flightAvailability;
+    private FindReservationService findReservation;
     private PassengerRepository passengers;
     private ReservationRepository bookingLists;
     private ReservationNumberGenerator reservationNumber;
@@ -34,9 +32,9 @@ public class BookingReservationTasksInOrderTestCase {
     void setUp() {
         passengers = createPassengerRepository();
         bookingLists = reservations();
-        flightAvailability = createFindFlightsRepository();
-        reservationNumber = createMockTicketGenerator();
-        app = new BookingReservation(bookingLists, passengers, flightAvailability, reservationNumber);
+        findReservation = createFindReservationService();
+        reservationNumber = createMockReservationNumberGenerator();
+        app = new BookingReservation(bookingLists, passengers,findReservation, reservationNumber);
         reservationMapper = new ReservationMapper();
     }
 
@@ -48,21 +46,22 @@ public class BookingReservationTasksInOrderTestCase {
         assertThat(fetchedReservation.flight().flightNumber()).isEqualTo(reservationInfo.getFlightNumber());
 
 
-        final InOrder inOrder = inOrder(flightAvailability, passengers, bookingLists, reservationNumber);
+        final InOrder inOrder = inOrder(findReservation, passengers, bookingLists, reservationNumber);
 
         final ReservationNumber reservationNumber = this.reservationNumber.generateReservationNumber();
         final Reservation reservation = reservationMapper.toEntity(reservationInfo, reservationNumber);
+        int availableSeats = findReservation.availableSeats(reservation.flightNumber());
 
         final Passenger passenger = reservation.passenger();
+        reservation.ensureCanBooking(availableSeats);
 
-        inOrder.verify(flightAvailability).ensureCanBooking(reservation);
         inOrder.verify(passengers).save(passenger);
         inOrder.verify(bookingLists).book(reservation);
     }
 
     @NotNull
     private Reservation createReservation() {
-        return getReservation(TICKET_NUMBER);
+        return getReservation(RESERVATION_NUMBER);
     }
 
     @NotNull
@@ -79,14 +78,14 @@ public class BookingReservationTasksInOrderTestCase {
         return mock;
     }
 
-    private FlightAvailability createFindFlightsRepository() {
-        final FlightAvailability mock = mock(FlightAvailability.class);
-        doNothing().when(mock).ensureCanBooking(any());
+    private FindReservationService createFindReservationService() {
+        final FindReservationService mock = mock(FindReservation.class);
+        when(mock.availableSeats("0321")).thenReturn(40);
         return mock;
     }
 
     @NotNull
-    private ReservationNumberGenerator createMockTicketGenerator() {
+    private ReservationNumberGenerator createMockReservationNumberGenerator() {
         ReservationNumberGenerator reservationNumber = mock(ReservationNumberGenerator.class);
         when(reservationNumber.generateReservationNumber())
                 .thenReturn(ReservationNumber.ofString("AA-7845-65874"));

@@ -1,6 +1,7 @@
-package travelAgency.application.reservation;
+package travelAgency.infrastructure.persistence.jdbc_mysql.reservation;
 
 import org.jetbrains.annotations.NotNull;
+import travelAgency.application.use_case.ReservationNumberGenerator;
 import travelAgency.model.reservation.ReservationNumber;
 
 import static java.lang.String.format;

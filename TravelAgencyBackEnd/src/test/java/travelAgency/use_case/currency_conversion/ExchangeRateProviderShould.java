@@ -2,10 +2,10 @@ package travelAgency.use_case.currency_conversion;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.application.exchange_rates.ExchangeRateDAO;
+import travelAgency.infrastructure.libraries.ExchangeRateDAO;
 import travelAgency.exceptions.CouldNotFoundExchangeRate;
-import travelAgency.application.exchange_rates.ExchangeRateProvider;
-import travelAgency.application.exchange_rates.ExchangeRates;
+import travelAgency.infrastructure.libraries.ExchangeRateProvider;
+import travelAgency.infrastructure.libraries.FindExchangeRate;
 import travelAgency.use_case.fake.FakeExchangeRate;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,7 +20,7 @@ public class ExchangeRateProviderShould {
     @BeforeEach
     void setUp() {
         ExchangeRateDAO exchangeRateDAO = new FakeExchangeRate();
-        exchangeRateProvider = new ExchangeRates(exchangeRateDAO);
+        exchangeRateProvider = new FindExchangeRate(exchangeRateDAO);
     }
 
     @Test

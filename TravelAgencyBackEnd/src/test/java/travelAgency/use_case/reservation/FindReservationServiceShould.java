@@ -6,13 +6,13 @@ import travelAgency.model.reservation.Reservation;
 import travelAgency.exceptions.CouldNotCancelReservation;
 import travelAgency.exceptions.CouldNotFoundReservation;
 import travelAgency.exceptions.ReservationNotFoundException;
-import travelAgency.application.reservation.BookingReservation;
-import travelAgency.application.reservation.ReservationCancellation;
-import travelAgency.application.flight.FlightAvailability;
-import travelAgency.application.flight.FlightListServiceImpl;
-import travelAgency.application.reservation.ReservationListService;
-import travelAgency.application.reservation.ReservationListServiceImpl;
-import travelAgency.application.reservation.ReservationNumberGenerator;
+import travelAgency.application.use_case.BookingReservation;
+import travelAgency.application.use_case.CancelReservation;
+import travelAgency.application.use_case.FlightAvailability;
+import travelAgency.application.use_case.FindFind;
+import travelAgency.application.use_case.FindReservationService;
+import travelAgency.application.use_case.FindReservation;
+import travelAgency.application.use_case.ReservationNumberGenerator;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakePassenger;
 import travelAgency.use_case.fake.FakeReservation;
@@ -27,28 +27,28 @@ import static travelAgency.use_case.fake.FakeFlight.flight;
 import static travelAgency.use_case.fake.FakePassenger.passenger;
 import static travelAgency.use_case.fake.FakeReservationInformation.reservationInformation;
 
-public class ReservationListServiceShould {
+public class FindReservationServiceShould {
 
     private static final String SARA = "Sara";
     private static final LocalDate SARA_BIRTHDAY = of(1999, 4, 5);
     private static final String EXIST_FLIGHT_NUMBER = "0321";
     public static final String NOT_FOUND_RESERVATION_NUMBER = "78456871";
-    private ReservationListService app;
+    private FindReservationService app;
     private BookingReservation appService;
-    private ReservationCancellation cancellation;
+    private CancelReservation cancellation;
 
     @BeforeEach
     void setUp() {
         ReservationNumberGenerator reservationNumber = new FakeReservationNumber();
         final FakeReservation bookings = new FakeReservation();
         final FakeFlight flights = new FakeFlight();
-        final FlightListServiceImpl flightService = new FlightListServiceImpl(flights);
+        final FindFind flightService = new FindFind(flights);
 
-        final FlightAvailability flightAvailability = new FlightAvailability(new ReservationListServiceImpl(bookings, flightService));
+        final FindReservationService findReservationService = new FindReservation(bookings, flightService);
         final FakePassenger passengers = new FakePassenger();
-        appService = new BookingReservation(bookings, passengers, flightAvailability, reservationNumber);
-        app = new ReservationListServiceImpl(bookings, flightService);
-        cancellation = new ReservationCancellation(bookings);
+        appService = new BookingReservation(bookings, passengers,findReservationService, reservationNumber);
+        app = new FindReservation(bookings, flightService);
+        cancellation = new CancelReservation(bookings);
     }
 
 
@@ -78,9 +78,9 @@ public class ReservationListServiceShould {
         final int bookingsAfterCancel = bookingsBeforeCancel - travelers;
 
         assertAll(
-                () -> assertThat(app.getTotalBookedSeats(EXIST_FLIGHT_NUMBER)).isEqualTo(bookingsBeforeCancel),
+                () -> assertThat(app.totalBookedSeats(EXIST_FLIGHT_NUMBER)).isEqualTo(bookingsBeforeCancel),
                 () -> assertThatNoException().isThrownBy(() -> cancellation.cancelReservation(reservation.reservationNumber())),
-                () -> assertThat(app.getTotalBookedSeats(EXIST_FLIGHT_NUMBER)).isEqualTo(bookingsAfterCancel)
+                () -> assertThat(app.totalBookedSeats(EXIST_FLIGHT_NUMBER)).isEqualTo(bookingsAfterCancel)
         );
     }
 
@@ -102,7 +102,7 @@ public class ReservationListServiceShould {
     @Test
     void get_number_of_booked_flight() {
         insertMultipleBooking();
-        assertThat(app.getTotalBookedSeats("0321")).isEqualTo(19);
+        assertThat(app.totalBookedSeats("0321")).isEqualTo(19);
     }
 
 

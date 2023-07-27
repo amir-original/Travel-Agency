@@ -1,4 +1,4 @@
-package travelAgency.application.reservation;
+package travelAgency.application.use_case;
 
 import travelAgency.model.reservation.ReservationRepository;
 import travelAgency.model.reservation.Reservation;
@@ -6,11 +6,11 @@ import travelAgency.exceptions.CouldNotCancelReservation;
 import travelAgency.exceptions.CouldNotFoundReservation;
 
 // application service
-public final class ReservationCancellation {
+public final class CancelReservation {
     
     private final ReservationRepository reservations;
 
-    public ReservationCancellation(ReservationRepository reservations) {
+    public CancelReservation(ReservationRepository reservations) {
         this.reservations = reservations;
     }
     

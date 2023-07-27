@@ -9,13 +9,13 @@ import travelAgency.exceptions.FullyBookedException;
 import travelAgency.exceptions.InvalidFlightNumberException;
 import travelAgency.exceptions.NotEnoughCapacityException;
 import travelAgency.exceptions.PastFlightScheduleException;
-import travelAgency.application.reservation.BookingReservation;
-import travelAgency.application.flight.FlightAvailability;
-import travelAgency.application.flight.FlightListService;
-import travelAgency.application.flight.FlightListServiceImpl;
-import travelAgency.application.reservation.ReservationListService;
-import travelAgency.application.reservation.ReservationListServiceImpl;
-import travelAgency.application.reservation.ReservationNumberGenerator;
+import travelAgency.application.use_case.BookingReservation;
+import travelAgency.application.use_case.FlightAvailability;
+import travelAgency.application.use_case.FindFlightService;
+import travelAgency.application.use_case.FindFind;
+import travelAgency.application.use_case.FindReservationService;
+import travelAgency.application.use_case.FindReservation;
+import travelAgency.application.use_case.ReservationNumberGenerator;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakePassenger;
 import travelAgency.use_case.fake.FakeReservation;
@@ -36,13 +36,12 @@ public class BookingReservationShould {
         ReservationNumberGenerator reservationNumber = new FakeReservationNumber();
         FakeReservation fakeBookingList = new FakeReservation();
         FakeFlight fakeFlight = new FakeFlight();
-        FlightListService flightService = new FlightListServiceImpl(fakeFlight);
-        ReservationListService reservationListService
-                = new ReservationListServiceImpl(fakeBookingList, flightService);
-        FlightAvailability flightAvailability = new FlightAvailability(reservationListService);
+        FindFlightService flightService = new FindFind(fakeFlight);
+        FindReservationService findReservationService
+                = new FindReservation(fakeBookingList, flightService);
         PassengerRepository passengerService = new FakePassenger();
 
-        app = new BookingReservation(fakeBookingList, passengerService, flightAvailability, reservationNumber);
+        app = new BookingReservation(fakeBookingList, passengerService,findReservationService, reservationNumber);
     }
 
 

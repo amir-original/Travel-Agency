@@ -1,7 +1,10 @@
 package travelAgency.model.reservation;
 
 import org.jetbrains.annotations.NotNull;
+import travelAgency.application.use_case.FlightAvailability;
+import travelAgency.exceptions.FullyBookedException;
 import travelAgency.exceptions.InvalidNumberOfTicketsException;
+import travelAgency.exceptions.NotEnoughCapacityException;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.passenger.Passenger;
 
@@ -11,6 +14,7 @@ import java.util.Objects;
 import static java.lang.String.format;
 
 public final class Reservation {
+    private static final int NO_AVAILABLE_SEATS = 0;
     private final @NotNull ReservationNumber reservationNumber;
     private final @NotNull Flight flight;
     private final @NotNull Passenger passenger;
@@ -116,4 +120,29 @@ public final class Reservation {
                 ", numberOfTickets=" + numberOfTickets +
                 '}';
     }
+
+    public void ensureCanBooking(int availableSeats) {
+        flight.validateScheduleNotInPast();
+        checkFlightCapacity(availableSeats);
+    }
+
+    public void checkFlightCapacity(int availableSeats) {
+        if (isSoldOutAllSeats(availableSeats))
+            throw new FullyBookedException();
+        if (hasNotEnoughCapacity(availableSeats))
+            throw new NotEnoughCapacityException();
+    }
+
+    private boolean isSoldOutAllSeats(int availableSeats) {
+        return availableSeats == NO_AVAILABLE_SEATS;
+    }
+
+    private boolean hasNotEnoughCapacity(int availableSeats) {
+        return !hasEnoughCapacity(availableSeats);
+    }
+
+    private boolean hasEnoughCapacity(int availableSeats) {
+        return availableSeats >= travelers();
+    }
+
 }

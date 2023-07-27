@@ -1,4 +1,4 @@
-package travelAgency.application.flight;
+package travelAgency.application.use_case;
 
 import travelAgency.application.dto.FlightDto;
 import travelAgency.application.dto.FlightMapper;
@@ -9,12 +9,12 @@ import travelAgency.model.flight.FlightRepository;
 
 import java.util.List;
 
-public final class FlightListServiceImpl implements FlightListService {
+public final class FindFind implements FindFlightService {
 
     private final FlightRepository flights;
     private final FlightMapper flightMapper;
 
-    public FlightListServiceImpl(FlightRepository flights) {
+    public FindFind(FlightRepository flights) {
         this.flights = flights;
         flightMapper = new FlightMapper();
     }
@@ -32,11 +32,6 @@ public final class FlightListServiceImpl implements FlightListService {
                 .orElseThrow(FlightNotFoundException::new);
 
         return flightMapper.toViewDto(flight);
-    }
-
-    @Override
-    public int getTotalCapacity(String flightNumber) {
-        return findFlight(flightNumber).getTotalCapacity();
     }
 
 }

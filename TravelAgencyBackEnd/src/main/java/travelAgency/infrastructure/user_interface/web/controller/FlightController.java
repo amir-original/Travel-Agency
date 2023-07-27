@@ -3,31 +3,31 @@ package travelAgency.infrastructure.user_interface.web.controller;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.flight.FlightPlan;
 import travelAgency.application.dto.FlightDto;
-import travelAgency.application.flight.FlightListService;
-import travelAgency.application.reservation.ReservationListService;
+import travelAgency.application.use_case.FindFlightService;
+import travelAgency.application.use_case.FindReservationService;
 
 import java.util.List;
 
 public class FlightController implements FlightOperations {
 
-    private final FlightListService flightListService;
-    private final ReservationListService reservationListService;
+    private final FindFlightService findFlightService;
+    private final FindReservationService findReservationService;
 
-    public FlightController(FlightListService flightListService, ReservationListService reservationListService) {
-        this.flightListService = flightListService;
-        this.reservationListService = reservationListService;
+    public FlightController(FindFlightService findFlightService, FindReservationService findReservationService) {
+        this.findFlightService = findFlightService;
+        this.findReservationService = findReservationService;
     }
 
     public List<Flight> searchFlights(FlightPlan flightPlan) {
-        return flightListService.searchFlights(flightPlan);
+        return findFlightService.searchFlights(flightPlan);
     }
 
     public FlightDto findFlight(String flightNumber) {
-        return flightListService.findFlight(flightNumber);
+        return findFlightService.findFlight(flightNumber);
     }
 
     public int availableSeats(String flightNumber){
-        return reservationListService.availableSeats(flightNumber);
+        return findReservationService.availableSeats(flightNumber);
     }
 
 

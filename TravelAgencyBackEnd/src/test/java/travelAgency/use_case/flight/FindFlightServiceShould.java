@@ -7,8 +7,8 @@ import travelAgency.application.dto.FlightMapper;
 import travelAgency.exceptions.FlightNotFoundException;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.flight.FlightPlan;
-import travelAgency.application.flight.FlightListService;
-import travelAgency.application.flight.FlightListServiceImpl;
+import travelAgency.application.use_case.FindFlightService;
+import travelAgency.application.use_case.FindFind;
 import travelAgency.use_case.fake.FakeFlight;
 
 import java.util.List;
@@ -21,15 +21,15 @@ import static travelAgency.model.city.City.LONDON;
 import static travelAgency.use_case.fake.FakeFlight.flight;
 import static travelAgency.use_case.fake.FakeFlightPlanBuilder.flightPlan;
 
-public class FlightListServiceShould {
+public class FindFlightServiceShould {
 
     private static final String NOT_EXIST_FLIGHT_NUMBER = "fwefefef";
-    private FlightListService app;
+    private FindFlightService app;
     private FlightMapper flightMapper;
 
     @BeforeEach
     void setUp() {
-        app = new FlightListServiceImpl(new FakeFlight());
+        app = new FindFind(new FakeFlight());
         flightMapper = new FlightMapper();
     }
 

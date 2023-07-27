@@ -1,12 +1,12 @@
-package travelAgency.application.exchange_rates;
+package travelAgency.infrastructure.libraries;
 
 import travelAgency.model.rate.currency.Currency;
 
-public final class ExchangeRates implements ExchangeRateProvider {
+public final class FindExchangeRate implements ExchangeRateProvider {
 
     private final ExchangeRateDAO exchangeRateDAO;
 
-    public ExchangeRates(ExchangeRateDAO exchangeRateDAO) {
+    public FindExchangeRate(ExchangeRateDAO exchangeRateDAO) {
         this.exchangeRateDAO = exchangeRateDAO;
     }
 

@@ -1,4 +1,4 @@
-package travelAgency.application.exchange_rates;
+package travelAgency.infrastructure.libraries;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.model.rate.currency.Currency;

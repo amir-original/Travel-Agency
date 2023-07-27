@@ -3,7 +3,7 @@ package travelAgency.infrastructure;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.jetbrains.annotations.NotNull;
-import travelAgency.application.exchange_rates.ExchangeRateDAO;
+import travelAgency.infrastructure.libraries.ExchangeRateDAO;
 import travelAgency.infrastructure.io.PropertiesReader;
 import travelAgency.infrastructure.network.HttpClient;
 import travelAgency.infrastructure.network.HttpRequestHandler;
@@ -20,13 +20,12 @@ import travelAgency.infrastructure.persistence.jdbc_mysql.reservation.Reservatio
 import travelAgency.model.rate.currency.Currency;
 import travelAgency.infrastructure.libraries.*;
 import travelAgency.infrastructure.user_interface.web.controller.*;
-import travelAgency.application.exchange_rates.CurrencyConverter;
-import travelAgency.application.exchange_rates.ExchangeRateProvider;
-import travelAgency.application.exchange_rates.ExchangeRates;
-import travelAgency.application.flight.FlightAvailability;
-import travelAgency.application.flight.FlightListServiceImpl;
-import travelAgency.application.reservation.ReservationListServiceImpl;
-import travelAgency.application.reservation.ReservationNumberImpl;
+import travelAgency.infrastructure.libraries.CurrencyConverter;
+import travelAgency.infrastructure.libraries.ExchangeRateProvider;
+import travelAgency.infrastructure.libraries.FindExchangeRate;
+import travelAgency.application.use_case.FindFind;
+import travelAgency.application.use_case.FindReservation;
+import travelAgency.infrastructure.persistence.jdbc_mysql.reservation.ReservationNumberImpl;
 
 import java.time.LocalDate;
 
@@ -36,7 +35,7 @@ public class ServiceContainer {
         return new ReservationController(
                 reservationsRepository(),
                 passengerRepository(),
-                getFlightAvailability(),
+                FindReservationService(),
                 getTicketNumberGenerator()
                 ,getFlightListService());
     }
@@ -46,7 +45,7 @@ public class ServiceContainer {
     }
 
     public FlightOperations flightController() {
-        return new FlightController(getFlightListService(), getReservationListService());
+        return new FlightController(getFlightListService(), FindReservationService());
     }
 
     private PassengerRepository passengerRepository() {
@@ -58,18 +57,13 @@ public class ServiceContainer {
     }
 
     @NotNull
-    private FlightAvailability getFlightAvailability() {
-        return new FlightAvailability(getReservationListService());
+    private FindReservation FindReservationService() {
+        return new FindReservation(reservationsRepository(), getFlightListService());
     }
 
     @NotNull
-    private ReservationListServiceImpl getReservationListService() {
-        return new ReservationListServiceImpl(reservationsRepository(), getFlightListService());
-    }
-
-    @NotNull
-    private FlightListServiceImpl getFlightListService() {
-        return new FlightListServiceImpl(getFlightRepository());
+    private FindFind getFlightListService() {
+        return new FindFind(getFlightRepository());
     }
 
     @NotNull
@@ -102,7 +96,7 @@ public class ServiceContainer {
 
     @NotNull
     private ExchangeRateProvider getExchangeRateService() {
-        return new ExchangeRates(getExchangeRateDAO());
+        return new FindExchangeRate(getExchangeRateDAO());
     }
 
     @NotNull

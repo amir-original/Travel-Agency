@@ -3,13 +3,13 @@ package travelAgency.use_case.flight;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.application.exchange_rates.ExchangeRateDAO;
+import travelAgency.infrastructure.libraries.ExchangeRateDAO;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.rate.currency.Money;
-import travelAgency.application.exchange_rates.CurrencyConverter;
-import travelAgency.application.exchange_rates.ExchangeRates;
-import travelAgency.application.flight.FlightListService;
-import travelAgency.application.flight.FlightListServiceImpl;
+import travelAgency.infrastructure.libraries.CurrencyConverter;
+import travelAgency.infrastructure.libraries.FindExchangeRate;
+import travelAgency.application.use_case.FindFlightService;
+import travelAgency.application.use_case.FindFind;
 import travelAgency.use_case.fake.FakeFlight;
 
 import java.util.List;
@@ -29,14 +29,14 @@ public class SearchFlightEngineShould {
     private static final double ONE_DOLLAR_TO_RIAL = 42700D;
     private static final Double ONE_RIAL_TO_DOLLAR = 0.000024;
 
-    private FlightListService app;
+    private FindFlightService app;
     private CurrencyConverter currencyConverter;
 
     @BeforeEach
     void setUp() {
-        app = new FlightListServiceImpl(new FakeFlight());
+        app = new FindFind(new FakeFlight());
         final ExchangeRateDAO exchangeRateDAO = mockExchangeRateDAO();
-        currencyConverter = new CurrencyConverter(new ExchangeRates(exchangeRateDAO));
+        currencyConverter = new CurrencyConverter(new FindExchangeRate(exchangeRateDAO));
     }
 
     @Test
