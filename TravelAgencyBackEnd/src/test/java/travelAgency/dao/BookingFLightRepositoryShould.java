@@ -59,7 +59,7 @@ public class BookingFLightRepositoryShould {
     }
 
     @Test
-    void throw_CouldNotBookReservation_when_reservation_number_is_duplicate() {
+    void not_create_reservation_when_reservation_number_is_duplicate() {
         insertSingleReservation();
         final Reservation reservation = FakeReservation.getReservation("AA-7845-65874");
 
@@ -76,7 +76,7 @@ public class BookingFLightRepositoryShould {
     private Reservation insertSingleReservation() {
         final Reservation reservation =
                 FakeReservation.getReservation("AA-7845-65874");
-        passengerApi.save(reservation.passenger());
+        passengerApi.enroll(reservation.passenger());
         api.book(reservation);
         return reservation;
     }

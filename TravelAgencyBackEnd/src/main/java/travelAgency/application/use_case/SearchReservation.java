@@ -5,18 +5,17 @@ import travelAgency.model.reservation.ReservationRepository;
 import travelAgency.application.dto.FlightDto;
 import travelAgency.model.reservation.Reservation;
 import travelAgency.exceptions.CouldNotFoundReservation;
-import travelAgency.exceptions.FlightNotFoundException;
 
 import java.time.LocalDate;
 
-public final class FindReservation implements FindReservationService {
+public final class SearchReservation implements SearchReservationService {
 
     public static final int NO_BOOKINGS = 0;
     private final ReservationRepository reservations;
     private final FindFlightService flights;
 
 
-    public FindReservation(ReservationRepository reservations, FindFlightService flights) {
+    public SearchReservation(ReservationRepository reservations, FindFlightService flights) {
         this.reservations = reservations;
         this.flights = flights;
     }

@@ -1,20 +1,16 @@
-package travelAgency.use_case.reservation;
+package travelAgency.use_case;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import travelAgency.exceptions.*;
 import travelAgency.model.passenger.PassengerRepository;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.reservation.ReservationInformation;
-import travelAgency.exceptions.FullyBookedException;
-import travelAgency.exceptions.InvalidFlightNumberException;
-import travelAgency.exceptions.NotEnoughCapacityException;
-import travelAgency.exceptions.PastFlightScheduleException;
 import travelAgency.application.use_case.BookingReservation;
-import travelAgency.application.use_case.FlightAvailability;
 import travelAgency.application.use_case.FindFlightService;
-import travelAgency.application.use_case.FindFind;
-import travelAgency.application.use_case.FindReservationService;
-import travelAgency.application.use_case.FindReservation;
+import travelAgency.application.use_case.FindFlight;
+import travelAgency.application.use_case.SearchReservationService;
+import travelAgency.application.use_case.SearchReservation;
 import travelAgency.application.use_case.ReservationNumberGenerator;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakePassenger;
@@ -36,12 +32,12 @@ public class BookingReservationShould {
         ReservationNumberGenerator reservationNumber = new FakeReservationNumber();
         FakeReservation fakeBookingList = new FakeReservation();
         FakeFlight fakeFlight = new FakeFlight();
-        FindFlightService flightService = new FindFind(fakeFlight);
-        FindReservationService findReservationService
-                = new FindReservation(fakeBookingList, flightService);
+        FindFlightService flightService = new FindFlight(fakeFlight);
+        SearchReservationService searchReservationService
+                = new SearchReservation(fakeBookingList, flightService);
         PassengerRepository passengerService = new FakePassenger();
 
-        app = new BookingReservation(fakeBookingList, passengerService,findReservationService, reservationNumber);
+        app = new BookingReservation(fakeBookingList, passengerService, searchReservationService, reservationNumber);
     }
 
 
@@ -54,7 +50,13 @@ public class BookingReservationShould {
 
 
     @Test
-    void throw_InvalidFlightNumberException_when_flight_number_is_empty_or_less_than_3_length() {
+    void not_book_reservation_when_there_is_not_any_flight_with_entered_information() {
+        assertThatExceptionOfType(FlightNotFoundException.class)
+                .isThrownBy(() -> app.book(reservationInformation().withNotFoundFlight().build()));
+    }
+
+    @Test
+    void not_book_reservation_when_flight_number_is_empty_or_less_than_3_length() {
         assertThatExceptionOfType(InvalidFlightNumberException.class)
                 .isThrownBy(() -> app.book(reservationInformation()
                         .withFlight(flight().withFlightNumber("").build())
@@ -67,7 +69,7 @@ public class BookingReservationShould {
     }
 
     @Test
-    void throw_PastFlightScheduleException_when_book_flight_with_past_departure_date() {
+    void not_book_a_flight_with_past_departure_date() {
         assertThatExceptionOfType(PastFlightScheduleException.class)
                 .isThrownBy(() -> app.book(reservationInformation()
                         .withFlight(flight("4784"))
@@ -75,7 +77,7 @@ public class BookingReservationShould {
     }
 
     @Test
-    void throw_PastFlightScheduleException_when_book_flight_with_past_arrival_date() {
+    void not_book_a_flight_with_past_arrival_date() {
         assertThatExceptionOfType(PastFlightScheduleException.class)
                 .isThrownBy(() -> app.book(reservationInformation()
                         .withFlight(flight("5120"))
@@ -83,7 +85,7 @@ public class BookingReservationShould {
     }
 
     @Test
-    void throw_IllegalArgumentException_when_origin_and_destination_is_the_same() {
+    void not_book_a_flight_when_origin_and_destination_is_the_same() {
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> {
                     final Flight flight = flight().from(TEHRAN).to(TEHRAN).build();
@@ -92,7 +94,7 @@ public class BookingReservationShould {
     }
 
     @Test
-    void throw_FullyBookedException_when_attempting_to_book_a_flight_that_has_reached_full_capacity() {
+    void not_book_a_flight_when_has_reached_full_capacity() {
         bookingAllSeats();
 
         assertThatExceptionOfType(FullyBookedException.class)
@@ -100,7 +102,7 @@ public class BookingReservationShould {
     }
 
     @Test
-    void throw_NotEnoughCapacityException_if_there_are_not_enough_seats_available_when_booking_a_flight() {
+    void not_book_a_flight_when_there_are_insufficient_available_seats() {
         bookSeats(30);
 
         assertThatExceptionOfType(NotEnoughCapacityException.class)

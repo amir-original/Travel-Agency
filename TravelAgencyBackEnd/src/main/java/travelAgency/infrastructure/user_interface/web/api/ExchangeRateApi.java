@@ -1,7 +1,7 @@
 package travelAgency.infrastructure.user_interface.web.api;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.infrastructure.libraries.ExchangeRateDAO;
+import travelAgency.infrastructure.libraries.currency_converter.ExchangeRateDAO;
 import travelAgency.infrastructure.io.PropertiesReader;
 import travelAgency.infrastructure.network.HttpClient;
 import travelAgency.infrastructure.network.Response;

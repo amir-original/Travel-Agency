@@ -1,4 +1,4 @@
-package travelAgency.use_case.reservation;
+package travelAgency.use_case;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,10 +9,9 @@ import travelAgency.model.passenger.ResidentialAddress;
 import travelAgency.exceptions.*;
 import travelAgency.application.use_case.BookingReservation;
 import travelAgency.application.use_case.FindFlightService;
-import travelAgency.application.use_case.FindFind;
-import travelAgency.application.use_case.FindReservation;
+import travelAgency.application.use_case.FindFlight;
+import travelAgency.application.use_case.SearchReservation;
 import travelAgency.application.use_case.ReservationNumberGenerator;
-import travelAgency.application.use_case.FlightAvailability;
 import travelAgency.use_case.fake.FakeReservation;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakePassenger;
@@ -23,22 +22,22 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static travelAgency.use_case.fake.FakeReservationInformation.reservationInformation;
 import static travelAgency.use_case.fake.FakePassenger.passenger;
 
-public class BookingReservationPassengerInfoShould {
+public class ShouldNotBookReservation {
     private BookingReservation app;
 
     @BeforeEach
     void setUp() {
         ReservationNumberGenerator reservationNumber = new FakeReservationNumber();
         FakeReservation fakeBookingList = new FakeReservation();
-        final FindFlightService flights = new FindFind(new FakeFlight());
-        final FindReservation findReservation = new FindReservation(new FakeReservation(),flights);
+        final FindFlightService flights = new FindFlight(new FakeFlight());
+        final SearchReservation searchReservation = new SearchReservation(new FakeReservation(),flights);
         FakePassenger passengers = new FakePassenger();
 
-        app = new BookingReservation(fakeBookingList, passengers, findReservation, reservationNumber);
+        app = new BookingReservation(fakeBookingList, passengers, searchReservation, reservationNumber);
     }
 
     @Test
-    void throw_IllegalArgumentException_when_book_a_flight_without_passenger() {
+    void when_a_flight_without_passenger() {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(reservationInformation().withPassenger(null).build())),
@@ -48,19 +47,13 @@ public class BookingReservationPassengerInfoShould {
     }
 
     @Test
-    void throw_InvalidNumberOfTicketsException_when_travelers_are_less_than_or_equal_to_zero() {
+    void when_travelers_are_less_than_or_equal_to_zero() {
         assertThatExceptionOfType(InvalidNumberOfTicketsException.class)
                 .isThrownBy(() -> app.book(reservationInformation().withTravelers(0).build()));
     }
 
     @Test
-    void throw_FlightNotFoundException_when_there_is_not_any_flight_with_entered_information() {
-        assertThatExceptionOfType(FlightNotFoundException.class)
-                .isThrownBy(() -> app.book(reservationInformation().withNotFoundFlight().build()));
-    }
-
-    @Test
-    void throw_IllegalArgumentException_when_passenger_first_name_is_empty_or_blank() {
+    void when_passenger_first_name_is_empty_or_blank() {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(reservationInformation()
@@ -74,7 +67,7 @@ public class BookingReservationPassengerInfoShould {
     }
 
     @Test
-    void throw_IllegalArgumentException_when_passenger_last_name_is_empty_or_blank() {
+    void when_passenger_last_name_is_empty_or_blank() {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(reservationInformation()
@@ -89,7 +82,7 @@ public class BookingReservationPassengerInfoShould {
 
 
     @Test
-    void throw_IllegalArgumentException_when_passenger_name_is_null() {
+    void when_passenger_name_is_null() {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.book(reservationInformation()
@@ -104,7 +97,7 @@ public class BookingReservationPassengerInfoShould {
     }
 
     @Test
-    void throw_IllegalArgumentException_when_passenger_birthday_is_null() {
+    void when_passenger_birthday_is_null() {
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> app.book(reservationInformation()
                         .withPassenger(passenger().birthday(null).build())
@@ -112,7 +105,7 @@ public class BookingReservationPassengerInfoShould {
     }
 
     @Test
-    void throw_IllegalArgumentException_when_passenger_zipcode_is_null_or_empty() {
+    void when_passenger_zipcode_is_null_or_empty() {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> {
@@ -135,7 +128,7 @@ public class BookingReservationPassengerInfoShould {
     }
 
     @Test
-    void throw_IllegalArgumentException_when_passengers_address_is_empty() {
+    void when_passengers_address_is_empty() {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> {
@@ -158,7 +151,7 @@ public class BookingReservationPassengerInfoShould {
     }
 
     @Test
-    void throw_IllegalArgumentException_when_phone_number_is_null_or_empty() {
+    void when_phone_number_is_null_or_empty() {
         assertAll(
                 () -> assertThat(IllegalArgumentException.class,null),
                 () -> assertThat(IllegalArgumentException.class,"")
@@ -167,7 +160,7 @@ public class BookingReservationPassengerInfoShould {
     }
 
     @Test
-    void throw_InvalidPhoneNumberException_when_phone_number_is_invalid_format() {
+    void when_phone_number_is_invalid_format() {
         assertAll(
                 () -> assertThat(InvalidPhoneNumberException.class,"09124568"),
                 () -> assertThat(InvalidPhoneNumberException.class,"0911145235675")

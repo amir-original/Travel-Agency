@@ -4,18 +4,18 @@ import travelAgency.model.flight.Flight;
 import travelAgency.model.flight.FlightPlan;
 import travelAgency.application.dto.FlightDto;
 import travelAgency.application.use_case.FindFlightService;
-import travelAgency.application.use_case.FindReservationService;
+import travelAgency.application.use_case.SearchReservationService;
 
 import java.util.List;
 
 public class FlightController implements FlightOperations {
 
     private final FindFlightService findFlightService;
-    private final FindReservationService findReservationService;
+    private final SearchReservationService searchReservationService;
 
-    public FlightController(FindFlightService findFlightService, FindReservationService findReservationService) {
+    public FlightController(FindFlightService findFlightService, SearchReservationService searchReservationService) {
         this.findFlightService = findFlightService;
-        this.findReservationService = findReservationService;
+        this.searchReservationService = searchReservationService;
     }
 
     public List<Flight> searchFlights(FlightPlan flightPlan) {
@@ -27,7 +27,7 @@ public class FlightController implements FlightOperations {
     }
 
     public int availableSeats(String flightNumber){
-        return findReservationService.availableSeats(flightNumber);
+        return searchReservationService.availableSeats(flightNumber);
     }
 
 

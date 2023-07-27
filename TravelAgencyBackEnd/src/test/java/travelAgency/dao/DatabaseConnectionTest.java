@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.*;
 public class DatabaseConnectionTest {
 
     @Test
-    void connect_to_database_without_throw_any_exception() {
+    void should_connect_to_database_without_throw_any_exception() {
         final ConnectionConfiguration configuration =
                 ConnectionConfigurationImpl.of(PropertiesReader.of("test-db-config"));
         final MySQLDbConnection dbConnection = new MySQLDbConnection(configuration);
@@ -22,11 +22,4 @@ public class DatabaseConnectionTest {
             fail("!! connect to database is fail !!");
         }
     }
-
-    /*@Test
-    void throw_CouldNotConnectToDatabase_when_enter_wrong_db_config() {
-        final MySQLDbConnection dbConnection = new MySQLDbConnection(HOST, USER, PASS);
-
-        assertThatExceptionOfType(CouldNotConnectToDatabase.class).isThrownBy(dbConnection::currentConnection);
-    }*/
 }

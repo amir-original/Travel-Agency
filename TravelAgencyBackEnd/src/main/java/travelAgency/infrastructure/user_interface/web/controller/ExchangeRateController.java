@@ -2,7 +2,7 @@ package travelAgency.infrastructure.user_interface.web.controller;
 
 import travelAgency.model.rate.currency.Currency;
 import travelAgency.model.rate.currency.Money;
-import travelAgency.infrastructure.libraries.CurrencyConverter;
+import travelAgency.infrastructure.libraries.currency_converter.CurrencyConverter;
 
 public class ExchangeRateController implements ExchangeRateOperations {
 

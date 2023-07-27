@@ -18,6 +18,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static travelAgency.use_case.fake.FakePassenger.passenger;
+import static travelAgency.use_case.fake.FakeReservationInformation.reservationInformation;
 
 public class FindFlightRepositoryShould {
 
@@ -33,7 +35,7 @@ public class FindFlightRepositoryShould {
     }
 
     @Test
-    void find_flight_with_flight_number() {
+    void find_flight_with_valid_flight_number_without_throw_exception() {
         final Flight flight = insertSingleFlight("0321");
 
         final Optional<Flight> fetchedFlight = api.findFlight(flight.flightNumber());
@@ -52,7 +54,7 @@ public class FindFlightRepositoryShould {
     }
 
     @Test
-    void delete_flight_by_flight_number() {
+    void delete_flight_when_flight_number_is_valid() {
         final String flightNumber = "4784";
         final Flight flight = insertSingleFlight(flightNumber);
 
@@ -65,7 +67,7 @@ public class FindFlightRepositoryShould {
     }
 
     @Test
-    void throw_CouldNotFoundFlight_when_find_flight_that_is_not_exist() {
+    void not_find_any_flight_when_flight_number_is_incorrect_or_does_not_exist() {
         assertThatExceptionOfType(CouldNotFoundFlight.class)
                 .isThrownBy(()->api.findFlight("Not Found Flight Number"));
     }

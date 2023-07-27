@@ -32,13 +32,13 @@ public class FakePassenger implements PassengerRepository {
     }
 
     @Override
-    public void save(Passenger passenger) {
+    public void enroll(Passenger passenger) {
         passengers.add(passenger);
     }
 
     @Override
-    public void save(List<Passenger> passengers) {
-        passengers.forEach(this::save);
+    public void enroll(List<Passenger> passengers) {
+        passengers.forEach(this::enroll);
     }
 
     @Override

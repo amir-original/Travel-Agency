@@ -4,8 +4,8 @@ import travelAgency.infrastructure.*;
 import travelAgency.infrastructure.user_interface.web.controller.ExchangeRateOperations;
 import travelAgency.infrastructure.user_interface.web.controller.FlightOperations;
 import travelAgency.infrastructure.user_interface.web.controller.ReservationOperations;
-import travelAgency.application.city.CityService;
-import travelAgency.application.city.CityServiceImpl;
+import travelAgency.infrastructure.libraries.city.CityService;
+import travelAgency.infrastructure.libraries.city.CityServiceImpl;
 import travelAgency.ui.pages.HomePage;
 
 public class App {

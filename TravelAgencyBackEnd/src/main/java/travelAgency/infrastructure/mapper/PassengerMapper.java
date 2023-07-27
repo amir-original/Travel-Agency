@@ -1,6 +1,8 @@
-package travelAgency.application.dto;
+package travelAgency.infrastructure.mapper;
 
 import org.jetbrains.annotations.NotNull;
+import travelAgency.application.dto.PassengerDto;
+import travelAgency.application.dto.PassengerDtoBuilder;
 import travelAgency.model.passenger.*;
 
 import java.time.LocalDate;

@@ -1,9 +1,9 @@
 package travelAgency.use_case.fake;
 
 import travelAgency.application.dto.PassengerDto;
-import travelAgency.application.dto.PassengerMapper;
+import travelAgency.infrastructure.mapper.PassengerMapper;
 import travelAgency.application.dto.FlightDto;
-import travelAgency.application.dto.FlightMapper;
+import travelAgency.infrastructure.mapper.FlightMapper;
 import travelAgency.model.reservation.ReservationInformation;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.passenger.Passenger;

@@ -1,6 +1,7 @@
-package travelAgency.application.dto;
+package travelAgency.infrastructure.mapper;
 
 import org.jetbrains.annotations.NotNull;
+import travelAgency.application.dto.FlightDto;
 import travelAgency.model.city.City;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.flight.FlightLocation;

@@ -33,11 +33,11 @@ public class PassengerRepositoryShould {
     }
 
     @Test
-    void save_passenger_info_and_fetch_passenger_with_id() {
+    void enroll_a_passenger_with_valid_information_without_throwing_any_exception() {
         final Passenger passenger = FakePassenger.passenger()
                 .withId(PassengerId.withId("8787684512")).build();
 
-        api.save(passenger);
+        api.enroll(passenger);
 
         final Optional<Passenger> fetchedPassenger = api.findPassengerById(passenger.getId());
 
@@ -47,29 +47,29 @@ public class PassengerRepositoryShould {
     }
 
     @Test
+    void not_enroll_a_duplicate_passenger() {
+        final Passenger passenger = fakePassenger.findPassengerById("4444556622").get();
+        api.enroll(passenger);
+
+        assertThatExceptionOfType(CouldNotSavePassenger.class)
+                .isThrownBy(()-> api.enroll(passenger));
+    }
+
+    @Test
+    void not_find_any_passenger_when_passenger_passenger_number_doesnt_exist() {
+        assertThatExceptionOfType(CouldNotFoundPassenger.class)
+                .isThrownBy(()->api.findPassengerById("notFound"));
+    }
+
+    @Test
     void fetch_all_passengers() {
         insertMultiplePassengers();
 
         assertThat(api.getPassengers().size()).isEqualTo(4);
     }
 
-    @Test
-    void throw_CouldNotSavePassenger_when_tried_to_save_duplicate_passenger() {
-        final Passenger passenger = fakePassenger.findPassengerById("4444556622").get();
-        api.save(passenger);
-
-        assertThatExceptionOfType(CouldNotSavePassenger.class)
-                .isThrownBy(()-> api.save(passenger));
-    }
-
-    @Test
-    void throw_CouldNotFindPassenger_when_provide_not_Exist_passenger_id() {
-        assertThatExceptionOfType(CouldNotFoundPassenger.class)
-                .isThrownBy(()->api.findPassengerById("notFound"));
-    }
-
     private void insertMultiplePassengers() {
-        api.save(fakePassenger.getPassengers());
+        api.enroll(fakePassenger.getPassengers());
     }
 
     @AfterEach

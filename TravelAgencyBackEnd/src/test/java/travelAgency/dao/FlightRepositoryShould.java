@@ -38,7 +38,7 @@ public class FlightRepositoryShould {
 
 
     @Test
-    void create_new_flight() {
+    void add_a_flight_without_throwing_any_exception() {
         final Flight flight = insertSingleFlight();
 
         final Optional<Flight> fetchedFlight = api.findFlight(flight.flightNumber());
@@ -47,13 +47,20 @@ public class FlightRepositoryShould {
     }
 
     @Test
-    void throw_CouldNotFoundFlight_when_delete_flight() {
+    void not_be_deleted_any_flight_when_flight_doesnt_exist() {
         final Flight flight = insertSingleFlight();
 
         api.deleteFlight(flight);
 
         assertThatExceptionOfType(CouldNotFoundFlight.class)
                 .isThrownBy(()-> api.findFlight(flight.flightNumber()));
+    }
+
+    @Test
+    void not_added_any_flight_when_flight_is_duplicate() {
+        insertSingleFlight();
+
+        assertThatExceptionOfType(CouldNotStoreFlight.class).isThrownBy(this::insertSingleFlight);
     }
 
     @Test
@@ -74,13 +81,6 @@ public class FlightRepositoryShould {
 
         final List<Flight> fetchedFlights = api.flights();
         assertThat(fetchedFlights).isEmpty();
-    }
-
-    @Test
-    void throw_CouldNotStoreFlight_when_insert_duplicated_data() {
-        insertSingleFlight();
-
-        assertThatExceptionOfType(CouldNotStoreFlight.class).isThrownBy(this::insertSingleFlight);
     }
 
     private void insertMultipleFlights() {

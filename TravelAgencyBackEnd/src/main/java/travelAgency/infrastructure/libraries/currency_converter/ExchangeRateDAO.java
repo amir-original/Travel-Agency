@@ -1,4 +1,4 @@
-package travelAgency.infrastructure.libraries;
+package travelAgency.infrastructure.libraries.currency_converter;
 
 import travelAgency.model.rate.ExchangeRate;
 import travelAgency.model.rate.currency.Currency;

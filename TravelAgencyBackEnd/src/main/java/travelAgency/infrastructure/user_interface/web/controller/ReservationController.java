@@ -6,10 +6,9 @@ import travelAgency.model.reservation.Reservation;
 import travelAgency.model.reservation.ReservationInformation;
 import travelAgency.application.use_case.BookingReservation;
 import travelAgency.application.use_case.CancelReservation;
-import travelAgency.application.use_case.FlightAvailability;
 import travelAgency.application.use_case.FindFlightService;
-import travelAgency.application.use_case.FindReservationService;
-import travelAgency.application.use_case.FindReservation;
+import travelAgency.application.use_case.SearchReservationService;
+import travelAgency.application.use_case.SearchReservation;
 import travelAgency.application.use_case.ReservationNumberGenerator;
 
 import java.time.LocalDate;
@@ -18,17 +17,17 @@ public class ReservationController implements ReservationOperations {
 
     private final BookingReservation bookingReservation;
     private final CancelReservation cancelReservation;
-    private final FindReservationService findReservationService;
+    private final SearchReservationService searchReservationService;
 
     public ReservationController(ReservationRepository reservations,
                                  PassengerRepository passengers,
-                                 FindReservationService findReservationService,
+                                 SearchReservationService searchReservationService,
                                  ReservationNumberGenerator reservationNumber,
                                  FindFlightService flightsService) {
         this.bookingReservation =
-                new BookingReservation(reservations, passengers, findReservationService,reservationNumber);
+                new BookingReservation(reservations, passengers, searchReservationService,reservationNumber);
         this.cancelReservation = new CancelReservation(reservations);
-        this.findReservationService = new FindReservation(reservations, flightsService);
+        this.searchReservationService = new SearchReservation(reservations, flightsService);
 
     }
 
@@ -41,11 +40,11 @@ public class ReservationController implements ReservationOperations {
     }
 
     public Reservation search(String flightNumber,String passengerFirstName,LocalDate PassengerBirthday){
-        return findReservationService.search(flightNumber,passengerFirstName,PassengerBirthday);
+        return searchReservationService.search(flightNumber,passengerFirstName,PassengerBirthday);
     }
 
 
     public Reservation search(String reservationNumber) {
-        return findReservationService.search(reservationNumber);
+        return searchReservationService.search(reservationNumber);
     }
 }

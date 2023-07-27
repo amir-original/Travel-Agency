@@ -1,15 +1,15 @@
-package travelAgency.use_case.flight;
+package travelAgency.use_case;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.infrastructure.libraries.ExchangeRateDAO;
+import travelAgency.infrastructure.libraries.currency_converter.ExchangeRateDAO;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.rate.currency.Money;
-import travelAgency.infrastructure.libraries.CurrencyConverter;
-import travelAgency.infrastructure.libraries.FindExchangeRate;
+import travelAgency.infrastructure.libraries.currency_converter.CurrencyConverter;
+import travelAgency.infrastructure.libraries.currency_converter.FindExchangeRate;
 import travelAgency.application.use_case.FindFlightService;
-import travelAgency.application.use_case.FindFind;
+import travelAgency.application.use_case.FindFlight;
 import travelAgency.use_case.fake.FakeFlight;
 
 import java.util.List;
@@ -24,7 +24,7 @@ import static travelAgency.model.rate.currency.Currency.USD;
 import static travelAgency.use_case.fake.FakeFlight.flight;
 import static travelAgency.use_case.fake.FakeFlightPlanBuilder.flightPlan;
 
-public class SearchFlightEngineShould {
+public class SearchFlightShould {
 
     private static final double ONE_DOLLAR_TO_RIAL = 42700D;
     private static final Double ONE_RIAL_TO_DOLLAR = 0.000024;
@@ -34,13 +34,13 @@ public class SearchFlightEngineShould {
 
     @BeforeEach
     void setUp() {
-        app = new FindFind(new FakeFlight());
+        app = new FindFlight(new FakeFlight());
         final ExchangeRateDAO exchangeRateDAO = mockExchangeRateDAO();
         currencyConverter = new CurrencyConverter(new FindExchangeRate(exchangeRateDAO));
     }
 
     @Test
-    void get_flights_by_search_flight_plan() {
+    void find_flights_with_searched_flight_plan() {
         final List<Flight> flights = app.searchFlights(flightPlan().build());
         assertAll(
                 () -> assertThat(flights).isNotEmpty(),
@@ -49,7 +49,7 @@ public class SearchFlightEngineShould {
     }
 
     @Test
-    void return_empty_list_when_not_match_exists_flights_with_search_flight() {
+    void return_empty_when_no_flights_match_the_searched_criteria() {
         final List<Flight> flights = app.searchFlights(flightPlan().withNotExistLocation().build());
         assertAll(
                 () -> assertThat(flights).isEmpty(),
@@ -58,7 +58,7 @@ public class SearchFlightEngineShould {
     }
 
     @Test
-    void throw_IllegalArgumentException_when_flight_location_is_null() {
+    void not_find_any_flight_when_location_is_null() {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> app.searchFlights(flightPlan().departureAt(null).build())),
@@ -100,7 +100,7 @@ public class SearchFlightEngineShould {
     }
 
     @Test
-    void throw_IllegalArgumentException_when_converted_negative_amount() {
+    void not_converted_money_when_amount_is_negative() {
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> currencyConverter.convert(Money.of(-500, USD),IRR));
     }

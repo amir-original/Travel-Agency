@@ -11,7 +11,7 @@ import travelAgency.application.dto.FlightDto;
 import travelAgency.infrastructure.user_interface.web.controller.ExchangeRateOperations;
 import travelAgency.infrastructure.user_interface.web.controller.FlightOperations;
 import travelAgency.infrastructure.user_interface.web.controller.ReservationOperations;
-import travelAgency.application.city.CityService;
+import travelAgency.infrastructure.libraries.city.CityService;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
 

@@ -1,7 +1,6 @@
 package travelAgency.model.reservation;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.application.use_case.FlightAvailability;
 import travelAgency.exceptions.FullyBookedException;
 import travelAgency.exceptions.InvalidNumberOfTicketsException;
 import travelAgency.exceptions.NotEnoughCapacityException;
@@ -55,6 +54,30 @@ public final class Reservation {
 
     public boolean hasSameTicketNumber(String ticketNumber) {
         return this.reservationNumber.toText().equals(ticketNumber);
+    }
+
+    public void ensureCanBooking(int availableSeats) {
+        flight.validateScheduleNotInPast();
+        checkFlightCapacity(availableSeats);
+    }
+
+    public void checkFlightCapacity(int availableSeats) {
+        if (isSoldOutAllSeats(availableSeats))
+            throw new FullyBookedException();
+        if (hasNotEnoughCapacity(availableSeats))
+            throw new NotEnoughCapacityException();
+    }
+
+    private boolean isSoldOutAllSeats(int availableSeats) {
+        return availableSeats == NO_AVAILABLE_SEATS;
+    }
+
+    private boolean hasNotEnoughCapacity(int availableSeats) {
+        return !hasEnoughCapacity(availableSeats);
+    }
+
+    private boolean hasEnoughCapacity(int availableSeats) {
+        return availableSeats >= travelers();
     }
 
     public Flight flight() {
@@ -119,30 +142,6 @@ public final class Reservation {
                 ", passenger=" + passenger +
                 ", numberOfTickets=" + numberOfTickets +
                 '}';
-    }
-
-    public void ensureCanBooking(int availableSeats) {
-        flight.validateScheduleNotInPast();
-        checkFlightCapacity(availableSeats);
-    }
-
-    public void checkFlightCapacity(int availableSeats) {
-        if (isSoldOutAllSeats(availableSeats))
-            throw new FullyBookedException();
-        if (hasNotEnoughCapacity(availableSeats))
-            throw new NotEnoughCapacityException();
-    }
-
-    private boolean isSoldOutAllSeats(int availableSeats) {
-        return availableSeats == NO_AVAILABLE_SEATS;
-    }
-
-    private boolean hasNotEnoughCapacity(int availableSeats) {
-        return !hasEnoughCapacity(availableSeats);
-    }
-
-    private boolean hasEnoughCapacity(int availableSeats) {
-        return availableSeats >= travelers();
     }
 
 }

@@ -1,4 +1,4 @@
-package travelAgency.application.city;
+package travelAgency.infrastructure.libraries.city;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.model.city.City;

@@ -1,7 +1,7 @@
 package travelAgency.application.use_case;
 
 import travelAgency.application.dto.FlightDto;
-import travelAgency.application.dto.FlightMapper;
+import travelAgency.infrastructure.mapper.FlightMapper;
 import travelAgency.exceptions.FlightNotFoundException;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.flight.FlightPlan;
@@ -9,12 +9,12 @@ import travelAgency.model.flight.FlightRepository;
 
 import java.util.List;
 
-public final class FindFind implements FindFlightService {
+public final class FindFlight implements FindFlightService {
 
     private final FlightRepository flights;
     private final FlightMapper flightMapper;
 
-    public FindFind(FlightRepository flights) {
+    public FindFlight(FlightRepository flights) {
         this.flights = flights;
         flightMapper = new FlightMapper();
     }

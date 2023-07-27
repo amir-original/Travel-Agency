@@ -1,10 +1,10 @@
-package travelAgency.use_case.city;
+package travelAgency.infrastructure.libraries.city;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.model.city.City;
-import travelAgency.application.city.CityService;
-import travelAgency.application.city.CityServiceImpl;
+import travelAgency.infrastructure.libraries.city.CityService;
+import travelAgency.infrastructure.libraries.city.CityServiceImpl;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class CityServiceShould {
     }
 
     @Test
-    void convert_string_city_to_City_type() {
+    void convert_given_city_name_to_City_type_when_is_valid() {
         final City tehran = cityService.getCity("Tehran");
 
         assertThat(tehran).isEqualTo(City.TEHRAN);
@@ -45,7 +45,7 @@ public class CityServiceShould {
     }
 
     @Test
-    void throw_IllegalArgumentException_when_the_enter_name_is_invalid() {
+    void not_return_anything_when_city_name_is_invalid() {
 
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(()-> cityService.getCity("lahijan"));

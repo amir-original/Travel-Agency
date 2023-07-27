@@ -1,14 +1,14 @@
-package travelAgency.use_case.flight;
+package travelAgency.use_case;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.application.dto.FlightDto;
-import travelAgency.application.dto.FlightMapper;
+import travelAgency.infrastructure.mapper.FlightMapper;
 import travelAgency.exceptions.FlightNotFoundException;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.flight.FlightPlan;
 import travelAgency.application.use_case.FindFlightService;
-import travelAgency.application.use_case.FindFind;
+import travelAgency.application.use_case.FindFlight;
 import travelAgency.use_case.fake.FakeFlight;
 
 import java.util.List;
@@ -29,12 +29,12 @@ public class FindFlightServiceShould {
 
     @BeforeEach
     void setUp() {
-        app = new FindFind(new FakeFlight());
+        app = new FindFlight(new FakeFlight());
         flightMapper = new FlightMapper();
     }
 
     @Test
-    void find_flights_with_entered_flight_information() {
+    void find_flights_with_entered_flight_plan() {
         final FlightPlan flightPlan = flightPlan().build();
         final List<Flight> flights = app.searchFlights(flightPlan);
 
@@ -45,13 +45,13 @@ public class FindFlightServiceShould {
     }
 
     @Test
-    void return_empty_list_when_entered_wrong_information() {
+    void not_return_anything_when_flight_information_is_wrong() {
         FlightPlan flightPlan = flightPlan().from(LONDON).to(BAGHDAD).build();
         assertThat(app.searchFlights(flightPlan)).isEmpty();
     }
 
     @Test
-    void find_flight_with_flight_number() {
+    void find_flight_with_flight_number_without_throwing_any_exception() {
         final String flightNumber = "0321";
         final FlightDto flightDto = app.findFlight(flightNumber);
 
@@ -60,7 +60,7 @@ public class FindFlightServiceShould {
     }
 
     @Test
-    void throw_FlightNotFoundException_when_find_flight_with_wrong_flight_number() {
+    void not_find_any_flight_when_flight_number_is_incorrect() {
         assertThatExceptionOfType(FlightNotFoundException.class)
                 .isThrownBy(() -> app.findFlight(NOT_EXIST_FLIGHT_NUMBER));
     }

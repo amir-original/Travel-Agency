@@ -1,4 +1,4 @@
-package travelAgency.application.dto;
+package travelAgency.infrastructure.mapper;
 
 import travelAgency.model.flight.Flight;
 import travelAgency.model.passenger.Passenger;

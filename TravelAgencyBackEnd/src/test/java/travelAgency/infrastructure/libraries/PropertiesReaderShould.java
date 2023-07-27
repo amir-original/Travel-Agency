@@ -17,7 +17,7 @@ public class PropertiesReaderShould {
     }
 
     @Test
-    void throw_InvalidPropertiesFileException_when_can_not_found_any_file() {
+    void not_be_constructed_when_file_name_is_invalid_or_does_not_exist() {
         assertThatExceptionOfType(InvalidPropertiesFileException.class)
                 .isThrownBy(() -> new PropertiesReader("incorrect_file_name"));
     }

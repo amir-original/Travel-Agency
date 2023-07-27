@@ -1,14 +1,14 @@
-package travelAgency.use_case.currency_conversion;
+package travelAgency.infrastructure.libraries.currency_conversion;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import travelAgency.infrastructure.ServiceContainer;
-import travelAgency.infrastructure.libraries.ExchangeRateDAO;
+import travelAgency.infrastructure.libraries.currency_converter.ExchangeRateDAO;
 import travelAgency.exceptions.CouldNotConnectToExchangeRateWebService;
-import travelAgency.infrastructure.libraries.ExchangeRateProvider;
-import travelAgency.infrastructure.libraries.FindExchangeRate;
+import travelAgency.infrastructure.libraries.currency_converter.ExchangeRateProvider;
+import travelAgency.infrastructure.libraries.currency_converter.FindExchangeRate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static travelAgency.model.rate.currency.Currency.*;
@@ -27,14 +27,14 @@ public class ExchangeRateProviderRealWorldShould {
 
     @Test
     @Disabled
-    void throw_WebServiceConnectionFailureException_can_not_connect_to_webservice() {
+    void not_return_no_rate_when_can_not_connect_to_webservice() {
         Assertions.assertThatExceptionOfType(CouldNotConnectToExchangeRateWebService.class)
                 .isThrownBy(() -> exchangeRateProvider.getRateFor(EUR,USD));
     }
 
     @Test
     @Disabled
-    void connect_to_webservice_and_get_currency_rate() {
+    void return_exchange_rate_without_throw_any_exception() {
         assertThat(exchangeRateProvider.getRateFor(USD,IRR)).isEqualTo(42419.016);
 
         assertThat(exchangeRateProvider.getRateFor(IRR,USD)).isEqualTo(0.000024);

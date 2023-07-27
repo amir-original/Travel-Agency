@@ -28,7 +28,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
 
 
     @Override
-    public void save(Passenger passenger) {
+    public void enroll(Passenger passenger) {
         try (final PreparedStatement query = createQuery(INSERT_PASSENGER_SQL)) {
             fillOutPassengerFields(passenger, query);
             query.executeUpdate();
@@ -38,8 +38,8 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     }
 
     @Override
-    public void save(List<Passenger> passengers) {
-        passengers.forEach(this::save);
+    public void enroll(List<Passenger> passengers) {
+        passengers.forEach(this::enroll);
     }
 
     @Override

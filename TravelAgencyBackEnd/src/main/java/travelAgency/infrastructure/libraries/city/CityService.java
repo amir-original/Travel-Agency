@@ -1,4 +1,4 @@
-package travelAgency.application.city;
+package travelAgency.infrastructure.libraries.city;
 
 import travelAgency.model.city.City;
 

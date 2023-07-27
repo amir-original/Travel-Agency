@@ -3,7 +3,7 @@ package travelAgency.infrastructure;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.jetbrains.annotations.NotNull;
-import travelAgency.infrastructure.libraries.ExchangeRateDAO;
+import travelAgency.infrastructure.libraries.currency_converter.ExchangeRateDAO;
 import travelAgency.infrastructure.io.PropertiesReader;
 import travelAgency.infrastructure.network.HttpClient;
 import travelAgency.infrastructure.network.HttpRequestHandler;
@@ -20,11 +20,11 @@ import travelAgency.infrastructure.persistence.jdbc_mysql.reservation.Reservatio
 import travelAgency.model.rate.currency.Currency;
 import travelAgency.infrastructure.libraries.*;
 import travelAgency.infrastructure.user_interface.web.controller.*;
-import travelAgency.infrastructure.libraries.CurrencyConverter;
-import travelAgency.infrastructure.libraries.ExchangeRateProvider;
-import travelAgency.infrastructure.libraries.FindExchangeRate;
-import travelAgency.application.use_case.FindFind;
-import travelAgency.application.use_case.FindReservation;
+import travelAgency.infrastructure.libraries.currency_converter.CurrencyConverter;
+import travelAgency.infrastructure.libraries.currency_converter.ExchangeRateProvider;
+import travelAgency.infrastructure.libraries.currency_converter.FindExchangeRate;
+import travelAgency.application.use_case.FindFlight;
+import travelAgency.application.use_case.SearchReservation;
 import travelAgency.infrastructure.persistence.jdbc_mysql.reservation.ReservationNumberImpl;
 
 import java.time.LocalDate;
@@ -57,13 +57,13 @@ public class ServiceContainer {
     }
 
     @NotNull
-    private FindReservation FindReservationService() {
-        return new FindReservation(reservationsRepository(), getFlightListService());
+    private SearchReservation FindReservationService() {
+        return new SearchReservation(reservationsRepository(), getFlightListService());
     }
 
     @NotNull
-    private FindFind getFlightListService() {
-        return new FindFind(getFlightRepository());
+    private FindFlight getFlightListService() {
+        return new FindFlight(getFlightRepository());
     }
 
     @NotNull
