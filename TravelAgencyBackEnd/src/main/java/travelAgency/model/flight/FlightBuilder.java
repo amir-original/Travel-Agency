@@ -58,6 +58,8 @@ public class FlightBuilder {
         final FlightSchedule schedule = new FlightSchedule(departure, arrival);
         final FlightLocation location = new FlightLocation(from, to);
         final FlightPlan flightPlan = new FlightPlan(location, schedule);
-        return Flight.addWith(flightNumber, flightPlan, totalCapacity, price);
+        FlightNumber fn = FlightNumber.of(flightNumber);
+        FlightCapacity flightCapacity = FlightCapacity.of(totalCapacity);
+        return Flight.addWith(fn, flightPlan, flightCapacity, price);
     }
 }

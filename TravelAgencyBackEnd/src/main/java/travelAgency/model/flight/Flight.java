@@ -11,9 +11,10 @@ import java.util.Objects;
 public final class Flight {
 
     @NotNull
-    private final String flightNumber;
+    private final FlightNumber flightNumber;
 
-    private final int totalCapacity;
+    @NotNull
+    private final FlightCapacity totalCapacity;
 
     @NotNull
     private final Money price;
@@ -23,12 +24,10 @@ public final class Flight {
     private FlightStatus status = FlightStatus.SCHEDULED;
 
 
-    private Flight(@NotNull String flightNumber,
+    private Flight(@NotNull FlightNumber flightNumber,
                    @NotNull FlightPlan plan,
-                   int totalCapacity,
+                   @NotNull FlightCapacity totalCapacity,
                    @NotNull Money price) {
-        if (flightNumber.isBlank() || flightNumber.length() < 3)
-            throw new InvalidFlightNumberException();
 
         this.flightNumber = flightNumber;
         this.totalCapacity = totalCapacity;
@@ -36,7 +35,7 @@ public final class Flight {
         this.plan = plan;
     }
 
-    public static Flight addWith(String flightNumber, FlightPlan flightPlan, int totalCapacity, Money price) {
+    public static Flight addWith(FlightNumber flightNumber, FlightPlan flightPlan, FlightCapacity totalCapacity, Money price) {
         return new Flight(flightNumber, flightPlan, totalCapacity, price);
     }
 
@@ -45,7 +44,7 @@ public final class Flight {
     }
 
     public boolean hasSameFlightNumber(String flightNumber) {
-        return this.flightNumber.equals(flightNumber);
+        return this.flightNumber.isEqual(flightNumber);
     }
 
     public boolean hasSameFlightPlan(FlightPlan searchFlightPlan) {
@@ -81,11 +80,11 @@ public final class Flight {
     }
 
     public String flightNumber() {
-        return flightNumber;
+        return flightNumber.toText();
     }
 
     public int totalCapacity() {
-        return totalCapacity;
+        return totalCapacity.capacity();
     }
 
     public Money price() {
@@ -106,7 +105,7 @@ public final class Flight {
         if (obj == null || obj.getClass() != this.getClass()) return false;
         var that = (Flight) obj;
         return Objects.equals(this.flightNumber, that.flightNumber) &&
-                this.totalCapacity == that.totalCapacity &&
+                Objects.equals(this.totalCapacity,that.totalCapacity) &&
                 Objects.equals(this.price, that.price) &&
                 Objects.equals(this.plan, that.plan);
     }

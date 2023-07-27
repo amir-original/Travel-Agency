@@ -3,10 +3,7 @@ package travelAgency.infrastructure.mapper;
 import org.jetbrains.annotations.NotNull;
 import travelAgency.application.dto.FlightDto;
 import travelAgency.model.city.City;
-import travelAgency.model.flight.Flight;
-import travelAgency.model.flight.FlightLocation;
-import travelAgency.model.flight.FlightPlan;
-import travelAgency.model.flight.FlightSchedule;
+import travelAgency.model.flight.*;
 import travelAgency.model.rate.currency.Currency;
 import travelAgency.model.rate.currency.Money;
 
@@ -17,7 +14,9 @@ public class FlightMapper {
     public Flight toEntity (@NotNull FlightDto flightDto){
         FlightPlan flightPlan = getFlightPlan(flightDto);
         Money money = getMoney(flightDto);
-        return Flight.addWith(flightDto.getFlightNumber(), flightPlan, flightDto.getTotalCapacity(), money);
+        FlightNumber flightNumber = FlightNumber.of(flightDto.getFlightNumber());
+        FlightCapacity flightCapacity = FlightCapacity.of(flightDto.getTotalCapacity());
+        return Flight.addWith(flightNumber, flightPlan, flightCapacity, money);
     }
 
     public FlightDto toViewDto(@NotNull Flight flight){
