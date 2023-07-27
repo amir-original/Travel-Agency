@@ -43,7 +43,7 @@ public class BookingReservationPriorityTestCase {
         final ReservationInformation reservationInfo = reservationInformation().build();
 
         final Reservation fetchedReservation = app.book(reservationInfo);
-        assertThat(fetchedReservation.flight().flightNumber()).isEqualTo(reservationInfo.getFlightNumber());
+        assertThat(fetchedReservation.canMatchWith(reservationInfo.getFlightNumber())).isTrue();
 
 
         final InOrder inOrder = inOrder(findReservation, passengers, bookingLists, reservationNumber);

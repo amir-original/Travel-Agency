@@ -45,12 +45,11 @@ public class SearchReservationServiceShould {
 
     @Test
     void search_in_booking_list() {
-        var ticket = app.search(EXIST_FLIGHT_NUMBER, SARA, SARA_BIRTHDAY);
+        var reservation = app.search(EXIST_FLIGHT_NUMBER, SARA, SARA_BIRTHDAY);
 
         assertAll(
-                () -> assertThat(ticket.flightNumber()).isEqualTo(EXIST_FLIGHT_NUMBER),
-                () -> assertThat(ticket.passenger()).isEqualTo(passenger().build()),
-                () -> assertThat(ticket.flight()).isEqualTo(flight().build())
+                () -> assertThat(reservation.flightNumber()).isEqualTo(EXIST_FLIGHT_NUMBER),
+                () -> assertThat(reservation.passenger()).isEqualTo(passenger().build())
         );
     }
 

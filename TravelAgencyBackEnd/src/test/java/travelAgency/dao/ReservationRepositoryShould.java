@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static travelAgency.use_case.fake.FakeFlight.flight;
 import static travelAgency.use_case.fake.FakePassenger.passenger;
-import static travelAgency.use_case.fake.FakeReservationInformation.reservationInformation;
 
 public class ReservationRepositoryShould {
 
@@ -43,7 +42,7 @@ public class ReservationRepositoryShould {
     @Test
     void book_a__valid_reservation_without_throwing_any_exception() {
 
-        final Reservation reservation = insertBooking();
+        final Reservation reservation = createReservation();
 
         final Optional<Reservation> ticket = bookingLists.findReservation(reservation.reservationNumber());
 
@@ -56,7 +55,7 @@ public class ReservationRepositoryShould {
 
     @Test
     void cancel_a_booking_without_throwing_any_exception() {
-        final Reservation reservation = insertBooking();
+        final Reservation reservation = createReservation();
 
         bookingLists.cancel(reservation.reservationNumber());
 
@@ -66,7 +65,7 @@ public class ReservationRepositoryShould {
     }
 
     @NotNull
-    private Reservation insertBooking() {
+    private Reservation createReservation() {
         final Reservation reservation = FakeReservation.getReservation("AA-7845-65874");
 
         flights.addFlight(flight(reservation.flightNumber()));

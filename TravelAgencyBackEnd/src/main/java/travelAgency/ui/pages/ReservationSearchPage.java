@@ -257,7 +257,7 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
     }
 
     private void processFoundReservation(Reservation searchedReservation) {
-        Object[][] result = createReservationInfoArray(searchedReservation);
+        Object[][] result = searchedReservation.createReservationInfo();
         final JTable resultTable = createResultTable(result);
         updateResultTable(resultTable);
         EnableCancelButton(resultTable);
@@ -277,18 +277,6 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
 
     private void displaySuccessMessage(String s) {
         ui.showMessageDialog(this, "Success: " + s);
-    }
-
-    @NotNull
-    private Object[][] createReservationInfoArray(Reservation searchedReservation) {
-        return new Object[][]{
-                {       searchedReservation.reservationNumber(),
-                        searchedReservation.passenger().fullName().toText(),
-                        searchedReservation.flightNumber(),
-                        searchedReservation.flight().from(),
-                        searchedReservation.flight().to(),
-                        searchedReservation.travelers()
-                }};
     }
 
     private void updateResultTable(JTable table) {

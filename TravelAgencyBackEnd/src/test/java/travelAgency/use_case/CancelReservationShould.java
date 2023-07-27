@@ -54,7 +54,7 @@ public class CancelReservationShould {
     @Test
     void not_be_cancelled_a_reservation_when_a_flight_has_departed() {
         final Reservation reservation = app.search("AA-7845-65874");
-        reservation.flight().markAsDeparted();
+        reservation.markFlightAsDeparted();
 
         assertThatExceptionOfType(CouldNotCancelReservation.class)
                 .isThrownBy(() -> cancellation.cancelReservation(reservation.reservationNumber()));

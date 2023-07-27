@@ -80,8 +80,12 @@ public final class Reservation {
         return availableSeats >= travelers();
     }
 
-    public Flight flight() {
-        return flight;
+    public void markFlightAsDeparted() {
+        flight.markAsDeparted();
+    }
+
+    public boolean isFlightDeparted() {
+        return flight.isDeparted();
     }
 
     public String flightNumber() {
@@ -102,6 +106,18 @@ public final class Reservation {
 
     public @NotNull String reservationNumber() {
         return reservationNumber.toText();
+    }
+
+    @NotNull
+    public Object[][] createReservationInfo() {
+        return new Object[][]{
+                {       reservationNumber(),
+                        passenger().fullName().toText(),
+                        flightNumber(),
+                        flight.from(),
+                        flight.to(),
+                        travelers()
+                }};
     }
 
     public String buildTicket() {
@@ -143,5 +159,4 @@ public final class Reservation {
                 ", numberOfTickets=" + numberOfTickets +
                 '}';
     }
-
 }

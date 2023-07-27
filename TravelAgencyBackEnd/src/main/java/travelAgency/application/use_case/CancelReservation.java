@@ -24,7 +24,7 @@ public final class CancelReservation {
     }
 
     private void ensureCanCancel(Reservation reservation) {
-        if (reservation.flight().isDeparted()){
+        if (reservation.isFlightDeparted()){
             throw CouldNotCancelReservation.becauseFlightIsDeparted();
         }
     }
