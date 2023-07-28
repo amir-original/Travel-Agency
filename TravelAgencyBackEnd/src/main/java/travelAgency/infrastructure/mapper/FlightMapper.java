@@ -2,19 +2,22 @@ package travelAgency.infrastructure.mapper;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.application.dto.FlightDto;
+import travelAgency.application.dto.FlightPlanRequest;
 import travelAgency.model.city.City;
 import travelAgency.model.flight.*;
-import travelAgency.model.rate.currency.Currency;
-import travelAgency.model.rate.currency.Money;
+import travelAgency.model.rate.Currency;
+import travelAgency.model.rate.Money;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 public class FlightMapper {
 
     public Flight toEntity (@NotNull FlightDto flightDto){
         FlightPlan flightPlan = getFlightPlan(flightDto);
         Money money = getMoney(flightDto);
-        FlightNumber flightNumber = FlightNumber.of(flightDto.getFlightNumber());
+        FlightNumber flightNumber = FlightNumber.of(flightDto.flightNumber());
         FlightCapacity flightCapacity = FlightCapacity.of(flightDto.getTotalCapacity());
         return Flight.addWith(flightNumber, flightPlan, flightCapacity, money);
     }
@@ -53,9 +56,33 @@ public class FlightMapper {
 
     @NotNull
     private FlightLocation getFlightLocation(FlightDto flightDto) {
-        final City from = City.valueOf(flightDto.getFrom());
-        final City to = City.valueOf(flightDto.getTo());
+        final City from = City.valueOf(flightDto.from());
+        final City to = City.valueOf(flightDto.to());
 
         return FlightLocation.with(from,to);
+    }
+
+    public List<FlightDto> toViewDto(List<Flight> flights) {
+        List<FlightDto> flightDtos = new LinkedList<>();
+        flights.forEach(flight -> flightDtos.add(toViewDto(flight)));
+        return flightDtos;
+    }
+
+
+    public FlightPlanRequest toView(FlightPlan flightPlan){
+       return new FlightPlanRequest(flightPlan.from().name(),
+                flightPlan.to().name(),
+                flightPlan.departure(),
+                flightPlan.arrival());
+    }
+
+    public FlightPlan toEntity(FlightPlanRequest flightPlanRequest) {
+        City from = City.valueOf(flightPlanRequest.from());
+        City to = City.valueOf(flightPlanRequest.to());
+        FlightLocation flightLocation = FlightLocation.with(from, to);
+        FlightSchedule flightSchedule = FlightSchedule.with(flightPlanRequest.departure(),
+                flightPlanRequest.arrival());
+
+        return FlightPlan.of(flightLocation,flightSchedule);
     }
 }

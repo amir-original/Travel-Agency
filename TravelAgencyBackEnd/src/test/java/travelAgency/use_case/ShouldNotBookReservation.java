@@ -100,7 +100,7 @@ public class ShouldNotBookReservation {
     void when_passenger_birthday_is_null() {
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> app.book(reservationInformation()
-                        .withPassenger(passenger().birthday(null).build())
+                        .withPassenger(passenger().birthdate(null).build())
                         .build()));
     }
 

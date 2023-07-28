@@ -24,7 +24,7 @@ public class FlightDto {
         Currency = currency;
     }
 
-    public String getFlightNumber() {
+    public String flightNumber() {
         return flightNumber;
     }
 
@@ -48,7 +48,7 @@ public class FlightDto {
         Currency = currency;
     }
 
-    public String getFrom() {
+    public String from() {
         return from;
     }
 
@@ -56,7 +56,7 @@ public class FlightDto {
         this.from = from;
     }
 
-    public String getTo() {
+    public String to() {
         return to;
     }
 

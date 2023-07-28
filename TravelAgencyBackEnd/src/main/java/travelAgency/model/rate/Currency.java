@@ -1,4 +1,4 @@
-package travelAgency.model.rate.currency;
+package travelAgency.model.rate;
 
 import java.util.Arrays;
 

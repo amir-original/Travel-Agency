@@ -64,7 +64,7 @@ public class FakePassenger implements PassengerRepository {
         return PassengerBuilder.passenger()
                 .withId(PassengerId.withId("5544556699"))
                 .withFullName(FullName.of("Sara","Baiati"))
-                .birthday(of(1999, 4, 5))
+                .birthdate(of(1999, 4, 5))
                 .withResidential(residential)
                 .withPhoneNumber(PhoneNumber.of("09907994339"));
     }

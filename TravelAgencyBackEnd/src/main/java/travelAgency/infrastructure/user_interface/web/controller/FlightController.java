@@ -1,5 +1,6 @@
 package travelAgency.infrastructure.user_interface.web.controller;
 
+import travelAgency.application.dto.FlightPlanRequest;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.flight.FlightPlan;
 import travelAgency.application.dto.FlightDto;
@@ -18,7 +19,7 @@ public class FlightController implements FlightOperations {
         this.searchReservationService = searchReservationService;
     }
 
-    public List<Flight> searchFlights(FlightPlan flightPlan) {
+    public List<FlightDto> searchFlights(FlightPlanRequest flightPlan) {
         return findFlightService.searchFlights(flightPlan);
     }
 

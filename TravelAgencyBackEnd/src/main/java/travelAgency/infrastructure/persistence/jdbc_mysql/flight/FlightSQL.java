@@ -2,9 +2,9 @@ package travelAgency.infrastructure.persistence.jdbc_mysql.flight;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.model.city.City;
-import travelAgency.model.rate.currency.Currency;
+import travelAgency.model.rate.Currency;
 import travelAgency.model.flight.Flight;
-import travelAgency.model.rate.currency.Money;
+import travelAgency.model.rate.Money;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;

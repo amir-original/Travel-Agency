@@ -2,8 +2,7 @@ package travelAgency.model.flight;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.model.city.City;
-import travelAgency.model.rate.currency.Money;
-import travelAgency.exceptions.InvalidFlightNumberException;
+import travelAgency.model.rate.Money;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -12,13 +11,10 @@ public final class Flight {
 
     @NotNull
     private final FlightNumber flightNumber;
-
     @NotNull
     private final FlightCapacity totalCapacity;
-
     @NotNull
     private final Money price;
-
     @NotNull
     private final FlightPlan plan;
     private FlightStatus status = FlightStatus.SCHEDULED;

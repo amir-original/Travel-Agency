@@ -6,13 +6,15 @@ import java.time.LocalDate;
 
 public record Passenger(@NotNull PassengerId passengerId,
                         @NotNull FullName fullName,
-                        @NotNull LocalDate birthday,
+                        @NotNull Birthdate birthdate,
                         @NotNull ResidentialAddress residential,
                         @NotNull PhoneNumber phoneNumber) {
 
-    public boolean canMatchWith(String firstName, LocalDate birthday) {
-        return fullName().getFirstName().equals(firstName)
-                && birthday().equals(birthday);
+    public boolean canMatchWith(String firstName, LocalDate birthdate) {
+        Birthdate searchBirthdate = Birthdate.of(birthdate);
+        
+        return fullName().hasSameFirstName(firstName)
+                && birthdate().equals(searchBirthdate);
     }
 
     public String getId() {

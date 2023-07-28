@@ -19,7 +19,8 @@ public class PassengerMapper{
         final FullName fullName = FullName.of(dto.getfName(), dto.getlName());
         final LocalDate birthday = dto.getBirthday();
         final PhoneNumber phoneNumber = PhoneNumber.of(dto.getPhoneNumber());
-        return new Passenger(passengerId,fullName, birthday,residentialAddress, phoneNumber);
+        final Birthdate birthdate = Birthdate.of(birthday);
+        return new Passenger(passengerId,fullName, birthdate,residentialAddress, phoneNumber);
     }
 
     public PassengerDto toViewDto(@NotNull Passenger entity) {
@@ -30,7 +31,7 @@ public class PassengerMapper{
                 .ofCity(entity.residential().getCity())
                 .withAddress(entity.residential().getAddress())
                 .withZipcode(entity.residential().getZipcode())
-                .withBirthday(entity.birthday())
+                .withBirthday(entity.birthdate().toDate())
                 .withPhoneNumber(entity.phoneNumber().getNumber())
                 .build();
     }

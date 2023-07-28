@@ -1,6 +1,7 @@
 package travelAgency.application.use_case;
 
 import travelAgency.exceptions.ReservationNotFoundException;
+import travelAgency.model.passenger.Birthdate;
 import travelAgency.model.reservation.ReservationRepository;
 import travelAgency.application.dto.FlightDto;
 import travelAgency.model.reservation.Reservation;

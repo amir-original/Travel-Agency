@@ -2,9 +2,6 @@ package travelAgency.model.flight;
 
 public class InvalidFlightCapacity extends IllegalArgumentException {
 
-    public InvalidFlightCapacity() {
-    }
-
     public InvalidFlightCapacity(String s) {
         super(s);
     }

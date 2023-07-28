@@ -1,12 +1,14 @@
 package travelAgency.ui.pages;
 
 import org.jetbrains.annotations.NotNull;
+import travelAgency.application.dto.FlightDto;
+import travelAgency.application.dto.FlightPlanRequest;
 import travelAgency.infrastructure.user_interface.web.controller.ExchangeRateOperations;
 import travelAgency.infrastructure.user_interface.web.controller.FlightOperations;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.flight.FlightPlan;
-import travelAgency.model.rate.currency.Currency;
-import travelAgency.model.rate.currency.Money;
+import travelAgency.model.rate.Currency;
+import travelAgency.model.rate.Money;
 import travelAgency.ui.component.UiComponents;
 
 import javax.swing.*;
@@ -31,7 +33,7 @@ public class FlightSearchResultPanel extends JPanel {
         this.flightController = flightController;
     }
 
-    public void showFlightsInfo(FlightPlan searchedFlightPlan, Currency exchangeRate) {
+    public void showFlightsInfo(FlightPlanRequest searchedFlightPlan, String exchangeRate) {
         JTable table = setupLayoutAndTable();
 
         populateTableWithFlightInfo(searchedFlightPlan, exchangeRate);
@@ -74,8 +76,8 @@ public class FlightSearchResultPanel extends JPanel {
         table.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
     }
 
-    private void populateTableWithFlightInfo(FlightPlan searchedFlightPlan, Currency exchangeRate) {
-        final List<Flight> flights = flightController.searchFlights(searchedFlightPlan);
+    private void populateTableWithFlightInfo(FlightPlanRequest searchedFlightPlan, String exchangeRate) {
+        final List<FlightDto> flights = flightController.searchFlights(searchedFlightPlan);
         addFlightsToTable(flights, exchangeRate);
         tableModel.fireTableDataChanged();
     }
@@ -90,24 +92,24 @@ public class FlightSearchResultPanel extends JPanel {
         revalidate();
     }
 
-    private void addFlightsToTable(List<Flight> searchFlights, Currency exchangeRate) {
-        for (Flight flight : searchFlights)
+    private void addFlightsToTable(List<FlightDto> searchFlights, String exchangeRate) {
+        for (FlightDto flight : searchFlights)
             addFlightToRow(exchangeRate, flight);
     }
 
-    private void addFlightToRow(Currency exchangeRate, Flight flight) {
+    private void addFlightToRow(String exchangeRate, FlightDto flight) {
         Object[] row = new Object[6];
         row[0] = flight.from();
         row[1] = flight.to();
         row[2] = flight.flightNumber();
         row[3] = flightController.availableSeats(flight.flightNumber());
-        row[4] = flight.departure().toString();
+        row[4] = flight.getDepartureDate();
         row[5] = formatPriceWithSymbol(flight, exchangeRate);
         tableModel.addRow(row);
     }
 
-    private String formatPriceWithSymbol(Flight flight, Currency target) {
-        final Money money = rateConverterController.convert(flight.price(), target);
+    private String formatPriceWithSymbol(FlightDto flight, String target) {
+        final Money money = rateConverterController.convert(flight.getPrice(),flight.getCurrency(), target);
         return money.formatMoneyWithSymbol();
     }
 

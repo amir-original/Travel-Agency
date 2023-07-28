@@ -1,10 +1,6 @@
 package travelAgency.infrastructure.persistence.jdbc_mysql.passenger;
 
-import travelAgency.model.passenger.Passenger;
-import travelAgency.model.passenger.FullName;
-import travelAgency.model.passenger.PassengerId;
-import travelAgency.model.passenger.PhoneNumber;
-import travelAgency.model.passenger.ResidentialAddress;
+import travelAgency.model.passenger.*;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -18,7 +14,7 @@ public class PassengerSQL {
               `passenger_id` varchar(174) NOT NULL,
               `first_name` varchar(45) NOT NULL,
               `last_name` varchar(45) NOT NULL,
-              `birthday` date NOT NULL,
+              `birthdate` date NOT NULL,
               `city` varchar(45) NOT NULL,
               `address` varchar(300) NOT NULL,
               `zipcode` varchar(45) NOT NULL,
@@ -37,7 +33,7 @@ public class PassengerSQL {
     
     public static final String INSERT_PASSENGER_SQL = """
             insert into 
-            passengers(passenger_id,first_name,last_name, birthday, city,address,zipcode,phone_number)
+            passengers(passenger_id,first_name,last_name, birthdate, city,address,zipcode,phone_number)
              values (?,?,?,?,?,?,?,?);
             """;
     public static final String TRIGGER_NAME
@@ -55,13 +51,14 @@ public class PassengerSQL {
         final String firstName = rs.getString("first_name");
         final String lastName = rs.getString("last_name");
         final FullName fullName = FullName.of(firstName, lastName);
-        final LocalDate birthday = rs.getDate("birthday").toLocalDate();
+        final LocalDate birthday = rs.getDate("birthdate").toLocalDate();
         final String zipcode = rs.getString("zipcode");
         final String city = rs.getString("city");
         final String address = rs.getString("address");
         final PhoneNumber phoneNumber = PhoneNumber.of(rs.getString("phone_number"));
         final ResidentialAddress residentialAddress = ResidentialAddress.of(city, address, zipcode);
-        return new Passenger(passengerId,fullName,birthday,residentialAddress,phoneNumber);
+        final Birthdate birthdate = Birthdate.of(birthday);
+        return new Passenger(passengerId,fullName,birthdate,residentialAddress,phoneNumber);
 
     }
 
@@ -69,7 +66,7 @@ public class PassengerSQL {
         sql.setString(1, passenger.passengerId().getId());
         sql.setString(2, passenger.fullName().getFirstName());
         sql.setString(3, passenger.fullName().getLastName());
-        sql.setDate(4, convertToSQLDate(passenger.birthday()));
+        sql.setDate(4, convertToSQLDate(passenger.birthdate().toDate()));
         sql.setString(5, passenger.residential().getCity());
         sql.setString(6, passenger.residential().getAddress());
         sql.setString(7, passenger.residential().getZipcode());

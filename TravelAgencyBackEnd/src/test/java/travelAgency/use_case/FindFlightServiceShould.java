@@ -3,6 +3,7 @@ package travelAgency.use_case;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.application.dto.FlightDto;
+import travelAgency.application.dto.FlightPlanRequest;
 import travelAgency.infrastructure.mapper.FlightMapper;
 import travelAgency.exceptions.FlightNotFoundException;
 import travelAgency.model.flight.Flight;
@@ -36,18 +37,22 @@ public class FindFlightServiceShould {
     @Test
     void find_flights_with_entered_flight_plan() {
         final FlightPlan flightPlan = flightPlan().build();
-        final List<Flight> flights = app.searchFlights(flightPlan);
+        FlightPlanRequest flightPlanRequest = flightMapper.toView(flightPlan);
+        final List<FlightDto> flights = app.searchFlights(flightPlanRequest);
 
+        //@TODO i should be refactor flight dto to accept flight plan request as a dto
         assertAll(
                 () -> assertThat(flights).isNotEmpty(),
-                () -> assertThat(flights.get(0).plan().equals(flightPlan)).isTrue()
+                () -> assertThat(flights.get(0).from().equals(flightPlanRequest.from())).isTrue()
         );
     }
 
     @Test
     void not_return_anything_when_flight_information_is_wrong() {
         FlightPlan flightPlan = flightPlan().from(LONDON).to(BAGHDAD).build();
-        assertThat(app.searchFlights(flightPlan)).isEmpty();
+
+        FlightPlanRequest flightPlanRequest = flightMapper.toView(flightPlan);
+        assertThat(app.searchFlights(flightPlanRequest)).isEmpty();
     }
 
     @Test

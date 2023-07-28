@@ -44,11 +44,6 @@ public class ReservationRepositoryImpl implements ReservationRepository {
         return findBy(reservationNumber, FIND_RESERVATION_BY_RESERVATION_NUMBER);
     }
 
-    @Override
-    public Optional<Reservation> findReservationByFlightNumber(String flightNumber) {
-        return findBy(flightNumber, FIND_RESERVATION_BY_FLIGHT_NUMBER);
-    }
-
     @NotNull
     private Optional<Reservation> findBy(String reservationNumber, String sql) {
         Reservation reservation;

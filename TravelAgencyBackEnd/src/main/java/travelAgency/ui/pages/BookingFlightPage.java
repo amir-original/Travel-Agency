@@ -2,11 +2,9 @@ package travelAgency.ui.pages;
 
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
-import travelAgency.model.flight.Flight;
+import travelAgency.application.dto.FlightPlanRequest;
 import travelAgency.model.flight.FlightLocation;
-import travelAgency.model.flight.FlightPlan;
 import travelAgency.model.flight.FlightSchedule;
-import travelAgency.model.rate.currency.Currency;
 import travelAgency.application.dto.FlightDto;
 import travelAgency.infrastructure.user_interface.web.controller.ExchangeRateOperations;
 import travelAgency.infrastructure.user_interface.web.controller.FlightOperations;
@@ -236,13 +234,12 @@ public class BookingFlightPage extends JFrame {
 
     private void executeFlightSearch() {
         displaySearchResultTitle();
-        final String exchangeRate = (String) this.exchangeRate.getSelectedItem();
-        final Currency currency = Currency.valueOf(exchangeRate);
+        final String currency = (String) this.exchangeRate.getSelectedItem();
         performFlightSearch(currency);
     }
 
-    private void performFlightSearch(Currency exchangeRate) {
-        final List<Flight> searchFlights;
+    private void performFlightSearch(String exchangeRate) {
+        final List<FlightDto> searchFlights;
         try {
             searchFlights = flightController.searchFlights(getFlightPlan());
             flightSearchResult.showFlightsInfo(getFlightPlan(), exchangeRate);
@@ -266,7 +263,9 @@ public class BookingFlightPage extends JFrame {
 
     private void validateFlightLocation(List<String> errorMessages) {
         try {
-            createFlightLocation();
+            final String from = (String) originComboBox.getSelectedItem();
+            String to = (String) destinationComboBox.getSelectedItem();
+            new FlightLocation(cityService.getCity(from), cityService.getCity(to));
         } catch (Exception e) {
             errorMessages.add(e.getMessage());
         }
@@ -282,12 +281,11 @@ public class BookingFlightPage extends JFrame {
 
     private void updateFlightSearchResults(FlightSearchResultPanel flightSearchResult) {
         resultPanel.removeAll();
-        //displaySearchResultTitle();
         resultPanel.add(flightSearchResult);
         resultPanel.repaint();
     }
 
-    private void enableNextButtonIfSearchResultsExist(List<Flight> searchFlights) {
+    private void enableNextButtonIfSearchResultsExist(List<FlightDto> searchFlights) {
         if (!searchFlights.isEmpty())
             nextButton.setEnabled(true);
     }
@@ -305,25 +303,14 @@ public class BookingFlightPage extends JFrame {
     }
 
     @NotNull
-    private FlightPlan getFlightPlan() {
-        final FlightLocation location = createFlightLocation();
-        final FlightSchedule schedule = getFlightSchedule();
-        return new FlightPlan(location, schedule);
-    }
-
-    @NotNull
-    private FlightSchedule getFlightSchedule() {
+    private FlightPlanRequest getFlightPlan() {
+        final String from = (String) originComboBox.getSelectedItem();
+        String to = (String) destinationComboBox.getSelectedItem();
         final ZoneId zone = ZoneId.systemDefault();
         LocalDate departure = departureDateChooser.getDate().toInstant().atZone(zone).toLocalDate();
         LocalDate arrival = arrivalDateChooser.getDate().toInstant().atZone(zone).toLocalDate();
-        return new FlightSchedule(departure, arrival);
-    }
 
-    @NotNull
-    private FlightLocation createFlightLocation() {
-        final String from = (String) originComboBox.getSelectedItem();
-        String to = (String) destinationComboBox.getSelectedItem();
-        return new FlightLocation(cityService.getCity(from), cityService.getCity(to));
+        return new FlightPlanRequest(from, to,departure,arrival);
     }
 
     private void goToNextPageAction() {

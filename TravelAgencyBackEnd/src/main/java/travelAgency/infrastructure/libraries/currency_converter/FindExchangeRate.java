@@ -1,6 +1,6 @@
 package travelAgency.infrastructure.libraries.currency_converter;
 
-import travelAgency.model.rate.currency.Currency;
+import travelAgency.model.rate.Currency;
 
 public final class FindExchangeRate implements ExchangeRateProvider {
 

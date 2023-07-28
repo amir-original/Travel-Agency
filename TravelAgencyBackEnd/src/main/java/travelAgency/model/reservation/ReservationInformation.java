@@ -30,6 +30,6 @@ public final class ReservationInformation {
     }
 
     public String getFlightNumber() {
-        return flight.getFlightNumber();
+        return flight.flightNumber();
     }
 }

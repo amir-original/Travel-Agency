@@ -11,7 +11,7 @@ import travelAgency.infrastructure.libraries.currency_converter.ExchangeRateProv
 import travelAgency.infrastructure.libraries.currency_converter.FindExchangeRate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static travelAgency.model.rate.currency.Currency.*;
+import static travelAgency.model.rate.Currency.*;
 
 // actual test
 public class ExchangeRateProviderRealWorldShould {

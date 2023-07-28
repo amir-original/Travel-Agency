@@ -6,7 +6,7 @@ import travelAgency.infrastructure.io.PropertiesReader;
 import travelAgency.infrastructure.network.HttpClient;
 import travelAgency.infrastructure.network.Response;
 import travelAgency.model.rate.ExchangeRate;
-import travelAgency.model.rate.currency.Currency;
+import travelAgency.model.rate.Currency;
 import travelAgency.exceptions.CouldNotConnectToExchangeRateWebService;
 import travelAgency.exceptions.CouldNotFoundExchangeRate;
 

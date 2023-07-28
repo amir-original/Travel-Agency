@@ -1,8 +1,8 @@
 package travelAgency.infrastructure.libraries.currency_converter;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.model.rate.currency.Currency;
-import travelAgency.model.rate.currency.Money;
+import travelAgency.model.rate.Currency;
+import travelAgency.model.rate.Money;
 
 public final class CurrencyConverter {
 

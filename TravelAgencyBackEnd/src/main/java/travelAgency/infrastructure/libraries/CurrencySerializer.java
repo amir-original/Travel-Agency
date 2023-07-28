@@ -1,7 +1,7 @@
 package travelAgency.infrastructure.libraries;
 
 import com.google.gson.*;
-import travelAgency.model.rate.currency.Currency;
+import travelAgency.model.rate.Currency;
 
 import java.lang.reflect.Type;
 import java.util.Locale;

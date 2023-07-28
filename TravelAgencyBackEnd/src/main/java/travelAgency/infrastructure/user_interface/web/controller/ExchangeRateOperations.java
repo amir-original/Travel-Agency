@@ -1,11 +1,11 @@
 package travelAgency.infrastructure.user_interface.web.controller;
 
-import travelAgency.model.rate.currency.Currency;
-import travelAgency.model.rate.currency.Money;
+import travelAgency.model.rate.Currency;
+import travelAgency.model.rate.Money;
 
 public interface ExchangeRateOperations {
 
-    Money convert(Money money, Currency targetCurrency);
+    Money convert(double amount,String baseCurrency, String targetCurrency);
 
     String[] getCurrencies();
 }

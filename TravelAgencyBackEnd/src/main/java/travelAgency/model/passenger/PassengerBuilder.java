@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class PassengerBuilder {
     private PassengerId passengerId;
     private FullName fullName;
-    private LocalDate birthday;
+    private LocalDate birthdate;
     private ResidentialAddress residential;
     private PhoneNumber phoneNumber;
 
@@ -23,8 +23,8 @@ public class PassengerBuilder {
         return this;
     }
 
-    public PassengerBuilder birthday(LocalDate date){
-        this.birthday = date;
+    public PassengerBuilder birthdate(LocalDate date){
+        this.birthdate = date;
         return this;
     }
 
@@ -39,6 +39,7 @@ public class PassengerBuilder {
     }
 
     public Passenger build(){
-        return new Passenger(passengerId,fullName,birthday,residential,phoneNumber);
+        Birthdate bd = Birthdate.of(birthdate);
+        return new Passenger(passengerId,fullName, bd,residential,phoneNumber);
     }
 }

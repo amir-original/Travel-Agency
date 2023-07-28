@@ -202,7 +202,7 @@ public class BookingInformationPage extends JFrame {
         } else if (numberOfTickets <= 0) {
             errors.add("number withNationalCode ticket should be greeter than 0");
         } else if (birthdayPicker.getDate() == null) {
-            errors.add("birthday field must not be null!");
+            errors.add("birthdate field must not be null!");
         }
     }
 

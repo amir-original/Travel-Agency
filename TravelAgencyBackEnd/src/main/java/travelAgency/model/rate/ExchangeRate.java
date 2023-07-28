@@ -1,8 +1,6 @@
 package travelAgency.model.rate;
 
 
-import travelAgency.model.rate.currency.Currency;
-
 import java.time.LocalDate;
 import java.util.Map;
 

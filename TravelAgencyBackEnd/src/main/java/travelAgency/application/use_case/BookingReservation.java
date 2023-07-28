@@ -13,7 +13,6 @@ public final class BookingReservation {
 
     private final ReservationRepository reservations;
     private final PassengerRepository passengerRepository;
-
     private final SearchReservationService searchReservationService;
     public final ReservationNumberGenerator ReservationNumber;
     private final ReservationMapper reservationMapper;

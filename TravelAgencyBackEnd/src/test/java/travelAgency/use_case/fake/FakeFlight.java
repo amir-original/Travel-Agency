@@ -4,7 +4,7 @@ import travelAgency.exceptions.FlightNotFoundException;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.flight.FlightBuilder;
 import travelAgency.model.flight.FlightRepository;
-import travelAgency.model.rate.currency.Money;
+import travelAgency.model.rate.Money;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -14,7 +14,7 @@ import java.util.Optional;
 import static java.util.List.of;
 import static travelAgency.model.city.City.PARIS;
 import static travelAgency.model.city.City.TEHRAN;
-import static travelAgency.model.rate.currency.Currency.USD;
+import static travelAgency.model.rate.Currency.USD;
 
 
 public class FakeFlight implements FlightRepository {

@@ -17,7 +17,7 @@ import travelAgency.model.passenger.PassengerRepository;
 import travelAgency.infrastructure.persistence.jdbc_mysql.passenger.PassengerRepositoryImpl;
 import travelAgency.model.reservation.ReservationRepository;
 import travelAgency.infrastructure.persistence.jdbc_mysql.reservation.ReservationRepositoryImpl;
-import travelAgency.model.rate.currency.Currency;
+import travelAgency.model.rate.Currency;
 import travelAgency.infrastructure.libraries.*;
 import travelAgency.infrastructure.user_interface.web.controller.*;
 import travelAgency.infrastructure.libraries.currency_converter.CurrencyConverter;

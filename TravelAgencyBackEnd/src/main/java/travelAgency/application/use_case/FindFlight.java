@@ -1,6 +1,7 @@
 package travelAgency.application.use_case;
 
 import travelAgency.application.dto.FlightDto;
+import travelAgency.application.dto.FlightPlanRequest;
 import travelAgency.infrastructure.mapper.FlightMapper;
 import travelAgency.exceptions.FlightNotFoundException;
 import travelAgency.model.flight.Flight;
@@ -20,10 +21,13 @@ public final class FindFlight implements FindFlightService {
     }
 
     @Override
-    public List<Flight> searchFlights(FlightPlan searchFlightPlan) {
-        return flights.flights().stream()
-                .filter(flight -> flight.hasSameFlightPlan(searchFlightPlan))
+    public List<FlightDto> searchFlights(FlightPlanRequest searchFlightPlan) {
+        FlightPlan flightPlan = flightMapper.toEntity(searchFlightPlan);
+        List<Flight> flightList = flights.flights().stream()
+                .filter(flight -> flight.hasSameFlightPlan(flightPlan))
                 .toList();
+
+        return flightMapper.toViewDto(flightList);
     }
 
     @Override

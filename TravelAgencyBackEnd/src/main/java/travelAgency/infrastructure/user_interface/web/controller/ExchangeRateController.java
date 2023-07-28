@@ -1,7 +1,7 @@
 package travelAgency.infrastructure.user_interface.web.controller;
 
-import travelAgency.model.rate.currency.Currency;
-import travelAgency.model.rate.currency.Money;
+import travelAgency.model.rate.Currency;
+import travelAgency.model.rate.Money;
 import travelAgency.infrastructure.libraries.currency_converter.CurrencyConverter;
 
 public class ExchangeRateController implements ExchangeRateOperations {
@@ -14,8 +14,11 @@ public class ExchangeRateController implements ExchangeRateOperations {
         this.currencies = Currency.currencies();
     }
 
-    public Money convert(Money money, Currency targetCurrency){
-        return currencyConverter.convert(money,targetCurrency);
+    @Override
+    public Money convert(double amount, String baseCurrency, String targetCurrency) {
+
+        Money money = Money.of(amount, Currency.valueOf(baseCurrency));
+        return currencyConverter.convert(money,Currency.valueOf(targetCurrency));
     }
 
     public String[] getCurrencies(){

@@ -10,7 +10,7 @@ import travelAgency.use_case.fake.FakeExchangeRate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static travelAgency.model.rate.currency.Currency.*;
+import static travelAgency.model.rate.Currency.*;
 
 public class ExchangeRateProviderShould {
 

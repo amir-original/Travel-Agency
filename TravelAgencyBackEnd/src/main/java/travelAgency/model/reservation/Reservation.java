@@ -5,6 +5,7 @@ import travelAgency.exceptions.FullyBookedException;
 import travelAgency.exceptions.InvalidNumberOfTicketsException;
 import travelAgency.exceptions.NotEnoughCapacityException;
 import travelAgency.model.flight.Flight;
+import travelAgency.model.passenger.Birthdate;
 import travelAgency.model.passenger.Passenger;
 
 import java.time.LocalDate;

@@ -202,7 +202,7 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
         } else if (firstName.isEmpty()) {
             displayErrorMessage("passenger first name must not be null or empty!");
         } else if (date == null) {
-            displayErrorMessage("please enter your correct birthday!");
+            displayErrorMessage("please enter your correct birthdate!");
         } else {
             performReservationSearch(flightNumber, firstName, date);
         }

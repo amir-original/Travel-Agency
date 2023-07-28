@@ -3,15 +3,15 @@ package travelAgency.use_case.fake;
 import travelAgency.infrastructure.libraries.currency_converter.ExchangeRateDAO;
 import travelAgency.exceptions.CouldNotFoundExchangeRate;
 import travelAgency.model.rate.ExchangeRate;
-import travelAgency.model.rate.currency.Currency;
+import travelAgency.model.rate.Currency;
 
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static travelAgency.model.rate.currency.Currency.IRR;
-import static travelAgency.model.rate.currency.Currency.USD;
+import static travelAgency.model.rate.Currency.IRR;
+import static travelAgency.model.rate.Currency.USD;
 
 public class FakeExchangeRate implements ExchangeRateDAO {
 

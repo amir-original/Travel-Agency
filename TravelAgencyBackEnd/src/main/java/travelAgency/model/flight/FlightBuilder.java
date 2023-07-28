@@ -1,7 +1,7 @@
 package travelAgency.model.flight;
 
 import travelAgency.model.city.City;
-import travelAgency.model.rate.currency.Money;
+import travelAgency.model.rate.Money;
 
 import java.time.LocalDate;
 

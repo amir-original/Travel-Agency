@@ -25,6 +25,10 @@ public final class FullName {
         return new FullName(firstName, lastName);
     }
 
+    public boolean hasSameFirstName(String searchedFirstName) {
+        return this.firstName.equals(searchedFirstName);
+    }
+
     public String getFirstName() {
         return firstName;
     }

@@ -8,7 +8,7 @@ public interface ReservationRepository {
     void cancel(String reservationNumber);
     void cancel(Reservation reservation);
     Optional<Reservation> findReservation(String reservationNumber);
-    Optional<Reservation> findReservationByFlightNumber(String flightNumber);
+
     List<Reservation> getReservations();
     void truncate();
 }
