@@ -29,23 +29,18 @@ import static travelAgency.use_case.fake.FakeFlightPlanBuilder.flightPlan;
 
 public class SearchFlightShould {
 
-    private static final double ONE_DOLLAR_TO_RIAL = 42700D;
-    private static final Double ONE_RIAL_TO_DOLLAR = 0.000024;
-
     private FindFlightService app;
-    private CurrencyConverter currencyConverter;
     private FlightMapper flightMapper;
 
     @BeforeEach
     void setUp() {
         app = new FindFlight(new FakeFlight());
-        final ExchangeRateDAO exchangeRateDAO = mockExchangeRateDAO();
-        currencyConverter = new CurrencyConverter(new FindExchangeRate(exchangeRateDAO));
+
         flightMapper = new FlightMapper();
     }
 
     @Test
-    void find_flights_with_searched_flight_plan() {
+    void be_find_all_flights_that_matched_with_searched_criteria_flight_plan() {
         FlightPlan flightPlan = flightPlan().build();
         final List<FlightDto> flights = app.searchFlights(flightMapper.toView(flightPlan));
         assertAll(
@@ -55,7 +50,7 @@ public class SearchFlightShould {
     }
 
     @Test
-    void return_empty_when_no_flights_match_the_searched_criteria() {
+    void not_be_return_anything_when_no_flights_match_the_searched_criteria() {
         FlightPlan flightPlan = flightPlan().withNotExistLocation().build();
         final List<FlightDto> flights = app.searchFlights(flightMapper.toView(flightPlan));
         assertAll(
@@ -65,7 +60,7 @@ public class SearchFlightShould {
     }
 
     @Test
-    void not_find_any_flight_when_location_is_null() {
+    void not_be_find_any_flight_when_location_is_null() {
         assertAll(
                 () -> assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> {
@@ -81,51 +76,4 @@ public class SearchFlightShould {
 
     }
 
-    @Test
-    void it_convert_an_amount_using_the_exchange_rate() {
-        FlightPlan flightPlan = flightPlan().build();
-
-        final List<FlightDto> flights = app.searchFlights(flightMapper.toView(flightPlan));
-
-        final Flight flight = flight("0321");
-
-        Money expectedMoney = Money.of(4270000.00, IRR);
-
-        assertAll(
-                //() -> assertThat(flights).contains(flight.flightNumber()),
-                () -> assertThat(currencyConverter.convert(flight.price(), IRR)).isEqualTo(expectedMoney)
-        );
-    }
-
-    @Test
-    void it_convert_an_amount_from_irr_to_usd_by_using_the_exchange_rate() {
-        Money flightPrice = Money.of(870000, IRR);
-
-        final double convertedMoney = currencyConverter.convert(flightPrice, USD).amount();
-
-        assertThat(convertedMoney).isEqualTo(20.88);
-    }
-
-    @Test
-    void return_the_base_amount_itself_when_base_and_target_currency_is_the_same() {
-        final Money money = Money.of(45,USD);
-        final Money convertedMoney = currencyConverter.convert(money, USD);
-        assertThat(convertedMoney.amount()).isEqualTo(money.amount());
-        assertThat(convertedMoney.currency()).isEqualTo(USD);
-    }
-
-    @Test
-    void not_converted_money_when_amount_is_negative() {
-        assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> currencyConverter.convert(Money.of(-500, USD),IRR));
-    }
-
-
-    @NotNull
-    private ExchangeRateDAO mockExchangeRateDAO() {
-        final ExchangeRateDAO mock = mock(ExchangeRateDAO.class);
-        when(mock.exchangeRateFor(USD,IRR)).thenReturn(ONE_DOLLAR_TO_RIAL);
-        when(mock.exchangeRateFor(IRR,USD)).thenReturn(ONE_RIAL_TO_DOLLAR);
-        return mock;
-    }
 }

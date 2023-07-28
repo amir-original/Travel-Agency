@@ -38,7 +38,7 @@ public class CancelReservationShould {
     }
 
     @Test
-    void cancel_a_book_flight_with_ticket_number_without_throwing_any_exception() {
+    void cancel_a_booked_flight_with_ticket_number_without_throwing_any_exception() {
         var reservation = app.search(EXIST_FLIGHT_NUMBER, SARA, SARA_BIRTHDAY);
         final int travelers = reservation.travelers();
         final int bookingsBeforeCancel = 6;

@@ -35,7 +35,7 @@ public class FindFlightServiceShould {
     }
 
     @Test
-    void find_flights_with_entered_flight_plan() {
+    void find_flights_with_entered_valid_flight_plan() {
         final FlightPlan flightPlan = flightPlan().build();
         FlightPlanRequest flightPlanRequest = flightMapper.toView(flightPlan);
         final List<FlightDto> flights = app.searchFlights(flightPlanRequest);
