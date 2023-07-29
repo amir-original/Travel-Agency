@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import travelAgency.exceptions.*;
 import travelAgency.model.passenger.PassengerRepository;
 import travelAgency.model.flight.Flight;
-import travelAgency.model.reservation.ReservationInformation;
+import travelAgency.application.dto.ReservationInformation;
 import travelAgency.application.use_case.BookingReservation;
 import travelAgency.application.use_case.FindFlightService;
 import travelAgency.application.use_case.FindFlight;
@@ -19,7 +19,7 @@ import travelAgency.use_case.fake.FakeReservationNumber;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
-import static travelAgency.model.city.City.TEHRAN;
+import static travelAgency.model.flight.City.TEHRAN;
 import static travelAgency.use_case.fake.FakeFlight.flight;
 import static travelAgency.use_case.fake.FakeReservationInformation.reservationInformation;
 
@@ -51,7 +51,7 @@ public class BookingReservationShould {
 
     @Test
     void not_book_reservation_when_there_is_not_any_flight_with_entered_information() {
-        assertThatExceptionOfType(FlightNotFoundException.class)
+        assertThatExceptionOfType(CouldNotFoundAnyFlight.class)
                 .isThrownBy(() -> app.book(reservationInformation().withNotFoundFlight().build()));
     }
 

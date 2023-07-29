@@ -3,6 +3,7 @@ package travelAgency.ui.pages;
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import travelAgency.application.dto.ReservationResponse;
 import travelAgency.infrastructure.user_interface.web.controller.ReservationOperations;
 import travelAgency.model.reservation.Reservation;
 import travelAgency.ui.App;
@@ -209,12 +210,12 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
     }
 
     private void performReservationSearch(String flightNumber, String firstName, Date date) {
-        final Reservation searchedReservation = searchReservation(flightNumber, firstName, date);
+        final ReservationResponse searchedReservation = searchReservation(flightNumber, firstName, date);
 
         handleReservationSearchResult(searchedReservation);
     }
 
-    private Reservation searchReservation(String flightNumber, String firstName, Date birthday) {
+    private ReservationResponse searchReservation(String flightNumber, String firstName, Date birthday) {
         try {
             final LocalDate date = convertDateToLocalDate(birthday);
             return reservationController.search(flightNumber, firstName, date);
@@ -223,7 +224,7 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
         }
     }
 
-    private boolean isReservationFound(Reservation reservation) {
+    private boolean isReservationFound(ReservationResponse reservation) {
         return reservation != null;
     }
 
@@ -243,12 +244,12 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
     }
 
     private void performReservationSearch(String reservationNumber) {
-        Reservation searchedReservation = searchReservation(reservationNumber);
+        ReservationResponse searchedReservation = searchReservation(reservationNumber);
 
         handleReservationSearchResult(searchedReservation);
     }
 
-    private void handleReservationSearchResult(Reservation searchedReservation) {
+    private void handleReservationSearchResult(ReservationResponse searchedReservation) {
         if (isReservationFound(searchedReservation)) {
             processFoundReservation(searchedReservation);
         } else {
@@ -256,14 +257,26 @@ public class ReservationSearchPage extends JFrame implements ActionListener {
         }
     }
 
-    private void processFoundReservation(Reservation searchedReservation) {
-        Object[][] result = searchedReservation.createReservationInfo();
+    private void processFoundReservation(ReservationResponse searchedReservation) {
+        Object[][] result = createReservationInfo(searchedReservation);
         final JTable resultTable = createResultTable(result);
         updateResultTable(resultTable);
         EnableCancelButton(resultTable);
     }
 
-    private Reservation searchReservation(String reservationNumber) {
+    @NotNull
+    private Object[][] createReservationInfo(ReservationResponse reservationResponse) {
+        return new Object[][]{
+                {       reservationResponse.reservationNumber(),
+                        reservationResponse.passengerFullName(),
+                        reservationResponse.flightNumber(),
+                        reservationResponse.from(),
+                        reservationResponse.to(),
+                        reservationResponse.travelers()
+                }};
+    }
+
+    private ReservationResponse searchReservation(String reservationNumber) {
         try {
             return reservationController.search(reservationNumber);
         } catch (Exception e) {

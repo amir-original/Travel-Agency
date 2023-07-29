@@ -26,7 +26,7 @@ import static travelAgency.use_case.fake.FakeFlight.flight;
 public class BookingFLightRepositoryShould {
 
     private ReservationRepository api;
-    private PassengerRepositoryImpl passengerApi;
+    private PassengerRepositoryImpl passengers;
     private FlightRepositoryImpl flightApi;
 
 
@@ -37,7 +37,7 @@ public class BookingFLightRepositoryShould {
         final MySQLDbConnection mysql = new MySQLDbConnection(configuration);
         api = new ReservationRepositoryImpl(mysql);
         flightApi = new FlightRepositoryImpl(mysql);
-        passengerApi = new PassengerRepositoryImpl(mysql);
+        passengers = new PassengerRepositoryImpl(mysql);
     }
 
     @Test
@@ -74,9 +74,9 @@ public class BookingFLightRepositoryShould {
     }
 
     private Reservation insertSingleReservation() {
-        final Reservation reservation =
-                FakeReservation.getReservation("AA-7845-65874");
-        passengerApi.enroll(reservation.passenger());
+        final Reservation reservation = FakeReservation.getReservation("AA-7845-65874");
+
+       passengers.enroll(reservation.passenger());
         api.book(reservation);
         return reservation;
     }
@@ -87,7 +87,7 @@ public class BookingFLightRepositoryShould {
     }
 
     private void clearTables() {
-        passengerApi.truncate();
+        passengers.truncate();
         flightApi.truncate();
         api.truncate();
 

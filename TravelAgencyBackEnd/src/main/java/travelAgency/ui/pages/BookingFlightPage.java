@@ -18,6 +18,7 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Currency;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class BookingFlightPage extends JFrame {
     private final FlightSearchResultPanel flightSearchResult;
     private final ExchangeRateOperations rateConverterController;
     private JLabel resultLabel;
-    private JComboBox<String> originComboBox, destinationComboBox;
+    private JComboBox<Object> originComboBox, destinationComboBox;
     private JButton backButton, searchButton, nextButton;
 
     private UiComponents ui;
@@ -38,7 +39,7 @@ public class BookingFlightPage extends JFrame {
     private JDateChooser departureDateChooser;
     private JDateChooser arrivalDateChooser;
     private JPanel resultPanel;
-    private JComboBox<String> exchangeRate;
+    private JComboBox<Object> exchangeRate;
     private JSpinner passengersSpinner;
 
 
@@ -126,16 +127,16 @@ public class BookingFlightPage extends JFrame {
         destinationComboBox = AddCityDropdownToPanel(headerPanel, "To:");
     }
 
-    private JComboBox<String> AddCityDropdownToPanel(JPanel headerPanel, String labelText) {
+    private JComboBox<Object> AddCityDropdownToPanel(JPanel headerPanel, String labelText) {
         JLabel label = ui.label(labelText);
-        JComboBox<String> cityDropdown = getAirportListsDropdown();
+        JComboBox<Object> cityDropdown = getAirportListsDropdown();
         headerPanel.add(label);
         headerPanel.add(cityDropdown);
         return cityDropdown;
     }
 
-    public JComboBox<String> getAirportListsDropdown() {
-        return ui.dropdown(cityService.citiesArray(), 100, 30);
+    public JComboBox<Object> getAirportListsDropdown() {
+        return ui.dropdown(cityService.citiesList(), 100, 30);
     }
 
     private void createDepartureField(JPanel headerPanel) {
@@ -189,7 +190,7 @@ public class BookingFlightPage extends JFrame {
 
     private void createCurrencyConverterField(JPanel footerPanel) {
         final JLabel converterLabel = ui.label("Currency");
-        final String[] currencies = rateConverterController.getCurrencies();
+        final List<String> currencies = rateConverterController.getCurrencies();
         exchangeRate = ui.dropdown(currencies, 100, 30);
         footerPanel.add(converterLabel);
         footerPanel.add(exchangeRate);

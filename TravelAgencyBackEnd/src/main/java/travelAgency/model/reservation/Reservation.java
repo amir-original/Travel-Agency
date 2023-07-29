@@ -1,12 +1,13 @@
 package travelAgency.model.reservation;
 
 import org.jetbrains.annotations.NotNull;
+import travelAgency.exceptions.CouldNotCancelReservation;
 import travelAgency.exceptions.FullyBookedException;
 import travelAgency.exceptions.InvalidNumberOfTicketsException;
 import travelAgency.exceptions.NotEnoughCapacityException;
 import travelAgency.model.flight.Flight;
-import travelAgency.model.passenger.Birthdate;
 import travelAgency.model.passenger.Passenger;
+import travelAgency.model.flight.Money;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -34,7 +35,8 @@ public final class Reservation {
         this.numberOfTickets = numberOfTickets;
     }
 
-    public static Reservation make(ReservationNumber reservationNumber, Flight flight, Passenger passenger, int numberOfTickets) {
+    public static Reservation make(ReservationNumber reservationNumber, Flight flight,
+                                   Passenger passenger, int numberOfTickets) {
         return new Reservation(reservationNumber,flight,passenger,numberOfTickets);
     }
 
@@ -89,6 +91,12 @@ public final class Reservation {
         return flight.isDeparted();
     }
 
+    public void ensureCanCancel() {
+        if (isFlightDeparted()){
+            throw CouldNotCancelReservation.becauseFlightIsDeparted();
+        }
+    }
+
     public String flightNumber() {
         return flight.flightNumber();
     }
@@ -105,36 +113,33 @@ public final class Reservation {
         return passenger;
     }
 
+    public String from() {
+        return flight.from().name();
+    }
+
+    public String to(){
+        return flight.to().name();
+    }
+
+    public LocalDate departureDate() {
+        return flight.departure();
+    }
+
+    public LocalDate arrivalDate(){
+        return flight.arrival();
+    }
+
+    public Money price(){
+        return flight.price();
+    }
+
     public @NotNull String reservationNumber() {
         return reservationNumber.toText();
     }
 
-    @NotNull
-    public Object[][] createReservationInfo() {
-        return new Object[][]{
-                {       reservationNumber(),
-                        passenger().fullName().toText(),
-                        flightNumber(),
-                        flight.from(),
-                        flight.to(),
-                        travelers()
-                }};
-    }
 
-    public String buildTicket() {
-        return format(""" 
-                        Passenger Name: %s               Flight Number: %s           Ticket Number: %s  
-                                From : %s  📍 ---------------------------------------------- ✈  To: %s
-                        Departure: %s                    Arrival: %s                 Price: %s     
-                        """,
-                passenger.fullName().toText(),
-                flightNumber(),
-                reservationNumber.toText(),
-                flight.from(),
-                flight.to(),
-                flight.departure(),
-                flight.arrival(),
-                flight.price().formatMoneyWithSymbol());
+    public String passengerFullName() {
+      return   passenger.fullName().toText();
     }
 
     @Override
@@ -143,7 +148,8 @@ public final class Reservation {
         if (o == null || getClass() != o.getClass()) return false;
         Reservation that = (Reservation) o;
         return numberOfTickets == that.numberOfTickets &&
-                reservationNumber.equals(that.reservationNumber) && flight.equals(that.flight) && passenger.equals(that.passenger);
+                reservationNumber.equals(that.reservationNumber) &&
+                flight.equals(that.flight) && passenger.equals(that.passenger);
     }
 
     @Override

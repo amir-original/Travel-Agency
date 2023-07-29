@@ -1,4 +1,4 @@
-package travelAgency.model.city;
+package travelAgency.model.flight;
 
 public enum City{
     TEHRAN("Tehran"),

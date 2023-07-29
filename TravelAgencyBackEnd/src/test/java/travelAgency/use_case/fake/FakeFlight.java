@@ -1,10 +1,10 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.exceptions.FlightNotFoundException;
+import travelAgency.exceptions.CouldNotFoundAnyFlight;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.flight.FlightBuilder;
 import travelAgency.model.flight.FlightRepository;
-import travelAgency.model.rate.Money;
+import travelAgency.model.flight.Money;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.List.of;
-import static travelAgency.model.city.City.PARIS;
-import static travelAgency.model.city.City.TEHRAN;
+import static travelAgency.model.flight.City.PARIS;
+import static travelAgency.model.flight.City.TEHRAN;
 import static travelAgency.model.rate.Currency.USD;
 
 
@@ -76,7 +76,7 @@ public class FakeFlight implements FlightRepository {
 
     public static Flight flight(String flightNumber) {
         return new FakeFlight().findFlight(flightNumber)
-                .orElseThrow(FlightNotFoundException::new);
+                .orElseThrow(CouldNotFoundAnyFlight::new);
     }
 
 

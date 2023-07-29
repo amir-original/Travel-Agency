@@ -1,4 +1,6 @@
-package travelAgency.model.passenger;
+package travelAgency.use_case.fake;
+
+import travelAgency.model.passenger.*;
 
 import java.time.LocalDate;
 

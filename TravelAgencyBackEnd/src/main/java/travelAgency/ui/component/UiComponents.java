@@ -9,6 +9,7 @@ import travelAgency.ui.App;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.List;
 
 public class UiComponents {
 
@@ -36,8 +37,8 @@ public class UiComponents {
         return new JLabel(text);
     }
 
-    public <T> JComboBox<T> dropdown(T[] values,int width,int height){
-        final JComboBox<T> comboBox = new JComboBox<>(values);
+    public JComboBox<Object> dropdown(List<String> values, int width, int height){
+        final JComboBox<Object> comboBox = new JComboBox<>(values.toArray());
         comboBox.setPreferredSize(new Dimension(width,height));
         return comboBox;
     }

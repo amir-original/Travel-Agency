@@ -69,7 +69,7 @@ public class ReservationRepositoryShould {
         final Reservation reservation = FakeReservation.getReservation("AA-7845-65874");
 
         flights.addFlight(flight(reservation.flightNumber()));
-        passengers.enroll(reservation.passenger());
+       passengers.enroll(reservation.passenger());
         bookingLists.book(reservation);
         return reservation;
     }

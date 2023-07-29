@@ -1,29 +1,19 @@
 package travelAgency.infrastructure.libraries.currency_conversion;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.application.dto.FlightDto;
-import travelAgency.infrastructure.libraries.currency_converter.CurrencyConverter;
 import travelAgency.infrastructure.libraries.currency_converter.ExchangeRateDAO;
 import travelAgency.exceptions.CouldNotFoundExchangeRate;
 import travelAgency.infrastructure.libraries.currency_converter.ExchangeRateProvider;
 import travelAgency.infrastructure.libraries.currency_converter.FindExchangeRate;
-import travelAgency.model.flight.Flight;
-import travelAgency.model.flight.FlightPlan;
-import travelAgency.model.rate.Money;
 import travelAgency.use_case.fake.FakeExchangeRate;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static travelAgency.model.rate.Currency.*;
 import static travelAgency.use_case.fake.FakeFlight.flight;
-import static travelAgency.use_case.fake.FakeFlightPlanBuilder.flightPlan;
 
 public class ExchangeRateProviderShould {
 

@@ -6,18 +6,18 @@ public class FlightCapacity {
     private final int capacity;
 
     private FlightCapacity(int capacity) {
-        if (capacity <=0){
+        if (capacity <= 0) {
             throw InvalidFlightCapacity.becauseItIsNegative();
         }
 
         this.capacity = capacity;
     }
 
-    public static FlightCapacity of(int capacity){
+    public static FlightCapacity of(int capacity) {
         return new FlightCapacity(capacity);
     }
 
-    public int capacity(){
+    public int capacity() {
         return capacity;
     }
 

@@ -1,12 +1,8 @@
 package travelAgency.model.flight;
 
-import travelAgency.model.city.City;
-import travelAgency.model.rate.Money;
-
 import java.time.LocalDate;
 
 public class FlightBuilder {
-
     private String flightNumber;
     private int totalCapacity;
     private Money price;

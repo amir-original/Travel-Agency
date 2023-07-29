@@ -1,6 +1,7 @@
 package travelAgency.model.rate;
 
 import java.util.Arrays;
+import java.util.List;
 
 public enum Currency {
     USD("usd", "$"), IRR("irr", "ريال"),
@@ -14,10 +15,10 @@ public enum Currency {
         this.symbol = symbol;
     }
 
-    public static String[] currencies() {
+    public static List<String> currencies() {
         return Arrays.stream(values())
                 .map(Enum::name)
-                .toArray(String[]::new);
+                .toList();
     }
 
     public String value(){

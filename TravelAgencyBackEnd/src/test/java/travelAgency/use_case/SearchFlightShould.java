@@ -1,16 +1,10 @@
 package travelAgency.use_case;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.application.dto.FlightDto;
-import travelAgency.infrastructure.libraries.currency_converter.ExchangeRateDAO;
 import travelAgency.infrastructure.mapper.FlightMapper;
-import travelAgency.model.flight.Flight;
 import travelAgency.model.flight.FlightPlan;
-import travelAgency.model.rate.Money;
-import travelAgency.infrastructure.libraries.currency_converter.CurrencyConverter;
-import travelAgency.infrastructure.libraries.currency_converter.FindExchangeRate;
 import travelAgency.application.use_case.FindFlightService;
 import travelAgency.application.use_case.FindFlight;
 import travelAgency.use_case.fake.FakeFlight;
@@ -21,9 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static travelAgency.model.rate.Currency.IRR;
-import static travelAgency.model.rate.Currency.USD;
 import static travelAgency.use_case.fake.FakeFlight.flight;
 import static travelAgency.use_case.fake.FakeFlightPlanBuilder.flightPlan;
 

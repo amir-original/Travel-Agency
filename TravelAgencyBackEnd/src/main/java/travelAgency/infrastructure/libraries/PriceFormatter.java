@@ -1,6 +1,6 @@
-package travelAgency.model.rate;
+package travelAgency.infrastructure.libraries;
 
-import travelAgency.model.rate.Money;
+import travelAgency.model.flight.Money;
 
 public class PriceFormatter {
 

@@ -1,6 +1,8 @@
 package travelAgency.application.use_case;
 
+import travelAgency.application.dto.ReservationResponse;
 import travelAgency.exceptions.ReservationNotFoundException;
+import travelAgency.infrastructure.mapper.ReservationMapper;
 import travelAgency.model.passenger.Birthdate;
 import travelAgency.model.reservation.ReservationRepository;
 import travelAgency.application.dto.FlightDto;
@@ -14,25 +16,30 @@ public final class SearchReservation implements SearchReservationService {
     public static final int NO_BOOKINGS = 0;
     private final ReservationRepository reservations;
     private final FindFlightService flights;
+    private final ReservationMapper reservationMapper;
 
 
     public SearchReservation(ReservationRepository reservations, FindFlightService flights) {
         this.reservations = reservations;
         this.flights = flights;
+        reservationMapper = new ReservationMapper();
     }
 
     @Override
-    public Reservation search(String flightNumber, String passengerFirstName, LocalDate passengerBirthday) {
-        return reservations.getReservations().stream()
+    public ReservationResponse search(String flightNumber, String passengerFirstName, LocalDate passengerBirthday) {
+        Reservation reservation1 = reservations.getReservations().stream()
                 .filter(reservation -> reservation.canMatchWith(flightNumber, passengerFirstName, passengerBirthday))
                 .findFirst()
                 .orElseThrow(ReservationNotFoundException::new);
+
+        return reservationMapper.toView(reservation1);
     }
 
     @Override
-    public Reservation search(String reservationNumber) {
-        return reservations.findReservation(reservationNumber)
+    public ReservationResponse search(String reservationNumber) {
+        Reservation reservation = reservations.findReservation(reservationNumber)
                 .orElseThrow(CouldNotFoundReservation::new);
+        return reservationMapper.toView(reservation);
     }
 
     @Override

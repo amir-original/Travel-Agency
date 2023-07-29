@@ -2,6 +2,7 @@ package travelAgency.use_case;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import travelAgency.model.passenger.Passenger;
 import travelAgency.model.reservation.Reservation;
 import travelAgency.exceptions.CouldNotCancelReservation;
 import travelAgency.exceptions.CouldNotFoundReservation;
@@ -46,10 +47,13 @@ public class SearchReservationServiceShould {
     @Test
     void search_in_booking_list() {
         var reservation = app.search(EXIST_FLIGHT_NUMBER, SARA, SARA_BIRTHDAY);
+        Passenger passenger = passenger().build();
 
         assertAll(
                 () -> assertThat(reservation.flightNumber()).isEqualTo(EXIST_FLIGHT_NUMBER),
-                () -> assertThat(reservation.passenger()).isEqualTo(passenger().build())
+                () -> {
+                    assertThat(reservation.passengerId()).isEqualTo(passenger.getId());
+                }
         );
     }
 

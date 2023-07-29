@@ -45,7 +45,7 @@ public class ServiceContainer {
     }
 
     public FlightOperations flightController() {
-        return new FlightController(getFlightListService(), FindReservationService());
+        return new FindFlightController(getFlightListService(), FindReservationService());
     }
 
     private PassengerRepository passengerRepository() {

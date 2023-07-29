@@ -1,4 +1,7 @@
-package travelAgency.model.rate;
+package travelAgency.model.flight;
+
+import travelAgency.infrastructure.libraries.PriceFormatter;
+import travelAgency.model.rate.Currency;
 
 import java.util.Objects;
 
@@ -23,8 +26,8 @@ public final class Money {
         return PriceFormatter.formatPriceWithSymbol(this);
     }
 
-    public String formatAmount() {
-        return PriceFormatter.formatPrice(amount);
+    public Money convert(Currency to, double rate) {
+        return new Money(amount * rate, to);
     }
 
     private boolean isNegative(double amount) {
@@ -58,9 +61,5 @@ public final class Money {
         return "Money[" +
                 "amount=" + amount + ", " +
                 "currency=" + currency + ']';
-    }
-
-    public Money convert(Currency to, double rate) {
-        return new Money(amount * rate, to);
     }
 }

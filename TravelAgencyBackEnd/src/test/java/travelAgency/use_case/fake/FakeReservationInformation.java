@@ -4,7 +4,7 @@ import travelAgency.application.dto.PassengerDto;
 import travelAgency.infrastructure.mapper.PassengerMapper;
 import travelAgency.application.dto.FlightDto;
 import travelAgency.infrastructure.mapper.FlightMapper;
-import travelAgency.model.reservation.ReservationInformation;
+import travelAgency.application.dto.ReservationInformation;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.passenger.Passenger;
 

@@ -1,9 +1,10 @@
 package travelAgency.infrastructure.user_interface.web.controller;
 
+import travelAgency.application.dto.ReservationResponse;
 import travelAgency.model.passenger.PassengerRepository;
 import travelAgency.model.reservation.ReservationRepository;
 import travelAgency.model.reservation.Reservation;
-import travelAgency.model.reservation.ReservationInformation;
+import travelAgency.application.dto.ReservationInformation;
 import travelAgency.application.use_case.BookingReservation;
 import travelAgency.application.use_case.CancelReservation;
 import travelAgency.application.use_case.FindFlightService;
@@ -31,7 +32,7 @@ public class ReservationController implements ReservationOperations {
 
     }
 
-    public Reservation book(ReservationInformation reservationInformation) {
+    public ReservationResponse book(ReservationInformation reservationInformation) {
        return bookingReservation.book(reservationInformation);
     }
 
@@ -39,12 +40,12 @@ public class ReservationController implements ReservationOperations {
         cancelReservation.cancelReservation(reservationNumber);
     }
 
-    public Reservation search(String flightNumber,String passengerFirstName,LocalDate PassengerBirthday){
+    public ReservationResponse search(String flightNumber, String passengerFirstName, LocalDate PassengerBirthday){
         return searchReservationService.search(flightNumber,passengerFirstName,PassengerBirthday);
     }
 
 
-    public Reservation search(String reservationNumber) {
+    public ReservationResponse search(String reservationNumber) {
         return searchReservationService.search(reservationNumber);
     }
 }

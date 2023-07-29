@@ -1,12 +1,11 @@
 package travelAgency.infrastructure.libraries.city;
 
-import travelAgency.model.city.City;
+import travelAgency.model.flight.City;
 
 import java.util.List;
 
 public interface CityService {
     List<String> citiesList();
-    String[] citiesArray();
     City getCity(String city);
 
 }

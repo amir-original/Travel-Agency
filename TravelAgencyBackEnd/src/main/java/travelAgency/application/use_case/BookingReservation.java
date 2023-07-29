@@ -1,7 +1,9 @@
 package travelAgency.application.use_case;
 
+import travelAgency.application.dto.ReservationResponse;
+import travelAgency.infrastructure.mapper.PassengerMapper;
 import travelAgency.model.passenger.Passenger;
-import travelAgency.model.reservation.ReservationInformation;
+import travelAgency.application.dto.ReservationInformation;
 import travelAgency.model.reservation.Reservation;
 import travelAgency.model.reservation.ReservationRepository;
 import travelAgency.model.passenger.PassengerRepository;
@@ -12,10 +14,11 @@ import travelAgency.model.reservation.ReservationNumber;
 public final class BookingReservation {
 
     private final ReservationRepository reservations;
-    private final PassengerRepository passengerRepository;
+    private final PassengerRepository passengers;
     private final SearchReservationService searchReservationService;
     public final ReservationNumberGenerator ReservationNumber;
     private final ReservationMapper reservationMapper;
+    private final PassengerMapper passengerMapper;
 
     public BookingReservation(ReservationRepository reservations,
                               PassengerRepository passengers,
@@ -23,24 +26,25 @@ public final class BookingReservation {
                               ReservationNumberGenerator ReservationNumber) {
 
         this.reservations = reservations;
-        this.passengerRepository = passengers;
+        this.passengers = passengers;
         this.searchReservationService = searchReservationService;
         this.ReservationNumber = ReservationNumber;
 
         this.reservationMapper = new ReservationMapper();
+        this.passengerMapper = new PassengerMapper();
     }
 
-    public Reservation book(ReservationInformation resInfo) {
+    public ReservationResponse book(ReservationInformation resInfo) {
         final ReservationNumber reservationNumber = ReservationNumber.generateReservationNumber();
-        final Reservation reservation = reservationMapper.toEntity(resInfo, reservationNumber);
-        int availableSeats = searchReservationService.availableSeats(reservation.flightNumber());
+        int availableSeats = searchReservationService.availableSeats(resInfo.getFlightNumber());
 
-        final Passenger passenger = reservation.passenger();
+        final Reservation reservation = reservationMapper.toEntity(resInfo, reservationNumber);
+        Passenger passenger = passengerMapper.toEntity(resInfo.passengerDto());
         reservation.ensureCanBooking(availableSeats);
 
-        passengerRepository.enroll(passenger);
+        passengers.enroll(passenger);
         reservations.book(reservation);
-        return reservation;
+        return reservationMapper.toView(reservation);
     }
 
 }

@@ -1,22 +1,24 @@
 package travelAgency.ui.pages;
 
 import org.jetbrains.annotations.NotNull;
+import travelAgency.application.dto.ReservationResponse;
 import travelAgency.model.reservation.Reservation;
 import travelAgency.ui.component.UiComponents;
 
 import javax.swing.*;
 import java.awt.*;
 
+import static java.lang.String.format;
 import static java.time.LocalDate.of;
 
 public class BoardingPass extends JDialog {
 
     private final UiComponents ui = new UiComponents();
 
-    public void printTicket(Reservation reservation) {
+    public void printTicket(ReservationResponse reservation) {
         setupDialog();
 
-        final String ticket = reservation.buildTicket();
+        final String ticket = buildTicket(reservation);
         JPanel panel = createPanel();
         JButton closeButton = createCloseButton();
         JLabel header = createHeaderLabel("Boarding Pass");
@@ -24,6 +26,22 @@ public class BoardingPass extends JDialog {
 
         addComponentsToPanel(panel, header, ticketTextArea, closeButton);
         addPanelToDialog(panel);
+    }
+
+    public String buildTicket(ReservationResponse reservationResponse) {
+        return format(""" 
+                        Passenger Name: %s               Flight Number: %s           Ticket Number: %s  
+                                From : %s  📍 ---------------------------------------------- ✈  To: %s
+                        Departure: %s                    Arrival: %s                 Price: %s     
+                        """,
+                reservationResponse.passengerFullName(),
+                reservationResponse.flightNumber(),
+                reservationResponse.flightNumber(),
+                reservationResponse.from(),
+                reservationResponse.to(),
+                reservationResponse.departureDate(),
+                reservationResponse.arrivalDate(),
+                reservationResponse.price());
     }
 
     private JLabel createHeaderLabel(String txt) {

@@ -4,8 +4,10 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
+import travelAgency.application.dto.ReservationResponse;
 import travelAgency.application.use_case.*;
-import travelAgency.model.reservation.ReservationInformation;
+import travelAgency.application.dto.ReservationInformation;
+import travelAgency.infrastructure.mapper.PassengerMapper;
 import travelAgency.model.reservation.Reservation;
 import travelAgency.model.passenger.Passenger;
 import travelAgency.model.reservation.ReservationRepository;
@@ -25,35 +27,37 @@ public class BookingReservationPriorityTestCase {
     private SearchReservationService findReservation;
     private PassengerRepository passengers;
     private ReservationRepository bookingLists;
-    private ReservationNumberGenerator reservationNumber;
+    private ReservationNumberGenerator reservationNumberGenerator;
     private ReservationMapper reservationMapper;
+    private PassengerMapper passengerMapper;
 
     @BeforeEach
     void setUp() {
         passengers = createPassengerRepository();
         bookingLists = reservations();
         findReservation = createFindReservationService();
-        reservationNumber = createMockReservationNumberGenerator();
-        app = new BookingReservation(bookingLists, passengers,findReservation, reservationNumber);
+        reservationNumberGenerator = createMockReservationNumberGenerator();
+        app = new BookingReservation(bookingLists, passengers,findReservation, reservationNumberGenerator);
         reservationMapper = new ReservationMapper();
+        passengerMapper = new PassengerMapper();
     }
 
     @Test
     void should_be_perform_tasks_in_order_when_booking_a_flight() {
-        final ReservationInformation reservationInfo = reservationInformation().build();
+        final ReservationInformation resInfo = reservationInformation().build();
 
-        final Reservation fetchedReservation = app.book(reservationInfo);
-        assertThat(fetchedReservation.canMatchWith(reservationInfo.getFlightNumber())).isTrue();
+        final ReservationResponse fetchedReservation = app.book(resInfo);
+        assertThat(fetchedReservation.flightNumber()).isEqualTo(resInfo.getFlightNumber());
 
 
-        final InOrder inOrder = inOrder(findReservation, passengers, bookingLists, reservationNumber);
+        final InOrder inOrder = inOrder(findReservation, passengers, bookingLists, reservationNumberGenerator);
 
-        final ReservationNumber reservationNumber = this.reservationNumber.generateReservationNumber();
-        final Reservation reservation = reservationMapper.toEntity(reservationInfo, reservationNumber);
-        int availableSeats = findReservation.availableSeats(reservation.flightNumber());
+        final ReservationNumber reservationNumber = this.reservationNumberGenerator.generateReservationNumber();
+        int availableSeats = findReservation.availableSeats(resInfo.getFlightNumber());
 
-        final Passenger passenger = reservation.passenger();
+        final Reservation reservation = reservationMapper.toEntity(resInfo, reservationNumber);
         reservation.ensureCanBooking(availableSeats);
+        Passenger passenger = passengerMapper.toEntity(resInfo.passengerDto());
 
         inOrder.verify(passengers).enroll(passenger);
         inOrder.verify(bookingLists).book(reservation);

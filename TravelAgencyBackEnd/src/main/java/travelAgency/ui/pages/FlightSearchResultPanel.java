@@ -5,10 +5,7 @@ import travelAgency.application.dto.FlightDto;
 import travelAgency.application.dto.FlightPlanRequest;
 import travelAgency.infrastructure.user_interface.web.controller.ExchangeRateOperations;
 import travelAgency.infrastructure.user_interface.web.controller.FlightOperations;
-import travelAgency.model.flight.Flight;
-import travelAgency.model.flight.FlightPlan;
-import travelAgency.model.rate.Currency;
-import travelAgency.model.rate.Money;
+import travelAgency.model.flight.Money;
 import travelAgency.ui.component.UiComponents;
 
 import javax.swing.*;

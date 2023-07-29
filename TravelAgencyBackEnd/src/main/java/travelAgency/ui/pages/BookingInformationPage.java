@@ -2,12 +2,8 @@ package travelAgency.ui.pages;
 
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
-import travelAgency.application.dto.PassengerDto;
-import travelAgency.application.dto.PassengerDtoBuilder;
+import travelAgency.application.dto.*;
 import travelAgency.infrastructure.user_interface.web.controller.ReservationOperations;
-import travelAgency.application.dto.FlightDto;
-import travelAgency.model.reservation.ReservationInformation;
-import travelAgency.model.reservation.Reservation;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
 
@@ -71,7 +67,7 @@ public class BookingInformationPage extends JFrame {
 
         createLastNameField(inputPanel);
 
-        createBirthdayField(inputPanel);
+        createBirthdateField(inputPanel);
 
         createCityField(inputPanel);
 
@@ -95,7 +91,7 @@ public class BookingInformationPage extends JFrame {
     }
 
     private void createPassportNumberField(JPanel inputPanel) {
-        identityNumber = createField(inputPanel, "Identity Number:");
+        identityNumber = createField(inputPanel, "Identity Number:)");
     }
 
     private void createFirstNameField(JPanel inputPanel) {
@@ -106,8 +102,8 @@ public class BookingInformationPage extends JFrame {
         lastName = createField(inputPanel, "Last Name:");
     }
 
-    private void createBirthdayField(JPanel inputPanel) {
-        JLabel birthdayLabel = ui.label("Date withNationalCode Birth:");
+    private void createBirthdateField(JPanel inputPanel) {
+        JLabel birthdayLabel = ui.label("Birthdate:");
         birthdayPicker = ui.dateChooser(150, 30);
         inputPanel.add(birthdayLabel);
         inputPanel.add(birthdayPicker);
@@ -123,7 +119,7 @@ public class BookingInformationPage extends JFrame {
     }
 
     private void createAddressField(JPanel inputPanel) {
-        address = createField(inputPanel, "Address:");
+        address = createField(inputPanel, "Address:(least 10 character)");
     }
 
     private void createCityField(JPanel inputPanel) {
@@ -166,17 +162,17 @@ public class BookingInformationPage extends JFrame {
 
     private void processReservationBooking() {
         try {
-            final Reservation reservation = bookReservation();
+            final ReservationResponse reservation = bookReservation();
             processSuccessfulBooking(reservation);
         } catch (Exception exception) {
             showMessageDialog(BOOKING_FAIL);
         }
     }
 
-    private Reservation bookReservation() {
+    private ReservationResponse bookReservation() {
         final PassengerDto passenger = createPassenger();
         final ReservationInformation reservationInformation =
-                new ReservationInformation(selectedFlight,passenger,numberOfTickets);
+                new ReservationInformation(selectedFlight, passenger, numberOfTickets);
 
         return reservationController.book(reservationInformation);
     }
@@ -206,7 +202,7 @@ public class BookingInformationPage extends JFrame {
         }
     }
 
-    private void processSuccessfulBooking(Reservation reservation) {
+    private void processSuccessfulBooking(ReservationResponse reservation) {
         final BoardingPass boardingPass = new BoardingPass();
         showMessageDialog(BOOKING_SUCCESSFUL);
         boardingPass.printTicket(reservation);

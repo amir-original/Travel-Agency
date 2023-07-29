@@ -1,8 +1,6 @@
 package travelAgency.model.flight;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.model.city.City;
-import travelAgency.model.rate.Money;
 
 import java.time.LocalDate;
 import java.util.Objects;

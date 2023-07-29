@@ -3,10 +3,10 @@ package travelAgency.infrastructure.mapper;
 import org.jetbrains.annotations.NotNull;
 import travelAgency.application.dto.FlightDto;
 import travelAgency.application.dto.FlightPlanRequest;
-import travelAgency.model.city.City;
+import travelAgency.model.flight.City;
 import travelAgency.model.flight.*;
 import travelAgency.model.rate.Currency;
-import travelAgency.model.rate.Money;
+import travelAgency.model.flight.Money;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -27,7 +27,9 @@ public class FlightMapper {
                 flight.plan().from().toString(), flight.to().toString(),
                 flight.departure().toString(),
                 flight.arrival().toString(),
-                flight.totalCapacity(), flight.price().amount(), flight.price().currency().value()
+                flight.totalCapacity(),
+                flight.price().amount(),
+                flight.price().currency().name()
         );
     }
 

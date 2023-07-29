@@ -1,7 +1,6 @@
 package travelAgency.model.flight;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.model.city.City;
 
 import java.time.LocalDate;
 

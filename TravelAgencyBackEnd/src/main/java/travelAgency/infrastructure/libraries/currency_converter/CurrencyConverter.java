@@ -2,7 +2,7 @@ package travelAgency.infrastructure.libraries.currency_converter;
 
 import org.jetbrains.annotations.NotNull;
 import travelAgency.model.rate.Currency;
-import travelAgency.model.rate.Money;
+import travelAgency.model.flight.Money;
 
 public final class CurrencyConverter {
 

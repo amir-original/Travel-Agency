@@ -8,7 +8,7 @@ import travelAgency.infrastructure.libraries.currency_converter.ExchangeRateDAO;
 import travelAgency.infrastructure.libraries.currency_converter.FindExchangeRate;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.flight.FlightPlan;
-import travelAgency.model.rate.Money;
+import travelAgency.model.flight.Money;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

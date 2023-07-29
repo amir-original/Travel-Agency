@@ -1,7 +1,7 @@
 package travelAgency.infrastructure.libraries.city;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.model.city.City;
+import travelAgency.model.flight.City;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -19,10 +19,6 @@ public final class CityServiceImpl implements CityService {
         return getCitiesStream().toList();
     }
 
-    @Override
-    public String[] citiesArray() {
-        return  getCitiesStream().toArray(String[]::new);
-    }
 
     @NotNull
     private Stream<String> getCitiesStream() {

@@ -1,6 +1,5 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.model.passenger.PassengerBuilder;
 import travelAgency.model.passenger.FullName;
 import travelAgency.model.passenger.PassengerId;
 import travelAgency.model.passenger.PhoneNumber;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.time.LocalDate.of;
-import static travelAgency.model.city.City.TEHRAN;
+import static travelAgency.model.flight.City.TEHRAN;
 
 public class FakePassenger implements PassengerRepository {
 
@@ -23,9 +22,9 @@ public class FakePassenger implements PassengerRepository {
     {
         final PassengerBuilder passenger = FakePassenger.passenger();
         final List<Passenger> passengerList = List.of(
-                passenger.withId(PassengerId.withId("4444556622")).withFullName(FullName.of("ali","bahrami")).build(),
-                passenger.withId(PassengerId.withId("2211334565")).withFullName(FullName.of("mona","jalili")).build(),
-                passenger.withId(PassengerId.withId("1221456578")).withFullName(FullName.of("amir","amiri")).build(),
+                passenger.withId(PassengerId.withId("4444556622")).withFullName(FullName.of("ali", "bahrami")).build(),
+                passenger.withId(PassengerId.withId("2211334565")).withFullName(FullName.of("mona", "jalili")).build(),
+                passenger.withId(PassengerId.withId("1221456578")).withFullName(FullName.of("amir", "amiri")).build(),
                 passenger.withId(PassengerId.withId("5544556699")).build()
         );
         passengers = new LinkedList<>(passengerList);
@@ -63,7 +62,7 @@ public class FakePassenger implements PassengerRepository {
                 "Iran,TEHRAN", "1145789655");
         return PassengerBuilder.passenger()
                 .withId(PassengerId.withId("5544556699"))
-                .withFullName(FullName.of("Sara","Baiati"))
+                .withFullName(FullName.of("Sara", "Baiati"))
                 .birthdate(of(1999, 4, 5))
                 .withResidential(residential)
                 .withPhoneNumber(PhoneNumber.of("09907994339"));

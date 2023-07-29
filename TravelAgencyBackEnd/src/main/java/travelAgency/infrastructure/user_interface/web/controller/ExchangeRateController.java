@@ -1,13 +1,15 @@
 package travelAgency.infrastructure.user_interface.web.controller;
 
 import travelAgency.model.rate.Currency;
-import travelAgency.model.rate.Money;
+import travelAgency.model.flight.Money;
 import travelAgency.infrastructure.libraries.currency_converter.CurrencyConverter;
+
+import java.util.List;
 
 public class ExchangeRateController implements ExchangeRateOperations {
 
     private final CurrencyConverter currencyConverter;
-    private final String[] currencies;
+    private final List<String> currencies;
 
     public ExchangeRateController(CurrencyConverter currencyConverter) {
         this.currencyConverter = currencyConverter;
@@ -21,7 +23,7 @@ public class ExchangeRateController implements ExchangeRateOperations {
         return currencyConverter.convert(money,Currency.valueOf(targetCurrency));
     }
 
-    public String[] getCurrencies(){
+    public List<String> getCurrencies(){
         return currencies;
     }
 }

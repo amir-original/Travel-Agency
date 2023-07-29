@@ -1,10 +1,10 @@
 package travelAgency.infrastructure.persistence.jdbc_mysql.flight;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.model.city.City;
+import travelAgency.model.flight.City;
 import travelAgency.model.rate.Currency;
 import travelAgency.model.flight.Flight;
-import travelAgency.model.rate.Money;
+import travelAgency.model.flight.Money;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;

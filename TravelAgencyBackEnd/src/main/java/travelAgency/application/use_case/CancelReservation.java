@@ -2,7 +2,6 @@ package travelAgency.application.use_case;
 
 import travelAgency.model.reservation.ReservationRepository;
 import travelAgency.model.reservation.Reservation;
-import travelAgency.exceptions.CouldNotCancelReservation;
 import travelAgency.exceptions.CouldNotFoundReservation;
 
 // application service
@@ -18,14 +17,9 @@ public final class CancelReservation {
         final Reservation reservation = reservations.findReservation(reservationNumber)
                 .orElseThrow(CouldNotFoundReservation::new);
 
-        ensureCanCancel(reservation);
+        reservation.ensureCanCancel();
 
         reservations.cancel(reservation);
     }
 
-    private void ensureCanCancel(Reservation reservation) {
-        if (reservation.isFlightDeparted()){
-            throw CouldNotCancelReservation.becauseFlightIsDeparted();
-        }
-    }
 }

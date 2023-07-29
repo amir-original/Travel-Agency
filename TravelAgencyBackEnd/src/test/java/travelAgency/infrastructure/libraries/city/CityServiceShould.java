@@ -2,9 +2,7 @@ package travelAgency.infrastructure.libraries.city;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.model.city.City;
-import travelAgency.infrastructure.libraries.city.CityService;
-import travelAgency.infrastructure.libraries.city.CityServiceImpl;
+import travelAgency.model.flight.City;
 
 import java.util.List;
 
@@ -36,13 +34,6 @@ public class CityServiceShould {
         assertThat(cities).isInstanceOf(List.class);
     }
 
-    @Test
-    void get_cities_as_array() {
-        final String[] cities = cityService.citiesArray();
-
-        assertThat(cities.length).isNotZero();
-        assertThat(cities).isInstanceOf(String[].class);
-    }
 
     @Test
     void not_return_anything_when_city_name_is_invalid() {

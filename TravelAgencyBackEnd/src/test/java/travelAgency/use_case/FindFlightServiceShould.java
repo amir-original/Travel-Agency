@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import travelAgency.application.dto.FlightDto;
 import travelAgency.application.dto.FlightPlanRequest;
 import travelAgency.infrastructure.mapper.FlightMapper;
-import travelAgency.exceptions.FlightNotFoundException;
+import travelAgency.exceptions.CouldNotFoundAnyFlight;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.flight.FlightPlan;
 import travelAgency.application.use_case.FindFlightService;
@@ -17,8 +17,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static travelAgency.model.city.City.BAGHDAD;
-import static travelAgency.model.city.City.LONDON;
+import static travelAgency.model.flight.City.BAGHDAD;
+import static travelAgency.model.flight.City.LONDON;
 import static travelAgency.use_case.fake.FakeFlight.flight;
 import static travelAgency.use_case.fake.FakeFlightPlanBuilder.flightPlan;
 
@@ -66,7 +66,7 @@ public class FindFlightServiceShould {
 
     @Test
     void not_find_any_flight_when_flight_number_is_incorrect() {
-        assertThatExceptionOfType(FlightNotFoundException.class)
+        assertThatExceptionOfType(CouldNotFoundAnyFlight.class)
                 .isThrownBy(() -> app.findFlight(NOT_EXIST_FLIGHT_NUMBER));
     }
 }

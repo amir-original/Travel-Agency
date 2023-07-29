@@ -1,7 +1,6 @@
 package travelAgency.model.flight;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.model.city.City;
 
 public record FlightLocation(@NotNull City from, @NotNull City to) {
 
