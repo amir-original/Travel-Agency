@@ -25,7 +25,7 @@ public class FakePassenger implements PassengerRepository {
                 passenger.withId(PassengerId.withId("4444556622")).withFullName(FullName.of("ali", "bahrami")).build(),
                 passenger.withId(PassengerId.withId("2211334565")).withFullName(FullName.of("mona", "jalili")).build(),
                 passenger.withId(PassengerId.withId("1221456578")).withFullName(FullName.of("amir", "amiri")).build(),
-                passenger.withId(PassengerId.withId("5544556699")).build()
+                passenger.withId(PassengerId.withId("5544556699")).withFullName(FullName.of("Sara","Baiati")).build()
         );
         passengers = new LinkedList<>(passengerList);
     }

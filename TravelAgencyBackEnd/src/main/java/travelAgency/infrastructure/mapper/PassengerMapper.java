@@ -13,12 +13,12 @@ public class PassengerMapper{
 
 
     public Passenger toEntity(@NotNull PassengerDto dto) {
-        final String nationalCode = dto.getNationalCode();
+        final String nationalCode = dto.nationalCode();
         final PassengerId passengerId = PassengerId.withId(nationalCode);
-        final ResidentialAddress residentialAddress = of(dto.getCity(), dto.getAddress(), dto.getZipcode());
-        final FullName fullName = FullName.of(dto.getfName(), dto.getlName());
-        final LocalDate birthday = dto.getBirthday();
-        final PhoneNumber phoneNumber = PhoneNumber.of(dto.getPhoneNumber());
+        final ResidentialAddress residentialAddress = of(dto.city(), dto.address(), dto.zipcode());
+        final FullName fullName = FullName.of(dto.fName(), dto.lName());
+        final LocalDate birthday = dto.birthday();
+        final PhoneNumber phoneNumber = PhoneNumber.of(dto.phoneNumber());
         final Birthdate birthdate = Birthdate.of(birthday);
         return new Passenger(passengerId,fullName, birthdate,residentialAddress, phoneNumber);
     }

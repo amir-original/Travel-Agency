@@ -109,10 +109,6 @@ public final class Reservation {
         return numberOfTickets;
     }
 
-    public Passenger passenger() {
-        return passenger;
-    }
-
     public String from() {
         return flight.from().name();
     }
