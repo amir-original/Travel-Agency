@@ -27,12 +27,12 @@ public final class SearchReservation implements SearchReservationService {
 
     @Override
     public ReservationResponse search(String flightNumber, String passengerFirstName, LocalDate passengerBirthday) {
-        Reservation reservation1 = reservations.getReservations().stream()
+        Reservation searchedReservation = reservations.getReservations().stream()
                 .filter(reservation -> reservation.canMatchWith(flightNumber, passengerFirstName, passengerBirthday))
                 .findFirst()
                 .orElseThrow(ReservationNotFoundException::new);
 
-        return reservationMapper.toView(reservation1);
+        return reservationMapper.toView(searchedReservation);
     }
 
     @Override
