@@ -12,26 +12,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class HomePage extends JFrame {
-
-    private final CityService cityService;
-    private final ReservationOperations reservationController;
-    private final FlightOperations flightController;
-    private final ExchangeRateOperations rateConverterController;
     private JButton bookingFlightButton, bookingListButton;
 
     private final UiComponents uiComponents = new UiComponents();
 
 
-    public HomePage(ReservationOperations reservationController,
-                    FlightOperations flightController,
-                    ExchangeRateOperations rateConverterController,
-                    CityService cityService) {
-
-        this.reservationController = reservationController;
-        this.flightController = flightController;
+    public HomePage() {
         createHomePage();
-        this.rateConverterController = rateConverterController;
-        this.cityService = cityService;
     }
 
 
@@ -99,14 +86,14 @@ public class HomePage extends JFrame {
 
     private void goToBookingListPage() {
         bookingListButton.addActionListener(e -> {
-            new ReservationSearchPage(reservationController);
+            new ReservationSearchPage();
             dispose();
         });
     }
 
     private void goToFlightBookingPage() {
         bookingFlightButton.addActionListener(e -> {
-            new BookingFlightPage(reservationController, flightController, rateConverterController,cityService);
+            new BookingFlightPage();
             dispose();
         });
     }

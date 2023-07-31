@@ -29,7 +29,6 @@ public final class BookingReservation {
         this.passengers = passengers;
         this.searchReservationService = searchReservationService;
         this.ReservationNumber = ReservationNumber;
-
         this.reservationMapper = new ReservationMapper();
         this.passengerMapper = new PassengerMapper();
     }

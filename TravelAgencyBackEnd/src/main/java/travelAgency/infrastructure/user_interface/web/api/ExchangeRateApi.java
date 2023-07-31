@@ -17,7 +17,7 @@ public class ExchangeRateApi implements ExchangeRateDAO {
 
     public static final String API = "app.api.pro.rest_exchange_rate.url";
     private final HttpClient httpClient;
-    private String baseUrl;
+    private final String baseUrl;
 
 
     public ExchangeRateApi(HttpClient httpClient) {

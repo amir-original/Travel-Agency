@@ -3,6 +3,8 @@ package travelAgency.ui.pages;
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
 import travelAgency.application.dto.FlightPlanRequest;
+import travelAgency.infrastructure.ServiceContainer;
+import travelAgency.infrastructure.libraries.city.CityServiceImpl;
 import travelAgency.model.flight.FlightLocation;
 import travelAgency.model.flight.FlightSchedule;
 import travelAgency.application.dto.FlightDto;
@@ -35,7 +37,6 @@ public class BookingFlightPage extends JFrame {
     private UiComponents ui;
     private final CityService cityService;
     private final FlightOperations flightController;
-    private final ReservationOperations reservationController;
     private JDateChooser departureDateChooser;
     private JDateChooser arrivalDateChooser;
     private JPanel resultPanel;
@@ -43,15 +44,11 @@ public class BookingFlightPage extends JFrame {
     private JSpinner passengersSpinner;
 
 
-    public BookingFlightPage(ReservationOperations reservationController,
-                             FlightOperations flightController,
-                             ExchangeRateOperations rateConverter,
-                             CityService cityService) {
-
-        this.cityService = cityService;
-        this.flightController = flightController;
-        this.reservationController = reservationController;
-        this.rateConverterController = rateConverter;
+    public BookingFlightPage() {
+        ServiceContainer serviceContainer = new ServiceContainer();
+        this.cityService = new CityServiceImpl();
+        this.flightController = serviceContainer.flightController();
+        this.rateConverterController = serviceContainer.exchangeRateController();
         this.flightSearchResult = new FlightSearchResultPanel(this.rateConverterController,flightController);
 
         createBookingFlightPage();
@@ -62,14 +59,8 @@ public class BookingFlightPage extends JFrame {
         JPanel mainPanel = createMainPanel();
         createComponents(mainPanel);
 
-        updateUi();
+        ui.update(this);
     }
-
-    private void updateUi() {
-        pack();
-        setVisible(true);
-    }
-
 
     private void setupPage() {
         initConfigPage();
@@ -322,7 +313,7 @@ public class BookingFlightPage extends JFrame {
         final String selectedFlight = flightSearchResult.getSelectedFlight();
         if (isFlightSelected(selectedFlight)) {
             final FlightDto flight = getFlightBy(selectedFlight);
-            new BookingInformationPage(flight, reservationController, getTravelers());
+            new BookingInformationPage(flight, getTravelers());
             dispose();
         } else
             displayErrorMessage("Please select a flight to proceed.");

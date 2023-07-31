@@ -142,4 +142,8 @@ public class UiComponents {
         });
     }
 
+    public void update(JFrame jFrame) {
+        jFrame.pack();
+        jFrame.setVisible(true);
+    }
 }

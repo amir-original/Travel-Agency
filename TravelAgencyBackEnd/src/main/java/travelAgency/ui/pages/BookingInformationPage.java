@@ -3,6 +3,7 @@ package travelAgency.ui.pages;
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
 import travelAgency.application.dto.*;
+import travelAgency.infrastructure.ServiceContainer;
 import travelAgency.infrastructure.user_interface.web.controller.ReservationOperations;
 import travelAgency.ui.App;
 import travelAgency.ui.component.UiComponents;
@@ -34,18 +35,17 @@ public class BookingInformationPage extends JFrame {
     private JTextField address;
     private JTextField city;
 
-    public BookingInformationPage(FlightDto flight,
-                                  ReservationOperations reservationController,
-                                  int travelers) {
-        selectedFlight = flight;
-        this.reservationController = reservationController;
+    public BookingInformationPage(FlightDto flight, int travelers) {
+        ServiceContainer serviceContainer = new ServiceContainer();
+        this.selectedFlight = flight;
+        this.reservationController = serviceContainer.reservationController();
         this.numberOfTickets = travelers;
         this.ui = new UiComponents();
         setupPage();
         createComponentsAndAddToPage();
-        pack();
-        setVisible(true);
+        ui.update(this);
     }
+
 
     private void setupPage() {
         setTitle("Reservation Information");

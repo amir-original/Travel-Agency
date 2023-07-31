@@ -40,6 +40,10 @@ public class ServiceContainer {
                 ,getFlightListService());
     }
 
+    public static ServiceContainer build(){
+        return new ServiceContainer();
+    }
+
     public ExchangeRateOperations exchangeRateController(){
         return new ExchangeRateController(getExchangeRateConverter());
     }
