@@ -3,7 +3,7 @@ package travelAgency.infrastructure.libraries.currency_conversion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.infrastructure.libraries.currency_converter.ExchangeRateDAO;
-import travelAgency.exceptions.CouldNotFoundExchangeRate;
+import travelAgency.infrastructure.user_interface.web.api.CouldNotFoundExchangeRate;
 import travelAgency.infrastructure.libraries.currency_converter.ExchangeRateProvider;
 import travelAgency.infrastructure.libraries.currency_converter.FindExchangeRate;
 import travelAgency.use_case.fake.FakeExchangeRate;

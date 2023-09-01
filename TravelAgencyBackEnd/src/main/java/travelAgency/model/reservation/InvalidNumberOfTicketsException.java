@@ -1,4 +1,4 @@
-package travelAgency.exceptions;
+package travelAgency.model.reservation;
 
 public class InvalidNumberOfTicketsException extends RuntimeException{
 }

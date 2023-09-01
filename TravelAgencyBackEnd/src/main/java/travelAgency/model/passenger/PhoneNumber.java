@@ -1,7 +1,5 @@
 package travelAgency.model.passenger;
 
-import travelAgency.exceptions.InvalidPhoneNumberException;
-
 import java.util.Objects;
 import java.util.regex.Pattern;
 

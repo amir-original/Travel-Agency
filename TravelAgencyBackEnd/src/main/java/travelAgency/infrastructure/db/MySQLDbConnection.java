@@ -1,10 +1,8 @@
 package travelAgency.infrastructure.db;
 
-import travelAgency.exceptions.CouldNotConnectToDatabase;
 import travelAgency.infrastructure.persistence.jdbc_mysql.flight.FlightSQL;
 import travelAgency.infrastructure.persistence.jdbc_mysql.passenger.PassengerSQL;
 import travelAgency.infrastructure.persistence.jdbc_mysql.reservation.ReservationSQL;
-import travelAgency.exceptions.CouldNotCreateFlightTable;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,4 +1,4 @@
-package travelAgency.exceptions;
+package travelAgency.model.passenger;
 
 public class InvalidPhoneNumberException extends RuntimeException {
 }

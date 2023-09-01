@@ -1,9 +1,7 @@
 package travelAgency.infrastructure.persistence.jdbc_mysql.flight;
 
-import travelAgency.exceptions.CouldNotFoundFlight;
-import travelAgency.exceptions.MainSQLException;
-import travelAgency.model.flight.Flight;
 import travelAgency.infrastructure.db.DbConnection;
+import travelAgency.model.flight.Flight;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,7 +27,7 @@ public class FindFlightRepository {
             final ResultSet resultSet = query.executeQuery();
             getFlightsIfExists(flights, resultSet);
         } catch (SQLException e) {
-           throw new MainSQLException(e.getMessage());
+           throw CouldNotLoadFlights.becauseOf(e.getMessage());
         }
         return flights;
     }

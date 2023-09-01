@@ -1,13 +1,11 @@
 package travelAgency.application.use_case;
 
 import travelAgency.application.dto.ReservationResponse;
-import travelAgency.exceptions.ReservationNotFoundException;
 import travelAgency.infrastructure.mapper.ReservationMapper;
-import travelAgency.model.passenger.Birthdate;
 import travelAgency.model.reservation.ReservationRepository;
 import travelAgency.application.dto.FlightDto;
 import travelAgency.model.reservation.Reservation;
-import travelAgency.exceptions.CouldNotFoundReservation;
+import travelAgency.infrastructure.persistence.jdbc_mysql.reservation.CouldNotFoundReservation;
 
 import java.time.LocalDate;
 

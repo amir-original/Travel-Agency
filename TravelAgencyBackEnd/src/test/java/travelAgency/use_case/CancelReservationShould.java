@@ -2,14 +2,12 @@ package travelAgency.use_case;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.application.dto.ReservationResponse;
 import travelAgency.application.use_case.CancelReservation;
 import travelAgency.application.use_case.FindFlight;
 import travelAgency.application.use_case.SearchReservation;
 import travelAgency.application.use_case.SearchReservationService;
-import travelAgency.exceptions.CouldNotCancelReservation;
-import travelAgency.exceptions.CouldNotFoundReservation;
-import travelAgency.infrastructure.mapper.ReservationMapper;
+import travelAgency.model.reservation.CouldNotCancelReservation;
+import travelAgency.infrastructure.persistence.jdbc_mysql.reservation.CouldNotFoundReservation;
 import travelAgency.model.reservation.Reservation;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakeReservation;

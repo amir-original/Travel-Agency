@@ -2,7 +2,7 @@ package travelAgency.application.use_case;
 
 import travelAgency.model.reservation.ReservationRepository;
 import travelAgency.model.reservation.Reservation;
-import travelAgency.exceptions.CouldNotFoundReservation;
+import travelAgency.infrastructure.persistence.jdbc_mysql.reservation.CouldNotFoundReservation;
 
 // application service
 public final class CancelReservation {

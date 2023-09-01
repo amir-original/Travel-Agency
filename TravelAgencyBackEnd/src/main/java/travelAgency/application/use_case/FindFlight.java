@@ -3,7 +3,6 @@ package travelAgency.application.use_case;
 import travelAgency.application.dto.FlightDto;
 import travelAgency.application.dto.FlightPlanRequest;
 import travelAgency.infrastructure.mapper.FlightMapper;
-import travelAgency.exceptions.CouldNotFoundAnyFlight;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.flight.FlightPlan;
 import travelAgency.model.flight.FlightRepository;

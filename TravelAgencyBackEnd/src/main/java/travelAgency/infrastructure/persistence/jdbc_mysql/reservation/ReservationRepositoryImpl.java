@@ -1,12 +1,9 @@
 package travelAgency.infrastructure.persistence.jdbc_mysql.reservation;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.model.reservation.ReservationRepository;
-import travelAgency.exceptions.CouldNotBookReservation;
-import travelAgency.exceptions.CouldNotFoundReservation;
-import travelAgency.exceptions.MainSQLException;
-import travelAgency.model.reservation.Reservation;
 import travelAgency.infrastructure.db.DbConnection;
+import travelAgency.model.reservation.Reservation;
+import travelAgency.model.reservation.ReservationRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -72,7 +69,7 @@ public class ReservationRepositoryImpl implements ReservationRepository {
             final ResultSet resultSet = query.executeQuery();
             findReservationsIfExists(result, resultSet);
         } catch (SQLException e) {
-            throw new MainSQLException(e.getMessage());
+            throw CouldNotLoadReservations.becauseOf(e.getMessage());
         }
         return result;
     }
@@ -89,7 +86,7 @@ public class ReservationRepositoryImpl implements ReservationRepository {
             query.setString(1, reservationNumber);
             query.executeUpdate();
         } catch (SQLException e) {
-            throw new MainSQLException(e.getMessage());
+            throw CouldNotCancelReservation.becauseReservationNumberIsWrong(reservationNumber);
         }
     }
 

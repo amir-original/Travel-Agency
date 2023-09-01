@@ -3,8 +3,6 @@ package travelAgency.infrastructure.persistence.jdbc_mysql.flight;
 import travelAgency.infrastructure.db.DbConnection;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.flight.FlightRepository;
-import travelAgency.exceptions.CouldNotDeleteFlight;
-import travelAgency.exceptions.CouldNotStoreFlight;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

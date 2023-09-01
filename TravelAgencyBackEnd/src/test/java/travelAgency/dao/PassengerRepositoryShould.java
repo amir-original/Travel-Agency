@@ -5,21 +5,21 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.infrastructure.db.ConnectionConfiguration;
 import travelAgency.infrastructure.db.ConnectionConfigurationImpl;
-import travelAgency.model.passenger.PassengerId;
-import travelAgency.exceptions.CouldNotFoundPassenger;
-import travelAgency.exceptions.CouldNotSavePassenger;
-import travelAgency.exceptions.PassengerNotFoundException;
-import travelAgency.model.passenger.Passenger;
 import travelAgency.infrastructure.db.MySQLDbConnection;
-import travelAgency.infrastructure.persistence.jdbc_mysql.passenger.PassengerRepositoryImpl;
 import travelAgency.infrastructure.io.PropertiesReader;
+import travelAgency.infrastructure.persistence.jdbc_mysql.passenger.CouldNotFoundPassenger;
+import travelAgency.infrastructure.persistence.jdbc_mysql.passenger.CouldNotSavePassenger;
+import travelAgency.infrastructure.persistence.jdbc_mysql.passenger.PassengerRepositoryImpl;
+import travelAgency.model.passenger.Passenger;
+import travelAgency.model.passenger.PassengerId;
 import travelAgency.use_case.fake.FakePassenger;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-public class PassengerRepositoryShould {
+class PassengerRepositoryShould {
 
     private PassengerRepositoryImpl api;
     private FakePassenger fakePassenger;
@@ -41,7 +41,7 @@ public class PassengerRepositoryShould {
 
         final Optional<Passenger> fetchedPassenger = api.findPassengerById(passenger.getId());
 
-       fetchedPassenger.orElseThrow(PassengerNotFoundException::new);
+       fetchedPassenger.orElseThrow(CouldNotFoundPassenger::new);
 
         assertThat(passenger).isEqualTo(fetchedPassenger.get());
     }

@@ -1,7 +1,5 @@
 package travelAgency.model.passenger;
 
-import travelAgency.exceptions.InvalidPassengerIdException;
-
 import java.util.Objects;
 
 import static java.util.Objects.isNull;

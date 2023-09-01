@@ -1,12 +1,7 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.model.passenger.FullName;
-import travelAgency.model.passenger.PassengerId;
-import travelAgency.model.passenger.PhoneNumber;
-import travelAgency.model.passenger.ResidentialAddress;
-import travelAgency.exceptions.PassengerNotFoundException;
-import travelAgency.model.passenger.Passenger;
-import travelAgency.model.passenger.PassengerRepository;
+import travelAgency.infrastructure.persistence.jdbc_mysql.passenger.CouldNotFoundPassenger;
+import travelAgency.model.passenger.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -72,6 +67,6 @@ public class FakePassenger implements PassengerRepository {
         final FakePassenger fakePassenger = new FakePassenger();
 
         return fakePassenger.findPassengerById(passengerId)
-                .orElseThrow(PassengerNotFoundException::new);
+                .orElseThrow(CouldNotFoundPassenger::new);
     }
 }

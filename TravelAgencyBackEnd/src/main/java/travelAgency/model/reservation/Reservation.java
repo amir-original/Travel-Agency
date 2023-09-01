@@ -1,18 +1,12 @@
 package travelAgency.model.reservation;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.exceptions.CouldNotCancelReservation;
-import travelAgency.exceptions.FullyBookedException;
-import travelAgency.exceptions.InvalidNumberOfTicketsException;
-import travelAgency.exceptions.NotEnoughCapacityException;
 import travelAgency.model.flight.Flight;
-import travelAgency.model.passenger.Passenger;
 import travelAgency.model.flight.Money;
+import travelAgency.model.passenger.Passenger;
 
 import java.time.LocalDate;
 import java.util.Objects;
-
-import static java.lang.String.format;
 
 public final class Reservation {
     private static final int NO_AVAILABLE_SEATS = 0;

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import travelAgency.infrastructure.db.ConnectionConfiguration;
 import travelAgency.infrastructure.db.ConnectionConfigurationImpl;
 import travelAgency.model.flight.Flight;
-import travelAgency.exceptions.CouldNotFoundFlight;
+import travelAgency.infrastructure.persistence.jdbc_mysql.flight.CouldNotFoundFlight;
 import travelAgency.infrastructure.io.PropertiesReader;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.infrastructure.db.MySQLDbConnection;
@@ -19,7 +19,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static travelAgency.use_case.fake.FakePassenger.passenger;
-import static travelAgency.use_case.fake.FakeReservationInformation.reservationInformation;
 
 public class FindFlightRepositoryShould {
 

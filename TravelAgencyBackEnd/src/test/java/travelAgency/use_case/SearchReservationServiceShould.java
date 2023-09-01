@@ -3,7 +3,7 @@ package travelAgency.use_case;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import travelAgency.model.passenger.Passenger;
-import travelAgency.exceptions.ReservationNotFoundException;
+import travelAgency.application.use_case.ReservationNotFoundException;
 import travelAgency.application.use_case.FindFlight;
 import travelAgency.application.use_case.SearchReservationService;
 import travelAgency.application.use_case.SearchReservation;

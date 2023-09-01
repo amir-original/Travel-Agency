@@ -1,4 +1,4 @@
-package travelAgency.exceptions;
+package travelAgency.application.use_case;
 
 public class CouldNotFoundAnyFlight extends RuntimeException{
 }

@@ -1,6 +1,9 @@
-package travelAgency.exceptions;
+package travelAgency.infrastructure.persistence.jdbc_mysql.passenger;
 
 public class CouldNotFoundPassenger extends RuntimeException {
+
+    public CouldNotFoundPassenger() {
+    }
 
     public CouldNotFoundPassenger(String message) {
         super(message);

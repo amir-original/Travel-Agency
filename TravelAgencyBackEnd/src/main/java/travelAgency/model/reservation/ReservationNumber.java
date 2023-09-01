@@ -1,7 +1,6 @@
 package travelAgency.model.reservation;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.exceptions.InvalidTicketNumberException;
 
 import java.util.Objects;
 

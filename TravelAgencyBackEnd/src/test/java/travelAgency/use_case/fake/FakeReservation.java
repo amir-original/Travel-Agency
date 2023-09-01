@@ -6,7 +6,7 @@ import travelAgency.model.flight.Flight;
 import travelAgency.model.passenger.Passenger;
 import travelAgency.model.reservation.Reservation;
 import travelAgency.model.reservation.ReservationNumber;
-import travelAgency.exceptions.ReservationNotFoundException;
+import travelAgency.application.use_case.ReservationNotFoundException;
 
 import java.util.LinkedList;
 import java.util.List;

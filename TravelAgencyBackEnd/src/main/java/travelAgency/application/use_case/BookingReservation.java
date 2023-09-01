@@ -16,31 +16,31 @@ public final class BookingReservation {
     private final ReservationRepository reservations;
     private final PassengerRepository passengers;
     private final SearchReservationService searchReservationService;
-    public final ReservationNumberGenerator ReservationNumber;
+    public final ReservationNumberGenerator reservationnumber;
     private final ReservationMapper reservationMapper;
     private final PassengerMapper passengerMapper;
 
     public BookingReservation(ReservationRepository reservations,
                               PassengerRepository passengers,
                               SearchReservationService searchReservationService,
-                              ReservationNumberGenerator ReservationNumber) {
+                              ReservationNumberGenerator reservationnumber) {
 
         this.reservations = reservations;
         this.passengers = passengers;
         this.searchReservationService = searchReservationService;
-        this.ReservationNumber = ReservationNumber;
+        this.reservationnumber = reservationnumber;
         this.reservationMapper = new ReservationMapper();
         this.passengerMapper = new PassengerMapper();
     }
 
     public ReservationResponse book(ReservationInformation resInfo) {
-        final ReservationNumber reservationNumber = ReservationNumber.generateReservationNumber();
+        final ReservationNumber reservationNumber = reservationnumber.generateReservationNumber();
         int availableSeats = searchReservationService.availableSeats(resInfo.getFlightNumber());
-
         final Reservation reservation = reservationMapper.toEntity(resInfo, reservationNumber);
-        Passenger passenger = passengerMapper.toEntity(resInfo.passengerDto());
+
         reservation.ensureCanBooking(availableSeats);
 
+        Passenger passenger = passengerMapper.toEntity(resInfo.passengerDto());
         passengers.enroll(passenger);
         reservations.book(reservation);
         return reservationMapper.toView(reservation);

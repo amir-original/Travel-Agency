@@ -1,13 +1,13 @@
 package travelAgency.infrastructure.persistence.jdbc_mysql.passenger;
 
-import travelAgency.model.passenger.PassengerRepository;
-import travelAgency.exceptions.CouldNotFoundPassenger;
-import travelAgency.exceptions.CouldNotSavePassenger;
-import travelAgency.exceptions.MainSQLException;
-import travelAgency.model.passenger.Passenger;
 import travelAgency.infrastructure.db.DbConnection;
+import travelAgency.model.passenger.Passenger;
+import travelAgency.model.passenger.PassengerRepository;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -67,7 +67,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
         try (final PreparedStatement query = createQuery(GET_ALL_PASSENGERS_SQL)) {
             passengers = getPassengersIfExists(query.executeQuery());
         } catch (SQLException e) {
-            throw new MainSQLException(e.getMessage());
+            throw CouldNotLoadPassengers.becauseOf(e.getMessage());
         }
         return passengers;
     }
@@ -78,23 +78,6 @@ public class PassengerRepositoryImpl implements PassengerRepository {
             passengers.add(buildPassenger(rs));
         }
         return passengers;
-    }
-
-    private void activeDeletedTrigger() {
-        dropTrigger();
-        try (final PreparedStatement query = createQuery(CREATE_DELETED_TRIGGER)) {
-            query.executeUpdate();
-        } catch (SQLException e) {
-            throw new MainSQLException(e.getMessage());
-        }
-    }
-
-    private void dropTrigger() {
-        try (final PreparedStatement query = createQuery(DROP_TRIGGER)) {
-            query.executeUpdate();
-        } catch (SQLException e) {
-            throw new MainSQLException(e.getMessage());
-        }
     }
 
     public void truncate() {

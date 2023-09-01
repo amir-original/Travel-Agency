@@ -1,7 +1,6 @@
 package travelAgency.model.flight;
 
 import org.jetbrains.annotations.NotNull;
-import travelAgency.exceptions.InvalidFlightNumberException;
 
 import java.util.Objects;
 

@@ -1,6 +1,6 @@
 package travelAgency.use_case.fake;
 
-import travelAgency.exceptions.CouldNotFoundAnyFlight;
+import travelAgency.application.use_case.CouldNotFoundAnyFlight;
 import travelAgency.model.flight.Flight;
 import travelAgency.model.flight.FlightBuilder;
 import travelAgency.model.flight.FlightRepository;

@@ -1,4 +1,4 @@
-package travelAgency.exceptions;
+package travelAgency.infrastructure.persistence.jdbc_mysql.flight;
 
 public class CouldNotFoundFlight extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package travelAgency.exceptions;
+package travelAgency.model.flight;
 
 public class PastFlightScheduleException extends RuntimeException {
 }

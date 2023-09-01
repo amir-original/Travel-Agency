@@ -2,16 +2,13 @@ package travelAgency.use_case;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import travelAgency.model.passenger.Passenger;
-import travelAgency.model.passenger.FullName;
-import travelAgency.model.passenger.PhoneNumber;
-import travelAgency.model.passenger.ResidentialAddress;
-import travelAgency.exceptions.*;
+import travelAgency.model.passenger.*;
 import travelAgency.application.use_case.BookingReservation;
 import travelAgency.application.use_case.FindFlightService;
 import travelAgency.application.use_case.FindFlight;
 import travelAgency.application.use_case.SearchReservation;
 import travelAgency.application.use_case.ReservationNumberGenerator;
+import travelAgency.model.reservation.InvalidNumberOfTicketsException;
 import travelAgency.use_case.fake.FakeReservation;
 import travelAgency.use_case.fake.FakeFlight;
 import travelAgency.use_case.fake.FakePassenger;

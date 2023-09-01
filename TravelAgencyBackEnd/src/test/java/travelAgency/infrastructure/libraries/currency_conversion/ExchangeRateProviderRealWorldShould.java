@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import travelAgency.infrastructure.ServiceContainer;
 import travelAgency.infrastructure.libraries.currency_converter.ExchangeRateDAO;
-import travelAgency.exceptions.CouldNotConnectToExchangeRateWebService;
+import travelAgency.infrastructure.user_interface.web.api.CouldNotConnectToExchangeRateWebService;
 import travelAgency.infrastructure.libraries.currency_converter.ExchangeRateProvider;
 import travelAgency.infrastructure.libraries.currency_converter.FindExchangeRate;
 

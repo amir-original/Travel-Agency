@@ -1,11 +1,8 @@
 package travelAgency.infrastructure.libraries;
 
 import org.junit.jupiter.api.Test;
-import travelAgency.exceptions.InvalidPropertiesFileException;
+import travelAgency.infrastructure.io.InvalidPropertiesFileException;
 import travelAgency.infrastructure.io.PropertiesReader;
-
-import java.util.Collections;
-import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
